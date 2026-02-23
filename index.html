@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BWD Services | Bros Who Do</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --orange: #ff6404;
+    --dark: #121212;
+    --gray: #f4f4f4;
+    --light-gray: #e8e8e8;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: var(--white);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* ===== NAVIGATION ===== */
+
+header {
+    background: var(--dark);
+    color: var(--white);
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 24px;
+}
+
+.logo span {
+    color: var(--orange);
+}
+
+nav a {
+    color: var(--white);
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+nav a:hover {
+    color: var(--orange);
+}
+
+/* ===== HERO ===== */
+
+.hero {
+    background: linear-gradient(to right, var(--dark), #1f1f1f);
+    color: var(--white);
+    padding: 110px 8%;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero span {
+    color: var(--orange);
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 35px;
+}
+
+.btn {
+    background: var(--orange);
+    color: var(--white);
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #e55a00;
+}
+
+/* ===== SECTIONS ===== */
+
+.section {
+    padding: 90px 8%;
+}
+
+.section h2 {
+    font-size: 38px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.section-sub {
+    text-align: center;
+    margin-bottom: 60px;
+    color: #555;
+}
+
+/* ===== GRID ===== */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 35px;
+}
+
+/* ===== CARDS ===== */
+
+.card {
+    background: var(--gray);
+    padding: 35px;
+    border-radius: 14px;
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 1px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    border: 1px solid var(--orange);
+}
+
+.card img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.card h3 {
+    font-size: 22px;
+    color: var(--orange);
+}
+
+.card p {
+    color: #333;
+}
+
+/* ===== GUARANTEE ===== */
+
+.guarantee {
+    background: var(--orange);
+    color: var(--white);
+    text-align: center;
+    padding: 90px 8%;
+}
+
+.guarantee h2 {
+    font-size: 38px;
+    margin-bottom: 20px;
+}
+
+/* ===== CTA ===== */
+
+.cta {
+    background: var(--dark);
+    color: var(--white);
+    text-align: center;
+    padding: 80px 8%;
+}
+
+footer {
+    background: #000;
+    color: var(--white);
+    text-align: center;
+    padding: 25px;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">BWD <span>Services</span></div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Services</a>
+        <a href="#">Gallery</a>
+        <a href="#">Contact</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <!-- Optional: Add full-width lawn image background later -->
+    <h1>No Off-Season for Our <span>Performance</span></h1>
+    <p>Spring. Summer. Fall. Winter. Bros Who Do gets it DONE.</p>
+    <a href="#" class="btn">Get Your Free Estimate</a>
+</section>
+
+<section class="section">
+    <h2>Year-Round Property Services</h2>
+    <p class="section-sub">Built for every Michigan season.</p>
+
+    <div class="grid">
+
+        <div class="card">
+            <!-- INSERT SUN OR GRASS ICON IMAGE BELOW -->
+            <img src="spring-summer-icon.png" alt="Spring and Summer Icon">
+            <h3>Spring & Summer</h3>
+            <p>
+                Lawn mowing, trimming, edging, landscaping, property cleanups,
+                and routine maintenance to keep your yard sharp all season long.
+            </p>
+        </div>
+
+        <div class="card">
+            <!-- INSERT LEAF ICON IMAGE BELOW -->
+            <img src="fall-icon.png" alt="Fall Leaf Icon">
+            <h3>Fall Services</h3>
+            <p>
+                Leaf removal, seasonal cleanups, gutter clearing,
+                and preparation to protect your property before winter hits.
+            </p>
+        </div>
+
+        <div class="card">
+            <!-- INSERT SNOWFLAKE ICON IMAGE BELOW -->
+            <img src="winter-icon.png" alt="Winter Snowflake Icon">
+            <h3>Winter Services</h3>
+            <p>
+                Snow removal, ice management, and winter property care
+                to keep driveways and walkways safe and clear.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section class="guarantee">
+    <h2>BWD Guarantee ✔</h2>
+    <p>
+        If it’s not done right, we make it right. Period.
+        Quality. Consistency. Accountability.
+    </p>
+</section>
+
+<section class="cta">
+    <h2>Ready for Bros Who Do?</h2>
+    <p>Let’s upgrade your property today.</p>
+    <br>
+    <a href="#" class="btn">Call Now</a>
+</section>
+
+<footer>
+    © 2026 BWD Services | Bros Who Do
+</footer>
+
+</body>
+</html>
