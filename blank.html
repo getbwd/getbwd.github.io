@@ -6,8 +6,352 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
 
+<style>
+   nav a.active {
+
+    position: relative;
+}
+
+:root {
+    --orange: #ff6404;
+    --dark: #121212;
+    --gray: #f4f4f4;
+    --light-gray: #e8e8e8;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: var(--white);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* ===== NAVIGATION ===== */
+
+nav a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+}
+
+/* ===== HEADER ===== */
+
+header {
+    background: var(--dark);
+    position: relative;
+    z-index: 5000;
+        margin-top: 0;
+
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 8%;
+}
+
+.header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 45px;
+}
+
+/* NAV */
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.main-nav > a,
+.services-link {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.main-nav > a:hover,
+.services-link:hover {
+    color: var(--orange);
+}
+
+
+
+/* ===== ANNOUNCEMENT BANNER ===== */
+
+.announcement-bar {
+    background: var(--orange);
+    color: #fff;
+    text-align: center;
+    padding: 8px 8%;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.announcement-bar span {
+    color: var(--orange);
+    font-weight: 600;
+}
+
+.announcement-bar a {
+    color: #fff;
+    text-decoration: underline;
+    margin-left: 8px;
+    font-weight: 700;
+}
+.announcement-bar a:hover {
+    text-decoration: underline;
+}
+
+
+/* ===== TOP BAR (SEGMENTED STYLE) ===== */
+
+/* ===== TOP BAR ===== */
+
+/* ===== TOP BAR ===== */
+
+.top-bar {
+    background: #1c1c1c;
+    border-top: 2px solid var(--orange);
+    border-bottom: 2px solid var(--orange);
+    font-size: 13px;
+}
+
+.top-bar .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ===== LEFT NAV TABS ===== */
+
+.top-left {
+    display: flex;
+    align-items: stretch;
+}
+
+/* Individual tabs */
+.top-left a {
+    position: relative;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #bbb;
+    font-weight: 600;
+    transition: 0.25s ease;
+    border-right: 1px solid #2a2a2a; /* divider */
+}
+
+/* Left border for first tab */
+.top-left a:first-child {
+    border-left: 1px solid #2a2a2a;
+}
+
+/* Hover effect (underline bar like TruGreen) */
+.top-left a:hover {
+    color: #fff;
+}
+
+.top-left a:hover::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--orange);
+}
+
+/* Active tab (solid orange background) */
+.top-left a.active {
+    background: var(--orange);
+    color: #fff;
+    border-right: none;
+}
+
+.top-left a.active::after {
+    display: none; /* prevent underline on active */
+}
+
+/* ===== RIGHT SIDE ===== */
+
+.top-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Login Button */
+.login-btn {
+    background: var(--orange);
+    color: #fff;
+    padding: 8px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+.login-btn:hover {
+    background: #e55a00;
+}
+
+
+/* ===== FOOTER ===== */
+
+footer {
+    background: #000;
+    color: #ccc;
+    padding: 60px 8% 30px 8%;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-column h4 {
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.footer-column a {
+    display: block;
+    color: #aaa;
+    text-decoration: none;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.footer-column a:hover {
+    color: var(--orange);
+}
+
+.footer-bottom {
+    border-top: 1px solid #222;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+}
+
+/* ===== FULL WIDTH ENTERPRISE MEGA MENU ===== */
+
+.dropdown {
+    position: static; 
+}
+
+/* Mega menu */
+.mega-menu {
+    position: absolute;
+    top: 100%;             /* right below the nav link */
+    left: 0;
+    width: 100vw;           /* full viewport width */
+    margin-left: calc(-50vw + 50%); /* centers it across the screen */
+    background: var(--white);
+    padding: 70px 8%;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    border-top: 4px solid var(--orange);
+
+    /* Hover transition */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.25s ease;
+    z-index: 999;          /* above other content */
+}
+
+.mega-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+}
+
+/* ===== MEGA MENU ITEMS ===== */
+
+.mega-item {
+    display: block;
+    padding: 12px 0;
+    text-decoration: none;
+    color: var(--dark);
+    transition: 0.25s ease;
+}
+
+.mega-item:hover .mega-title {
+    color: var(--orange);
+}
+
+.mega-title {
+    display: block;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.mega-desc {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Sections */
+
+.mega-column h4 {
+    color: var(--orange);
+    margin-bottom: 20px;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+
+.mega-column a {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.mega-column a:hover {
+    color: var(--orange);
+}
+
+/* Show dropdown */
+
+.dropdown:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+
+} 
+</style>
 </head>
 
 <body>
