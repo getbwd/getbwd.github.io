@@ -88,7 +88,6 @@ header {
 }
 
 
-
 /* ===== ANNOUNCEMENT BANNER ===== */
 
 .announcement-bar {
@@ -118,11 +117,6 @@ header {
 
 
 /* ===== TOP BAR (SEGMENTED STYLE) ===== */
-
-/* ===== TOP BAR ===== */
-
-/* ===== TOP BAR ===== */
-
 .top-bar {
     background: #1c1c1c;
     border-top: 2px solid var(--orange);
