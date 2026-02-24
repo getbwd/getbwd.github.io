@@ -13,16 +13,6 @@ nav a.active {
     position: relative;
 }
 
-nav a.active::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--orange);
-    border-radius: 2px;
-}
 :root {
     --orange: #ff6404;
     --dark: #121212;
@@ -46,12 +36,25 @@ body {
 
 /* ===== NAVIGATION ===== */
 
+nav a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+}
+
 /* ===== HEADER ===== */
 
 header {
     background: var(--dark);
     position: relative;
     z-index: 5000;
+        margin-top: 0;
+
 }
 
 .container {
@@ -98,7 +101,7 @@ header {
 
 .hero {
     background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
-                url("images/hero.png") center/cover no-repeat;
+                url("https://lh3.googleusercontent.com/sitesv/APaQ0SSbxAaKexlehAnHA9fAwe4EOeECc0YGLDCImpLu2lsPaZtXtzGaSQ3chmr_1kELL1zDH6bcZhp7voHK36Ak_-C5_k_78U0HoA1TrP9h_r8hEBUE3nKTTG4pVBtpV_cBJOil35Q-ah7gGdwvzQWyP1e2ooqggRwgti6hanThrdwKsFBvOk5f3RIsz7AXMcfIbuhc8Hc2RD0fj0BMaLEzuId7y1REURG0eFuA=w1280") center/cover no-repeat;
     color: var(--white);
     padding: 140px 8%;
     text-align: center;
@@ -201,115 +204,124 @@ header {
     font-size: 40px;
     margin-bottom: 20px;
 }
+/* ===== ANNOUNCEMENT BANNER ===== */
+
+.announcement-bar {
+    background: var(--orange);
+    color: #fff;
+    text-align: center;
+    padding: 8px 8%;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.announcement-bar span {
+    color: var(--orange);
+    font-weight: 600;
+}
+
+.announcement-bar a {
+    color: #fff;
+    text-decoration: underline;
+    margin-left: 8px;
+    font-weight: 700;
+}
+.announcement-bar a:hover {
+    text-decoration: underline;
+}
+
+
+/* ===== TOP BAR (SEGMENTED STYLE) ===== */
+
+/* ===== TOP BAR ===== */
+
 /* ===== TOP BAR ===== */
 
 .top-bar {
-    background: linear-gradient(90deg, #111, #222);
-    color: #ccc;
-    padding: 8px 0;
-    font-size: 14px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    background: #1c1c1c;
+    border-top: 2px solid var(--orange);
+    border-bottom: 2px solid var(--orange);
+    font-size: 13px;
 }
 
 .top-bar .header-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
 }
 
-.top-left, .top-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.top-left a, .top-right a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center; /* centers text & icon */
-    min-width: 110px; /* adjust as needed for longest link */
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-weight: 500;
-    color: #ccc;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-.top-left a {
-    flex: 1;          /* all links share equal width */
-    text-align: center;
-}
+/* ===== LEFT NAV TABS ===== */
 
 .top-left {
     display: flex;
-    gap: 12px;
+    align-items: stretch;
 }
 
-.top-left a:hover, .top-right a:hover {
-    background: rgba(255, 100, 4, 0.15); /* very light orange highlight */
-    color: #fff; /* keep text white */
-}
-
-.top-left a:hover .icon, .top-right a:hover .icon {
-    filter: brightness(1) invert(0.9) sepia(0.7) saturate(2) hue-rotate(15deg);
-}
-
-.top-left a:not(:last-child)::after {
-    content: "|";
-    margin-left: 8px;
-    color: #555;
-}
-
-.icon {
-    width: 14px;
-    height: 14px;
-    margin-right: 6px;
-    filter: brightness(0) invert(1); /* makes icons white on dark bg */
-}
-
-
-
-.top-bar a {
-    color: #aaa;
+/* Individual tabs */
+.top-left a {
+    position: relative;
+    padding: 10px 20px;
     text-decoration: none;
-    margin-right: 18px;
-    transition: 0.2s;
+    color: #bbb;
+    font-weight: 600;
+    transition: 0.25s ease;
+    border-right: 1px solid #2a2a2a; /* divider */
 }
 
-.main-nav a {
-    line-height: 1;
+/* Left border for first tab */
+.top-left a:first-child {
+    border-left: 1px solid #2a2a2a;
 }
 
-
-.top-bar a:hover {
-    color: var(--orange);
+/* Hover effect (underline bar like TruGreen) */
+.top-left a:hover {
+    color: #fff;
 }
 
-.top-bar .header-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.top-left a:hover::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--orange);
 }
 
-.top-left,
+/* Active tab (solid orange background) */
+.top-left a.active {
+    background: var(--orange);
+    color: #fff;
+    border-right: none;
+}
+
+.top-left a.active::after {
+    display: none; /* prevent underline on active */
+}
+
+/* ===== RIGHT SIDE ===== */
+
 .top-right {
     display: flex;
     align-items: center;
 }
 
-.top-bar a {
-    display: inline-flex;
-    align-items: center;
-    line-height: 1;
-}
-.top-right a {
-    position: static; /* or just remove position entirely */
+/* Login Button */
+.login-btn {
+    background: var(--orange);
+    color: #fff;
+    padding: 8px 40px;
+    border-radius: 30px;
+    text-decoration: none;
     font-weight: 600;
-    color: var(--white);
+    transition: 0.25s ease;
 }
+
+.login-btn:hover {
+    background: #e55a00;
+}
+
 
 /* ===== WHY BWD SECTION ===== */
 
@@ -384,64 +396,31 @@ footer {
     font-size: 13px;
     color: #777;
 }
-/* ===== FULL WIDTH ENTERPRISE MEGA MENU ===== */
-
-.dropdown::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 100%;
-    height: 20px; /* invisible hover buffer */
-}
-
-.mega-menu {
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 100vw;              /* full viewport width */
-    margin-left: calc(-50vw + 50%); /* pull it fully left */
-    background: var(--white);
-    padding: 70px 8%;
-    display: none;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-    border-top: 4px solid var(--orange);
-}
-
-.mega-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 80px;
-}
-
-/* Sections */
-
-.mega-column h4 {
-    color: var(--orange);
-    margin-bottom: 20px;
-    font-size: 18px;
-    letter-spacing: 1px;
-}
 
 /* ===== FULL WIDTH ENTERPRISE MEGA MENU ===== */
 
 .dropdown {
-    position: static;
+    position: static; 
 }
 
+/* Mega menu */
 .mega-menu {
     position: absolute;
+    top: 100%;             /* right below the nav link */
     left: 0;
-    top: 100%;
-    width: 100vw;              /* full viewport width */
-    margin-left: calc(-50vw + 50%); /* pull it fully left */
+    width: 100vw;           /* full viewport width */
+    margin-left: calc(-50vw + 50%); /* centers it across the screen */
     background: var(--white);
     padding: 70px 8%;
-    display: none;
     box-shadow: 0 25px 50px rgba(0,0,0,0.15);
     border-top: 4px solid var(--orange);
+
+    /* Hover transition */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.25s ease;
+    z-index: 999;          /* above other content */
 }
 
 .mega-inner {
@@ -489,24 +468,6 @@ footer {
     letter-spacing: 1px;
 }
 
-.mega-column a {
-    display: block;
-    margin-bottom: 12px;
-    color: var(--dark);
-    text-decoration: none;
-    font-size: 15px;
-    transition: 0.2s;
-}
-
-.mega-column a:hover {
-    color: var(--orange);
-}
-
-/* Show dropdown */
-
-.dropdown:hover .mega-menu {
-    display: block;
-}
 
 .mega-column a {
     display: block;
@@ -524,34 +485,30 @@ footer {
 /* Show dropdown */
 
 .dropdown:hover .mega-menu {
-    display: block;
-}
-
-@media (max-width: 768px) {
-    .top-bar .header-inner {
-        flex-direction: column;
-        gap: 6px;
-    }
-    .top-left, .top-right {
-        justify-content: center;
-    }
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 </style>
 </head>
 
 <body>
     
+<div class="announcement-bar">
+    Save time and unlock exclusive online pricing — 
+    Start your plan today.
+</div>
+
 <div class="top-bar">
     <div class="container header-inner">
-<div class="top-left">
-    <a href="/residential/"><img src="images/home-icon.svg" alt="" class="icon"> Residential</a>
-    <a href="/commercial/"><img src="images/building-icon.svg" alt="" class="icon"> Commercial</a>
-    <a href="/careers/"><img src="images/career-icon.svg" alt="" class="icon"> Careers</a>
-    <a href="/login/"><img src="images/login-icon.svg" alt="" class="icon"> Login</a>
-</div>
-<div class="top-right">
-    <a href="tel:+19203709852"><img src="images/phone-icon.svg" alt="" class="icon"> +1 920-370-9852</a>
-</div>
+        <div class="top-left">
+            <a href="/residential/" class="active">Residential</a>
+            <a href="/commercial/">Commercial</a>
+            <a href="/careers/">Careers</a>
+        </div>
+        <div class="top-right">
+            <a href="/login/" class="login-btn">Log In</a>
+        </div>
     </div>
 </div>
 
