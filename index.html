@@ -499,15 +499,17 @@ footer {
     margin-top: 10px;
 }
 
-.view-all .mega-title {
-    color: var(--orange);
+.mega-item.view-all .mega-title {
+    color: var(--orange) !important;  /* force orange */
     font-weight: 700;
     letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-.view-all:hover .mega-title {
-    color: #e55a00;
+.mega-item.view-all:hover .mega-title {
+    color: #e55a00 !important;  /* slightly darker on hover */
 }
+    
 </style>
 </head>
 
@@ -540,7 +542,7 @@ footer {
 
         <nav class="main-nav">
             <a href="/" class="active">Home</a>
-            <a href="/about/">About Us</a>
+            <a href="/about/">About</a>
 
             <div class="dropdown">
                 <a href="/services/" class="services-link">Services</a>
@@ -749,7 +751,7 @@ footer {
 
         <div class="footer-column">
             <h4>Company</h4>
-            <a href="#">About Us</a>
+            <a href="#">About</a>
             <a href="#">Gallery</a>
             <a href="#">Contact</a>
         </div>
