@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BWD Services</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="images/favicon.png">
+
+<style>
+nav a.active {
+
+    position: relative;
+}
+
+:root {
+    --orange: #ff6404;
+    --dark: #121212;
+    --gray: #f4f4f4;
+    --light-gray: #e8e8e8;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: var(--white);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* ===== NAVIGATION ===== */
+
+nav a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+}
+
+/* ===== HEADER ===== */
+
+header {
+    background: var(--dark);
+    position: relative;
+    z-index: 5000;
+        margin-top: 0;
+
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 8%;
+}
+
+.header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 45px;
+}
+
+/* NAV */
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.main-nav > a,
+.services-link {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.main-nav > a:hover,
+.services-link:hover {
+    color: var(--orange);
+}
+
+/* ===== HERO ===== */
+
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
+                url("/images/IMG_1238.jpeg") center/cover no-repeat;
+    color: var(--white);
+    padding: 140px 8%;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 52px;
+    margin-bottom: 20px;
+}
+
+.hero span {
+    color: var(--orange);
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 35px;
+}
+
+.btn {
+    background: var(--orange);
+    color: var(--white);
+    padding: 15px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #e55a00;
+}
+
+/* ===== SECTIONS ===== */
+
+.section {
+    padding: 100px 8%;
+}
+
+.section h2 {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--orange); /* add this line */
+}
+
+.section-sub {
+    text-align: center;
+    margin-bottom: 60px;
+    color: #555;
+}
+
+/* ===== GRID ===== */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 35px;
+}
+
+/* ===== CARDS ===== */
+
+.card {
+    background: var(--gray);
+    padding: 40px;
+    border-radius: 14px;
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 1px solid transparent;
+    align-items: center; /* add this line to center content horizontally */
+    text-align: center;  /* optional: ensures text is centered under icon */
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    border: 1px solid var(--orange);
+}
+
+.card img {
+    width: 60px; 
+    height: 60px;
+    object-fit: contain;
+}
+
+.card h3 {
+    font-size: 22px;
+    color: var(--orange);
+}
+
+/* ===== GUARANTEE ===== */
+
+.guarantee {
+    background: var(--orange);
+    color: var(--white);
+    text-align: center;
+    padding: 100px 8%;
+}
+
+.guarantee h2 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+/* ===== ANNOUNCEMENT BANNER ===== */
+
+.announcement-bar {
+    background: var(--orange);
+    color: #fff;
+    text-align: center;
+    padding: 8px 8%;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.announcement-bar span {
+    color: var(--orange);
+    font-weight: 600;
+}
+
+.announcement-bar a {
+    color: #fff;
+    text-decoration: underline;
+    margin-left: 8px;
+    font-weight: 700;
+}
+.announcement-bar a:hover {
+    text-decoration: underline;
+}
+
+
+/* ===== TOP BAR (SEGMENTED STYLE) ===== */
+
+/* ===== TOP BAR ===== */
+
+/* ===== TOP BAR ===== */
+
+.top-bar {
+    background: #1c1c1c;
+    border-top: 2px solid var(--orange);
+    border-bottom: 2px solid var(--orange);
+    font-size: 13px;
+}
+
+.top-bar .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ===== LEFT NAV TABS ===== */
+
+.top-left {
+    display: flex;
+    align-items: stretch;
+}
+
+/* Individual tabs */
+.top-left a {
+    position: relative;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #bbb;
+    font-weight: 600;
+    transition: 0.25s ease;
+    border-right: 1px solid #2a2a2a; /* divider */
+}
+
+/* Left border for first tab */
+.top-left a:first-child {
+    border-left: 1px solid #2a2a2a;
+}
+
+/* Hover effect (underline bar like TruGreen) */
+.top-left a:hover {
+    color: #fff;
+}
+
+.top-left a:hover::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--orange);
+}
+
+/* Active tab (solid orange background) */
+.top-left a.active {
+    background: var(--orange);
+    color: #fff;
+    border-right: none;
+}
+
+.top-left a.active::after {
+    display: none; /* prevent underline on active */
+}
+
+/* ===== RIGHT SIDE ===== */
+
+.top-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Login Button */
+.login-btn {
+    background: var(--orange);
+    color: #fff;
+    padding: 8px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+.login-btn:hover {
+    background: #e55a00;
+}
+
+
+/* ===== WHY BWD SECTION ===== */
+
+.why-bwd {
+    background: var(--white);
+    padding: 100px 8%;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.why-box {
+    background: var(--light-gray);
+    padding: 35px;
+    border-radius: 14px;
+}
+
+.why-box h4 {
+    color: var(--orange);
+    margin-bottom: 15px;
+}
+
+/* ===== CTA ===== */
+
+.cta {
+    background: var(--dark);
+    color: var(--white);
+    text-align: center;
+    padding: 100px 8%;
+}
+
+/* ===== FOOTER ===== */
+
+footer {
+    background: #000;
+    color: #ccc;
+    padding: 60px 8% 30px 8%;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-column h4 {
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.footer-column a {
+    display: block;
+    color: #aaa;
+    text-decoration: none;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.footer-column a:hover {
+    color: var(--orange);
+}
+
+.footer-bottom {
+    border-top: 1px solid #222;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+}
+
+/* ===== FULL WIDTH ENTERPRISE MEGA MENU ===== */
+
+.dropdown {
+    position: static; 
+}
+
+/* Mega menu */
+.mega-menu {
+    position: absolute;
+    top: 100%;             /* right below the nav link */
+    left: 0;
+    width: 100vw;           /* full viewport width */
+    margin-left: calc(-50vw + 50%); /* centers it across the screen */
+    background: var(--white);
+    padding: 70px 8%;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    border-top: 4px solid var(--orange);
+
+    /* Hover transition */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.25s ease;
+    z-index: 999;          /* above other content */
+}
+
+.mega-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+}
+
+/* ===== MEGA MENU ITEMS ===== */
+
+.mega-item {
+    display: block;
+    padding: 12px 0;
+    text-decoration: none;
+    color: var(--dark);
+    transition: 0.25s ease;
+}
+
+.mega-item:hover .mega-title {
+    color: var(--orange);
+}
+
+.mega-title {
+    display: block;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.mega-desc {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Sections */
+
+.mega-column h4 {
+    color: var(--orange);
+    margin-bottom: 20px;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+
+.mega-column a {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.mega-column a:hover {
+    color: var(--orange);
+}
+
+/* Show dropdown */
+
+.dropdown:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* VIEW ALL Styling */
+
+.view-all {
+    margin-top: 10px;
+}
+
+.mega-item.view-all .mega-title {
+    color: var(--orange) !important;  /* force orange */
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.mega-item.view-all:hover .mega-title {
+    color: #e55a00 !important;  /* slightly darker on hover */
+}
+    
+</style>
+</head>
+
+<body>
+    
+<div class="announcement-bar">
+    Save time and unlock exclusive online pricing — 
+    Start your plan today.
+</div>
+
+<div class="top-bar">
+    <div class="container header-inner">
+        <div class="top-left">
+            <a href="/residential/" class="active">Residential</a>
+            <a href="/commercial/">Commercial</a>
+            <a href="/careers/">Careers</a>
+        </div>
+        <div class="top-right">
+            <a href="/login/" class="login-btn">Log In</a>
+        </div>
+    </div>
+</div>
+
+<header>
+    <div class="container header-inner">
+
+        <div class="logo">
+            <img src="/images/nav.png" alt="BWD Logo">
+        </div>
+
+        <nav class="main-nav">
+            <a href="/" class="active">Home</a>
+            <a href="/about/">About</a>
+
+            <div class="dropdown">
+                <a href="/services/" class="services-link">Services</a>
+
+                <div class="mega-menu">
+                    <div class="mega-inner">
+
+<!-- SPRING & SUMMER -->
+<div class="mega-column">
+    <h4>SPRING & SUMMER</h4>
+
+    <a href="/services/mowing-trimming/" class="mega-item">
+        <span class="mega-title">Mowing & Trimming</span>
+        <span class="mega-desc">Keep your lawn pristine with regular mowing and precision trimming around edges.</span>
+    </a>
+
+    <a href="/services/spring-cleanup/" class="mega-item">
+        <span class="mega-title">Spring Cleanup</span>
+        <span class="mega-desc">Remove winter debris and prepare your lawn for a healthy growing season.</span>
+    </a>
+
+    <a href="/services/garden-bed-care/" class="mega-item">
+        <span class="mega-title">Garden Bed Care</span>
+        <span class="mega-desc">Weeding, mulching, and refreshing garden beds for a vibrant yard.</span>
+    </a>
+
+    <a href="/services/pet-waste-debris-removal/" class="mega-item">
+        <span class="mega-title">Pet Waste & Debris Removal</span>
+        <span class="mega-desc">Keep your lawn clean and safe by removing pet waste and yard debris.</span>
+    </a>
+
+    <a href="/services/seeding-aeration-fertilization/" class="mega-item">
+        <span class="mega-title">Seeding, Aeration, & Fertilization</span>
+        <span class="mega-desc">Promote healthy growth with targeted lawn care treatments.</span>
+    </a>
+
+    <a href="/services/spring-summer/" class="mega-item view all">
+        <span class="mega-title">VIEW ALL</span>
+    </a>
+</div>
+
+<!-- FALL -->
+<div class="mega-column">
+    <h4>FALL</h4>
+
+    <a href="/services/leaf-removal/" class="mega-item">
+        <span class="mega-title">Leaf Removal</span>
+        <span class="mega-desc">Prevent buildup and protect your lawn with full leaf removal.</span>
+    </a>
+
+    <a href="/services/seasonal-cleanup/" class="mega-item">
+        <span class="mega-title">Seasonal Cleanup</span>
+        <span class="mega-desc">End-of-season clearing to keep your property neat and ready for winter.</span>
+    </a>
+
+    <a href="/services/gutter-cleaning/" class="mega-item">
+        <span class="mega-title">Gutter Cleaning</span>
+        <span class="mega-desc">Prevent clogs and water damage with thorough gutter maintenance.</span>
+    </a>
+
+    <a href="/services/winter-prep/" class="mega-item">
+        <span class="mega-title">Winter Prep</span>
+        <span class="mega-desc">Protect your property with pre-winter services for lawns and landscaping.</span>
+    </a>
+
+    <a href="/services/fall-lawn-treatment/" class="mega-item">
+        <span class="mega-title">Fall Lawn Treatment</span>
+        <span class="mega-desc">Fertilization and soil care to ensure a strong lawn next spring.</span>
+    </a>
+
+    <a href="/services/fall/" class="mega-item view all">
+        <span class="mega-title">VIEW ALL</span>
+    </a>
+</div>
+
+<!-- WINTER -->
+<div class="mega-column">
+    <h4>WINTER</h4>
+
+    <a href="/services/snow-removal/" class="mega-item">
+        <span class="mega-title">Snow Removal</span>
+        <span class="mega-desc">Reliable plowing for driveways, walkways, and parking areas.</span>
+    </a>
+
+    <a href="/services/salting-services/" class="mega-item">
+        <span class="mega-title">Salting Services</span>
+        <span class="mega-desc">Commercial-grade salt application to reduce slip hazards.</span>
+    </a>
+
+    <a href="/services/emergency-plowing/" class="mega-item">
+        <span class="mega-title">Emergency Plowing</span>
+        <span class="mega-desc">Fast response for heavy storms or unexpected snow events.</span>
+    </a>
+
+    <a href="/services/ice-management/" class="mega-item">
+        <span class="mega-title">Ice Management</span>
+        <span class="mega-desc">Proactive measures to prevent ice buildup and enhance safety.</span>
+    </a>
+
+    <a href="/services/winter-property-care/" class="mega-item">
+        <span class="mega-title">Winter Property Care</span>
+        <span class="mega-desc">Full winter maintenance to keep your property accessible and safe.</span>
+    </a>
+
+    <a href="/services/winter/" class="mega-item view all">
+        <span class="mega-title">VIEW ALL</span>
+    </a>
+</div>
+
+                    </div>
+                </div>
+            </div>
+
+            <a href="/faq/">FAQ</a>
+            <a href="/support/">Support</a>
+        </nav>
+
+    </div>
+</header>
+
+<section class="hero" style="padding: 140px 8%; text-align: center; background: var(--white); color: var(--dark); min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <h1 style="font-size: 120px; color: var(--orange); margin-bottom: 20px;">404</h1>
+    <h2 style="font-size: 36px; margin-bottom: 15px;">Page Not Found</h2>
+    <p style="font-size: 18px; color: #555; margin-bottom: 30px;">Sorry, the page you are looking for does not exist.</p>
+    <a href="/" class="btn" style="background: var(--orange); color: var(--white); padding: 15px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: 0.3s;">Go Back Home</a>
+</section>
+
+<footer>
+    <div class="footer-grid">
+
+        <div class="footer-column">
+            <h4>BWD Services</h4>
+            <p>Professional year-round property services built for Michigan weather.</p>
+        </div>
+
+        <div class="footer-column">
+            <h4>Services</h4>
+            <a href="#">Spring & Summer</a>
+            <a href="#">Fall Services</a>
+            <a href="#">Winter Services</a>
+        </div>
+
+        <div class="footer-column">
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Gallery</a>
+            <a href="#">Contact</a>
+        </div>
+
+        <div class="footer-column">
+            <h4>Contact</h4>
+            <a href="tel:+19203709852">+1 920-370-9852</a>
+            <a href="#">www.getbwd.com</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 BWD Services | Bros Who Do. All Rights Reserved.
+    </div>
+</footer>
+
+</body>
+</html>
