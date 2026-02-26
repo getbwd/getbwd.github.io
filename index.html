@@ -50,7 +50,8 @@ nav a.active::after {
 /* ===== HEADER ===== */
 
 header {
-    background: var(--dark);
+    background: var(--white);
+    border-bottom: 1px solid var(--light-gray);
     position: relative;
     z-index: 5000;
         margin-top: 0;
@@ -87,7 +88,7 @@ header {
 
 .main-nav > a,
 .services-link {
-    color: var(--white);
+    color: var(--dark);
     text-decoration: none;
     font-weight: 600;
     transition: 0.2s;
@@ -234,98 +235,6 @@ header {
 .announcement-bar a:hover {
     text-decoration: underline;
 }
-
-
-/* ===== TOP BAR (SEGMENTED STYLE) ===== */
-
-/* ===== TOP BAR ===== */
-
-/* ===== TOP BAR ===== */
-
-.top-bar {
-    background: #1c1c1c;
-    border-top: 2px solid var(--orange);
-    border-bottom: 2px solid var(--orange);
-    font-size: 13px;
-}
-
-.top-bar .header-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* ===== LEFT NAV TABS ===== */
-
-.top-left {
-    display: flex;
-    align-items: stretch;
-}
-
-/* Individual tabs */
-.top-left a {
-    position: relative;
-    padding: 10px 20px;
-    text-decoration: none;
-    color: #bbb;
-    font-weight: 600;
-    transition: 0.25s ease;
-    border-right: 1px solid #2a2a2a; /* divider */
-}
-
-/* Left border for first tab */
-.top-left a:first-child {
-    border-left: 1px solid #2a2a2a;
-}
-
-/* Hover effect (underline bar like TruGreen) */
-.top-left a:hover {
-    color: #fff;
-}
-
-.top-left a:hover::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--orange);
-}
-
-/* Active tab (solid orange background) */
-.top-left a.active {
-    background: var(--orange);
-    color: #fff;
-    border-right: none;
-}
-
-.top-left a.active::after {
-    display: none; /* prevent underline on active */
-}
-
-/* ===== RIGHT SIDE ===== */
-
-.top-right {
-    display: flex;
-    align-items: center;
-}
-
-/* Login Button */
-.login-btn {
-    background: var(--orange);
-    color: #fff;
-    padding: 8px 40px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.25s ease;
-}
-
-.login-btn:hover {
-    background: #e55a00;
-}
-
 
 /* ===== WHY BWD SECTION ===== */
 
@@ -519,19 +428,6 @@ footer {
 <div class="announcement-bar">
     Save time and unlock exclusive online pricing — 
     Start your plan today.
-</div>
-
-<div class="top-bar">
-    <div class="container header-inner">
-        <div class="top-left">
-            <a href="/residential/" class="active">Residential</a>
-            <a href="/commercial/">Commercial</a>
-            <a href="/careers/">Careers</a>
-        </div>
-        <div class="top-right">
-            <a href="/login/" class="login-btn">Log In</a>
-        </div>
-    </div>
 </div>
 
 <header>
