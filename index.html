@@ -433,43 +433,91 @@ footer {
 .hamburger {
     display: none;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
     cursor: pointer;
+    z-index: 6000;
 }
 
 .hamburger span {
-    width: 25px;
+    width: 26px;
     height: 3px;
     background: var(--dark);
     border-radius: 2px;
+    transition: 0.3s ease;
 }
 
+/* Animate into X */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translateY(9px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-9px);
+}
+    
 /* Mobile Styles */
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
 
     .hamburger {
         display: flex;
     }
 
-    .main-nav {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: var(--white);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px 8%;
-        gap: 20px;
-        border-top: 1px solid var(--light-gray);
+.mega-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background: var(--white);
+    padding: 100px 8% 40px 8%;
+    overflow-y: auto;
+    transition: 0.3s ease;
+}
 
-        display: none;
-    }
+.mega-menu.active {
+    display: block;
+    right: 0;
+}
 
-    .main-nav.active {
-        display: flex;
-    }
+.mobile-back {
+    font-weight: 500;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+    
+.main-nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 100%;
+    background: var(--white);
+    flex-direction: column;
+    padding: 100px 8% 40px 8%;
+    gap: 25px;
+    transition: 0.3s ease;
+    display: flex;
+}
 
+.main-nav.active {
+    right: 0;
+}
+
+.main-nav a {
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.main-nav a.active {
+    color: var(--orange);
+    font-weight: 500;
+}
+    
     .dropdown .mega-menu {
         position: static;
         width: 100%;
@@ -487,6 +535,10 @@ footer {
         gap: 30px;
     }
 
+    nav a.active::after {
+    display: none;
+}
+    
     .dropdown:hover .mega-menu {
         opacity: 1;
         visibility: visible;
@@ -519,9 +571,12 @@ footer {
             <a href="/about/">About</a>
 
             <div class="dropdown">
-                <a href="/services/" class="services-link">Services</a>
+                <a href="#" class="services-link mobile-services">
+    Services <span class="arrow">›</span>
+</a>
 
                 <div class="mega-menu">
+                    <div class="mobile-back">← Back</div>
                     <div class="mega-inner">
 
 <!-- SPRING & SUMMER -->
@@ -742,14 +797,30 @@ footer {
         © 2026 BWD Services | Bros Who Do. All Rights Reserved.
     </div>
 </footer>
-    <script>
+<script>
 const hamburger = document.getElementById("hamburger");
 const nav = document.querySelector(".main-nav");
+const servicesBtn = document.querySelector(".mobile-services");
+const megaMenu = document.querySelector(".mega-menu");
+const backBtn = document.querySelector(".mobile-back");
 
 hamburger.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
     nav.classList.toggle("active");
 });
-</script>
 
+servicesBtn.addEventListener("click", (e) => {
+    if (window.innerWidth <= 1200) {
+        e.preventDefault();
+        nav.classList.remove("active");
+        megaMenu.classList.add("active");
+    }
+});
+
+backBtn.addEventListener("click", () => {
+    megaMenu.classList.remove("active");
+    nav.classList.add("active");
+});
+</script>
 </body>
 </html>
