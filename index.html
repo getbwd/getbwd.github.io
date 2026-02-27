@@ -90,6 +90,7 @@ header {
 .logo {
     display: flex;
     align-items: center;
+    padding-left: 20px; /* adjust to taste */
 }
 
 /* NAV */
@@ -438,14 +439,15 @@ footer {
 .hamburger {
     display: none;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px; /* slightly tighter */
     cursor: pointer;
     z-index: 6000;
+    padding-right: 28px; /* slightly more than logo padding */
 }
 
 .hamburger span {
-    width: 26px;
-    height: 3px;
+    width: 22px;   /* was 26px */
+    height: 2px;   /* was 3px */
     background: var(--dark);
     border-radius: 2px;
     transition: 0.3s ease;
@@ -453,7 +455,7 @@ footer {
 
 /* Animate into X */
 .hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translateY(9px);
+    transform: rotate(45deg) translateY(6px);
 }
 
 .hamburger.active span:nth-child(2) {
@@ -461,23 +463,29 @@ footer {
 }
 
 .hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-9px);
+    transform: rotate(-45deg) translateY(-6px);
 }
     
 /* Mobile Styles */
 /* ===== MOBILE STYLES ===== */
 @media (max-width: 1200px) {
 
-  .mobile-services {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.mobile-services {
+    display: block;
     width: 100%;
     text-align: left;
 }
 
+.main-nav {
+    align-items: flex-start;
+}
+
 .mobile-services .arrow {
     font-size: 22px;
+}
+
+    .mobile-services .arrow {
+    display: none;
 }
     
   /* HAMBURGER */
@@ -613,9 +621,11 @@ footer {
 <header>
     <div class="container header-inner">
 
-        <div class="logo">
-            <img src="/images/nav.png" alt="BWD Logo">
-        </div>
+<div class="logo">
+    <a href="/">
+        <img src="/images/nav.png" alt="BWD Logo">
+    </a>
+</div>
         
         <div class="hamburger" id="hamburger">
             <span></span>
@@ -628,9 +638,8 @@ footer {
 
             <div class="dropdown">
                 <a href="#" class="services-link mobile-services">
-    Services <span class="arrow">›</span>
+    Services
 </a>
-
                 <div class="mega-menu">
                     <div class="mobile-back">← Back</div>
                     <div class="mega-inner">
