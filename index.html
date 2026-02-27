@@ -443,22 +443,33 @@ footer {
 /* ===== MOBILE NAV ===== */
 
 .hamburger {
-    display: block;
-    font-size: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* vertically centers with logo */
+    width: 40px;          /* adjust as needed */
+    height: 40px;
     cursor: pointer;
     z-index: 10002;
-    padding: 0; /* remove extra padding */
-    line-height: 1; /* prevents extra vertical space */
-    display: flex;
-    align-items: center; /* vertically center X with logo */
 }
 
 .hamburger span {
-    width: 22px;   /* was 26px */
-    height: 2px;   /* was 3px */
+    display: block;
+    width: 26px;
+    height: 3px;
     background: var(--dark);
+    margin: 4px 0;
     border-radius: 2px;
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+/* When active, transform into X */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+    transform: rotate(-45deg) translate(5px, -5px);
 }
 
 .hamburger .icon {
@@ -507,24 +518,6 @@ footer {
     display: none;
 }
     
-.hamburger {
-    display: block;
-    font-size: 26px;
-    cursor: pointer;
-    z-index: 10002;
-    padding: 0; /* remove extra padding */
-    line-height: 1; /* prevents extra vertical space */
-    display: flex;
-    align-items: center; /* vertically center X with logo */
-}
-    
-  .hamburger span {
-    width: 26px;
-    height: 3px;
-    background: var(--dark);
-    border-radius: 2px;
-    transition: 0.3s ease;
-  }
 
   /* FULL-SCREEN MOBILE NAV */
     .main-nav {
@@ -685,7 +678,8 @@ footer {
 </div>
         
 <div class="hamburger" id="hamburger">
-    &#9776;
+    <span></span>
+    <span></span>
 </div>
         
         <nav class="main-nav">
@@ -944,14 +938,12 @@ function closeAll() {
 }
 
 hamburger.addEventListener("click", () => {
-
     if (nav.classList.contains("active")) {
         closeAll();
-        hamburger.innerHTML = "&#9776;"; // hamburger
     } else {
         nav.classList.add("active");
         document.body.classList.add("no-scroll");
-        hamburger.innerHTML = "&#10005;"; // X
+        hamburger.classList.add("active");
     }
 });
 
