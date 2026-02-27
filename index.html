@@ -444,13 +444,14 @@ footer {
 
 .hamburger {
     display: flex;
-    align-items: center; /* vertically centers with logo */
-    justify-content: center; /* centers inside box if needed */
+    align-items: center; /* vertical center for both image and X */
+    justify-content: center;
     cursor: pointer;
     z-index: 10002;
-    height: 60px; /* same as logo height */
-    width: 60px;  /* adjust if needed */
-    font-size: 28px; /* for the X character */
+    height: 60px;   /* same as logo */
+    width: 60px;    /* adjust if needed */
+    font-size: 32px; /* size of the X */
+    line-height: 1;  /* ensures X aligns properly vertically */
 }
 
 .hamburger img {
@@ -921,7 +922,8 @@ hamburger.addEventListener("click", () => {
     } else {
         nav.classList.add("active");
         document.body.classList.add("no-scroll");
-        hamburger.innerHTML = `&#10005;`; // plain X
+        // Wrap the X in a div so flex alignment works perfectly
+        hamburger.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;">&#10005;</div>`;
     }
 });
 
