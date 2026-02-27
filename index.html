@@ -444,39 +444,20 @@ footer {
 
 .hamburger {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center; /* vertically centers with logo */
-    width: 40px;          /* adjust as needed */
-    height: 40px;
+    justify-content: center; /* centers inside box if needed */
     cursor: pointer;
     z-index: 10002;
+    height: 60px; /* same as logo height */
+    width: 60px;  /* adjust if needed */
+    font-size: 28px; /* for the X character */
 }
 
-.hamburger span {
+.hamburger img {
     display: block;
-    width: 26px;
-    height: 3px;
-    background: var(--dark);
-    margin: 4px 0;
-    border-radius: 2px;
-    transition: all 0.3s ease;
+    height: 40px; /* adjust to match logo visually */
+    width: auto;
 }
-
-/* When active, transform into X */
-.hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.active span:nth-child(2) {
-    transform: rotate(-45deg) translate(5px, -5px);
-}
-
-.hamburger .icon {
-    color: var(--dark);
-    transition: 0.2s ease;
-}
-
     
 .mobile-menu-top {
     display: none;
@@ -676,10 +657,8 @@ footer {
         <img src="/images/nav.png" alt="BWD Logo">
     </a>
 </div>
-        
-<div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
+        <div class="hamburger" id="hamburger">
+    <img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">
 </div>
         
         <nav class="main-nav">
@@ -923,15 +902,14 @@ footer {
         © 2026 BWD Services | Bros Who Do. All Rights Reserved.
     </div>
 </footer>
-<script>
-const hamburger = document.getElementById("hamburger");
+<script>const hamburger = document.getElementById("hamburger");
 const nav = document.querySelector(".main-nav");
 const servicesBtn = document.querySelector(".mobile-services");
 const megaMenu = document.querySelector(".mega-menu");
 const backBtn = document.querySelector(".mobile-back");
 
 function closeAll() {
-    hamburger.classList.remove("active");
+    hamburger.innerHTML = `<img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">`;
     nav.classList.remove("active");
     megaMenu.classList.remove("active");
     document.body.classList.remove("no-scroll");
@@ -943,7 +921,7 @@ hamburger.addEventListener("click", () => {
     } else {
         nav.classList.add("active");
         document.body.classList.add("no-scroll");
-        hamburger.classList.add("active");
+        hamburger.innerHTML = `&#10005;`; // plain X
     }
 });
 
