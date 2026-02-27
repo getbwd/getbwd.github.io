@@ -507,7 +507,7 @@ footer {
     width: 100%;
     background: var(--white);
     flex-direction: column;
-    padding: 100px 8% 40px 8%;
+    padding: 100px 20px 40px 20px;
     gap: 25px;
     transition: 0.3s ease;
     display: flex;
@@ -858,14 +858,12 @@ hamburger.addEventListener("click", () => {
 servicesBtn.addEventListener("click", (e) => {
     if (window.innerWidth <= 1200) {
         e.preventDefault();
-        nav.classList.remove("active");
         megaMenu.classList.add("active");
     }
 });
 
 backBtn.addEventListener("click", () => {
     megaMenu.classList.remove("active");
-    nav.classList.add("active");
 });
 </script>
 </body>
