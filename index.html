@@ -469,7 +469,7 @@ footer {
 .mega-menu {
     display: none;
     position: fixed;
-    top: 0;
+    top: 72px;
     right: -100%;
     width: 100%;
     height: 100vh;
@@ -492,9 +492,9 @@ footer {
     
 .main-nav {
     position: fixed;
-    top: 0;
+    top: 72px;                 /* below header */
     right: -100%;
-    height: 100vh;
+    height: calc(100vh - 72px);
     width: 100%;
     background: var(--white);
     flex-direction: column;
@@ -504,6 +504,13 @@ footer {
     display: flex;
 }
 
+.main-nav,
+.main-nav a,
+.mega-menu,
+.mega-menu * {
+    text-align: left !important;
+} 
+    
 .main-nav.active {
     right: 0;
 }
@@ -530,10 +537,26 @@ footer {
         transform: none;
     }
 
-    .mega-inner {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
+.mega-inner {
+    display: block;
+}
+
+.mega-column {
+    margin-bottom: 40px;
+}
+
+.mega-column h4 {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.mega-item {
+    padding: 10px 0;
+}
+
+.mega-title {
+    font-size: 18px;
+}
 
     nav a.active::after {
     display: none;
@@ -804,9 +827,23 @@ const servicesBtn = document.querySelector(".mobile-services");
 const megaMenu = document.querySelector(".mega-menu");
 const backBtn = document.querySelector(".mobile-back");
 
+function closeAll() {
+    hamburger.classList.remove("active");
+    nav.classList.remove("active");
+    megaMenu.classList.remove("active");
+    document.body.classList.remove("no-scroll");
+}
+
 hamburger.addEventListener("click", () => {
+
+    if (megaMenu.classList.contains("active")) {
+        closeAll();
+        return;
+    }
+
     hamburger.classList.toggle("active");
     nav.classList.toggle("active");
+    document.body.classList.toggle("no-scroll");
 });
 
 servicesBtn.addEventListener("click", (e) => {
