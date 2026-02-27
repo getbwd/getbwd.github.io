@@ -441,25 +441,51 @@ footer {
     color: #e55a00 !important;  /* slightly darker on hover */
 }
 /* ===== MOBILE NAV ===== */
-
+/* Hamburger (menu icon) stays where it was in navbar */
 .hamburger {
     display: flex;
-    align-items: center; /* vertical center for both image and X */
+    align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10002;
     height: 60px;   /* same as logo */
-    width: 60px;    /* adjust if needed */
-    font-size: 32px; /* size of the X */
-    line-height: 1;  /* ensures X aligns properly vertically */
+    width: 60px;
 }
 
 .hamburger img {
     display: block;
-    height: 40px; /* adjust to match logo visually */
+    height: 40px; /* adjust visually to match logo */
     width: auto;
 }
 
+/* X (close icon) */
+.hamburger-x {
+    display: none; /* hidden by default */
+    position: absolute; /* overlay on hamburger spot */
+    top: 50%;         /* vertically center with logo */
+    right: 20px;      /* same horizontal space as hamburger */
+    transform: translateY(-50%);
+    z-index: 10003;
+    cursor: pointer;
+}
+
+.hamburger-x img {
+    display: block;
+    height: 40px;  /* match hamburger size */
+    width: auto;
+}
+
+/* Show X when menu is open */
+header.menu-open .hamburger {
+    display: none;
+}
+
+header.menu-open .hamburger-x {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+    
 .hamburger-wrapper {
     display: flex;
     align-items: center; /* vertical align */
@@ -467,32 +493,6 @@ footer {
     position: relative; /* for absolute child if needed */
     width: 60px; /* same as hamburger */
     height: 60px; /* same as hamburger */
-}
-
-.hamburger, .hamburger-x {
-    top: 48%; /* tweak until it matches your logo */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-}
-
-.hamburger-x {
-    display: none; /* hide by default */
-}
-
-header.menu-open .hamburger img {
-    display: none;
-}
-    
-header.menu-open .hamburger-x {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Hide original hamburger icon when menu is open */
-header.menu-open .hamburger img {
-    display: none;
 }
     
 .mobile-menu-top {
@@ -697,7 +697,9 @@ header.menu-open .hamburger img {
     <div class="hamburger" id="hamburger">
         <img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">
     </div>
-    <div class="hamburger-x">&#10005;</div>
+    <div class="hamburger-x">
+    <img src="/images/close.png" alt="Close Menu">
+</div>
 </div>
         <nav class="main-nav">
             <div class="mobile-menu-top">
