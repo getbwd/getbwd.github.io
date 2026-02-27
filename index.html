@@ -438,11 +438,11 @@ footer {
 
 .hamburger {
     display: none;
-    flex-direction: column;
-    gap: 5px; /* slightly tighter */
+    font-size: 26px;
     cursor: pointer;
-    z-index: 6000;
-    padding-right: 28px; /* slightly more than logo padding */
+    z-index: 10002;
+    padding-right: 28px;
+    font-weight: 500;
 }
 
 .hamburger span {
@@ -453,22 +453,32 @@ footer {
     transition: 0.3s ease;
 }
 
-/* Animate into X */
-.hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translateY(6px);
+.hamburger .icon {
+    color: var(--dark);
+    transition: 0.2s ease;
 }
 
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-6px);
-}
     
-/* Mobile Styles */
-/* ===== MOBILE STYLES ===== */
+.mobile-menu-top {
+    display: none;
+}
+
 @media (max-width: 1200px) {
+
+  .mobile-menu-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+  }
+
+  .mobile-menu-top img {
+      height: 45px;
+  }
+
+  .main-nav {
+      padding-top: 30px;
+  }
 
 .mobile-services {
     display: block;
@@ -488,33 +498,21 @@ footer {
     display: none;
 }
     
-  /* HAMBURGER */
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.hamburger {
+    display: block;
+    font-size: 26px;
     cursor: pointer;
-    z-index: 10001; /* above everything */
-  }
-
+    z-index: 10002;
+    padding-right: 28px;
+    font-weight: 500;
+}
+    
   .hamburger span {
     width: 26px;
     height: 3px;
     background: var(--dark);
     border-radius: 2px;
     transition: 0.3s ease;
-  }
-
-  .hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translateY(9px);
-  }
-
-  .hamburger.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-9px);
   }
 
   /* FULL-SCREEN MOBILE NAV */
@@ -609,6 +607,45 @@ footer {
     display: none;
   }
 }
+
+.mobile-divider {
+    border: none;
+    border-top: 1px solid #e5e5e5;
+    margin: 20px 0;
+}
+    .mobile-login {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    text-align: center;
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.mobile-quote {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    text-align: center;
+    background: var(--orange);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.switch-commercial {
+    font-size: 14px;
+    color: #888;
+    margin-top: 10px;
+    cursor: pointer;
+}
+    
 </style>
 </head>
 
@@ -627,11 +664,14 @@ footer {
     </a>
 </div>
         
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+<div class="hamburger" id="hamburger">
+    &#9776;
+</div>
+        
+<div class="mobile-menu-top">
+    <img src="/images/nav.png" alt="BWD Logo">
+</div>
+        
         <nav class="main-nav">
             <a href="/" class="active">Home</a>
             <a href="/about/">About</a>
@@ -752,6 +792,14 @@ footer {
 
             <a href="/faq/">FAQ</a>
             <a href="/support/">Support</a>
+            <hr class="mobile-divider">
+            <a href="#" class="mobile-login">Log In</a>
+<a href="#" class="mobile-quote">Get a Quote</a>
+            <hr class="mobile-divider">
+
+<p class="switch-commercial">
+    Switch to <strong>Commercial</strong>
+</p>
         </nav>
 
     </div>
@@ -878,14 +926,14 @@ function closeAll() {
 
 hamburger.addEventListener("click", () => {
 
-    if (megaMenu.classList.contains("active")) {
+    if (nav.classList.contains("active")) {
         closeAll();
-        return;
+        hamburger.innerHTML = "&#9776;"; // hamburger
+    } else {
+        nav.classList.add("active");
+        document.body.classList.add("no-scroll");
+        hamburger.innerHTML = "&#10005;"; // X
     }
-
-    hamburger.classList.toggle("active");
-    nav.classList.toggle("active");
-    document.body.classList.toggle("no-scroll");
 });
 
 servicesBtn.addEventListener("click", (e) => {
