@@ -418,15 +418,16 @@ footer {
     margin-top: 10px;
 }
 
+/* VIEW ALL Styling */
 .mega-item.view-all .mega-title {
-    color: var(--orange) !important;  /* force orange */
+    color: var(--orange) !important;  
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
 
 .mega-item.view-all:hover .mega-title {
-    color: #e55a00 !important;  /* slightly darker on hover */
+    color: #e55a00 !important;  
 }
 /* ===== MOBILE NAV ===== */
 
@@ -458,7 +459,11 @@ footer {
 .hamburger.active span:nth-child(3) {
     transform: rotate(-45deg) translateY(-9px);
 }
-    
+/* Prevent body scroll when mobile menu is open */
+.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
 /* Mobile Styles */
 /* ===== MOBILE STYLES ===== */
 @media (max-width: 1200px) {
@@ -483,11 +488,9 @@ footer {
     .hamburger.active span:nth-child(1) {
         transform: rotate(45deg) translateY(9px);
     }
-
     .hamburger.active span:nth-child(2) {
         opacity: 0;
     }
-
     .hamburger.active span:nth-child(3) {
         transform: rotate(-45deg) translateY(-9px);
     }
@@ -525,26 +528,33 @@ footer {
         font-weight: 500;
     }
 
-    /* Full-screen mega menu inside mobile nav */
+    /* Remove underline bar for active nav in mobile */
+    nav a.active::after {
+        display: none;
+    }
+
+    /* ===== MOBILE MEGA MENU ===== */
     .dropdown .mega-menu {
-        position: relative;
+        position: relative !important;
         width: 100%;
         margin: 0;
         padding: 0;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
         box-shadow: none;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
+        max-height: calc(100vh - 120px); /* fits in viewport */
+        overflow-y: auto;
     }
 
     .mega-inner {
         display: block;
-        padding: 0;
+        padding: 20px;
         margin: 0;
     }
 
     .mega-column {
-        margin-bottom: 40px;
+        margin-bottom: 30px;
     }
 
     .mega-column h4 {
@@ -564,17 +574,9 @@ footer {
         font-weight: 500;
         margin-bottom: 30px;
         cursor: pointer;
+        display: block;
+        padding-left: 5px;
     }
-
-    /* Remove underline bar for active nav in mobile */
-    nav a.active::after {
-        display: none;
-    }
-}
-
-/* Disable background scroll when menu is open */
-body.no-scroll {
-    overflow: hidden;
 }
 </style>
 </head>
@@ -835,34 +837,48 @@ const servicesBtn = document.querySelector(".mobile-services");
 const megaMenu = document.querySelector(".mega-menu");
 const backBtn = document.querySelector(".mobile-back");
 
-function closeAll() {
+function openMenu() {
+    hamburger.classList.add("active");
+    nav.classList.add("active");
+    megaMenu.classList.add("active");
+    document.body.classList.add("no-scroll");
+}
+
+function closeMenu() {
     hamburger.classList.remove("active");
     nav.classList.remove("active");
     megaMenu.classList.remove("active");
     document.body.classList.remove("no-scroll");
 }
 
+// Hamburger toggle
 hamburger.addEventListener("click", () => {
-
     if (megaMenu.classList.contains("active")) {
-        closeAll();
+        closeMenu();
         return;
     }
-
     hamburger.classList.toggle("active");
     nav.classList.toggle("active");
     document.body.classList.toggle("no-scroll");
 });
 
+// Open mobile mega menu
 servicesBtn.addEventListener("click", (e) => {
     if (window.innerWidth <= 1200) {
         e.preventDefault();
         megaMenu.classList.add("active");
+        nav.classList.add("active");
+        hamburger.classList.add("active");
+        document.body.classList.add("no-scroll");
     }
 });
 
+// Back button inside mobile mega menu
 backBtn.addEventListener("click", () => {
     megaMenu.classList.remove("active");
+    nav.classList.remove("active");
+    hamburger.classList.remove("active");
+    document.body.classList.remove("no-scroll");
 });
 </script>
 </body>
