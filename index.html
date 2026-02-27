@@ -512,8 +512,10 @@ footer {
     font-size: 26px;
     cursor: pointer;
     z-index: 10002;
-    padding-right: 28px;
-    font-weight: 500;
+    padding: 0; /* remove extra padding */
+    line-height: 1; /* prevents extra vertical space */
+    display: flex;
+    align-items: center; /* vertically center X with logo */
 }
     
   .hamburger span {
