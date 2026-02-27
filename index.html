@@ -460,22 +460,30 @@ footer {
     width: auto;
 }
 
-/* Hamburger X positioning */
-/* X button styling, absolutely positioned with header */
-/* X button styling, higher than center */
-.hamburger-x {
-    position: absolute;
-    top: 7px; /* move it higher; adjust between 20%-30% as needed */
-    transform: translateY(-50%);
-    right: 20px; /* distance from right edge */
-    font-size: 32px;
-    cursor: pointer;
-    z-index: 10003;
-    display: none;
-    color: var(--dark);
+.hamburger-wrapper {
+    display: flex;
+    align-items: center; /* vertical align */
+    justify-content: center; /* optional, or space-between */
+    position: relative; /* for absolute child if needed */
+    width: 60px; /* same as hamburger */
+    height: 60px; /* same as hamburger */
 }
 
-/* Show X when nav is active */
+.hamburger, .hamburger-x {
+    top: 48%; /* tweak until it matches your logo */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.hamburger-x {
+    display: none; /* hide by default */
+}
+
+header.menu-open .hamburger img {
+    display: none;
+}
+    
 header.menu-open .hamburger-x {
     display: flex;
     align-items: center;
@@ -685,11 +693,12 @@ header.menu-open .hamburger img {
         <img src="/images/nav.png" alt="BWD Logo">
     </a>
 </div>
-<div class="hamburger" id="hamburger">
-    <img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">
+<div class="hamburger-wrapper">
+    <div class="hamburger" id="hamburger">
+        <img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">
+    </div>
+    <div class="hamburger-x">&#10005;</div>
 </div>
-<div class="hamburger-x">&#10005;</div>
-        
         <nav class="main-nav">
             <div class="mobile-menu-top">
     <img src="/images/nav.png" alt="BWD Logo">
@@ -734,7 +743,7 @@ header.menu-open .hamburger img {
         <span class="mega-desc">Promote healthy growth with targeted lawn care treatments.</span>
     </a>
 
-    <a href="/services/spring-summer/" class="mega-item view all">
+    <a href="/services/spring-summer/" class="mega-item view-all">
         <span class="mega-title">VIEW ALL</span>
     </a>
 </div>
