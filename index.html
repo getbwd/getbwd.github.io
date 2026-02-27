@@ -459,6 +459,33 @@ footer {
     height: 40px; /* adjust to match logo visually */
     width: auto;
 }
+
+/* Hamburger X positioning */
+/* X button styling, absolutely positioned with header */
+/* X button styling, higher than center */
+.hamburger-x {
+    position: absolute;
+    top: 1px; /* move it higher; adjust between 20%-30% as needed */
+    transform: translateY(-50%);
+    right: 20px; /* distance from right edge */
+    font-size: 32px;
+    cursor: pointer;
+    z-index: 10003;
+    display: none;
+    color: var(--dark);
+}
+
+/* Show X when nav is active */
+header.menu-open .hamburger-x {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hide original hamburger icon when menu is open */
+header.menu-open .hamburger img {
+    display: none;
+}
     
 .mobile-menu-top {
     display: none;
@@ -658,9 +685,10 @@ footer {
         <img src="/images/nav.png" alt="BWD Logo">
     </a>
 </div>
-        <div class="hamburger" id="hamburger">
+<div class="hamburger" id="hamburger">
     <img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">
 </div>
+<div class="hamburger-x">&#10005;</div>
         
         <nav class="main-nav">
             <div class="mobile-menu-top">
@@ -903,28 +931,30 @@ footer {
         © 2026 BWD Services | Bros Who Do. All Rights Reserved.
     </div>
 </footer>
-<script>const hamburger = document.getElementById("hamburger");
+<script>
+const hamburger = document.getElementById("hamburger");
 const nav = document.querySelector(".main-nav");
 const servicesBtn = document.querySelector(".mobile-services");
 const megaMenu = document.querySelector(".mega-menu");
 const backBtn = document.querySelector(".mobile-back");
+const xBtn = document.querySelector(".hamburger-x");
+const header = document.querySelector("header");
 
 function closeAll() {
-    hamburger.innerHTML = `<img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">`;
     nav.classList.remove("active");
     megaMenu.classList.remove("active");
     document.body.classList.remove("no-scroll");
+    header.classList.remove("menu-open");
 }
 
 hamburger.addEventListener("click", () => {
-    if (nav.classList.contains("active")) {
-        closeAll();
-    } else {
-        nav.classList.add("active");
-        document.body.classList.add("no-scroll");
-        // Wrap the X in a div so flex alignment works perfectly
-        hamburger.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;">&#10005;</div>`;
-    }
+    nav.classList.add("active");
+    document.body.classList.add("no-scroll");
+    header.classList.add("menu-open");
+});
+
+xBtn.addEventListener("click", () => {
+    closeAll();
 });
 
 servicesBtn.addEventListener("click", (e) => {
