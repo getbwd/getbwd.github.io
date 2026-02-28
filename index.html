@@ -512,6 +512,94 @@ header {
     }
 }
 
+/* ===== SERVICE AREA SECTION ===== */
+
+.service-area-section {
+    padding: 120px 8%;
+    background: var(--white);
+}
+
+.service-area-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 80px;
+    align-items: flex-start;
+}
+
+/* LEFT SIDE */
+
+.service-area-left {
+    flex: 1.2;
+}
+
+.service-area-left h2 {
+    font-size: 42px;
+    color: var(--orange);
+    margin-bottom: 20px;
+}
+
+.service-area-left p {
+    font-size: 17px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.service-badge {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid var(--orange);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--orange);
+}
+
+/* RIGHT SIDE */
+
+.service-area-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.area-card {
+    background: var(--gray);
+    padding: 35px;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    transition: 0.3s ease;
+    border: 1px solid var(--orange);
+}
+
+.area-card h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: var(--orange)
+}
+
+.area-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.area-card li {
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #444;
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+    .service-area-container {
+        flex-direction: column;
+        gap: 60px;
+    }
+}
+
 /* ===== ANNOUNCEMENT BANNER ===== */
 
 .announcement-bar {
@@ -1133,7 +1221,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
         <span class="mega-desc">Fertilization and soil care to ensure a strong lawn next spring.</span>
     </a>
 
-    <a href="/services/fall/" class="mega-item view all">
+    <a href="/services/fall/" class="mega-item view-all">
         <span class="mega-title">VIEW ALL</span>
     </a>
 </div>
@@ -1167,7 +1255,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
         <span class="mega-desc">Full winter maintenance to keep your property accessible and safe.</span>
     </a>
 
-    <a href="/services/winter/" class="mega-item view all">
+    <a href="/services/winter/" class="mega-item view-all">
         <span class="mega-title">VIEW ALL</span>
     </a>
 </div>
@@ -1344,6 +1432,37 @@ header.menu-open .mobile-menu-top .hamburger-x {
     </div>
 </section>
 
+<section class="service-area-section">
+    <div class="service-area-container">
+
+        <div class="service-area-left">
+            <h2>Proudly Serving Genesee County</h2>
+            <p>
+                BWD provides year-round property services across Genesee County and surrounding areas. 
+                From summer lawn care to fall cleanups and winter snow removal, we’re built for Michigan weather.
+            </p>
+
+            <div class="service-badge">
+                Local. Reliable. 365 Days a Year.
+            </div>
+        </div>
+
+        <div class="service-area-right">
+
+            <div class="area-card">
+                <h3>Primary Service Areas</h3>
+                <ul>
+                    <li>Flint</li>
+                    <li>Grand Blanc</li>
+                    <li>Fenton</li>
+                    <li>Burton</li>
+                    <li>Swartz Creek</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</section>
     
 <footer>
     <div class="footer-grid">
