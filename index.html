@@ -494,20 +494,23 @@ header.menu-open .hamburger {
     width: 60px; /* same as hamburger */
     height: 60px; /* same as hamburger */
 }
-/* Hide desktop login on mobile */
-.desktop-login {
-    padding: 10px 18px;
-    background: var(--orange);
-    color: #fff;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s;
+
+.desktop-account {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: var(--dark);
+    transition: 0.2s ease;
 }
 
-.desktop-login:hover {
-    background: #e55a00;
+.desktop-account:hover {
+    background: var(--light-gray);
+    color: var(--orange);
 }
+    
 /* Hide mobile login on desktop */
 .mobile-login {
     display: none;
@@ -528,6 +531,9 @@ header.menu-open .hamburger {
     display: none;
 }    
 @media (max-width: 500px) {
+.desktop-account {
+    display: none;
+}
 .hamburger {
     display: flex;
 }
@@ -537,9 +543,6 @@ header.menu-open .hamburger {
 .main-nav .mobile-divider,
 .main-nav .switch-commercial {
     display: block !important;
-}
-.desktop-login {
-    display: none;
 }
 
 .mobile-login {
@@ -890,7 +893,6 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
             <a href="/faq/">FAQ</a>
             <a href="/support/">Support</a>
-            <a href="/login/" class="desktop-login">Log In</a>
             <hr class="mobile-divider">
             <a href="#" class="mobile-login">Log In</a>
 <a href="#" class="mobile-quote">Get a Quote</a>
@@ -899,6 +901,11 @@ header.menu-open .mobile-menu-top .hamburger-x {
 <p class="switch-commercial">
     Switch to <strong>Commercial</strong>
 </p>
+        <a href="/login/" class="desktop-account">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-4 0-8 2-8 5v3h16v-3c0-3-4-5-8-5z"/>
+    </svg>
+</a>
         </nav>
 
     </div>
