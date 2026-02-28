@@ -458,15 +458,16 @@ footer {
     width: auto;
 }
 
-.hamburger-x {
+.hamburger-x {.hamburger-x {
     display: none;
     width: 60px;
     height: 60px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    position: relative;   /* THIS is the key */
+    z-index: 10002;       /* higher than nav */
 }
-
 .hamburger-x img {
     height: 26px; /* smaller than hamburger */
     width: auto;
