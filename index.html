@@ -458,18 +458,15 @@ footer {
     width: auto;
 }
 
+/* X (close icon) */
 .hamburger-x {
-    position: absolute;
-    top: 50%;
-    right: 0;
+    display: none; /* hidden by default */
+    position: absolute; /* overlay on hamburger spot */
+    top: 50%;         /* vertically center with logo */
+    right: 20px;      /* same horizontal space as hamburger */
     transform: translateY(-50%);
-    height: 60px;
-    width: 60px;
-    display: none;              /* hidden by default */
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
     z-index: 10003;
+    cursor: pointer;
 }
 
 .hamburger-x img {
