@@ -458,15 +458,19 @@ footer {
     width: auto;
 }
 
-.hamburger-x {.hamburger-x {
+.hamburger-x {
     display: none;
     width: 60px;
     height: 60px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    position: relative;   /* THIS is the key */
-    z-index: 10002;       /* higher than nav */
+    position: relative;   /* required so z-index works */
+    z-index: 10002;       /* higher than .main-nav */
+}
+
+header.menu-open .hamburger-x {
+    display: flex;
 }
 .hamburger-x img {
     height: 26px; /* smaller than hamburger */
