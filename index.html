@@ -442,19 +442,19 @@ footer {
 }
 /* ===== MOBILE NAV ===== */
 /* Hamburger (menu icon) stays where it was in navbar */
-.hamburger {
-    display: flex;
+/* X (close icon) */
+.hamburger-x {
+    display: none;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 10002;
-    height: 60px;   /* same as logo */
+    height: 60px;      /* EXACT same as .hamburger */
     width: 60px;
 }
 
-.hamburger img {
+.hamburger-x img {
     display: block;
-    height: 40px; /* adjust visually to match logo */
+    height: 28px;   /* smaller than hamburger */
     width: auto;
 }
 
