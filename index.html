@@ -241,6 +241,98 @@ header {
     font-size: 40px;
     margin-bottom: 20px;
 }
+
+/* ===== REVIEWS SECTION ===== */
+
+.reviews-section {
+    background: var(--white);
+    padding: 100px 8%;
+}
+
+.reviews-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.reviews-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.reviews-header h2 {
+    font-size: 40px;
+    color: var(--orange);
+    margin-bottom: 15px;
+}
+
+.reviews-header p {
+    color: #555;
+    font-size: 18px;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 35px;
+}
+
+.review-card {
+    background: var(--gray);
+    padding: 40px;
+    border-radius: 14px;
+    transition: 0.3s ease;
+    border: 1px solid transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-card:hover {
+    transform: translateY(-8px);
+    border: 1px solid var(--orange);
+}
+
+.review-stars {
+    color: var(--orange);
+    font-size: 30px;
+    letter-spacing: 4px;
+}
+
+.review-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.review-author strong {
+    display: block;
+    font-size: 15px;
+}
+
+.review-author span {
+    font-size: 13px;
+    color: #777;
+}
+
+/* subtle fade-up animation */
+
+.review-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUpReview 0.8s ease forwards;
+}
+
+.review-card:nth-child(1) { animation-delay: 0.2s; }
+.review-card:nth-child(2) { animation-delay: 0.4s; }
+.review-card:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes fadeUpReview {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ===== ANNOUNCEMENT BANNER ===== */
 
 .announcement-bar {
@@ -965,7 +1057,54 @@ header.menu-open .mobile-menu-top .hamburger-x {
     <h2>BWD Guarantee ✔</h2>
     <p>If something isn’t right, we return and make it right, free of charge. No excuses.</p>
 </section>
+<section class="reviews-section">
+    <div class="reviews-container">
 
+        <div class="reviews-header">
+            <h2>Promise Made. Promise Delivered.</h2>
+            <p>We don’t just talk about quality. We prove it every single day.</p>
+        </div>
+
+        <div class="reviews-grid">
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">
+                    “BWD completely transformed our yard. They showed up on time, worked efficiently, and the results were better than we expected. You can tell they care about doing it right.”
+                </p>
+                <div class="review-author">
+                    <strong>Michael R.</strong>
+                    <span>Flint, MI</span>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">
+                    “Best lawn service we’ve used. Professional, affordable, and consistent. They’ve handled everything from mowing to fall cleanup and snow removal.”
+                </p>
+                <div class="review-author">
+                    <strong>Danielle T.</strong>
+                    <span>Grand Blanc, MI</span>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">
+                    “Reliable in every season. From summer maintenance to winter snow removal, they’ve never missed a beat. Highly recommend to anyone in Genesee County.”
+                </p>
+                <div class="review-author">
+                    <strong>Chris M.</strong>
+                    <span>Fenton, MI</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+    
 <footer>
     <div class="footer-grid">
 
