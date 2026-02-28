@@ -501,8 +501,10 @@ header.menu-open .hamburger {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;   /* controls left/right spacing */
-    margin-bottom: 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto 20px auto;
+    padding: 0 8%;   /* EXACT same as .container */
 }
 
 .mobile-menu-top img {
@@ -512,7 +514,7 @@ header.menu-open .hamburger {
 
 .mobile-menu-top .hamburger-x {
     display: none;
-    width: 40px;      /* shrink container */
+    width: 40px;
     height: 40px;
     align-items: center;
     justify-content: center;
@@ -520,7 +522,7 @@ header.menu-open .hamburger {
 }
 
 .mobile-menu-top .hamburger-x img {
-    height: 22px;     /* shrink the actual X */
+    height: 22px;
     width: auto;
 }
 
