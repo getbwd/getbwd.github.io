@@ -485,12 +485,6 @@ header.menu-open {
 header.menu-open .hamburger {
     display: none;
 }
-
-header.menu-open .hamburger-x {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
     
 .hamburger-wrapper {
     display: flex;
@@ -501,23 +495,38 @@ header.menu-open .hamburger-x {
     height: 60px; /* same as hamburger */
 }
     
-.mobile-menu-top {
-    display: none;
-}
-
 @media (max-width: 1200px) {
 
-  .mobile-menu-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-  }
+.mobile-menu-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;   /* controls left/right spacing */
+    margin-bottom: 20px;
+}
 
-  .mobile-menu-top img {
-      height: 60px;
-      width: auto;
-  }
+.mobile-menu-top img {
+    height: 60px;
+    width: auto;
+}
+
+.mobile-menu-top .hamburger-x {
+    display: none;
+    width: 40px;      /* shrink container */
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.mobile-menu-top .hamburger-x img {
+    height: 22px;     /* shrink the actual X */
+    width: auto;
+}
+
+header.menu-open .mobile-menu-top .hamburger-x {
+    display: flex;
+}
 
   .main-nav {
       padding-top: 30px;
