@@ -127,32 +127,33 @@ header {
     background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
                 url("/images/IMG_1267.jpeg") center/cover no-repeat;
     color: var(--white);
-    padding: 120px 8%; /* vertical padding, horizontal matches container */
+    padding: 120px 8%;       /* vertical and horizontal padding */
     display: flex;
-    align-items: center; /* vertically center content */
+    align-items: center;     /* vertical centering */
 }
 
 .hero-content {
-    max-width: 600px;   /* keeps text from being too wide */
-    text-align: left;   /* left aligned */
+    max-width: 500px;        /* limits text width so it wraps naturally */
+    text-align: left;        /* left-aligned */
 }
 
 .hero h1 {
     font-size: 52px;
     margin-bottom: 20px;
-    line-height: 1.2;  /* tighter line spacing */
+    line-height: 1.2;        /* tighter header spacing */
 }
 
 .hero p {
     font-size: 20px;
-    margin-bottom: 25px; /* slightly tighter spacing */
-    line-height: 1.5;
+    margin-bottom: 25px;     /* slightly tighter spacing */
+    line-height: 1.5;        /* readable but compact */
+    word-wrap: break-word;   /* ensures long text wraps nicely */
 }
 
 .btn {
     background: var(--orange);
     color: var(--white);
-    padding: 12px 28px; /* slightly more compact button */
+    padding: 12px 28px;      /* compact button */
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
@@ -924,10 +925,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
 <section class="hero">
     <div class="hero-content">
         <h1>Spring is coming. Is your lawn ready?</h1>
-        <p>
-            Get your yard ready for sunny days,<br>
-            BBQs, and backyard fun with professional lawn care.
-        </p>
+        <p>Get your yard ready for sunny days, BBQs, and backyard fun with professional lawn care.</p>
         <a href="#" class="btn">Get Your Free Estimate</a>
     </div>
 </section>
