@@ -504,20 +504,31 @@ header.menu-open .hamburger {
     display: none;
 }
 /* ===== DESKTOP DEFAULT (hide mobile-only elements) ===== */
+/* ===== DESKTOP DEFAULT: hide mobile-only elements ===== */
 
-.hamburger,
-.mobile-menu-top,
-.mobile-divider,
-.mobile-login,
-.mobile-quote,
-.switch-commercial,
-.mobile-back {
+.main-nav .mobile-menu-top,
+.main-nav .mobile-divider,
+.main-nav .mobile-login,
+.main-nav .mobile-quote,
+.main-nav .switch-commercial,
+.main-nav .mobile-back {
+    display: none !important;
+}
+
+.hamburger {
     display: none;
 }    
 @media (max-width: 500px) {
 .hamburger {
     display: flex;
-}    
+}
+
+.main-nav .mobile-login,
+.main-nav .mobile-quote,
+.main-nav .mobile-divider,
+.main-nav .switch-commercial {
+    display: block !important;
+}
 .desktop-login {
     display: none;
 }
