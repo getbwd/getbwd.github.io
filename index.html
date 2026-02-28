@@ -338,7 +338,7 @@ header {
 /* ===== REVIEWS SECTION ===== */
 
 .reviews-section {
-    background: var(--white);
+    background: var(--gray);
     padding: 100px 8%;
 }
 
@@ -370,7 +370,7 @@ header {
 }
 
 .review-card {
-    background: var(--gray);
+    background: var(--white);
     padding: 40px;
     border-radius: 14px;
     transition: 0.3s ease;
@@ -378,11 +378,6 @@ header {
     display: flex;
     flex-direction: column;
     gap: 20px;
-}
-
-.review-card:hover {
-    transform: translateY(-8px);
-    border: 1px solid var(--orange);
 }
 
 .review-stars {
@@ -406,7 +401,98 @@ header {
     font-size: 13px;
     color: #777;
 }
+/* ===== PROCESS SECTION ===== */
 
+.process-section {
+    padding: 120px 8%;
+    background: var(--white);
+}
+
+.process-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.process-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.process-header h2 {
+    font-size: 40px;
+    color: var(--orange);
+    margin-bottom: 10px;
+}
+
+.process-header p {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Steps Layout */
+
+.process-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.process-step {
+    flex: 1;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.process-step:hover {
+    transform: translateY(-8px);
+}
+
+.step-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    font-weight: 700;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+}
+
+.process-step h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.process-step p {
+    font-size: 15px;
+    color: #555;
+}
+
+/* Connecting Line */
+
+.process-line {
+    flex: 0.3;
+    height: 2px;
+    background: var(--light-gray);
+}
+
+/* Mobile */
+
+@media (max-width: 900px) {
+    .process-steps {
+        flex-direction: column;
+    }
+
+    .process-line {
+        width: 2px;
+        height: 40px;
+    }
+}
+    
 /* subtle fade-up animation */
 
 .review-card {
@@ -1168,28 +1254,38 @@ header.menu-open .mobile-menu-top .hamburger-x {
     </div>
 </section>
 
-<section class="section">
-    <h2>We operate 365 days a year.</h2>
-    <p class="section-sub">Complete seasonal services under one trusted team.</p>
+<section class="process-section">
+    <div class="process-container">
 
-    <div class="grid">
-
-        <div class="card">
-            <img src="images/grass 2.png" alt="Spring and Summer Icon">
-            <h3>Spring & Summer</h3>
-            <p>Lawn mowing, trimming, edging, landscaping, property cleanups, and routine maintenance.</p>
+        <div class="process-header">
+            <h2>Simple. Fast. Done Right.</h2>
+            <p>Professional property service without the hassle.</p>
         </div>
 
-        <div class="card">
-            <img src="images/leaf.png" alt="Fall Icon">
-            <h3>Fall Services</h3>
-            <p>Leaf removal, seasonal cleanups, gutter clearing, and winter preparation services.</p>
-        </div>
+        <div class="process-steps">
 
-        <div class="card">
-            <img src="images/snowfall.png" alt="Winter Icon">
-            <h3>Winter Services</h3>
-            <p>Snow removal, ice management, and winter property care to keep everything safe and accessible.</p>
+            <div class="process-step">
+                <div class="step-circle">1</div>
+                <h3>Request Your Free Quote</h3>
+                <p>Tell us about your property and get clear, upfront pricing.</p>
+            </div>
+
+            <div class="process-line"></div>
+
+            <div class="process-step">
+                <div class="step-circle">2</div>
+                <h3>We Show Up & Deliver</h3>
+                <p>On time. Fully equipped. Done right the first visit.</p>
+            </div>
+
+            <div class="process-line"></div>
+
+            <div class="process-step">
+                <div class="step-circle">3</div>
+                <h3>Enjoy the Results</h3>
+                <p>A clean, maintained property without the stress.</p>
+            </div>
+
         </div>
 
     </div>
@@ -1247,6 +1343,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
     </div>
 </section>
+
     
 <footer>
     <div class="footer-grid">
