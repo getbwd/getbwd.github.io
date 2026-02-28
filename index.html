@@ -503,9 +503,21 @@ header.menu-open .hamburger {
 .mobile-login {
     display: none;
 }
-    
+/* ===== DESKTOP DEFAULT (hide mobile-only elements) ===== */
+
+.hamburger,
+.mobile-menu-top,
+.mobile-divider,
+.mobile-login,
+.mobile-quote,
+.switch-commercial,
+.mobile-back {
+    display: none;
+}    
 @media (max-width: 500px) {
-    
+.hamburger {
+    display: flex;
+}    
 .desktop-login {
     display: none;
 }
