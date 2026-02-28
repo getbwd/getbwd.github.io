@@ -242,6 +242,99 @@ header {
     margin-bottom: 20px;
 }
 
+/* ===== WHY SECTION ===== */
+
+.why-section {
+    padding: 120px 8%;
+    background: var(--white);
+}
+
+.why-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 80px;
+    align-items: flex-start;
+}
+
+/* LEFT SIDE */
+
+.why-left {
+    flex: 1;
+    position: sticky;
+    top: 120px;
+}
+
+.why-left h2 {
+    font-size: 44px;
+    color: var(--orange);
+    margin-bottom: 20px;
+}
+
+.why-left p {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* RIGHT SIDE */
+
+.why-right {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.why-item {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--light-gray);
+    padding-bottom: 30px;
+    transition: 0.3s ease;
+}
+
+.why-item:hover {
+    transform: translateX(10px);
+}
+
+.why-number {
+    font-size: 48px;
+    font-weight: 800;
+    color: rgba(0,0,0,0.08);
+    min-width: 70px;
+}
+
+.why-content h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.why-content p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+    .why-container {
+        flex-direction: column;
+        gap: 60px;
+    }
+
+    .why-left {
+        position: static;
+    }
+
+    .why-item:hover {
+        transform: none;
+    }
+}
+
 /* ===== REVIEWS SECTION ===== */
 
 .reviews-section {
@@ -1022,6 +1115,56 @@ header.menu-open .mobile-menu-top .hamburger-x {
         <h1>Spring is coming. Is your lawn ready?</h1>
         <p>Get your yard ready for sunny days, BBQs, and backyard fun with professional lawn care.</p>
         <a href="#" class="btn">Get Your Free Estimate</a>
+    </div>
+</section>
+
+<section class="why-section">
+    <div class="why-container">
+
+        <div class="why-left">
+            <h2>Why Homeowners Choose BWD</h2>
+            <p>
+                Year-round property service built for Michigan weather. 
+                Simple scheduling. Clear pricing. Reliable execution.
+            </p>
+        </div>
+
+        <div class="why-right">
+
+            <div class="why-item">
+                <div class="why-number">01</div>
+                <div class="why-content">
+                    <h3>Fast Scheduling</h3>
+                    <p>Book online in minutes. Quick confirmations. No waiting weeks for service.</p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-number">02</div>
+                <div class="why-content">
+                    <h3>Flat, Transparent Pricing</h3>
+                    <p>No surprise add-ons. No hidden fees. Clear pricing before we ever show up.</p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-number">03</div>
+                <div class="why-content">
+                    <h3>365-Day Service</h3>
+                    <p>Spring mowing, fall cleanup, winter snow removal. One team for every season.</p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-number">04</div>
+                <div class="why-content">
+                    <h3>Locally Owned & Operated</h3>
+                    <p>Built in Genesee County. We serve the same neighborhoods we live in.</p>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </section>
 
