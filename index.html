@@ -852,24 +852,30 @@ header.menu-open .hamburger {
 .mobile-login {
     display: none;
 }
-/* ===== DESKTOP DEFAULT (hide mobile-only elements) ===== */
-/* ===== DESKTOP DEFAULT: hide mobile-only elements ===== */
-
-.main-nav .mobile-menu-top,
-.main-nav .mobile-divider,
-.main-nav .mobile-login,
-.main-nav .mobile-quote,
-.main-nav .switch-commercial,
-.main-nav .mobile-back {
-    display: none !important;
-}
 
 .hamburger {
     display: none;
 }
 
-
-@media (max-width: 500px) {
+/* Hide mobile-only elements on desktop */
+@media (min-width: 1400px) {
+  .mobile-menu-top,
+  .mobile-divider,
+  .mobile-login,
+  .mobile-quote,
+  .switch-commercial,
+  .mobile-back {
+    display: none;
+  }
+    .mobile-menu-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+}
+    
+@media (max-width: 1400px) {
   .hero {
     padding: 120px 8%;           /* padding around hero */
     display: flex;
