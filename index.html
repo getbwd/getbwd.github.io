@@ -494,9 +494,26 @@ header.menu-open .hamburger {
     width: 60px; /* same as hamburger */
     height: 60px; /* same as hamburger */
 }
+/* Hide desktop login on mobile */
+.desktop-login {
+    display: inline-block;
+}
+
+/* Hide mobile login on desktop */
+.mobile-login {
+    display: none;
+}
     
 @media (max-width: 1200px) {
+    
+.desktop-login {
+    display: none;
+}
 
+.mobile-login {
+    display: block;
+}
+    
 .mobile-menu-top {
     display: flex;
     align-items: center;
@@ -841,6 +858,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
             <a href="/faq/">FAQ</a>
             <a href="/support/">Support</a>
+            <a href="/login/" class="desktop-login">Log In</a>
             <hr class="mobile-divider">
             <a href="#" class="mobile-login">Log In</a>
 <a href="#" class="mobile-quote">Get a Quote</a>
