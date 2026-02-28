@@ -442,6 +442,22 @@ footer {
 }
 /* ===== MOBILE NAV ===== */
 /* Hamburger (menu icon) stays where it was in navbar */
+.hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10002;
+    height: 60px;   /* same as logo */
+    width: 60px;
+}
+
+.hamburger img {
+    display: block;
+    height: 40px; /* adjust visually to match logo */
+    width: auto;
+}
+
 /* X (close icon) */
 .hamburger-x {
     display: none;
@@ -455,23 +471,6 @@ footer {
 .hamburger-x img {
     display: block;
     height: 28px;   /* smaller than hamburger */
-    width: auto;
-}
-
-/* X (close icon) */
-.hamburger-x {
-    display: none; /* hidden by default */
-    position: absolute; /* overlay on hamburger spot */
-    top: 50%;         /* vertically center with logo */
-    right: 20px;      /* same horizontal space as hamburger */
-    transform: translateY(-50%);
-    z-index: 10003;
-    cursor: pointer;
-}
-
-.hamburger-x img {
-    display: block;
-    height: 40px;  /* match hamburger size */
     width: auto;
 }
 
