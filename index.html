@@ -458,24 +458,26 @@ footer {
     width: auto;
 }
 
-.hamburger-x {
+.mobile-menu-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.mobile-menu-top .hamburger-x {
     display: none;
     width: 60px;
     height: 60px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    position: relative;   /* required so z-index works */
-    z-index: 10002;       /* higher than .main-nav */
 }
 
-header.menu-open .hamburger-x {
+header.menu-open .mobile-menu-top .hamburger-x {
     display: flex;
 }
-.hamburger-x img {
-    height: 26px; /* smaller than hamburger */
-    width: auto;
-}
+    
 header.menu-open {
     z-index: 10005;
 }
@@ -701,13 +703,13 @@ header.menu-open .hamburger-x {
     <div class="hamburger" id="hamburger">
         <img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">
     </div>
-    <div class="hamburger-x">
-    <img src="/images/close.png" alt="Close Menu">
-</div>
 </div>
         <nav class="main-nav">
             <div class="mobile-menu-top">
     <img src="/images/nav.png" alt="BWD Logo">
+    <div class="hamburger-x">
+        <img src="/images/close.png" alt="Close Menu">
+    </div>
 </div>
             <a href="/" class="active">Home</a>
             <a href="/about/">About</a>
