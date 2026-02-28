@@ -459,16 +459,17 @@ footer {
 }
 
 .hamburger-x {
-    display: none;
     position: absolute;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
     height: 60px;
     width: 60px;
+    display: none;              /* hidden by default */
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    z-index: 10003;
 }
 
 .hamburger-x img {
