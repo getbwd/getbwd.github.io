@@ -543,10 +543,10 @@ header.menu-open .hamburger {
     display: none;
 }
 
-/* ===== TRANSFORM YOUR YARD SECTION ===== */
+/* ===== SPEECH BUBBLE TESTIMONIALS ===== */
 #transform-yard {
     padding: 100px 8%;
-    background: #f9f9f9;
+    background: var(--gray);
     text-align: center;
 }
 
@@ -561,66 +561,81 @@ header.menu-open .hamburger {
     margin-bottom: 60px;
 }
 
-#transform-yard .yard-grid {
+#transform-yard .testimonial-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 35px;
 }
 
-#transform-yard .yard-card {
+#transform-yard .testimonial-card {
     background: var(--white);
+    padding: 40px;
     border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
+    gap: 15px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#transform-yard .yard-card:hover {
+#transform-yard .testimonial-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
-#transform-yard .yard-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-#transform-yard .yard-card h3 {
-    font-size: 22px;
-    color: var(--orange);
-    margin: 15px 0 10px 0;
-}
-
-#transform-yard .yard-card p {
+#transform-yard .testimonial-card p {
     font-size: 16px;
     color: #555;
-    padding: 0 15px 20px 15px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
-/* MOBILE ADJUSTMENTS */
-@media (max-width: 500px) {
-    #transform-yard {
-        padding: 50px 5%;
-    }
-
-    #transform-yard h2 {
-        font-size: 32px;
-    }
-
-    #transform-yard .section-sub {
-        font-size: 14px;
-        margin-bottom: 40px;
-    }
-
-    #transform-yard .yard-card img {
-        height: 180px;
-    }
+#transform-yard .testimonial-card h4 {
+    font-size: 18px;
+    color: var(--orange);
 }
+
+#transform-yard .testimonial-card span {
+    font-size: 14px;
+    color: #777;
+}
+
+
+/* ===== POST-TESTIMONIAL CTA – FULL WIDTH, NO GAP ===== */
+#testimonial-cta {
+    background: var(--dark); /* dark like Ready for BWD? */
+    color: var(--white);
+    text-align: center;
+    padding: 60px 8%;
+    border-radius: 0; /* remove rounding */
+    margin-top: 0;    /* remove gap */
+}
+
+#testimonial-cta h3 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+#testimonial-cta p {
+    font-size: 18px;
+    margin-bottom: 25px;
+    color: #fff;
+}
+
+#testimonial-cta .btn {
+    background: var(--orange);
+    color: var(--white);
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+#testimonial-cta .btn:hover {
+    background: #e55a00; /* slightly darker orange on hover */
+}
+
 @media (max-width: 500px) {
   .hero {
     padding: 20px 2%;           /* padding around hero */
@@ -1071,42 +1086,49 @@ header.menu-open .mobile-menu-top .hamburger-x {
     </div>
 </section>
     
-<section id="transform-yard">
-    <h2>Transform Your Yard in No Time</h2>
-    <p class="section-sub">See real results from yards we've serviced and imagine the possibilities for your property.</p>
-
-    <div class="yard-grid">
-        <div class="yard-card">
-            <img src="images/lawn1.jpg" alt="Flint front yard before and after">
-            <h3>Flint Front Yard</h3>
-            <p>Mowed, trimmed, and edged for a clean, welcoming look.</p>
-        </div>
-
-        <div class="yard-card">
-            <img src="images/lawn2.jpg" alt="Suburban backyard before and after">
-            <h3>Suburban Backyard</h3>
-            <p>Garden bed refresh and lawn care for summer-ready relaxation.</p>
-        </div>
-
-        <div class="yard-card">
-            <img src="images/lawn3.jpg" alt="Commercial property before and after">
-            <h3>Commercial Property</h3>
-            <p>Leaf removal, edging, and seasonal maintenance completed.</p>
-        </div>
-
-        <div class="yard-card">
-            <img src="images/lawn4.jpg" alt="Residential lawn before and after">
-            <h3>Residential Lawn</h3>
-            <p>Full spring cleanup and fertilization for a vibrant yard.</p>
-        </div>
-    </div>
-</section>
     
 <section class="guarantee">
     <h2>BWD Guarantee ✔</h2>
     <p>If something isn’t right, we return and make it right, free of charge. No excuses.</p>
 </section>
 
+<section id="transform-yard">
+    <h2>Transform Your Yard in No Time</h2>
+    <p class="section-sub">Hear from our happy customers about the difference BWD makes.</p>
+
+    <div class="testimonial-grid">
+        <div class="testimonial-card">
+            <p>"BWD made my front yard look incredible! The team was fast, professional, and left everything spotless."</p>
+            <h4>Emily R.</h4>
+            <span>Flint, MI</span>
+        </div>
+
+        <div class="testimonial-card">
+            <p>"Our backyard has never looked so good. The crew knew exactly what to do for a summer-ready yard."</p>
+            <h4>Jason M.</h4>
+            <span>Grand Blanc, MI</span>
+        </div>
+
+        <div class="testimonial-card">
+            <p>"Reliable and affordable. We trust BWD every season to keep our lawn perfect."</p>
+            <h4>Sarah L.</h4>
+            <span>Clio, MI</span>
+        </div>
+
+        <div class="testimonial-card">
+            <p>"Professional service with attention to every detail. Highly recommend for all seasonal lawn care."</p>
+            <h4>Mark T.</h4>
+            <span>Flint, MI</span>
+        </div>
+    </div>
+</section>
+    
+<section id="testimonial-cta">
+    <h3>Ready to Transform Your Lawn?</h3>
+    <p>Join hundreds of satisfied customers and experience the BWD difference today.</p>
+    <a href="#" class="btn">Get Your Free Estimate</a>
+</section>
+    
 <section class="why-bwd">
     <h2 style="text-align:center;">Why Choose BWD?</h2>
 
