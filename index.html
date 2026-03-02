@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
 body.no-scroll {
     overflow: hidden;
     height: 100vh;
@@ -128,6 +129,12 @@ header {
     padding: 120px 8%;       /* vertical and horizontal padding */
     display: flex;
     align-items: center;     /* vertical centering */
+}
+
+.hero-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .hero-content {
@@ -1296,10 +1303,12 @@ header.menu-open .mobile-menu-top .hamburger-x {
 </header>
 
 <section class="hero">
-    <div class="hero-content">
+    <div class="hero-container">
+        <div class="hero-content">
         <h1>Spring is coming. Is your lawn ready?</h1>
         <p>Get your yard ready for sunny days, BBQs, and backyard fun with professional lawn care.</p>
         <a href="#" class="btn">Get Your Free Estimate</a>
+        </div>
     </div>
 </section>
 
