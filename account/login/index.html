@@ -1031,7 +1031,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
 <section class="login-section">
     <div class="login-container">
         <h2>Login to Your Account</h2>
-        <form class="login-form" action="/account/login/" method="POST">
+        <form class="login-form" id="loginForm">
             
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="you@example.com" required>
@@ -1083,49 +1083,63 @@ header.menu-open .mobile-menu-top .hamburger-x {
         © 2026 BWD Services | Bros Who Do. All Rights Reserved.
     </div>
 </footer>
-<!-- Firebase SDKs -->
-<script type="module">
-  // Import the functions you need from Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
-    authDomain: "bwd-accounts.firebaseapp.com",
-    projectId: "bwd-accounts",
-    storageBucket: "bwd-accounts.firebasestorage.app",
-    messagingSenderId: "590001375282",
-    appId: "1:590001375282:web:2bcaedf115942dcd28542b",
-    measurementId: "G-Q1QLNBQDN8"
-  };
+<script>
+// ===== Import Firebase =====
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+// ===== Firebase configuration =====
+const firebaseConfig = {
+  apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
+  authDomain: "bwd-accounts.firebaseapp.com",
+  projectId: "bwd-accounts",
+  storageBucket: "bwd-accounts.firebasestorage.app",
+  messagingSenderId: "590001375282",
+  appId: "1:590001375282:web:bd1725d5a5be3f9d28542b",
+  measurementId: "G-BFYEG3EN0W"
+};
 
-  // Get the form element
-  const loginForm = document.querySelector('.login-form');
+// ===== Initialize Firebase =====
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
 
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // prevent default form submission
+// ===== Get the form =====
+const loginForm = document.getElementById('login-form');
 
-    const email = loginForm.email.value;
-    const password = loginForm.password.value;
+// ===== Handle form submission =====
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault(); // prevent default page reload
 
-    try {
-      // Attempt login
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const email = loginForm.email.value;
+  const password = loginForm.password.value;
+
+  // ===== Sign in with Firebase =====
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
       const user = userCredential.user;
-      console.log('Logged in as:', user.email);
+      console.log('Login successful:', user);
 
-      // Redirect after successful login
-      window.location.href = "/account/dashboard/"; // change to whatever page users should see after login
+      // Redirect after login
+      window.location.href = '/account/'; // change to your logged-in page
+    })
+    .catch((error) => {
+      console.error('Login error:', error.code, error.message);
+      alert('Login failed: ' + error.message);
+    });
+});
 
-    } catch (error) {
-      console.error('Login error:', error);
-      alert(error.message); // show error to user
-    }
-  });
+// ===== Optional: check if user is already logged in =====
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log('User already logged in:', user);
+    // Optionally redirect to account page if already logged in
+    // window.location.href = '/account/';
+  }
+});
 </script>
+<script type="module" src="/js/login.js"></script>
 </body>
 </html>
