@@ -73,8 +73,7 @@ header {
 }
 
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
+    width: 100%;
     padding: 0 8%;
 }
 
@@ -698,6 +697,16 @@ footer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 80px;
+    align-items: stretch; /* important */
+}
+
+.mega-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.mega-item.view-all {
+    margin-top: auto;
 }
 
 /* ===== MEGA MENU ITEMS ===== */
