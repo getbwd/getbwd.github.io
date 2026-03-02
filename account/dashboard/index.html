@@ -889,100 +889,103 @@ header.menu-open .mobile-menu-top .hamburger-x {
     cursor: pointer;
 }
 }
-/* ===== HEADER ===== */
-.dashboard-header {
+
+/* ===== ACCOUNT DASHBOARD ===== */
+
+.account-section {
+    padding: 120px 8%;
+    min-height: 70vh;
     background: var(--white);
-    padding: 20px 8%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--light-gray);
 }
 
-.dashboard-header h1 {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--orange);
-}
-
-.logout-btn {
-    background: transparent;
-    border: 2px solid var(--orange);
-    color: var(--orange);
-    padding: 8px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.logout-btn:hover {
-    background: var(--orange);
-    color: var(--white);
-}
-
-/* ===== MAIN DASHBOARD ===== */
-
-.dashboard {
-    padding: 60px 8%;
+.account-container {
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.welcome-card {
-    background: var(--white);
-    padding: 40px;
-    border-radius: 16px;
+.account-header {
     margin-bottom: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.welcome-card h2 {
-    font-size: 26px;
-    margin-bottom: 10px;
-}
-
-.welcome-card p {
-    color: #666;
-}
-
-/* ===== GRID ===== */
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
-}
-
-.dashboard-card {
-    background: var(--white);
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    transition: 0.3s ease;
-    cursor: pointer;
-}
-
-.dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-}
-
-.dashboard-card h3 {
+.account-header h1 {
+    font-size: 40px;
     color: var(--orange);
     margin-bottom: 10px;
 }
 
-.dashboard-card p {
-    font-size: 14px;
+.account-header p {
+    font-size: 16px;
     color: #555;
 }
 
-/* ===== MOBILE ===== */
+.account-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+}
 
-@media(max-width:600px){
-    .dashboard {
-        padding: 40px 5%;
+/* Sidebar */
+
+.account-sidebar {
+    background: var(--gray);
+    padding: 30px;
+    border-radius: 14px;
+}
+
+.account-sidebar h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--dark);
+}
+
+.account-sidebar button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: var(--orange);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.account-sidebar button:hover {
+    background: #e55a00;
+}
+
+/* Main Panel */
+
+.account-panel {
+    background: var(--gray);
+    padding: 40px;
+    border-radius: 14px;
+}
+
+.account-card {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--light-gray);
+}
+
+.account-card h4 {
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #777;
+}
+
+.account-card p {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Mobile */
+
+@media (max-width: 900px) {
+    .account-grid {
+        grid-template-columns: 1fr;
     }
 }
     
@@ -1152,42 +1155,46 @@ header.menu-open .mobile-menu-top .hamburger-x {
     </div>
 </header>
     
-<div class="dashboard-header">
-    <h1>BWD Account</h1>
-    <button class="logout-btn" id="logoutBtn">Log Out</button>
-</div>
+<section class="account-section">
+    <div class="account-container">
 
-<div class="dashboard">
+        <div class="account-header">
+            <h1 id="welcomeText">Welcome</h1>
+            <p>Manage your BWD account, quotes, and services.</p>
+        </div>
 
-    <div class="welcome-card">
-        <h2 id="welcomeText">Welcome</h2>
-        <p id="userEmail"></p>
+        <div class="account-grid">
+
+            <!-- Sidebar -->
+            <div class="account-sidebar">
+                <h3>Account</h3>
+                <button id="logoutBtn">Log Out</button>
+            </div>
+
+            <!-- Main Content -->
+            <div class="account-panel">
+
+                <div class="account-card">
+                    <h4>Email Address</h4>
+                    <p id="userEmail">Loading...</p>
+                </div>
+
+                <div class="account-card">
+                    <h4>Account Status</h4>
+                    <p>Active Member</p>
+                </div>
+
+                <div class="account-card">
+                    <h4>Member Since</h4>
+                    <p id="memberSince">Loading...</p>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-
-    <div class="dashboard-grid">
-
-        <div class="dashboard-card" onclick="location.href='/account/bookings/'">
-            <h3>Your Services</h3>
-            <p>View scheduled services, past work, and upcoming appointments.</p>
-        </div>
-
-        <div class="dashboard-card" onclick="location.href='/account/quotes/'">
-            <h3>Your Quotes</h3>
-            <p>View and approve pending service estimates.</p>
-        </div>
-
-        <div class="dashboard-card" onclick="location.href='/account/settings/'">
-            <h3>Account Settings</h3>
-            <p>Update your email, password, and profile information.</p>
-        </div>
-
-        <div class="dashboard-card" onclick="location.href='/'">
-            <h3>Book a New Service</h3>
-            <p>Schedule lawn care, cleanup, snow removal, and more.</p>
-        </div>
-
-    </div>
-</div>
+</section>
     
 <footer>
     <div class="footer-grid">
@@ -1228,16 +1235,15 @@ header.menu-open .mobile-menu-top .hamburger-x {
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
 <script>
-  // Initialize Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
-    authDomain: "bwd-accounts.firebaseapp.com",
-    projectId: "bwd-accounts",
-    storageBucket: "bwd-accounts.firebasestorage.app",
-    messagingSenderId: "590001375282",
-    appId: "1:590001375282:web:bd1725d5a5be3f9d28542b",
-    measurementId: "G-BFYEG3EN0W"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
+  authDomain: "bwd-accounts.firebaseapp.com",
+  projectId: "bwd-accounts",
+  storageBucket: "bwd-accounts.firebasestorage.app",
+  messagingSenderId: "590001375282",
+  appId: "1:590001375282:web:bd1725d5a5be3f9d28542b",
+  measurementId: "G-BFYEG3EN0W"
+};
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -1251,6 +1257,10 @@ auth.onAuthStateChanged((user) => {
             "Welcome, " + (user.displayName || "BWD Member");
 
         document.getElementById("userEmail").innerText = user.email;
+
+        const createdDate = new Date(user.metadata.creationTime);
+        document.getElementById("memberSince").innerText =
+            createdDate.toLocaleDateString();
     }
 });
 
