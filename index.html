@@ -8,7 +8,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
+    
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;  /* add this line */
+}
+    
 body.no-scroll {
     overflow: hidden;
     height: 100vh;
@@ -91,6 +98,7 @@ header {
     height: 60px;
     width: auto;
     display: block;
+    max-width: 100%;
 }
 
 .logo {
@@ -226,6 +234,7 @@ header {
     width: 60px; 
     height: 60px;
     object-fit: contain;
+    max-width: 100%;
 }
 
 .card h3 {
@@ -683,7 +692,7 @@ footer {
     position: absolute;
     top: 100%;             /* right below the nav link */
     left: 0;
-    width: 100vw;           /* full viewport width */
+    width: 100%;           /* full viewport width */
     margin-left: calc(-50vw + 50%); /* centers it across the screen */
     background: var(--white);
     padding: 70px 8%;
@@ -807,6 +816,7 @@ footer {
     display: block;
     height: 40px; /* adjust visually to match logo */
     width: auto;
+    max-width: 100%;
 }
 
 .mobile-menu-top {
@@ -953,6 +963,11 @@ header.menu-open .hamburger {
 .mobile-menu-top img {
     height: 60px;
     width: auto;
+    max-width: 100%;
+}
+
+.container, .hero-container {
+    max-width: 100%;
 }
 
 .mobile-menu-top .hamburger-x {
@@ -967,6 +982,7 @@ header.menu-open .hamburger {
 .mobile-menu-top .hamburger-x img {
     height: 22px;
     width: auto;
+    max-width: 100%;
 }
 
 header.menu-open .mobile-menu-top .hamburger-x {
