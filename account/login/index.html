@@ -1147,7 +1147,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
     auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         console.log('Login successful:', userCredential.user);
-        window.location.href = '/account/dashboard';
+        window.location.href = '/account/dashboard/';
       })
       .catch((error) => {
         console.error('Login error:', error.code, error.message);
@@ -1158,7 +1158,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
   auth.onAuthStateChanged((user) => {
     if (user) {
       console.log('User already logged in:', user);
-      // window.location.href = '/account/';
+      // window.location.href = '/account/dashboard/';
     }
   });
   // Google provider setup
@@ -1171,7 +1171,7 @@ googleButton.addEventListener('click', () => {
     .then((result) => {
       const user = result.user;
       console.log('Google login successful:', user);
-      window.location.href = '/account/'; // redirect after login
+      window.location.href = '/account/dashboard/'; // redirect after login
     })
     .catch((error) => {
       console.error('Google login error:', error.code, error.message);
