@@ -1031,6 +1031,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
 <section class="login-section">
     <div class="login-container">
         <h2>Login to Your Account</h2>
+        
         <form class="login-form" id="loginForm">
             
             <label for="email">Email</label>
@@ -1045,7 +1046,11 @@ header.menu-open .mobile-menu-top .hamburger-x {
                 <a href="/account/forgot-password/">Forgot your password?</a>
                 <a href="/account/signup/">Create an account</a>
             </div>
+            
         </form>
+        <button id="googleSignIn" class="btn" style="background:#4285F4;">
+         Log in with Google
+        </button>
     </div>
 </section>
     
@@ -1128,6 +1133,23 @@ header.menu-open .mobile-menu-top .hamburger-x {
       // window.location.href = '/account/';
     }
   });
+  // Google provider setup
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+const googleButton = document.getElementById('googleSignIn');
+
+googleButton.addEventListener('click', () => {
+  auth.signInWithPopup(googleProvider)
+    .then((result) => {
+      const user = result.user;
+      console.log('Google login successful:', user);
+      window.location.href = '/account/'; // redirect after login
+    })
+    .catch((error) => {
+      console.error('Google login error:', error.code, error.message);
+      alert('Google login failed: ' + error.message);
+    });
+});
 </script>
 </body>
 </html>
