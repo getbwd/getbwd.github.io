@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>BWD Services</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="images/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;  /* add this line */
+}
+    
 body.no-scroll {
     overflow: hidden;
     height: 100vh;
@@ -91,6 +87,7 @@ header {
     height: 60px;
     width: auto;
     display: block;
+    max-width: 100%;
 }
 
 .logo {
@@ -116,62 +113,6 @@ header {
 
 .main-nav > a:hover,
 .services-link:hover {
-    color: var(--orange);
-}
-
-/* ===== HERO ===== */
-
-/* HERO */
-.hero {
-    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
-                url("/images/IMG_1267.jpeg") center/cover no-repeat;
-    color: var(--white);
-    padding: 120px 8%;       /* vertical and horizontal padding */
-    display: flex;
-    align-items: center;     /* vertical centering */
-}
-
-.hero-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.hero-content {
-    max-width: 500px;        /* limits text width so it wraps naturally */
-    text-align: left;        /* left-aligned */
-}
-
-.hero h1 {
-    font-size: 52px;
-    margin-bottom: 20px;
-    line-height: 1.2;        /* tighter header spacing */
-}
-
-.hero p {
-    font-size: 20px;
-    margin-bottom: 25px;     /* slightly tighter spacing */
-    line-height: 1.5;        /* readable but compact */
-    word-wrap: break-word;   /* ensures long text wraps nicely */
-}
-
-.btn {
-    background: var(--orange);
-    color: var(--white);
-    padding: 12px 28px;      /* compact button */
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-block;
-    transition: 0.3s;
-    font-size: 18px;
-}
-
-.btn:hover {
-    background: #e55a00;
-}
-
-.hero span {
     color: var(--orange);
 }
 
@@ -226,12 +167,14 @@ header {
     width: 60px; 
     height: 60px;
     object-fit: contain;
+    max-width: 100%;
 }
 
 .card h3 {
     font-size: 22px;
     color: var(--orange);
 }
+
 
 /* ===== ANNOUNCEMENT BANNER ===== */
 
@@ -311,7 +254,7 @@ footer {
     position: absolute;
     top: 100%;             /* right below the nav link */
     left: 0;
-    width: 100vw;           /* full viewport width */
+    width: 100%;           /* full viewport width */
     margin-left: calc(-50vw + 50%); /* centers it across the screen */
     background: var(--white);
     padding: 70px 8%;
@@ -435,6 +378,7 @@ footer {
     display: block;
     height: 40px; /* adjust visually to match logo */
     width: auto;
+    max-width: 100%;
 }
 
 .mobile-menu-top {
@@ -510,41 +454,6 @@ header.menu-open .hamburger {
 .hamburger {
     display: none;
 }
-
-
-@media (max-width: 900px) {
-  .hero {
-    padding: 120px 8%;           /* padding around hero */
-    display: flex;
-    flex-direction: column;     /* stack content vertically */
-    justify-content: center;    /* vertical centering */
-    align-items: center;        /* horizontal centering */
-    text-align: center;         /* center the text */
-  }
-
-  .hero-content {
-    max-width: 100%;            /* allow text to use full width inside padding */
-    width: auto;                /* flexible width */
-  }
-
-  .hero h1 {
-    font-size: 36px;            /* smaller header for phones */
-    line-height: 1.2;
-    margin-bottom: 15px;
-  }
-
-  .hero p {
-    font-size: 16px;            /* slightly smaller subheader */
-    line-height: 1.5;
-    margin-bottom: 20px;
-    word-wrap: break-word;      /* ensure it wraps nicely */
-  }
-
-  .hero .btn {
-    padding: 12px 28px;         /* compact button */
-    font-size: 16px;
-  }
-}
     
 @media (max-width: 900px) {
 .desktop-account {
@@ -578,6 +487,11 @@ header.menu-open .hamburger {
 .mobile-menu-top img {
     height: 60px;
     width: auto;
+    max-width: 100%;
+}
+
+.container, .hero-container {
+    max-width: 100%;
 }
 
 .mobile-menu-top .hamburger-x {
@@ -592,6 +506,7 @@ header.menu-open .hamburger {
 .mobile-menu-top .hamburger-x img {
     height: 22px;
     width: auto;
+    max-width: 100%;
 }
 
 header.menu-open .mobile-menu-top .hamburger-x {
@@ -760,206 +675,3 @@ header.menu-open .mobile-menu-top .hamburger-x {
     cursor: pointer;
 }
 }
-    
-</style>
-</head>
-
-<body>
-    
-<div class="announcement-bar">
-    Save time and unlock exclusive online pricing by creating an account.
-</div>
-
-<header>
-    <div class="container header-inner">
-
-<div class="logo">
-    <a href="/">
-        <img src="/images/nav.png" alt="BWD Logo">
-    </a>
-</div>
-<div class="hamburger-wrapper">
-    <div class="hamburger" id="hamburger">
-        <img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">
-    </div>
-</div>
-        <nav class="main-nav">
-            <div class="mobile-menu-top">
-    <img src="/images/nav.png" alt="BWD Logo">
-    <div class="hamburger-x">
-        <img src="/images/close.png" alt="Close Menu">
-    </div>
-</div>
-            <a href="/" class="active">Home</a>
-            <a href="/about/">About</a>
-
-            <div class="dropdown">
-                <a href="#" class="services-link mobile-services">
-    Services
-</a>
-                <div class="mega-menu">
-                    <div class="mobile-back"><strong>←</strong> Back</div>
-                    <div class="mega-inner">
-
-<!-- SPRING & SUMMER -->
-<div class="mega-column">
-    <h4>SPRING & SUMMER</h4>
-
-    <a href="/services/mowing-trimming/" class="mega-item">
-        <span class="mega-title">Mowing & Trimming</span>
-        <span class="mega-desc">Keep your lawn pristine with regular mowing and precision trimming around edges.</span>
-    </a>
-
-    <a href="/services/spring-cleanup/" class="mega-item">
-        <span class="mega-title">Spring Cleanup</span>
-        <span class="mega-desc">Remove winter debris and prepare your lawn for a healthy growing season.</span>
-    </a>
-
-    <a href="/services/garden-bed-care/" class="mega-item">
-        <span class="mega-title">Garden Bed Care</span>
-        <span class="mega-desc">Weeding, mulching, and refreshing garden beds for a vibrant yard.</span>
-    </a>
-
-    <a href="/services/pet-waste-debris-removal/" class="mega-item">
-        <span class="mega-title">Pet Waste & Debris Removal</span>
-        <span class="mega-desc">Keep your lawn clean and safe by removing pet waste and yard debris.</span>
-    </a>
-
-    <a href="/services/seeding-aeration-fertilization/" class="mega-item">
-        <span class="mega-title">Seeding, Aeration, & Fertilization</span>
-        <span class="mega-desc">Promote healthy growth with targeted lawn care treatments.</span>
-    </a>
-
-    <a href="/services/spring-summer/" class="mega-item view-all">
-        <span class="mega-title">VIEW ALL</span>
-    </a>
-</div>
-
-<!-- FALL -->
-<div class="mega-column">
-    <h4>FALL</h4>
-
-    <a href="/services/leaf-removal/" class="mega-item">
-        <span class="mega-title">Leaf Removal</span>
-        <span class="mega-desc">Prevent buildup and protect your lawn with full leaf removal.</span>
-    </a>
-
-    <a href="/services/seasonal-cleanup/" class="mega-item">
-        <span class="mega-title">Seasonal Cleanup</span>
-        <span class="mega-desc">End-of-season clearing to keep your property neat and ready for winter.</span>
-    </a>
-
-    <a href="/services/gutter-cleaning/" class="mega-item">
-        <span class="mega-title">Gutter Cleaning</span>
-        <span class="mega-desc">Prevent clogs and water damage with thorough gutter maintenance.</span>
-    </a>
-
-    <a href="/services/winter-prep/" class="mega-item">
-        <span class="mega-title">Winter Prep</span>
-        <span class="mega-desc">Protect your property with pre-winter services for lawns and landscaping.</span>
-    </a>
-
-    <a href="/services/fall-lawn-treatment/" class="mega-item">
-        <span class="mega-title">Fall Lawn Treatment</span>
-        <span class="mega-desc">Fertilization and soil care to ensure a strong lawn next spring.</span>
-    </a>
-
-    <a href="/services/fall/" class="mega-item view-all">
-        <span class="mega-title">VIEW ALL</span>
-    </a>
-</div>
-
-<!-- WINTER -->
-<div class="mega-column">
-    <h4>WINTER</h4>
-
-    <a href="/services/snow-removal/" class="mega-item">
-        <span class="mega-title">Snow Removal</span>
-        <span class="mega-desc">Reliable plowing for driveways, walkways, and parking areas.</span>
-    </a>
-
-    <a href="/services/salting-services/" class="mega-item">
-        <span class="mega-title">Salting Services</span>
-        <span class="mega-desc">Commercial-grade salt application to reduce slip hazards.</span>
-    </a>
-
-    <a href="/services/emergency-plowing/" class="mega-item">
-        <span class="mega-title">Emergency Plowing</span>
-        <span class="mega-desc">Fast response for heavy storms or unexpected snow events.</span>
-    </a>
-
-    <a href="/services/ice-management/" class="mega-item">
-        <span class="mega-title">Ice Management</span>
-        <span class="mega-desc">Proactive measures to prevent ice buildup and enhance safety.</span>
-    </a>
-
-    <a href="/services/winter-property-care/" class="mega-item">
-        <span class="mega-title">Winter Property Care</span>
-        <span class="mega-desc">Full winter maintenance to keep your property accessible and safe.</span>
-    </a>
-
-    <a href="/services/winter/" class="mega-item view-all">
-        <span class="mega-title">VIEW ALL</span>
-    </a>
-</div>
-
-                    </div>
-                </div>
-            </div>
-
-            <a href="/faq/">FAQ</a>
-            <a href="/support/">Support</a>
-            <hr class="mobile-divider">
-            <a href="#" class="mobile-login">Log In</a>
-<a href="#" class="mobile-quote">Get a Quote</a>
-            <hr class="mobile-divider">
-
-<p class="switch-commercial">
-    Switch to <strong>Commercial</strong>
-</p>
-        <a href="/login/" class="desktop-account">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-4 0-8 2-8 5v3h16v-3c0-3-4-5-8-5z"/>
-    </svg>
-</a>
-        </nav>
-
-    </div>
-</header>
-    
-<footer>
-    <div class="footer-grid">
-
-        <div class="footer-column">
-            <h4>BWD Services</h4>
-            <p>Professional year-round property services built for Michigan weather.</p>
-        </div>
-
-        <div class="footer-column">
-            <h4>Services</h4>
-            <a href="#">Spring & Summer</a>
-            <a href="#">Fall Services</a>
-            <a href="#">Winter Services</a>
-        </div>
-
-        <div class="footer-column">
-            <h4>Company</h4>
-            <a href="#">About</a>
-            <a href="#">Gallery</a>
-            <a href="#">Contact</a>
-        </div>
-
-        <div class="footer-column">
-            <h4>Contact</h4>
-            <a href="tel:+19203709852">+1 920-370-9852</a>
-            <a href="#">www.getbwd.com</a>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        © 2026 BWD Services | Bros Who Do. All Rights Reserved.
-    </div>
-</footer>
-</body>
-</html>
