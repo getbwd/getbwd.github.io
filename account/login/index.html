@@ -171,6 +171,34 @@ header {
     background: #e55a00;
 }
 
+/* Google Sign-In Button */
+.google-btn {
+    background: #4285F4;           /* Google Blue */
+    color: #fff;                   /* White text */
+    padding: 12px 28px;            /* same padding as your submit button */
+    border-radius: 8px;            /* same rounded corners */
+    font-weight: 600;
+    font-size: 18px;
+    text-decoration: none;
+    display: inline-flex;          /* allows icon + text alignment */
+    align-items: center;           /* vertical centering */
+    justify-content: center;       /* horizontal centering */
+    gap: 10px;                     /* space between icon & text */
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    width: 100%;                   /* match email/password button width */
+    margin-top: 15px;              /* space above from other links/buttons */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border: none;        /* remove default border */
+    outline: none;       /* remove default outline */
+}
+
+.google-btn:hover {
+    background: #357ae8;           /* slightly darker blue on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
 .hero span {
     color: var(--orange);
 }
@@ -1046,11 +1074,11 @@ header.menu-open .mobile-menu-top .hamburger-x {
                 <a href="/account/forgot-password/">Forgot your password?</a>
                 <a href="/account/signup/">Create an account</a>
             </div>
-            
+            <button id="googleSignIn" class="google-btn">
+    <img src="/images/google-icon.svg" alt="Google Icon" style="height:20px; width:20px;">
+    Log in with Google
+</button>
         </form>
-        <button id="googleSignIn" class="btn" style="background:#4285F4;">
-         Log in with Google
-        </button>
     </div>
 </section>
     
