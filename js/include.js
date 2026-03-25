@@ -27,7 +27,6 @@ function initNavbar() {
     }
 
     hamburger.addEventListener("click", () => {
-        console.log("CLICKED"); // 👈 add this
         nav.classList.add("active");
         document.body.classList.add("no-scroll");
         header.classList.add("menu-open");
