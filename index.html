@@ -1347,42 +1347,5 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
 <script src="/js/include.js"></script>
 
-<script>
-const hamburger = document.getElementById("hamburger");
-const nav = document.querySelector(".main-nav");
-const servicesBtn = document.querySelector(".mobile-services");
-const megaMenu = document.querySelector(".mega-menu");
-const backBtn = document.querySelector(".mobile-back");
-const xBtn = document.querySelector(".hamburger-x");
-const header = document.querySelector("header");
-
-function closeAll() {
-    nav.classList.remove("active");
-    megaMenu.classList.remove("active");
-    document.body.classList.remove("no-scroll");
-    header.classList.remove("menu-open");
-}
-
-hamburger.addEventListener("click", () => {
-    nav.classList.add("active");
-    document.body.classList.add("no-scroll");
-    header.classList.add("menu-open");
-});
-
-xBtn.addEventListener("click", () => {
-    closeAll();
-});
-
-servicesBtn.addEventListener("click", (e) => {
-    if (window.innerWidth <= 1200) {
-        e.preventDefault();
-        megaMenu.classList.add("active");
-    }
-});
-
-backBtn.addEventListener("click", () => {
-    megaMenu.classList.remove("active");
-});
-</script>
 </body>
 </html>

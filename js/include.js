@@ -4,7 +4,47 @@ async function loadComponent(id, file) {
     document.getElementById(id).innerHTML = data;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    loadComponent("navbar", "/components/navbar.html");
-    loadComponent("footer", "/components/footer.html");
+function initNavbar() {
+    const hamburger = document.getElementById("hamburger");
+    const nav = document.querySelector(".main-nav");
+    const servicesBtn = document.querySelector(".mobile-services");
+    const megaMenu = document.querySelector(".mega-menu");
+    const backBtn = document.querySelector(".mobile-back");
+    const xBtn = document.querySelector(".hamburger-x");
+    const header = document.querySelector("header");
+
+    if (!hamburger) return; // prevents errors on pages without nav
+
+    function closeAll() {
+        nav.classList.remove("active");
+        megaMenu.classList.remove("active");
+        document.body.classList.remove("no-scroll");
+        header.classList.remove("menu-open");
+    }
+
+    hamburger.addEventListener("click", () => {
+        nav.classList.add("active");
+        document.body.classList.add("no-scroll");
+        header.classList.add("menu-open");
+    });
+
+    xBtn.addEventListener("click", closeAll);
+
+    servicesBtn.addEventListener("click", (e) => {
+        if (window.innerWidth <= 1200) {
+            e.preventDefault();
+            megaMenu.classList.add("active");
+        }
+    });
+
+    backBtn.addEventListener("click", () => {
+        megaMenu.classList.remove("active");
+    });
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadComponent("navbar", "/components/navbar.html");
+    await loadComponent("footer", "/components/footer.html");
+
+    initNavbar(); // 🔥 THIS IS THE FIX
 });
