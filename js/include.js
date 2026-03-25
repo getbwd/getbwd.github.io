@@ -1,7 +1,11 @@
 async function loadComponent(id, file) {
-    const res = await fetch(file);
-    const data = await res.text();
-    document.getElementById(id).innerHTML = data;
+    try {
+        const res = await fetch(file);
+        const data = await res.text();
+        document.getElementById(id).innerHTML = data;
+    } catch (err) {
+        console.error("Component failed to load:", file, err);
+    }
 }
 
 function initNavbar() {
@@ -13,11 +17,11 @@ function initNavbar() {
     const xBtn = document.querySelector(".hamburger-x");
     const header = document.querySelector("header");
 
-    if (!hamburger) return; // prevents errors on pages without nav
+    if (!hamburger || !nav || !header) return;
 
     function closeAll() {
         nav.classList.remove("active");
-        megaMenu.classList.remove("active");
+        megaMenu?.classList.remove("active");
         document.body.classList.remove("no-scroll");
         header.classList.remove("menu-open");
     }
@@ -28,18 +32,25 @@ function initNavbar() {
         header.classList.add("menu-open");
     });
 
-    xBtn.addEventListener("click", closeAll);
+    // ✅ SAFE checks (this is the fix)
+    if (xBtn) {
+        xBtn.addEventListener("click", closeAll);
+    }
 
-    servicesBtn.addEventListener("click", (e) => {
-        if (window.innerWidth <= 1200) {
-            e.preventDefault();
-            megaMenu.classList.add("active");
-        }
-    });
+    if (servicesBtn && megaMenu) {
+        servicesBtn.addEventListener("click", (e) => {
+            if (window.innerWidth <= 1200) {
+                e.preventDefault();
+                megaMenu.classList.add("active");
+            }
+        });
+    }
 
-    backBtn.addEventListener("click", () => {
-        megaMenu.classList.remove("active");
-    });
+    if (backBtn && megaMenu) {
+        backBtn.addEventListener("click", () => {
+            megaMenu.classList.remove("active");
+        });
+    }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
