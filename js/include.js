@@ -51,18 +51,23 @@ function initNavbar() {
             megaMenu.classList.remove("active");
         });
     }
-const normalize = path => path.replace(/\/+$/, "") || "/";
+const page = document.body.getAttribute("data-page");
 
-const currentPath = normalize(window.location.pathname);
+if (!page) return;
+
+const map = {
+    home: "/",
+    about: "/about/",
+    faq: "/faq/",
+    support: "/support/"
+};
 
 document.querySelectorAll(".main-nav a").forEach(link => {
-    const linkPath = normalize(new URL(link.href).pathname);
-
     link.classList.remove("active");
 
-    if (currentPath === linkPath) {
-        link.classList.add("active");
-    } else if (linkPath !== "/" && currentPath.startsWith(linkPath)) {
+    const linkPath = new URL(link.href).pathname;
+
+    if (linkPath === map[page]) {
         link.classList.add("active");
     }
 });
