@@ -51,21 +51,18 @@ function initNavbar() {
             megaMenu.classList.remove("active");
         });
     }
-    // Set active nav link based on current URL
-const currentPath = window.location.pathname;
+const normalize = path => path.replace(/\/+$/, "") || "/";
+
+const currentPath = normalize(window.location.pathname);
 
 document.querySelectorAll(".main-nav a").forEach(link => {
-    const linkPath = new URL(link.href).pathname;
+    const linkPath = normalize(new URL(link.href).pathname);
 
     link.classList.remove("active");
 
-    // Exact match
     if (currentPath === linkPath) {
         link.classList.add("active");
-    }
-
-    // Match subpages (but NOT home)
-    else if (linkPath !== "/" && currentPath.startsWith(linkPath)) {
+    } else if (linkPath !== "/" && currentPath.startsWith(linkPath)) {
         link.classList.add("active");
     }
 });
