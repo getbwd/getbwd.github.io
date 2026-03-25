@@ -52,22 +52,23 @@ function initNavbar() {
         });
     }
     // Set active nav link based on current URL
-    const currentPath = window.location.pathname;
+const currentPath = window.location.pathname;
 
-    document.querySelectorAll(".main-nav a").forEach(link => {
-        const linkPath = new URL(link.href).pathname;
+document.querySelectorAll(".main-nav a").forEach(link => {
+    const linkPath = new URL(link.href).pathname;
 
-        // Remove any existing active class
-        link.classList.remove("active");
+    link.classList.remove("active");
 
-        // Match exact path OR handle trailing slash consistency
-        if (
-            currentPath === linkPath ||
-            currentPath.startsWith(linkPath) && linkPath !== "/"
-        ) {
-            link.classList.add("active");
-        }
-    });
+    // Exact match
+    if (currentPath === linkPath) {
+        link.classList.add("active");
+    }
+
+    // Match subpages (but NOT home)
+    else if (linkPath !== "/" && currentPath.startsWith(linkPath)) {
+        link.classList.add("active");
+    }
+});
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
