@@ -53,6 +53,18 @@ function initNavbar() {
     }
 }
 
+// Set active nav link manually per page
+if (window.ACTIVE_PAGE) {
+    document.querySelectorAll(".main-nav a").forEach(link => {
+        link.classList.remove("active");
+    });
+
+    const activeLink = document.querySelector(`.main-nav a[href="/${window.ACTIVE_PAGE}/"]`);
+    if (activeLink) {
+        activeLink.classList.add("active");
+    }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent("navbar", "/components/navbar.html");
     await loadComponent("footer", "/components/footer.html");
