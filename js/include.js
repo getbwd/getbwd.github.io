@@ -51,18 +51,23 @@ function initNavbar() {
             megaMenu.classList.remove("active");
         });
     }
-}
+    // Set active nav link based on current URL
+    const currentPath = window.location.pathname;
 
-// Set active nav link manually per page
-if (window.ACTIVE_PAGE) {
     document.querySelectorAll(".main-nav a").forEach(link => {
-        link.classList.remove("active");
-    });
+        const linkPath = new URL(link.href).pathname;
 
-    const activeLink = document.querySelector(`.main-nav a[href="/${window.ACTIVE_PAGE}/"]`);
-    if (activeLink) {
-        activeLink.classList.add("active");
-    }
+        // Remove any existing active class
+        link.classList.remove("active");
+
+        // Match exact path OR handle trailing slash consistency
+        if (
+            currentPath === linkPath ||
+            currentPath.startsWith(linkPath) && linkPath !== "/"
+        ) {
+            link.classList.add("active");
+        }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
