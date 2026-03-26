@@ -899,7 +899,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
 <section class="login-section">
     <div class="login-container">
-        <h2>Login to Your Account</h2>
+        <h2>Create Your Account</h2>
         
         <form class="login-form" id="loginForm">
             
@@ -947,23 +947,34 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
   const app = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
-
   const loginForm = document.getElementById('loginForm');
-  loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = loginForm.email.value;
-    const password = loginForm.password.value;
 
-auth.createUserWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    console.log('Signup successful:', userCredential.user);
-    window.location.href = '/account/dashboard/'; // redirect after signup
-  })
-  .catch((error) => {
-    console.error('Signup error:', error.code, error.message);
-    alert('Signup failed: ' + error.message);
-  });
-  });
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const email = loginForm.email.value;
+  const password = loginForm.password.value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+
+      // Set display name if you have it (prompt user for it or use email prefix)
+      const displayName = email.split('@')[0]; // simple example
+      user.updateProfile({
+        displayName: displayName
+      }).then(() => {
+        console.log('Profile updated:', displayName);
+        window.location.href = '/account/dashboard/';
+      }).catch((err) => {
+        console.error('Profile update failed:', err);
+        window.location.href = '/account/dashboard/';
+      });
+    })
+    .catch((error) => {
+      console.error('Signup error:', error.code, error.message);
+      alert('Signup failed: ' + error.message);
+    });
+});
 
   auth.onAuthStateChanged((user) => {
     if (user) {
