@@ -8,14 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;  /* add this line */
-}
-    
+
 body.no-scroll {
     overflow: hidden;
     height: 100vh;
@@ -98,7 +91,6 @@ header {
     height: 60px;
     width: auto;
     display: block;
-    max-width: 100%;
 }
 
 .logo {
@@ -124,6 +116,90 @@ header {
 
 .main-nav > a:hover,
 .services-link:hover {
+    color: var(--orange);
+}
+
+/* ===== HERO ===== */
+
+/* HERO */
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
+                url("/images/IMG_1267.jpeg") center/cover no-repeat;
+    color: var(--white);
+    padding: 120px 8%;       /* vertical and horizontal padding */
+    display: flex;
+    align-items: center;     /* vertical centering */
+}
+
+.hero-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.hero-content {
+    max-width: 500px;        /* limits text width so it wraps naturally */
+    text-align: left;        /* left-aligned */
+}
+
+.hero h1 {
+    font-size: 52px;
+    margin-bottom: 20px;
+    line-height: 1.2;        /* tighter header spacing */
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 25px;     /* slightly tighter spacing */
+    line-height: 1.5;        /* readable but compact */
+    word-wrap: break-word;   /* ensures long text wraps nicely */
+}
+
+.btn {
+    background: var(--orange);
+    color: var(--white);
+    padding: 12px 28px;      /* compact button */
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    transition: 0.3s;
+    font-size: 18px;
+}
+
+.btn:hover {
+    background: #e55a00;
+}
+
+/* Google Sign-In Button */
+.google-btn {
+    background: #4285F4;           /* Google Blue */
+    color: #fff;                   /* White text */
+    padding: 12px 28px;            /* same padding as your submit button */
+    border-radius: 8px;            /* same rounded corners */
+    font-weight: 600;
+    font-size: 18px;
+    text-decoration: none;
+    display: inline-flex;          /* allows icon + text alignment */
+    align-items: center;           /* vertical centering */
+    justify-content: center;       /* horizontal centering */
+    gap: 10px;                     /* space between icon & text */
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    width: 100%;                   /* match email/password button width */
+    margin-top: 15px;              /* space above from other links/buttons */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border: none;        /* remove default border */
+    outline: none;       /* remove default outline */
+}
+
+.google-btn:hover {
+    background: #357ae8;           /* slightly darker blue on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.hero span {
     color: var(--orange);
 }
 
@@ -178,14 +254,12 @@ header {
     width: 60px; 
     height: 60px;
     object-fit: contain;
-    max-width: 100%;
 }
 
 .card h3 {
     font-size: 22px;
     color: var(--orange);
 }
-
 
 /* ===== ANNOUNCEMENT BANNER ===== */
 
@@ -265,7 +339,7 @@ footer {
     position: absolute;
     top: 100%;             /* right below the nav link */
     left: 0;
-    width: 100%;           /* full viewport width */
+    width: 100vw;           /* full viewport width */
     margin-left: calc(-50vw + 50%); /* centers it across the screen */
     background: var(--white);
     padding: 70px 8%;
@@ -389,7 +463,6 @@ footer {
     display: block;
     height: 40px; /* adjust visually to match logo */
     width: auto;
-    max-width: 100%;
 }
 
 .mobile-menu-top {
@@ -465,8 +538,144 @@ header.menu-open .hamburger {
 .hamburger {
     display: none;
 }
+
+/* ===== LOGIN SECTION ===== */
+.login-section {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 8%;
+    background: var(--white);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    background: var(--gray);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.login-container h2 {
+    font-size: 28px;
+    color: var(--orange);
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+/* FORM ELEMENTS */
+.login-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255,100,4,0.15);
+}
+
+/* LOGIN BUTTON */
+.login-form .btn {
+    background: linear-gradient(135deg, #ff6404, #e55a00);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.login-form .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, #e55a00, #ff6404);
+}
+
+/* FORGOT PASSWORD / CREATE ACCOUNT LINKS */
+.login-help {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.login-help a {
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.login-help a:hover {
+    text-decoration: underline;
+    color: #e55a00;
+}
+
+/* STACK LINKS ON MOBILE */
+@media (max-width: 500px) {
+    .login-help {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+}
     
 @media (max-width: 900px) {
+  .hero {
+    padding: 120px 8%;           /* padding around hero */
+    display: flex;
+    flex-direction: column;     /* stack content vertically */
+    justify-content: center;    /* vertical centering */
+    align-items: center;        /* horizontal centering */
+    text-align: center;         /* center the text */
+  }
+
+  .hero-content {
+    max-width: 100%;            /* allow text to use full width inside padding */
+    width: auto;                /* flexible width */
+  }
+
+  .hero h1 {
+    font-size: 36px;            /* smaller header for phones */
+    line-height: 1.2;
+    margin-bottom: 15px;
+  }
+
+  .hero p {
+    font-size: 16px;            /* slightly smaller subheader */
+    line-height: 1.5;
+    margin-bottom: 20px;
+    word-wrap: break-word;      /* ensure it wraps nicely */
+  }
+
+  .hero .btn {
+    padding: 12px 28px;         /* compact button */
+    font-size: 16px;
+  }
+    
 .desktop-account {
     display: none;
 }
@@ -498,11 +707,6 @@ header.menu-open .hamburger {
 .mobile-menu-top img {
     height: 60px;
     width: auto;
-    max-width: 100%;
-}
-
-.container, .hero-container {
-    max-width: 100%;
 }
 
 .mobile-menu-top .hamburger-x {
@@ -517,7 +721,6 @@ header.menu-open .hamburger {
 .mobile-menu-top .hamburger-x img {
     height: 22px;
     width: auto;
-    max-width: 100%;
 }
 
 header.menu-open .mobile-menu-top .hamburger-x {
@@ -693,9 +896,7 @@ header.menu-open .mobile-menu-top .hamburger-x {
 #signupForm .btn {
     margin-top: 10px;
 }
-
-}
-    
+}   
 </style>
 </head>
 
