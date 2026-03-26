@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BWD Services</title>
+<title>Signup with BWD</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -888,97 +888,106 @@ header.menu-open .mobile-menu-top .hamburger-x {
     margin-top: 10px;
     cursor: pointer;
 }
-#signupForm {
-    margin-top: 10px;
 }
-
-/* optional tweak */
-#signupForm .btn {
-    margin-top: 10px;
-}
-}   
+    
 </style>
 </head>
 
 <body>
-
 <script src="/js/announcement.js"></script>
-
 <div id="navbar"></div>
 
-<form id="signupForm" class="login-form">
+<section class="login-section">
+    <div class="login-container">
+        <h2>Login to Your Account</h2>
+        
+        <form class="login-form" id="loginForm">
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
 
-    <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="John Doe" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-    <label for="email">Email</label>
-    <input type="email" id="email" placeholder="you@example.com" required>
+            <button type="submit" class="btn">Sign Up</button>
 
-    <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Create a password" required>
-
-    <button type="submit" class="btn">Create Account</button>
-
-    <div class="login-help">
-        <a href="/account/login/">Already have an account? Log in</a>
+            <div class="login-help">
+                <a href="/account/login/">Already have an account?</a>
+            </div>
+            <button id="googleSignIn" class="google-btn">
+    <img src="/images/google.png" alt="Google Icon" style="height:20px; width:20px;">
+    Log in with Google
+</button>
+        </form>
     </div>
-
-    <button type="button" id="googleSignUp" class="google-btn">
-        <img src="/images/google.png" style="height:20px;">
-        Sign up with Google
-    </button>
-
-</form>
+</section>
 
 <div id="footer"></div>
 <script src="/js/include.js"></script>
 
+
+
+<!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
+<!-- Firebase Authentication -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
 <script>
-// SIGN UP (EMAIL + PASSWORD)
-const signupForm = document.getElementById("signupForm");
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
+    authDomain: "bwd-accounts.firebaseapp.com",
+    projectId: "bwd-accounts",
+    storageBucket: "bwd-accounts.firebasestorage.app",
+    messagingSenderId: "590001375282",
+    appId: "1:590001375282:web:bd1725d5a5be3f9d28542b",
+    measurementId: "G-BFYEG3EN0W"
+  };
 
-if (signupForm) {
-    signupForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+  const loginForm = document.getElementById('loginForm');
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = loginForm.email.value;
+    const password = loginForm.password.value;
 
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
+auth.createUserWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    console.log('Signup successful:', userCredential.user);
+    window.location.href = '/account/dashboard/'; // redirect after signup
+  })
+  .catch((error) => {
+    console.error('Signup error:', error.code, error.message);
+    alert('Signup failed: ' + error.message);
+  });
+  });
 
-                // set display name
-                return user.updateProfile({
-                    displayName: name
-                });
-            })
-            .then(() => {
-                window.location.href = "/account/dashboard/";
-            })
-            .catch((error) => {
-                alert(error.message);
-            });
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      console.log('User already logged in:', user);
+      // window.location.href = '/account/dashboard/';
+    }
+  });
+  // Google provider setup
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+const googleButton = document.getElementById('googleSignIn');
+
+googleButton.addEventListener('click', () => {
+  auth.signInWithPopup(googleProvider)
+    .then((result) => {
+      const user = result.user;
+      console.log('Google login successful:', user);
+      window.location.href = '/account/dashboard/'; // redirect after login
+    })
+    .catch((error) => {
+      console.error('Google login error:', error.code, error.message);
+      alert('Google login failed: ' + error.message);
     });
-}
-
-
-// GOOGLE SIGN UP (same as login, just reuse)
-const googleSignUp = document.getElementById("googleSignUp");
-
-if (googleSignUp) {
-    googleSignUp.addEventListener("click", () => {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-            .then(() => {
-                window.location.href = "/account/dashboard/";
-            })
-            .catch((error) => {
-                alert(error.message);
-            });
-    });
-}
+});
 </script>
-
 </body>
 </html>
