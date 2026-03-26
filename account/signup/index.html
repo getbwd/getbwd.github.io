@@ -901,24 +901,27 @@ header.menu-open .mobile-menu-top .hamburger-x {
     <div class="login-container">
         <h2>Create Your Account</h2>
         
-        <form class="login-form" id="loginForm">
-            
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+<form class="login-form" id="loginForm">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="name" placeholder="Your full name" required>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="you@example.com" required>
 
-            <button type="submit" class="btn">Sign Up</button>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-            <div class="login-help">
-                <a href="/account/login/">Already have an account?</a>
-            </div>
-            <button id="googleSignIn" class="google-btn">
-    <img src="/images/google.png" alt="Google Icon" style="height:20px; width:20px;">
-    Log in with Google
-</button>
-        </form>
+    <button type="submit" class="btn">Sign Up</button>
+
+    <div class="login-help">
+        <a href="/account/login/">Already have an account? Log in</a>
+    </div>
+
+    <button id="googleSignIn" class="google-btn">
+        <img src="/images/google.png" alt="Google Icon" style="height:20px; width:20px;">
+        Log in with Google
+    </button>
+</form>
     </div>
 </section>
 
@@ -951,24 +954,44 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
+
+  const name = loginForm.name.value.trim();   // new full name field
   const email = loginForm.email.value;
   const password = loginForm.password.value;
+
+  if (!name) {
+    alert('Please enter your full name.');
+    return;
+  }
 
   auth.createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       const user = userCredential.user;
 
-      // Set display name if you have it (prompt user for it or use email prefix)
-      const displayName = email.split('@')[0]; // simple example
+      // Set display name from the name input
       user.updateProfile({
-        displayName: displayName
+        displayName: name
       }).then(() => {
-        console.log('Profile updated:', displayName);
-        window.location.href = '/account/dashboard/';
+        console.log('Profile updated:', name);
+
+        // Optional: save additional customer data in Firestore
+        const db = firebase.firestore();
+        db.collection('customers').doc(user.uid).set({
+          name: name,
+          email: email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          console.log('Customer saved to Firestore');
+          window.location.href = '/account/dashboard/';
+        }).catch((err) => {
+          console.error('Firestore save failed:', err);
+          window.location.href = '/account/dashboard/';
+        });
       }).catch((err) => {
         console.error('Profile update failed:', err);
         window.location.href = '/account/dashboard/';
       });
+
     })
     .catch((error) => {
       console.error('Signup error:', error.code, error.message);
