@@ -1252,159 +1252,130 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
-  authDomain: "bwd-accounts.firebaseapp.com",
-  projectId: "bwd-accounts",
-  storageBucket: "bwd-accounts.firebasestorage.app",
-  messagingSenderId: "590001375282",
-  appId: "1:590001375282:web:bd1725d5a5be3f9d28542b",
-  measurementId: "G-BFYEG3EN0W"
-};
+  // ====== FIREBASE INITIALIZATION ======
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
+    authDomain: "bwd-accounts.firebaseapp.com",
+    projectId: "bwd-accounts",
+    storageBucket: "bwd-accounts.firebasestorage.app",
+    messagingSenderId: "590001375282",
+    appId: "1:590001375282:web:bd1725d5a5be3f9d28542b",
+    measurementId: "G-BFYEG3EN0W"
+  };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-/* ===== PROTECT PAGE ===== */
-auth.onAuthStateChanged((user) => {
+  // ====== ELEMENTS ======
+  const phoneInput = document.getElementById("phoneNumber");
+  const contactSelect = document.getElementById("preferredContact");
+  const addPropertyBtn = document.getElementById("addPropertyBtn");
+  const propertiesList = document.getElementById("propertiesList");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const userEmailEl = document.getElementById("userEmail");
+  const memberSinceEl = document.getElementById("memberSince");
+  const welcomeText = document.getElementById("welcomeText");
+
+  // ====== STATE ======
+  let userData = {
+    phone: "",
+    contact: "",
+    properties: []
+  };
+
+  // ====== AUTH STATE ======
+  auth.onAuthStateChanged(user => {
     if (!user) {
-        window.location.href = "/account/login/";
-    } else {
-        document.getElementById("welcomeText").innerText =
-            "Welcome, " + (user.displayName || "BWD Member");
-
-        document.getElementById("userEmail").innerText = user.email;
-
-        const createdDate = new Date(user.metadata.creationTime);
-        document.getElementById("memberSince").innerText =
-            createdDate.toLocaleDateString();
+      // redirect to login if not signed in
+      window.location.href = "/account/login/";
+      return;
     }
-});
 
-/* ===== LOGOUT ===== */
-document.getElementById("logoutBtn").addEventListener("click", () => {
-    auth.signOut().then(() => {
-        window.location.href = "/";
-    });
-});
-const db = firebase.firestore();
-let currentUser;
-let userDocRef;
+    // set email & welcome
+    userEmailEl.textContent = user.email;
+    welcomeText.textContent = `Welcome, ${user.displayName || user.email}`;
 
-auth.onAuthStateChanged(async (user) => {
+    // set member since
+    if (user.metadata && user.metadata.creationTime) {
+      const created = new Date(user.metadata.creationTime);
+      memberSinceEl.textContent = created.toLocaleDateString();
+    }
+
+    // load user data from Firestore
+    const userRef = db.collection("users").doc(user.uid);
+    userRef.get().then(doc => {
+      if (doc.exists) {
+        userData = doc.data();
+        // populate inputs
+        phoneInput.value = userData.phone || "";
+        contactSelect.value = userData.contact || "";
+        renderProperties();
+      }
+    }).catch(err => console.error("Error loading user data:", err));
+  });
+
+  // ====== SAVE DATA FUNCTION ======
+  function saveData() {
+    const user = auth.currentUser;
     if (!user) return;
+    db.collection("users").doc(user.uid).set(userData, { merge: true })
+      .then(() => console.log("User data saved"))
+      .catch(err => console.error("Error saving user data:", err));
+  }
 
-    currentUser = user;
-    userDocRef = db.collection("users").doc(user.uid);
+  // ====== INPUT EVENTS ======
+  phoneInput.addEventListener("input", () => {
+    userData.phone = phoneInput.value;
+    saveData();
+  });
 
-    // Load user data
-    const doc = await userDocRef.get();
-    const data = doc.exists ? doc.data() : {};
-    
-    // Phone & contact
-    document.getElementById("phoneNumber").value = data.phoneNumber || "";
-    document.getElementById("preferredContact").value = data.preferredContact || "";
+  contactSelect.addEventListener("change", () => {
+    userData.contact = contactSelect.value;
+    saveData();
+  });
 
-    // Properties
-    renderProperties(data.properties || []);
-});
-
-// Save changes automatically
-document.getElementById("phoneNumber").addEventListener("change", async (e) => {
-    await userDocRef.set({ phoneNumber: e.target.value }, { merge: true });
-});
-
-document.getElementById("preferredContact").addEventListener("change", async (e) => {
-    await userDocRef.set({ preferredContact: e.target.value }, { merge: true });
-});
-
-// Properties
-function renderProperties(properties) {
-    const container = document.getElementById("propertiesList");
-    container.innerHTML = "";
-
-    properties.forEach((prop, index) => {
-        const div = document.createElement("div");
-        div.style.border = "1px solid #ccc";
-        div.style.padding = "10px";
-        div.style.marginBottom = "10px";
-        div.innerHTML = `
-            <input type="text" value="${prop.address}" placeholder="Address" data-index="${index}" class="prop-address"><br>
-            <input type="text" value="${prop.type}" placeholder="Property Type" data-index="${index}" class="prop-type"><br>
-            <textarea placeholder="Notes" data-index="${index}" class="prop-notes">${prop.notes}</textarea><br>
-            <label>
-                <input type="radio" name="primaryProp" ${prop.primary ? "checked" : ""} data-index="${index}">
-                Primary Property
-            </label>
-            <button class="removeProp" data-index="${index}">Remove</button>
-        `;
-        container.appendChild(div);
-    });
-
-    // Add event listeners for edits
-    document.querySelectorAll(".prop-address").forEach(input => {
-        input.addEventListener("change", updateProperty);
-    });
-    document.querySelectorAll(".prop-type").forEach(input => {
-        input.addEventListener("change", updateProperty);
-    });
-    document.querySelectorAll(".prop-notes").forEach(input => {
-        input.addEventListener("change", updateProperty);
-    });
-    document.querySelectorAll('input[name="primaryProp"]').forEach(input => {
-        input.addEventListener("change", setPrimaryProperty);
-    });
-    document.querySelectorAll(".removeProp").forEach(btn => {
-        btn.addEventListener("click", removeProperty);
-    });
-}
-
-// Add property
-document.getElementById("addPropertyBtn").addEventListener("click", async () => {
-    const doc = await userDocRef.get();
-    const properties = doc.exists ? doc.data().properties || [] : [];
-    properties.push({ address: "", type: "", notes: "", primary: properties.length === 0 });
-    await userDocRef.set({ properties }, { merge: true });
-    renderProperties(properties);
-});
-
-async function updateProperty(e) {
-    const index = parseInt(e.target.dataset.index);
-    const doc = await userDocRef.get();
-    const properties = doc.exists ? doc.data().properties || [] : [];
-    
-    if (e.target.classList.contains("prop-address")) properties[index].address = e.target.value;
-    if (e.target.classList.contains("prop-type")) properties[index].type = e.target.value;
-    if (e.target.classList.contains("prop-notes")) properties[index].notes = e.target.value;
-
-    await userDocRef.set({ properties }, { merge: true });
-}
-
-async function setPrimaryProperty(e) {
-    const index = parseInt(e.target.dataset.index);
-    const doc = await userDocRef.get();
-    const properties = doc.exists ? doc.data().properties || [] : [];
-    properties.forEach((p, i) => p.primary = i === index);
-    await userDocRef.set({ properties }, { merge: true });
-    renderProperties(properties);
-}
-
-async function removeProperty(e) {
-    const index = parseInt(e.target.dataset.index);
-    const doc = await userDocRef.get();
-    const properties = doc.exists ? doc.data().properties || [] : [];
-    properties.splice(index, 1);
-
-    // Ensure at least one primary
-    if (!properties.some(p => p.primary) && properties.length > 0) {
-        properties[0].primary = true;
+  // ====== PROPERTIES ======
+  addPropertyBtn.addEventListener("click", () => {
+    const propName = prompt("Enter property name or address:");
+    if (propName) {
+      userData.properties = userData.properties || [];
+      userData.properties.push(propName);
+      saveData();
+      renderProperties();
     }
+  });
 
-    await userDocRef.set({ properties }, { merge: true });
-    renderProperties(properties);
-}
+  function renderProperties() {
+    propertiesList.innerHTML = "";
+    if (!userData.properties || userData.properties.length === 0) {
+      propertiesList.textContent = "No properties added.";
+      return;
+    }
+    userData.properties.forEach(prop => {
+      const div = document.createElement("div");
+      div.textContent = prop;
+      div.style.padding = "6px 0";
+      div.style.borderBottom = "1px solid #ccc";
+      propertiesList.appendChild(div);
+    });
+  }
+
+  // ====== LOGOUT ======
+  logoutBtn.addEventListener("click", () => {
+    auth.signOut().then(() => {
+      window.location.href = "/account/login/";
+    }).catch(err => console.error(err));
+  });
+
+  // ====== OPTIONAL: HANDLE ADDITIONAL FUNCTIONS YOU HAD ======
+  // e.g., other buttons, toggles, mega menu JS if any
+  // Preserve anything else you had running on the dashboard
+
 </script>
+    
 </body>
 </html>
