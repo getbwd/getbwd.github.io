@@ -1214,6 +1214,18 @@ header.menu-open .mobile-menu-top .hamburger-x {
 
     </div>
 </section>
+
+<!-- Modal -->
+<div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:10010;">
+  <div style="background:#fff; padding:30px; border-radius:12px; width:90%; max-width:400px; text-align:center; position:relative;">
+    <h3 id="modalTitle">Edit</h3>
+    <input type="text" id="modalInput" style="width:100%; padding:12px; margin:20px 0; border:1px solid #ccc; border-radius:8px;">
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button id="modalSave" style="padding:10px 20px; background:var(--orange); color:#fff; border:none; border-radius:8px; cursor:pointer;">Save</button>
+      <button id="modalCancel" style="padding:10px 20px; background:#ccc; color:#333; border:none; border-radius:8px; cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+</div>
     
 <footer>
     <div class="footer-grid">
@@ -1255,126 +1267,156 @@ header.menu-open .mobile-menu-top .hamburger-x {
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // ====== FIREBASE INITIALIZATION ======
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
-    authDomain: "bwd-accounts.firebaseapp.com",
-    projectId: "bwd-accounts",
-    storageBucket: "bwd-accounts.firebasestorage.app",
-    messagingSenderId: "590001375282",
-    appId: "1:590001375282:web:bd1725d5a5be3f9d28542b",
-    measurementId: "G-BFYEG3EN0W"
-  };
+// ===== FIREBASE & AUTH READY =====
+// Make sure you have firebase initialized as `firebase` and firestore as `db`, auth as `auth`
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-
-  // ====== ELEMENTS ======
-  const phoneInput = document.getElementById("phoneNumber");
-  const contactSelect = document.getElementById("preferredContact");
-  const addPropertyBtn = document.getElementById("addPropertyBtn");
-  const propertiesList = document.getElementById("propertiesList");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const userEmailEl = document.getElementById("userEmail");
-  const memberSinceEl = document.getElementById("memberSince");
-  const welcomeText = document.getElementById("welcomeText");
-
-  // ====== STATE ======
-  let userData = {
-    phone: "",
-    contact: "",
-    properties: []
-  };
-
-  // ====== AUTH STATE ======
-  auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged((user) => {
     if (!user) {
-      // redirect to login if not signed in
-      window.location.href = "/account/login/";
-      return;
+        // Redirect if not logged in
+        window.location.href = "/account/login/";
+        return;
     }
 
-    // set email & welcome
-    userEmailEl.textContent = user.email;
-    welcomeText.textContent = `Welcome, ${user.displayName || user.email}`;
+    const userId = user.uid;
+    const userDocRef = db.collection("users").doc(userId);
 
-    // set member since
-    if (user.metadata && user.metadata.creationTime) {
-      const created = new Date(user.metadata.creationTime);
-      memberSinceEl.textContent = created.toLocaleDateString();
-    }
+    // Elements
+    const phoneInput = document.getElementById("phoneNumber");
+    const contactSelect = document.getElementById("preferredContact");
+    const welcomeText = document.getElementById("welcomeText");
+    const emailText = document.getElementById("userEmail");
+    const memberSinceText = document.getElementById("memberSince");
+    const propertiesList = document.getElementById("propertiesList");
+    const addPropertyBtn = document.getElementById("addPropertyBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-    // load user data from Firestore
-    const userRef = db.collection("users").doc(user.uid);
-    userRef.get().then(doc => {
-      if (doc.exists) {
-        userData = doc.data();
-        // populate inputs
-        phoneInput.value = userData.phone || "";
-        contactSelect.value = userData.contact || "";
-        renderProperties();
-      }
-    }).catch(err => console.error("Error loading user data:", err));
-  });
+    // Modal Elements
+    const editModal = document.getElementById("editModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalInput = document.getElementById("modalInput");
+    const modalSave = document.getElementById("modalSave");
+    const modalCancel = document.getElementById("modalCancel");
 
-  // ====== SAVE DATA FUNCTION ======
-  function saveData() {
-    const user = auth.currentUser;
-    if (!user) return;
-    db.collection("users").doc(user.uid).set(userData, { merge: true })
-      .then(() => console.log("User data saved"))
-      .catch(err => console.error("Error saving user data:", err));
-  }
+    let currentEditPropertyIndex = null;
+    let userData = {};
 
-  // ====== INPUT EVENTS ======
-  phoneInput.addEventListener("input", () => {
-    userData.phone = phoneInput.value;
-    saveData();
-  });
+    // ===== LOAD USER DATA =====
+    userDocRef.get().then(doc => {
+        if (doc.exists) {
+            userData = doc.data();
 
-  contactSelect.addEventListener("change", () => {
-    userData.contact = contactSelect.value;
-    saveData();
-  });
+            phoneInput.value = userData.phoneNumber || "";
+            contactSelect.value = userData.preferredContact || "";
+            emailText.innerText = userData.email || user.email;
+            memberSinceText.innerText = userData.memberSince || "N/A";
+            welcomeText.innerText = `Welcome, ${userData.name || user.email.split("@")[0]}`;
 
-  // ====== PROPERTIES ======
-  addPropertyBtn.addEventListener("click", () => {
-    const propName = prompt("Enter property name or address:");
-    if (propName) {
-      userData.properties = userData.properties || [];
-      userData.properties.push(propName);
-      saveData();
-      renderProperties();
-    }
-  });
-
-  function renderProperties() {
-    propertiesList.innerHTML = "";
-    if (!userData.properties || userData.properties.length === 0) {
-      propertiesList.textContent = "No properties added.";
-      return;
-    }
-    userData.properties.forEach(prop => {
-      const div = document.createElement("div");
-      div.textContent = prop;
-      div.style.padding = "6px 0";
-      div.style.borderBottom = "1px solid #ccc";
-      propertiesList.appendChild(div);
+            renderProperties();
+        }
     });
-  }
 
-  // ====== LOGOUT ======
-  logoutBtn.addEventListener("click", () => {
-    auth.signOut().then(() => {
-      window.location.href = "/account/login/";
-    }).catch(err => console.error(err));
-  });
+    // ===== UPDATE PHONE NUMBER =====
+    phoneInput.addEventListener("change", e => {
+        const phoneNumber = e.target.value;
+        userDocRef.set({ phoneNumber }, { merge: true });
+    });
 
-  // ====== OPTIONAL: HANDLE ADDITIONAL FUNCTIONS YOU HAD ======
-  // e.g., other buttons, toggles, mega menu JS if any
-  // Preserve anything else you had running on the dashboard
+    // ===== UPDATE PREFERRED CONTACT =====
+    contactSelect.addEventListener("change", e => {
+        const preferredContact = e.target.value;
+        userDocRef.set({ preferredContact }, { merge: true });
+    });
 
+    // ===== LOGOUT =====
+    logoutBtn.addEventListener("click", () => {
+        auth.signOut().then(() => {
+            window.location.reload();
+        });
+    });
+
+    // ===== PROPERTIES =====
+    function renderProperties() {
+        propertiesList.innerHTML = "";
+        const properties = userData.properties || [];
+
+        properties.forEach((prop, i) => {
+            const div = document.createElement("div");
+            div.style.display = "flex";
+            div.style.justifyContent = "space-between";
+            div.style.alignItems = "center";
+            div.style.marginBottom = "8px";
+
+            const span = document.createElement("span");
+            span.innerText = prop;
+            div.appendChild(span);
+
+            const editBtn = document.createElement("button");
+            editBtn.innerText = "Edit";
+            editBtn.style.background = "#ccc";
+            editBtn.style.border = "none";
+            editBtn.style.borderRadius = "6px";
+            editBtn.style.padding = "4px 8px";
+            editBtn.style.cursor = "pointer";
+            editBtn.addEventListener("click", () => openEditModal(i));
+            div.appendChild(editBtn);
+
+            const delBtn = document.createElement("button");
+            delBtn.innerText = "Delete";
+            delBtn.style.background = "#ff4d4d";
+            delBtn.style.color = "#fff";
+            delBtn.style.border = "none";
+            delBtn.style.borderRadius = "6px";
+            delBtn.style.padding = "4px 8px";
+            delBtn.style.cursor = "pointer";
+            delBtn.addEventListener("click", () => deleteProperty(i));
+            div.appendChild(delBtn);
+
+            propertiesList.appendChild(div);
+        });
+    }
+
+    function openEditModal(index) {
+        currentEditPropertyIndex = index;
+        modalTitle.innerText = "Edit Property";
+        modalInput.value = userData.properties[index];
+        editModal.style.display = "flex";
+    }
+
+    function deleteProperty(index) {
+        if (!userData.properties) return;
+        userData.properties.splice(index, 1);
+        userDocRef.set({ properties: userData.properties }, { merge: true });
+        renderProperties();
+    }
+
+    addPropertyBtn.addEventListener("click", () => {
+        currentEditPropertyIndex = null;
+        modalTitle.innerText = "Add Property";
+        modalInput.value = "";
+        editModal.style.display = "flex";
+    });
+
+    modalSave.addEventListener("click", () => {
+        const value = modalInput.value.trim();
+        if (!value) return;
+
+        if (!userData.properties) userData.properties = [];s
+
+        if (currentEditPropertyIndex !== null) {
+            userData.properties[currentEditPropertyIndex] = value;
+        } else {
+            userData.properties.push(value);
+        }
+
+        userDocRef.set({ properties: userData.properties }, { merge: true });
+        renderProperties();
+        editModal.style.display = "none";
+    });
+
+    modalCancel.addEventListener("click", () => {
+        editModal.style.display = "none";
+    });
+});
 </script>
     
 </body>
