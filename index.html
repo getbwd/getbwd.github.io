@@ -641,6 +641,16 @@ header {
     text-decoration: underline;
 }
 
+.announcement-bar {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
+}
+
+.announcement-bar.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
 /* ===== FOOTER ===== */
 
 footer {
