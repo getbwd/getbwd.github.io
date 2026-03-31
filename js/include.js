@@ -78,9 +78,24 @@ function initNavbar() {
     });
 }
 
+function initAnnouncementBar() {
+    const bar = document.getElementById("announcement-bar");
+    if (!bar) return;
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+            bar.classList.add("hidden");
+        } else {
+            bar.classList.remove("hidden");
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+    await loadComponent("announcement", "/components/announcement.html");
     await loadComponent("navbar", "/components/navbar.html");
     await loadComponent("footer", "/components/footer.html");
 
     initNavbar();
+    initAnnouncementBar();
 });
