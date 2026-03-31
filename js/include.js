@@ -32,7 +32,6 @@ function initNavbar() {
         header.classList.add("menu-open");
     });
 
-    // ✅ SAFE checks (this is the fix)
     if (xBtn) {
         xBtn.addEventListener("click", closeAll);
     }
@@ -51,31 +50,37 @@ function initNavbar() {
             megaMenu.classList.remove("active");
         });
     }
-const page = document.body.getAttribute("data-page");
 
-if (!page) return;
+    // ===== Active link highlighting =====
+    const page = document.body.getAttribute("data-page");
+    if (!page) return;
 
-const map = {
-    home: "/",
-    about: "/about/",
-    faq: "/faq/",
-    support: "/support/"
-};
+    const map = {
+        home: "/",
+        about: "/about/",
+        faq: "/faq/",
+        support: "/support/"
+    };
 
-document.querySelectorAll(".main-nav a").forEach(link => {
-    link.classList.remove("active");
-
-    const linkPath = new URL(link.href).pathname;
-
-    if (linkPath === map[page]) {
-        link.classList.add("active");
+    function normalizePath(path) {
+        return path.replace(/\/+$/, '');
     }
-});
+
+    document.querySelectorAll(".main-nav a").forEach(link => {
+        link.classList.remove("active");
+
+        const linkPath = normalizePath(new URL(link.href).pathname);
+        const targetPath = normalizePath(map[page] || '');
+
+        if (linkPath === targetPath) {
+            link.classList.add("active");
+        }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent("navbar", "/components/navbar.html");
     await loadComponent("footer", "/components/footer.html");
 
-    initNavbar(); // 🔥 THIS IS THE FIX
+    initNavbar();
 });
