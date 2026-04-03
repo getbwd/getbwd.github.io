@@ -82,21 +82,15 @@ function initAnnouncementBar() {
     const bar = document.getElementById("announcement-bar");
     if (!bar) return;
 
-    function updateBar() {
-        if (window.innerWidth > 900) {
-            bar.classList.remove("hidden"); // always show on desktop
-        } else {
+    if (window.innerWidth <= 900) {
+        window.addEventListener("scroll", () => {
             if (window.scrollY > 50) {
                 bar.classList.add("hidden");
             } else {
                 bar.classList.remove("hidden");
             }
-        }
+        });
     }
-
-    window.addEventListener("scroll", updateBar);
-    window.addEventListener("resize", updateBar);
-    updateBar(); // run once on load
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
