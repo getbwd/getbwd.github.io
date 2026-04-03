@@ -11,13 +11,20 @@ document.addEventListener("DOMContentLoaded", () => {
 function initAnnouncementBar() {
     const bar = document.getElementById("announcement-bar");
     if (!bar) return;
-    window.addEventListener("scroll", () => {
-        if (window.innerWidth <= 900) {
+
+    function updateBar() {
+        if (window.innerWidth > 900) {
+            bar.classList.remove("hidden"); // always show on desktop
+        } else {
             if (window.scrollY > 50) {
                 bar.classList.add("hidden");
             } else {
                 bar.classList.remove("hidden");
             }
         }
-    });
+    }
+
+    window.addEventListener("scroll", updateBar);
+    window.addEventListener("resize", updateBar);
+    updateBar(); // run once on load
 }
