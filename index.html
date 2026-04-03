@@ -74,10 +74,10 @@ nav a.active::after {
 header {
     background: var(--white);
     border-bottom: 1px solid var(--light-gray);
-    position: relative;
+    position: sticky;   /* ← change from relative to sticky */
+    top: 0;             /* ← add this */
     z-index: 5000;
-        margin-top: 0;
-
+    margin-top: 0;
 }
 
 .container {
