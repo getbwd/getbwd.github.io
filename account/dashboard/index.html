@@ -1290,8 +1290,8 @@ header.menu-open .mobile-menu-top .hamburger-x {
   // ====== AUTH STATE ======
   auth.onAuthStateChanged(user => {
     if (!user) {
-      // redirect to login if not signed in
-      window.location.href = "/account/login/";
+      // redirect to signup if not signed in
+      window.location.href = "/account/signup/";
       return;
     }
 
