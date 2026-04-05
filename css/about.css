@@ -14,16 +14,11 @@
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
-    gap: 80px;
-}
-
-.about-hero-text {
-    flex: 1;
-    visibility: hidden; /* spacer to match image column */
+    justify-content: flex-end;
 }
 
 .about-hero-content {
-    flex: 1.2;
+    width: calc(54.5% - 40px);
 }
 
 .about-hero-label {
@@ -259,12 +254,11 @@
     }
 
     .about-hero-inner {
-        flex-direction: column;
-        gap: 0;
+        justify-content: flex-start;
     }
 
-    .about-hero-text {
-        display: none;
+    .about-hero-content {
+        width: 100%;
     }
 
     .about-hero h1 {
