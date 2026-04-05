@@ -23,7 +23,10 @@
 }
 
 .about-hero-content {
-    flex: 1.2;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 80px;
 }
 
 .about-hero-label {
