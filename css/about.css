@@ -14,15 +14,11 @@
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
-    gap: 80px;
-}
-
-.about-hero-spacer {
-    flex: 1;
+    justify-content: flex-end;
 }
 
 .about-hero-content {
-    flex: 1.2;
+    max-width: 600px;
 }
 
 .about-hero-label {
@@ -258,16 +254,11 @@
     }
 
     .about-hero-inner {
-        flex-direction: column;
-        gap: 0;
-    }
-
-    .about-hero-spacer {
-        display: none;
+        justify-content: flex-start;
     }
 
     .about-hero-content {
-        flex: none;
+        margin-left: 0;
         width: 100%;
     }
 
