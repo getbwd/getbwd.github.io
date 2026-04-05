@@ -1,114 +1,3 @@
-
-
-/* ============================================================= BWD Services — style.css ============================================================= */ /* ===== CSS VARIABLES ===== */ :root { --orange: #ff6404; --dark: #121212; --gray: #f4f4f4; --light-gray: #e8e
-
-pasted
-
-
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <title>BWD Services</title> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <link rel="icon" type="image/png" href="images/favicon.png"> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;60
-
-pasted
-
-style.css
-
-Make this a universal style and remove  page specfic stuff for this page:
-
-Also, fix it up and remove useless stuff
-
-Apr 3
-
-Reading the frontend design skill
-Reading the frontend design skill
-Looking at the CSS, I'll clean it up by removing page-specific styles (hero, why-section, process-section, reviews-section, service-area-section, guarantee) and keeping only the universal/reusable parts.
-
-
-Created a file, read a file
-Created a file, read a file
-Here's what was removed and cleaned up:
-
-Removed (page-specific): .hero, .why-section, .why-container, .why-left/right, .why-item, .why-number, .why-content, .process-section, .process-container, .process-header, .process-steps, .process-step, .step-circle, .process-line, .reviews-section, .reviews-container, .reviews-header, .reviews-grid, .review-card, .review-stars, .review-text, .review-author, .service-area-section, .service-area-container, .service-area-left/right, .area-card, .service-badge, .guarantee, and the @keyframes fadeUpReview animation.
-
-Fixed/cleaned up:
-
-.container was missing max-width and margin: auto (the padding value was also broken — padding: 2 8% is invalid CSS)
-Removed redundant html, body reset that duplicated the * reset
-Removed duplicate .desktop-account:hover rule
-Collapsed redundant margin-left: calc(-50vw + 50%) on mega menu (not needed with position: absolute and left: 0; width: 100%)
-Removed duplicate .mobile-login declarations and consolidated them
-Removed .mobile-services block (unused/empty)
-Added transition to nav slide-in on mobile for smoothness
-Style
-Code · CSS 
-Now make my page specifc CSS for that page
-
-Apr 3
-
-Created a file, read a file
-Created a file, read a file
-Here's home.css — just add it to your index.html after the universal stylesheet:
-
-html
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/home.css">
-It contains everything pulled from style.css that was specific to the home page: hero, why section, process section, guarantee, reviews, and service area — including all their mobile responsive overrides.
-
-Home
-Code · CSS 
-Now write the code (css and html) for my about page
-
-7:11 PM
-Let me get a feel for what you want before I start building.
-
-What do you want on the About page?
-
-Q: What sections do you want on the About page? (Select all that apply)
-A: Our Story / Origin, Mission & Values
-
-Q: Do you have a real team photo or headshots to use?
-A: No, use placeholders
-
-7:12 PM
-What tone are you going for?
-
-Family and locally owned. Me and my brother own this business, we're kids in high school and bascially broke. By any means nesccary, we will do anything. We pull lawn mowers out the back seats of cars just because thats our only ride to the job. Grind.
-
-7:13 PM
-Love it. That's a real story — let's tell it honestly. No corporate fluff.
-
-
-Created 2 files, read a file
-Created 2 files, read a file
-
-About page HTML for BWD Services
-about.html
-
-About page CSS for BWD Services
-about.css
-
-Presented 2 files
-Done
-Here's your about page. Drop about.css into your /css/ folder and you're set.
-
-The page has four sections:
-
-Hero — dark background, punchy "Two Brothers. One Mission." opener
-Our Story — honest copy about starting with nothing, the back-seat lawn mower, the grind. Has a photo placeholder you can swap out, plus three stats (2 Brothers, 1 Car, 365 Days)
-Mission & Values — four cards: By Any Means Necessary, Built for This Community, Do It Right, Always Growing
-CTA strip — orange, drives people to get an estimate
-The copy leans into the real story — no fake corporate tone. When you get a good photo of you two, swap out /images/about-placeholder.jpg and the placeholder will disappear automatically.
-
-About
-Code · HTML 
-About
-Code · CSS 
-
-
-
-
-Claude is AI and can make mistakes. Please double-check responses.
-About · HTML
-Copy
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,12 +9,12 @@ Copy
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/about.css">
 </head>
- 
+
 <body>
- 
+
 <script src="/js/announcement.js"></script>
 <div id="navbar"></div>
- 
+
 <!-- PAGE HERO -->
 <section class="about-hero">
     <div class="about-hero-inner">
@@ -134,11 +23,11 @@ Copy
         <p class="about-hero-sub">We're not a corporation. We're two high school kids from Genesee County who bet on themselves — and we show up every single day to prove it.</p>
     </div>
 </section>
- 
+
 <!-- ORIGIN STORY -->
 <section class="story-section">
     <div class="story-container">
- 
+
         <div class="story-image">
             <img src="/images/about-placeholder.jpg" alt="BWD Brothers" onerror="this.style.display='none'">
             <div class="story-image-placeholder">
@@ -146,13 +35,13 @@ Copy
                 <p>Photo coming soon</p>
             </div>
         </div>
- 
+
         <div class="story-content">
             <h2>We Started With Nothing. We're Still Going.</h2>
             <p>BWD Services was built from the ground up — literally. No truck, no trailer, no investors. Just two brothers, a lawn mower crammed in the back seat of a car, and a refusal to quit.</p>
             <p>We started this business because we wanted to build something real. Something ours. We're still in high school, still figuring it out, and still pulling equipment out of the back seat to get to every job on time.</p>
             <p>Every lawn we cut, every driveway we clear — it's not just a service call. It's proof that you don't need perfect circumstances to do good work. You just need to show up.</p>
- 
+
             <div class="story-stats">
                 <div class="stat">
                     <strong>2</strong>
@@ -168,60 +57,59 @@ Copy
                 </div>
             </div>
         </div>
- 
+
     </div>
 </section>
- 
+
 <!-- MISSION & VALUES -->
 <section class="values-section">
     <div class="values-container">
- 
+
         <div class="values-header">
             <h2>What We're Built On</h2>
             <p>No fluff. Just how we actually operate.</p>
         </div>
- 
+
         <div class="values-grid">
- 
+
             <div class="value-card">
                 <div class="value-icon">🔥</div>
                 <h3>By Any Means Necessary</h3>
                 <p>No trailer? No problem. We'll figure it out. Every time. That mentality is baked into how we run every job.</p>
             </div>
- 
+
             <div class="value-card">
                 <div class="value-icon">🤝</div>
                 <h3>Built for This Community</h3>
                 <p>We live here. We go to school here. When we show up to your property, we're not a stranger — we're your neighbor.</p>
             </div>
- 
+
             <div class="value-card">
                 <div class="value-icon">✅</div>
                 <h3>Do It Right or Don't Do It</h3>
                 <p>We don't cut corners. Our name is on every job. If something's not right, we come back and fix it. No excuses, no charge.</p>
             </div>
- 
+
             <div class="value-card">
                 <div class="value-icon">📈</div>
                 <h3>Always Growing</h3>
                 <p>We started small and we're proud of it. Every season we learn more, do better, and serve more of Genesee County.</p>
             </div>
- 
+
         </div>
- 
+
     </div>
 </section>
- 
+
 <!-- CTA STRIP -->
 <section class="about-cta">
     <h2>Ready to work with people who actually care?</h2>
     <p>Get your free estimate today. No pressure, no nonsense.</p>
     <a href="#" class="btn">Get a Free Estimate</a>
 </section>
- 
+
 <div id="footer"></div>
 <script src="/js/include.js"></script>
- 
+
 </body>
 </html>
- 
