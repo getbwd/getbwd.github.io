@@ -35,16 +35,16 @@
 }
 
 .about-hero h1 {
-    font-size: 60px;
+    font-size: 52px;
     font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 24px;
+    line-height: 1.2;
+    margin-bottom: 20px;
 }
 
 .about-hero-sub {
-    font-size: 19px;
+    font-size: 20px;
     color: #bbb;
-    line-height: 1.7;
+    line-height: 1.5;
     max-width: 560px;
 }
 
@@ -108,16 +108,16 @@
 }
 
 .story-content h2 {
-    font-size: 38px;
+    font-size: 44px;
     font-weight: 800;
     line-height: 1.2;
     color: var(--dark);
 }
 
 .story-content p {
-    font-size: 16px;
+    font-size: 18px;
     color: #555;
-    line-height: 1.8;
+    line-height: 1.6;
 }
 
 .story-stats {
@@ -167,15 +167,15 @@
 }
 
 .values-header h2 {
-    font-size: 42px;
+    font-size: 40px;
     font-weight: 800;
     color: var(--dark);
     margin-bottom: 12px;
 }
 
 .values-header p {
-    font-size: 17px;
-    color: #777;
+    font-size: 18px;
+    color: #555;
 }
 
 .values-grid {
@@ -205,15 +205,15 @@
 }
 
 .value-card h3 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--dark);
 }
 
 .value-card p {
     font-size: 15px;
-    color: #666;
-    line-height: 1.7;
+    color: #555;
+    line-height: 1.6;
 }
 
 /* ===== ABOUT CTA ===== */
@@ -232,7 +232,7 @@
 }
 
 .about-cta p {
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 36px;
     opacity: 0.9;
 }
@@ -272,7 +272,7 @@
     }
 
     .about-hero h1 {
-        font-size: 40px;
+        font-size: 36px;
     }
 
     .about-hero-sub {
