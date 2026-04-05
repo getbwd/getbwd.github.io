@@ -18,11 +18,11 @@
 }
 
 .about-hero-spacer {
-    flex: 1;
+    flex: 1.2;
 }
 
 .about-hero-content {
-    flex: 1.2;
+    flex: 1;
 }
 
 .about-hero-label {
