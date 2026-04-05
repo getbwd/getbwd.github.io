@@ -1,936 +1,227 @@
+
+
+/* ============================================================= BWD Services — style.css ============================================================= */ /* ===== CSS VARIABLES ===== */ :root { --orange: #ff6404; --dark: #121212; --gray: #f4f4f4; --light-gray: #e8e
+
+pasted
+
+
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <title>BWD Services</title> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <link rel="icon" type="image/png" href="images/favicon.png"> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;60
+
+pasted
+
+style.css
+
+Make this a universal style and remove  page specfic stuff for this page:
+
+Also, fix it up and remove useless stuff
+
+Apr 3
+
+Reading the frontend design skill
+Reading the frontend design skill
+Looking at the CSS, I'll clean it up by removing page-specific styles (hero, why-section, process-section, reviews-section, service-area-section, guarantee) and keeping only the universal/reusable parts.
+
+
+Created a file, read a file
+Created a file, read a file
+Here's what was removed and cleaned up:
+
+Removed (page-specific): .hero, .why-section, .why-container, .why-left/right, .why-item, .why-number, .why-content, .process-section, .process-container, .process-header, .process-steps, .process-step, .step-circle, .process-line, .reviews-section, .reviews-container, .reviews-header, .reviews-grid, .review-card, .review-stars, .review-text, .review-author, .service-area-section, .service-area-container, .service-area-left/right, .area-card, .service-badge, .guarantee, and the @keyframes fadeUpReview animation.
+
+Fixed/cleaned up:
+
+.container was missing max-width and margin: auto (the padding value was also broken — padding: 2 8% is invalid CSS)
+Removed redundant html, body reset that duplicated the * reset
+Removed duplicate .desktop-account:hover rule
+Collapsed redundant margin-left: calc(-50vw + 50%) on mega menu (not needed with position: absolute and left: 0; width: 100%)
+Removed duplicate .mobile-login declarations and consolidated them
+Removed .mobile-services block (unused/empty)
+Added transition to nav slide-in on mobile for smoothness
+Style
+Code · CSS 
+Now make my page specifc CSS for that page
+
+Apr 3
+
+Created a file, read a file
+Created a file, read a file
+Here's home.css — just add it to your index.html after the universal stylesheet:
+
+html
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/home.css">
+It contains everything pulled from style.css that was specific to the home page: hero, why section, process section, guarantee, reviews, and service area — including all their mobile responsive overrides.
+
+Home
+Code · CSS 
+Now write the code (css and html) for my about page
+
+7:11 PM
+Let me get a feel for what you want before I start building.
+
+What do you want on the About page?
+
+Q: What sections do you want on the About page? (Select all that apply)
+A: Our Story / Origin, Mission & Values
+
+Q: Do you have a real team photo or headshots to use?
+A: No, use placeholders
+
+7:12 PM
+What tone are you going for?
+
+Family and locally owned. Me and my brother own this business, we're kids in high school and bascially broke. By any means nesccary, we will do anything. We pull lawn mowers out the back seats of cars just because thats our only ride to the job. Grind.
+
+7:13 PM
+Love it. That's a real story — let's tell it honestly. No corporate fluff.
+
+
+Created 2 files, read a file
+Created 2 files, read a file
+
+About page HTML for BWD Services
+about.html
+
+About page CSS for BWD Services
+about.css
+
+Presented 2 files
+Done
+Here's your about page. Drop about.css into your /css/ folder and you're set.
+
+The page has four sections:
+
+Hero — dark background, punchy "Two Brothers. One Mission." opener
+Our Story — honest copy about starting with nothing, the back-seat lawn mower, the grind. Has a photo placeholder you can swap out, plus three stats (2 Brothers, 1 Car, 365 Days)
+Mission & Values — four cards: By Any Means Necessary, Built for This Community, Do It Right, Always Growing
+CTA strip — orange, drives people to get an estimate
+The copy leans into the real story — no fake corporate tone. When you get a good photo of you two, swap out /images/about-placeholder.jpg and the placeholder will disappear automatically.
+
+About
+Code · HTML 
+About
+Code · CSS 
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+About · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BWD Services</title>
+<title>About Us — BWD Services</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-    
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;  /* add this line */
-}
-    
-body.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-}
-
-nav a.active {
-
-    position: relative;
-}
-
-:root {
-    --orange: #ff6404;
-    --dark: #121212;
-    --gray: #f4f4f4;
-    --light-gray: #e8e8e8;
-    --white: #ffffff;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-}
-
-body {
-    background: var(--white);
-    color: var(--dark);
-    line-height: 1.6;
-}
-
-.about-hero {
-    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-                url("/images/about-hero.jpg") center/cover no-repeat;
-    color: var(--white);
-    padding: 120px 8%;
-    text-align: center;
-}
-
-.about-hero h1 {
-    font-size: 48px;
-    margin-bottom: 15px;
-}
-
-.about-hero p {
-    font-size: 20px;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-/* ===== STORY SECTION ===== */
-
-.story-section {
-    padding: 120px 8%;
-    background: var(--white);
-}
-
-.story-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    gap: 80px;
-    align-items: center;
-}
-
-.story-text {
-    flex: 1;
-}
-
-.story-text h2 {
-    font-size: 40px;
-    color: var(--orange);
-    margin-bottom: 20px;
-}
-
-.story-text p {
-    font-size: 17px;
-    color: #555;
-    line-height: 1.7;
-    margin-bottom: 20px;
-}
-
-.story-image {
-    flex: 1;
-}
-
-.story-image img {
-    width: 100%;
-    border-radius: 16px;
-    object-fit: cover;
-}
-
-/* ===== VALUES SECTION ===== */
-
-.values-section {
-    background: var(--gray);
-    padding: 120px 8%;
-}
-
-.values-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.values-container h2 {
-    font-size: 40px;
-    color: var(--orange);
-    margin-bottom: 60px;
-}
-
-.values-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 40px;
-}
-
-.value-card {
-    background: var(--white);
-    padding: 40px;
-    border-radius: 16px;
-    transition: 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.value-card:hover {
-    transform: translateY(-8px);
-    border: 1px solid var(--orange);
-}
-
-.value-card h3 {
-    margin-bottom: 10px;
-    color: var(--orange);
-}
-
-.value-card p {
-    color: #555;
-    font-size: 15px;
-}
-
-/* ===== CTA SECTION ===== */
-
-.about-cta {
-    background: var(--orange);
-    color: var(--white);
-    text-align: center;
-    padding: 100px 8%;
-}
-
-.about-cta h2 {
-    font-size: 38px;
-    margin-bottom: 15px;
-}
-
-.about-cta p {
-    font-size: 18px;
-    margin-bottom: 25px;
-}
-
-/* ===== MOBILE ===== */
-
-@media (max-width: 900px) {
-
-    .about-hero h1 {
-        font-size: 34px;
-    }
-
-    .about-hero p {
-        font-size: 16px;
-    }
-
-    .story-container {
-        flex-direction: column;
-        gap: 40px;
-    }
-
-    .story-text h2 {
-        font-size: 30px;
-    }
-
-}
-
-
-/* ===== NAVIGATION ===== */
-
-nav a.active::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--orange);
-    border-radius: 2px;
-}
-
-/* ===== HEADER ===== */
-
-header {
-    background: var(--white);
-    border-bottom: 1px solid var(--light-gray);
-    position: relative;
-    z-index: 5000;
-        margin-top: 0;
-
-}
-
-.container {
-    width: 100%;
-    padding: 0 8%;
-}
-
-.header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 5px 0; /* reduce vertical padding */
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* ensures logo and hamburger align vertically */
-}
-
-.logo img {
-    height: 60px;
-    width: auto;
-    display: block;
-    max-width: 100%;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-/* NAV */
-
-.main-nav {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.main-nav > a,
-.services-link {
-    color: var(--dark);
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.main-nav > a:hover,
-.services-link:hover {
-    color: var(--orange);
-}
-
-/* ===== SECTIONS ===== */
-
-.section {
-    padding: 100px 8%;
-}
-
-.section h2 {
-    font-size: 40px;
-    text-align: center;
-    margin-bottom: 15px;
-    color: var(--orange); /* add this line */
-}
-
-.section-sub {
-    text-align: center;
-    margin-bottom: 60px;
-    color: #555;
-}
-
-/* ===== GRID ===== */
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 35px;
-}
-
-/* ===== CARDS ===== */
-
-.card {
-    background: var(--gray);
-    padding: 40px;
-    border-radius: 14px;
-    transition: 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    border: 1px solid transparent;
-    align-items: center; /* add this line to center content horizontally */
-    text-align: center;  /* optional: ensures text is centered under icon */
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    border: 1px solid var(--orange);
-}
-
-.card img {
-    width: 60px; 
-    height: 60px;
-    object-fit: contain;
-    max-width: 100%;
-}
-
-.card h3 {
-    font-size: 22px;
-    color: var(--orange);
-}
-
-
-/* ===== ANNOUNCEMENT BANNER ===== */
-
-.announcement-bar {
-    background: var(--orange);
-    color: #fff;
-    text-align: center;
-    padding: 8px 8%;
-    font-size: 14px;
-    font-weight: 550;
-    letter-spacing: 0.2px;
-}
-
-.announcement-bar span {
-    color: var(--orange);
-    font-weight: 600;
-}
-
-.announcement-bar a {
-    color: #fff;
-    text-decoration: underline;
-    margin-left: 8px;
-    font-weight: 700;
-}
-.announcement-bar a:hover {
-    text-decoration: underline;
-}
-
-/* ===== FOOTER ===== */
-
-footer {
-    background: #000;
-    color: #ccc;
-    padding: 60px 8% 30px 8%;
-}
-
-.footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 40px;
-    margin-bottom: 40px;
-}
-
-.footer-column h4 {
-    color: var(--white);
-    margin-bottom: 15px;
-}
-
-.footer-column a {
-    display: block;
-    color: #aaa;
-    text-decoration: none;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.footer-column a:hover {
-    color: var(--orange);
-}
-
-.footer-bottom {
-    border-top: 1px solid #222;
-    padding-top: 20px;
-    text-align: center;
-    font-size: 13px;
-    color: #777;
-}
-
-/* ===== FULL WIDTH ENTERPRISE MEGA MENU ===== */
-
-.dropdown {
-    position: static; 
-}
-
-/* Mega menu */
-.mega-menu {
-    position: absolute;
-    top: 100%;             /* right below the nav link */
-    left: 0;
-    width: 100%;           /* full viewport width */
-    margin-left: calc(-50vw + 50%); /* centers it across the screen */
-    background: var(--white);
-    padding: 70px 8%;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-    border-top: 4px solid var(--orange);
-
-    /* Hover transition */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.25s ease;
-    z-index: 999;          /* above other content */
-}
-
-.mega-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 80px;
-    align-items: stretch; /* important */
-}
-
-.mega-column {
-    display: flex;
-    flex-direction: column;
-}
-
-.mega-item.view-all {
-    margin-top: auto;
-}
-
-/* ===== MEGA MENU ITEMS ===== */
-
-.mega-item {
-    display: block;
-    padding: 12px 0;
-    text-decoration: none;
-    color: var(--dark);
-    transition: 0.25s ease;
-}
-
-.mega-item:hover .mega-title {
-    color: var(--orange);
-}
-
-.mega-title {
-    display: block;
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 4px;
-}
-
-.mega-desc {
-    display: block;
-    font-size: 13px;
-    color: #666;
-    line-height: 1.4;
-}
-
-/* Sections */
-
-.mega-column h4 {
-    color: var(--orange);
-    margin-bottom: 20px;
-    font-size: 18px;
-    letter-spacing: 1px;
-}
-
-
-.mega-column a {
-    display: block;
-    margin-bottom: 12px;
-    color: var(--dark);
-    text-decoration: none;
-    font-size: 15px;
-    transition: 0.2s;
-}
-
-.mega-column a:hover {
-    color: var(--orange);
-}
-
-/* Show dropdown */
-
-.dropdown:hover .mega-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-/* VIEW ALL Styling */
-
-.view-all {
-    margin-top: 10px;
-}
-
-.mega-item.view-all .mega-title {
-    color: var(--orange) !important;  /* force orange */
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.mega-item.view-all:hover .mega-title {
-    color: #e55a00 !important;  /* slightly darker on hover */
-}
-/* ===== MOBILE NAV ===== */
-/* Hamburger (menu icon) stays where it was in navbar */
-.hamburger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10002;
-    height: 60px;   /* same as logo */
-    width: 60px;
-}
-
-.hamburger img {
-    display: block;
-    height: 40px; /* adjust visually to match logo */
-    width: auto;
-    max-width: 100%;
-}
-
-.mobile-menu-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.mobile-menu-top .hamburger-x {
-    display: none;
-    width: 60px;
-    height: 60px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-header.menu-open .mobile-menu-top .hamburger-x {
-    display: flex;
-}
-    
-header.menu-open {
-    z-index: 10005;
-}
-/* Show X when menu is open */
-header.menu-open .hamburger {
-    display: none;
-}
-    
-.hamburger-wrapper {
-    display: flex;
-    align-items: center; /* vertical align */
-    justify-content: center; /* optional, or space-between */
-    position: relative; /* for absolute child if needed */
-    width: 60px; /* same as hamburger */
-    height: 60px; /* same as hamburger */
-}
-
-.desktop-account {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    transition: 0.2s ease;
-    background: var(--light-gray);
-    color: var(--orange);
-}
-
-.desktop-account:hover {
-    background: var(--light-gray);
-    color: var(--orange);
-}
-    
-/* Hide mobile login on desktop */
-.mobile-login {
-    display: none;
-}
-/* ===== DESKTOP DEFAULT (hide mobile-only elements) ===== */
-/* ===== DESKTOP DEFAULT: hide mobile-only elements ===== */
-
-.main-nav .mobile-menu-top,
-.main-nav .mobile-divider,
-.main-nav .mobile-login,
-.main-nav .mobile-quote,
-.main-nav .switch-commercial,
-.main-nav .mobile-back {
-    display: none;
-}
-
-.hamburger {
-    display: none;
-}
-    
-@media (max-width: 900px) {
-.desktop-account {
-    display: none;
-}
-.hamburger {
-    display: flex;
-}
-
-.main-nav .mobile-login,
-.main-nav .mobile-quote,
-.main-nav .mobile-divider,
-.main-nav .switch-commercial {
-    display: block !important;
-}
-
-.mobile-login {
-    display: block;
-}
-    
-.main-nav.active .mobile-menu-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto 20px auto;
-    padding: 0;   /* EXACT same as .container */
-}
-
-.mobile-menu-top img {
-    height: 60px;
-    width: auto;
-    max-width: 100%;
-}
-
-.container, .hero-container {
-    max-width: 100%;
-}
-
-.mobile-menu-top .hamburger-x {
-    display: none;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.mobile-menu-top .hamburger-x img {
-    height: 22px;
-    width: auto;
-    max-width: 100%;
-}
-
-header.menu-open .mobile-menu-top .hamburger-x {
-    display: flex;
-}
-
-  .main-nav {
-      padding-top: 30px;
-  }
-
-.mobile-services {
-    display: block;
-    width: 100%;
-    text-align: left;
-}
-
-.main-nav {
-    align-items: flex-start;
-}
-
-.mobile-services .arrow {
-    font-size: 22px;
-}
-
-    .mobile-services .arrow {
-    display: none;
-}
-    
-
-  /* FULL-SCREEN MOBILE NAV */
-    .main-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--white);
-        flex-direction: column;
-        padding: 20px 2%; /* reduce top padding */
-        gap: 15px;
-        transform: translateX(-100%);
-        z-index: 10000;
-        overflow-y: auto;
-        text-align: left !important;
-    }    
-
-  .main-nav.active {
-    transform: translateX(0); /* slide in */
-  }
-
-  .main-nav a {
-    font-weight: 600;
-    font-size: 18px;
-    width: 100%;
-    text-align: left;
-  }
-
-  .main-nav a.active {
-    color: var(--orange);
-    font-weight: 700;
-  }
-
-  /* MOBILE MEGA MENU */
-    .mega-menu {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--white);
-        padding: 20px;
-        overflow-y: auto;
-        z-index: 10001;
-  }
-
-  .mega-menu.active {
-    display: block;
-  }
-
-  .mobile-back {
-    font-weight: 500;
-    margin-bottom: 30px;
-    cursor: pointer;
-  }
-
-  .mega-inner {
-    display: block;
-  }
-
-  .mega-column {
-    margin-bottom: 40px;
-  }
-
-  .mega-column h4 {
-    font-size: 16px;
-    margin-bottom: 15px;
-  }
-
-  .mega-item {
-    padding: 10px 0;
-  }
-
-  .mega-title {
-    font-size: 18px;
-  }
-
-  /* BODY NO SCROLL */
-  body.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-  }
-
-  /* remove desktop hover underline */
-  nav a.active::after {
-    display: none;
-  }
-
-.mobile-divider {
-    border: none;
-    border-top: 1.5px solid #ccc;
-    margin: 8px 0;
-    width: 100%;
-    display: block;
-}
-    .mobile-login {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    border: 2px solid #000;
-    background: #fff;
-    color: #000;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 6px;
-    margin-bottom: 6px;
-}
-
-.main-nav a.mobile-login {
-    text-align: center;
-}
-
-.mobile-quote {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 6px;
-    background: var(--orange);
-    color: #fff;
-}
-
-.main-nav a.mobile-quote {
-    text-align: center;
-    color: #fff;   /* force white text */
-}
-
-
-.switch-commercial {
-    font-size: 14px;
-    color: #888;
-    margin-top: 10px;
-    cursor: pointer;
-}
-}
-    
-</style>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/about.css">
 </head>
-
+ 
 <body>
-    
+ 
 <script src="/js/announcement.js"></script>
-
 <div id="navbar"></div>
+ 
+<!-- PAGE HERO -->
 <section class="about-hero">
-    <h1>Built for Michigan. Built for You.</h1>
-    <p>
-        BWD Services delivers reliable, year-round property care designed for
-        real homes, real weather, and real schedules.
-    </p>
+    <div class="about-hero-inner">
+        <p class="about-hero-label">Our Story</p>
+        <h1>Two Brothers.<br>One Mission.</h1>
+        <p class="about-hero-sub">We're not a corporation. We're two high school kids from Genesee County who bet on themselves — and we show up every single day to prove it.</p>
+    </div>
 </section>
-
-<!-- ===== OUR STORY ===== -->
-
+ 
+<!-- ORIGIN STORY -->
 <section class="story-section">
     <div class="story-container">
-
-        <div class="story-text">
-            <h2>Our Story</h2>
-
-            <p>
-                BWD started with one goal: make property services simple,
-                reliable, and actually professional. Too many homeowners were
-                dealing with no-shows, unclear pricing, and inconsistent work.
-            </p>
-
-            <p>
-                We built a system that fixes that — clear quotes, fast
-                scheduling, and dependable crews who show up ready to work.
-                Whether it’s summer lawn care or winter snow removal,
-                we treat every property like it’s our own.
-            </p>
-
-            <p>
-                Today, we proudly serve families across Genesee County with
-                dependable service in every season.
-            </p>
-        </div>
-
+ 
         <div class="story-image">
-            <img src="/images/about-team.jpg" alt="BWD team working">
+            <img src="/images/about-placeholder.jpg" alt="BWD Brothers" onerror="this.style.display='none'">
+            <div class="story-image-placeholder">
+                <span>📸</span>
+                <p>Photo coming soon</p>
+            </div>
         </div>
-
+ 
+        <div class="story-content">
+            <h2>We Started With Nothing. We're Still Going.</h2>
+            <p>BWD Services was built from the ground up — literally. No truck, no trailer, no investors. Just two brothers, a lawn mower crammed in the back seat of a car, and a refusal to quit.</p>
+            <p>We started this business because we wanted to build something real. Something ours. We're still in high school, still figuring it out, and still pulling equipment out of the back seat to get to every job on time.</p>
+            <p>Every lawn we cut, every driveway we clear — it's not just a service call. It's proof that you don't need perfect circumstances to do good work. You just need to show up.</p>
+ 
+            <div class="story-stats">
+                <div class="stat">
+                    <strong>2</strong>
+                    <span>Brothers</span>
+                </div>
+                <div class="stat">
+                    <strong>1</strong>
+                    <span>Car</span>
+                </div>
+                <div class="stat">
+                    <strong>365</strong>
+                    <span>Days a Year</span>
+                </div>
+            </div>
+        </div>
+ 
     </div>
 </section>
-
-<section class="about-cta">
-    <h2>Ready to Experience the Difference?</h2>
-    <p>Get a fast, free quote and see why homeowners trust BWD year-round.</p>
-    <a href="#" class="btn">Request Your Free Estimate</a>
-</section>
-
-<!-- ===== VALUES ===== -->
-
+ 
+<!-- MISSION & VALUES -->
 <section class="values-section">
     <div class="values-container">
-
-        <h2>What We Stand For</h2>
-
-        <div class="values-grid">
-
-            <div class="value-card">
-                <h3>Reliability</h3>
-                <p>When we schedule a service, we show up — on time and ready.</p>
-            </div>
-
-            <div class="value-card">
-                <h3>Transparency</h3>
-                <p>No hidden fees. No surprise charges. Just clear pricing.</p>
-            </div>
-
-            <div class="value-card">
-                <h3>Quality Work</h3>
-                <p>We don’t cut corners. We deliver results you’ll notice.</p>
-            </div>
-
-            <div class="value-card">
-                <h3>Local Commitment</h3>
-                <p>We live here too — and take pride in our community.</p>
-            </div>
-
+ 
+        <div class="values-header">
+            <h2>What We're Built On</h2>
+            <p>No fluff. Just how we actually operate.</p>
         </div>
-
+ 
+        <div class="values-grid">
+ 
+            <div class="value-card">
+                <div class="value-icon">🔥</div>
+                <h3>By Any Means Necessary</h3>
+                <p>No trailer? No problem. We'll figure it out. Every time. That mentality is baked into how we run every job.</p>
+            </div>
+ 
+            <div class="value-card">
+                <div class="value-icon">🤝</div>
+                <h3>Built for This Community</h3>
+                <p>We live here. We go to school here. When we show up to your property, we're not a stranger — we're your neighbor.</p>
+            </div>
+ 
+            <div class="value-card">
+                <div class="value-icon">✅</div>
+                <h3>Do It Right or Don't Do It</h3>
+                <p>We don't cut corners. Our name is on every job. If something's not right, we come back and fix it. No excuses, no charge.</p>
+            </div>
+ 
+            <div class="value-card">
+                <div class="value-icon">📈</div>
+                <h3>Always Growing</h3>
+                <p>We started small and we're proud of it. Every season we learn more, do better, and serve more of Genesee County.</p>
+            </div>
+ 
+        </div>
+ 
     </div>
 </section>
-
-
+ 
+<!-- CTA STRIP -->
+<section class="about-cta">
+    <h2>Ready to work with people who actually care?</h2>
+    <p>Get your free estimate today. No pressure, no nonsense.</p>
+    <a href="#" class="btn">Get a Free Estimate</a>
+</section>
+ 
 <div id="footer"></div>
 <script src="/js/include.js"></script>
+ 
 </body>
 </html>
+ 
