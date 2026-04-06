@@ -1,3 +1,7 @@
+/* =============================================================
+   LEGAL PAGES (Terms, Privacy, etc.)
+   ============================================================= */
+
 :root {
     --dark: #1a1a1a;
     --white: #ffffff;
@@ -13,16 +17,20 @@ body, html {
     font-family: 'Inter', sans-serif;
 }
 
-/* MASTER CONTAINER */
+/* =============================================================
+   MASTER CONTAINER (THIS FIXES ALIGNMENT)
+   ============================================================= */
 .svc-section-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 24px;
+    max-width: 1280px;   /* controls alignment */
+    margin: 0 auto;      /* centers */
+    padding: 0 24px;     /* side breathing room */
     box-sizing: border-box;
     width: 100%;
 }
 
-/* HERO */
+/* =============================================================
+   HERO
+   ============================================================= */
 .legal-hero {
     background: var(--dark);
     color: var(--white);
@@ -40,7 +48,9 @@ body, html {
     font-size: 16px;
 }
 
-/* CONTENT */
+/* =============================================================
+   CONTENT
+   ============================================================= */
 .legal-content {
     background: var(--white);
     padding: 90px 0;
@@ -48,11 +58,11 @@ body, html {
 
 .legal-inner {
     width: 100%;
-    max-width: 900px; /* tighter for readability */
-    margin: 0 auto;
 }
 
-/* INTRO BOX */
+/* =============================================================
+   INTRO
+   ============================================================= */
 .legal-intro {
     background: var(--gray);
     border-left: 4px solid var(--orange);
@@ -67,7 +77,9 @@ body, html {
     color: var(--dark);
 }
 
-/* SECTIONS */
+/* =============================================================
+   SECTIONS
+   ============================================================= */
 .legal-section {
     margin-bottom: 42px;
 }
@@ -106,7 +118,9 @@ body, html {
     text-decoration: underline;
 }
 
-/* MOBILE */
+/* =============================================================
+   MOBILE
+   ============================================================= */
 @media (max-width: 900px) {
 
     .legal-hero {
