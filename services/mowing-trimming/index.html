@@ -54,7 +54,7 @@
             <p class="svc-sub">Every mow comes with the full treatment — no add-on fees.</p>
 
             <ul class="svc-checklist">
-                <li><span class="chk">&#10003;</span> Full lawn mow — we follow your preferred cut height, just let us know</li>
+                <li><span class="chk">&#10003;</span> Full lawn mow at the proper cut height for the season — want it different? Just say so and we'll adjust</li>
                 <li><span class="chk">&#10003;</span> Weed whacking along all edges, fences, and obstacles</li>
                 <li><span class="chk">&#10003;</span> Trimming around sidewalks, driveways, and curbs</li>
                 <li><span class="chk">&#10003;</span> Blowing clippings off hard surfaces (driveways, walkways)</li>
@@ -92,10 +92,10 @@
 
             <!-- Ad Price Guarantee Banner -->
             <div class="svc-ad-guarantee">
-                <div class="ad-guarantee-icon">&#127991;</div>
+                <div class="ad-guarantee-icon hide-mobile">&#127991;</div>
                 <div>
                     <strong>See an ad with a different price?</strong>
-                    <p>We honor it. Enter your promo code or mention it when you get your estimate and we'll lock in whatever price we promised — guaranteed.</p>
+                    <p>We honor it. Mention it when you get your estimate and we'll lock in whatever price we promised — guaranteed.</p>
                 </div>
             </div>
 
@@ -126,16 +126,27 @@
         </div>
 
         <!-- Commercial Pricing (hidden by default) -->
-        <div class="svc-pricing-grid svc-pricing-grid--commercial" id="pricing-commercial" style="display:none;">
-            <div class="svc-price-card svc-price-card--commercial-info" style="grid-column: 1 / -1;">
-                <div class="commercial-notice">
-                    <div class="commercial-icon">&#127970;</div>
-                    <div>
-                        <h3>Commercial Pricing</h3>
-                        <p>Commercial jobs are quoted individually — lot size, layout, and frequency all factor in. Head to our commercial page for full details and to get a quote built for your property.</p>
-                        <a href="https://getbwd.com/commercial" class="btn btn--dark" target="_blank" rel="noopener">View Commercial Services &rarr;</a>
-                    </div>
+        <div id="pricing-commercial" style="display:none;">
+            <p class="svc-pricing-note" style="margin-bottom: 24px; font-size: 15px; color: #666;">Every commercial job is quoted individually — lot layout, obstacles, and service frequency all affect the final price. These are starting points.</p>
+            <div class="svc-pricing-grid svc-pricing-grid--commercial">
+                <div class="svc-price-card">
+                    <p class="price-tier">Small Commercial</p>
+                    <p class="price-amount">Starting at <strong>$60</strong></p>
+                    <p class="price-desc">Small storefronts, offices, or tight commercial lots. Clean edges, quick turnaround.</p>
                 </div>
+                <div class="svc-price-card svc-price-card--featured">
+                    <p class="price-tier">Mid-Size Property</p>
+                    <p class="price-amount">Starting at <strong>$120</strong></p>
+                    <p class="price-desc">Strip malls, multi-unit buildings, medium commercial grounds. Quoted per visit or on contract.</p>
+                </div>
+                <div class="svc-price-card">
+                    <p class="price-tier">Large / Multi-Site</p>
+                    <p class="price-amount">Custom Quote</p>
+                    <p class="price-desc">Large lots, HOAs, or multiple locations. We'll build a plan and a price that works for you.</p>
+                </div>
+            </div>
+            <div class="commercial-full-link">
+                <a href="https://getbwd.com/commercial" class="btn btn--dark" target="_blank" rel="noopener">Full Commercial Services &rarr;</a>
             </div>
         </div>
 
@@ -158,7 +169,7 @@
             <a href="https://getbwd.com/pricing" class="getprice-card getprice-card--primary">
                 <div class="getprice-icon">&#9889;</div>
                 <h3>Instant Estimate</h3>
-                <p>Enter your lawn info and get a real price in seconds. No commitment, no pressure — just your number.</p>
+                <p>Answer a few quick questions about your lawn and get a real price calculated instantly. No commitment, no pressure.</p>
                 <span class="getprice-cta">Get Instant Price &rarr;</span>
             </a>
 
@@ -191,6 +202,16 @@
             <h2>Genesee County's Go-To Lawn Crew</h2>
             <p>We mow lawns across Flint, Burton, Grand Blanc, Fenton, and Swartz Creek. We're not some out-of-town company — we live here, we know these neighborhoods, and we treat your yard like it's our own.</p>
             <p>Every yard is different. We adjust our approach based on the season, the grass type, and what your lawn actually needs — and if you ever want something done differently, just say the word.</p>
+
+            <div class="svc-addon-row">
+                <p class="svc-addon-label">Need more than a mow?</p>
+                <div class="svc-addon-pills">
+                    <a href="/services/spring-summer/custom-treatments/" class="addon-pill">&#129716; Custom Treatments</a>
+                    <a href="/services/spring-summer/debris-waste-removal/" class="addon-pill">&#128465; Debris &amp; Waste Removal</a>
+                    <a href="/services/spring-summer/garden-bed-care/" class="addon-pill">&#127804; Garden Bed Care</a>
+                    <a href="/services/spring-summer/spring-cleanup/" class="addon-pill">&#127807; Spring Cleanup</a>
+                </div>
+            </div>
         </div>
 
         <div class="svc-local-badges">
@@ -203,61 +224,13 @@
     </div>
 </section>
 
-<!-- ===== OTHER SERVICES ===== -->
-<section class="svc-upsell">
-    <div class="svc-section-inner svc-section-inner--narrow">
-
-        <div class="svc-upsell-header">
-            <h2>While We're There...</h2>
-            <p>Most customers add at least one of these. Makes sense — we're already in the yard.</p>
-        </div>
-
-        <div class="svc-upsell-grid">
-
-            <a href="/services/spring-summer/spring-cleanup/" class="svc-upsell-card">
-                <div class="upsell-icon">&#127807;</div>
-                <div>
-                    <h3>Spring Cleanup</h3>
-                    <p>Branches, debris, and winter leftovers cleared out before we mow.</p>
-                </div>
-            </a>
-
-            <a href="/services/spring-summer/debris-waste-removal/" class="svc-upsell-card">
-                <div class="upsell-icon">&#128465;</div>
-                <div>
-                    <h3>Debris &amp; Waste Removal</h3>
-                    <p>Pet waste, sticks, and clutter hauled out so your yard is truly clean.</p>
-                </div>
-            </a>
-
-            <a href="/services/spring-summer/garden-bed-care/" class="svc-upsell-card">
-                <div class="upsell-icon">&#127804;</div>
-                <div>
-                    <h3>Garden Bed Care</h3>
-                    <p>Weeding and mulching around beds while we're already on site.</p>
-                </div>
-            </a>
-
-            <a href="/services/spring-summer/custom-treatments/" class="svc-upsell-card">
-                <div class="upsell-icon">&#129716;</div>
-                <div>
-                    <h3>Custom Treatments</h3>
-                    <p>Fertilization, weed control, or overseeding to get your lawn truly healthy.</p>
-                </div>
-            </a>
-
-        </div>
-
-    </div>
-</section>
-
 <div id="footer"></div>
 <script src="/js/include.js"></script>
 
 <script>
 function showPricing(type) {
     document.getElementById('pricing-residential').style.display = type === 'residential' ? 'grid' : 'none';
-    document.getElementById('pricing-commercial').style.display = type === 'commercial' ? 'grid' : 'none';
+    document.getElementById('pricing-commercial').style.display = type === 'commercial' ? 'block' : 'none';
     document.getElementById('btn-residential').classList.toggle('toggle-btn--active', type === 'residential');
     document.getElementById('btn-commercial').classList.toggle('toggle-btn--active', type === 'commercial');
 }
