@@ -1,6 +1,6 @@
 /* =============================================================
    LEGAL PAGES (Terms, Privacy, etc.)
-   Matches service-page layout + alignment
+   FINAL ALIGNMENT FIX
    ============================================================= */
 
 /* HERO */
@@ -30,15 +30,22 @@
     background: var(--white);
 }
 
-/* Uses same container as service pages */
 .legal-content .svc-section-inner {
     display: flex;
-    justify-content: flex-start; /* aligns left edge with hero */
+    justify-content: flex-start;
 }
 
-/* Readable text column */
+/* THIS is the magic fix */
 .legal-inner {
     max-width: 900px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Force ALL children to respect column width */
+.legal-inner > * {
+    width: 100%;
 }
 
 /* =============================================================
@@ -60,7 +67,7 @@
 }
 
 /* =============================================================
-   SECTION STYLING
+   SECTIONS
    ============================================================= */
 
 .legal-section {
@@ -81,7 +88,6 @@
     margin-bottom: 14px;
 }
 
-/* Optional lists for future legal content */
 .legal-section ul {
     margin: 12px 0 16px 22px;
     color: #555;
@@ -92,7 +98,6 @@
     margin-bottom: 8px;
 }
 
-/* Links inside legal text */
 .legal-section a {
     color: var(--orange);
     font-weight: 600;
