@@ -40,7 +40,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding: 0 8% 0 18%;
+    padding: 0 8%;
 }
 
 .hero-container .home-inner {
@@ -65,7 +65,7 @@
     line-height: 1.1;
     color: var(--white);
     margin-bottom: 22px;
-    max-width: 640px;
+    max-width: 900px;
     opacity: 0;
     animation: fadeUp 0.6s ease 0.25s forwards;
 }
@@ -74,7 +74,7 @@
     font-size: 19px;
     color: rgba(255,255,255,0.72);
     line-height: 1.6;
-    max-width: 500px;
+    max-width: 700px;
     margin-bottom: 36px;
     display: block;
     opacity: 0;
@@ -687,7 +687,6 @@
     .hero { min-height: 100svh; }
     .hero h1 { font-size: clamp(40px, 10vw, 60px); }
     .hero-trust { display: none; }
-    .hero-container { padding: 0 8%; }
 
     .gp-grid { grid-template-columns: 1fr; }
 
