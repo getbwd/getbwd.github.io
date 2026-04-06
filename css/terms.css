@@ -43,24 +43,24 @@ body, html {
    CONTENT WRAPPER
    ============================================================= */
 .legal-content {
-    padding: 90px 8%;
     background: var(--white);
     width: 100%;
+    max-width: 100% !important; /* override any inherited max-width */
+    padding: 90px 8%;
     box-sizing: border-box;
+    margin: 0 !important;       /* remove centering */
 }
 
 /* =============================================================
-   FIX FULL WIDTH FOR TERMS OF SERVICE
+   FORCE FULL WIDTH FOR ALL CHILD CONTAINERS
    ============================================================= */
-.legal-content .svc-section-inner {
-    max-width: 100% !important;  /* override any inherited max-width */
+.legal-content .svc-section-inner,
+.legal-content .legal-inner {
     width: 100% !important;
-    margin: 0 !important;        /* remove auto centering */
-    padding: 0 !important;       /* remove extra padding from parent */
-}
-
-.legal-inner {
-    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important; /* ensure not restricted by flex */
 }
 
 /* =============================================================
@@ -72,6 +72,8 @@ body, html {
     border-radius: 0 14px 14px 0;
     padding: 26px 28px;
     margin-bottom: 50px;
+    width: 100%; /* fill full width of parent */
+    box-sizing: border-box;
 }
 
 .legal-intro p {
@@ -85,6 +87,8 @@ body, html {
    ============================================================= */
 .legal-section {
     margin-bottom: 42px;
+    width: 100%; /* ensure full width */
+    box-sizing: border-box;
 }
 
 .legal-section h2 {
