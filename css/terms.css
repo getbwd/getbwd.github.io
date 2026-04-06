@@ -1,0 +1,86 @@
+/* =============================================================
+   LEGAL PAGES (Terms, Privacy, etc.)
+   ============================================================= */
+
+/* HERO */
+.legal-hero {
+    background: var(--dark);
+    color: var(--white);
+    padding: 80px 8% 90px;
+}
+
+.legal-hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.legal-hero p {
+    color: #bbb;
+    font-size: 16px;
+}
+
+/* CONTENT WRAPPER */
+.legal-content {
+    padding: 90px 8%;
+    background: var(--white);
+}
+
+.legal-inner {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* INTRO BOX */
+.legal-intro {
+    background: var(--gray);
+    border-left: 4px solid var(--orange);
+    border-radius: 0 14px 14px 0;
+    padding: 26px 28px;
+    margin-bottom: 50px;
+}
+
+.legal-intro p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--dark);
+}
+
+/* SECTIONS */
+.legal-section {
+    margin-bottom: 42px;
+}
+
+.legal-section h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: var(--dark);
+}
+
+.legal-section p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #555;
+    margin-bottom: 14px;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+
+    .legal-hero {
+        padding: 60px 8% 70px;
+    }
+
+    .legal-hero h1 {
+        font-size: 36px;
+    }
+
+    .legal-content {
+        padding: 70px 8%;
+    }
+
+    .legal-section h2 {
+        font-size: 22px;
+    }
+}
