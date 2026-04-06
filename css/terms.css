@@ -20,12 +20,21 @@ body, html {
 }
 
 /* =============================================================
+   SHARED INNER CONTAINER (CONTROLS ALIGNMENT)
+   ============================================================= */
+.svc-section-inner {
+    padding: 0 8%;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* =============================================================
    HERO SECTION
    ============================================================= */
 .legal-hero {
     background: var(--dark);
     color: var(--white);
-    padding: 80px 8% 90px; /* 8% left/right padding */
+    padding: 80px 0 90px; /* removed horizontal padding */
 }
 
 .legal-hero h1 {
@@ -44,28 +53,16 @@ body, html {
    ============================================================= */
 .legal-content {
     background: var(--white);
-    padding: 90px 8%;       /* same horizontal padding as hero */
-    box-sizing: border-box;
-}
-
-/* =============================================================
-   FIX ALIGNMENT WITH HERO (DESKTOP & MOBILE)
-   ============================================================= */
-.legal-content .svc-section-inner {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0; /* remove double padding */
+    padding: 90px 0; /* removed horizontal padding */
     box-sizing: border-box;
 }
 
 .legal-content .legal-inner {
     width: 100%;
-    max-width: 100%;
     margin: 0;
     padding: 0;
     display: block;
-    box-sizing: border-box;  /* ensures content stays inside padding */
+    box-sizing: border-box;
 }
 
 /* =============================================================
@@ -136,7 +133,7 @@ body, html {
 @media (max-width: 900px) {
 
     .legal-hero {
-        padding: 60px 8% 70px;
+        padding: 60px 0 70px;
     }
 
     .legal-hero h1 {
@@ -144,7 +141,7 @@ body, html {
     }
 
     .legal-content {
-        padding: 70px 8%;
+        padding: 70px 0;
     }
 
     .legal-section h2 {
@@ -153,5 +150,15 @@ body, html {
 
     .legal-intro {
         padding: 22px;
+    }
+
+    .svc-section-inner {
+        padding: 0 6%;
+    }
+}
+
+@media (max-width: 600px) {
+    .svc-section-inner {
+        padding: 0 5%;
     }
 }
