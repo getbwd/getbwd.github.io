@@ -13,7 +13,6 @@
 .svc-hero-inner {
     max-width: 1400px;
     margin: 0 auto;
-    max-width: 720px;
 }
 
 .svc-back {
@@ -25,7 +24,7 @@
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.3px;
-    margin-bottom: 30px;
+    margin-bottom: 14px;
     opacity: 0.9;
     transition: opacity 0.2s;
 }

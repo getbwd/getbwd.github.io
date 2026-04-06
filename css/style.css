@@ -391,7 +391,7 @@ nav a.active::after {
 /* ===== FOOTER ===== */
 
 footer {
-    background: var(--dark);
+    background: #121212;
     color: #ccc;
     padding: 60px 8% 30px;
 }
