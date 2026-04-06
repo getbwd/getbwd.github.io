@@ -39,10 +39,12 @@
 .hero-container {
     position: relative;
     z-index: 2;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 8%;
     width: 100%;
+    padding: 0 8%;
+}
+
+.hero-container .home-inner {
+    /* inherits max-width: 1400px; margin: 0 auto from home-inner */
 }
 
 .hero-eyebrow {
@@ -538,7 +540,7 @@
 }
 
 .review-card {
-    background: var(--white);
+    background: var(--gray);
     padding: 34px;
     border-radius: 16px;
     border: 2px solid transparent;
@@ -654,7 +656,7 @@
 
 .final-cta {
     padding: 110px 8%;
-    background: var(--white);
+    background: var(--gray);
     text-align: center;
     border-top: 1px solid var(--light-gray);
 }
