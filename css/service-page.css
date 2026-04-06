@@ -603,16 +603,19 @@
 
 /* Service addon pills */
 .svc-addon-row {
-    margin-top: 28px;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid #e8e8e8;
 }
 
 .svc-addon-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     color: #aaa;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    display: block;
 }
 
 .svc-addon-pills {
@@ -624,16 +627,22 @@
 .addon-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: var(--gray);
-    border: 1px solid var(--light-gray);
+    gap: 7px;
+    background: var(--white);
+    border: 1.5px solid #e0e0e0;
     border-radius: 100px;
-    padding: 8px 16px;
+    padding: 9px 18px;
     font-size: 14px;
     font-weight: 600;
     color: var(--dark);
     text-decoration: none;
     transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.addon-pill-icon {
+    font-size: 15px;
+    line-height: 1;
 }
 
 .addon-pill:hover {

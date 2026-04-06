@@ -127,7 +127,6 @@
 
         <!-- Commercial Pricing (hidden by default) -->
         <div id="pricing-commercial" style="display:none;">
-            <p class="svc-pricing-note" style="margin-bottom: 24px; font-size: 15px; color: #666;">Every commercial job is quoted individually — lot layout, obstacles, and service frequency all affect the final price. These are starting points.</p>
             <div class="svc-pricing-grid svc-pricing-grid--commercial">
                 <div class="svc-price-card">
                     <p class="price-tier">Small Commercial</p>
@@ -141,16 +140,17 @@
                 </div>
                 <div class="svc-price-card">
                     <p class="price-tier">Large / Multi-Site</p>
-                    <p class="price-amount">Custom Quote</p>
+                    <p class="price-amount">Starting at <strong>$200</strong></p>
                     <p class="price-desc">Large lots, HOAs, or multiple locations. We'll build a plan and a price that works for you.</p>
                 </div>
             </div>
-            <div class="commercial-full-link">
-                <a href="https://getbwd.com/commercial" class="btn btn--dark" target="_blank" rel="noopener">Full Commercial Services &rarr;</a>
-            </div>
         </div>
 
-        <p class="svc-pricing-note">Final pricing based on property size, condition, and frequency. Get a free estimate — takes about 60 seconds.</p>
+        <!-- Residential footnote -->
+        <p class="svc-pricing-note" id="note-residential">Final pricing based on property size, condition, and frequency. Get a free estimate — takes about 60 seconds.</p>
+
+        <!-- Commercial footnote -->
+        <p class="svc-pricing-note" id="note-commercial" style="display:none;">Every commercial job is quoted individually — lot layout, obstacles, and service frequency all affect the final price. These are starting points. Full details at <a href="https://getbwd.com/commercial" target="_blank" rel="noopener" style="color:var(--orange);font-weight:600;">getbwd.com/commercial</a></p>
 
     </div>
 </section>
@@ -206,10 +206,10 @@
             <div class="svc-addon-row">
                 <p class="svc-addon-label">Need more than a mow?</p>
                 <div class="svc-addon-pills">
-                    <a href="/services/spring-summer/custom-treatments/" class="addon-pill">&#129716; Custom Treatments</a>
-                    <a href="/services/spring-summer/debris-waste-removal/" class="addon-pill">&#128465; Debris &amp; Waste Removal</a>
-                    <a href="/services/spring-summer/garden-bed-care/" class="addon-pill">&#127804; Garden Bed Care</a>
-                    <a href="/services/spring-summer/spring-cleanup/" class="addon-pill">&#127807; Spring Cleanup</a>
+                    <a href="/services/spring-summer/custom-treatments/" class="addon-pill"><span class="addon-pill-icon">&#129716;</span> Custom Treatments</a>
+                    <a href="/services/spring-summer/debris-waste-removal/" class="addon-pill"><span class="addon-pill-icon">&#128465;</span> Debris &amp; Waste Removal</a>
+                    <a href="/services/spring-summer/garden-bed-care/" class="addon-pill"><span class="addon-pill-icon">&#127804;</span> Garden Bed Care</a>
+                    <a href="/services/spring-summer/spring-cleanup/" class="addon-pill"><span class="addon-pill-icon">&#127807;</span> Spring Cleanup</a>
                 </div>
             </div>
         </div>
@@ -231,6 +231,8 @@
 function showPricing(type) {
     document.getElementById('pricing-residential').style.display = type === 'residential' ? 'grid' : 'none';
     document.getElementById('pricing-commercial').style.display = type === 'commercial' ? 'block' : 'none';
+    document.getElementById('note-residential').style.display = type === 'residential' ? 'block' : 'none';
+    document.getElementById('note-commercial').style.display = type === 'commercial' ? 'block' : 'none';
     document.getElementById('btn-residential').classList.toggle('toggle-btn--active', type === 'residential');
     document.getElementById('btn-commercial').classList.toggle('toggle-btn--active', type === 'commercial');
 }
