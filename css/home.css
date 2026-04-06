@@ -186,56 +186,6 @@
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== STAT BAR ===== */
-
-.stat-bar {
-    background: var(--dark);
-    border-top: 3px solid var(--orange);
-    padding: 0 8%;
-}
-
-.stat-bar-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-}
-
-.stat-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 26px 16px;
-    text-align: center;
-    gap: 4px;
-}
-
-.stat-num {
-    font-size: 40px;
-    font-weight: 800;
-    color: var(--orange);
-    line-height: 1;
-    display: block;
-}
-
-.stat-lbl {
-    font-size: 12px;
-    color: rgba(255,255,255,0.45);
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    display: block;
-}
-
-.stat-sep {
-    width: 1px;
-    background: rgba(255,255,255,0.08);
-    margin: 16px 0;
-    flex-shrink: 0;
-}
-
 /* ===== SHARED SECTION STRUCTURE ===== */
 
 .home-section {
@@ -733,8 +683,6 @@
     .hero { min-height: 100svh; }
     .hero h1 { font-size: clamp(40px, 10vw, 60px); }
     .hero-trust { display: none; }
-
-    .stat-bar { display: none; }
 
     .gp-grid { grid-template-columns: 1fr; }
 
