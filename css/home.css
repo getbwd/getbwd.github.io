@@ -278,6 +278,7 @@
     color: var(--dark);
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
     transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s, background 0.22s;
 }
@@ -308,8 +309,6 @@
 }
 
 .gp-badge {
-    display: inline-block;
-    align-self: flex-start;    /* ADD THIS LINE */
     background: var(--orange);
     color: var(--white);
     font-size: 10px;
@@ -319,6 +318,8 @@
     padding: 3px 10px;
     border-radius: 100px;
     margin-bottom: 2px;
+    display: inline-block;
+    width: fit-content;
 }
 
 .gp-card h3 {
@@ -386,7 +387,7 @@
 .svc-tile--all:hover {
     border-color: var(--orange);
     border-style: solid;
-    background: var(--gray);   /* was: var(--white) */
+    background: var(--gray);
 }
 
 .svc-tile-icon {
@@ -686,6 +687,7 @@
     .hero { min-height: 100svh; }
     .hero h1 { font-size: clamp(40px, 10vw, 60px); }
     .hero-trust { display: none; }
+    .hero-container { padding: 0 8%; }
 
     .gp-grid { grid-template-columns: 1fr; }
 
