@@ -52,12 +52,13 @@ body, html {
    FIX ALIGNMENT WITH HERO (DESKTOP & MOBILE)
    ============================================================= */
 .legal-content .svc-section-inner {
-    max-width: 100%;           /* allow full width but not overflow */
-    width: auto;               /* let padding control width */
-    margin: 0 auto;            /* center */
-    padding: 0 8%;             /* same as hero */
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0; /* remove double padding */
     box-sizing: border-box;
 }
+
 .legal-content .legal-inner {
     width: 100%;
     max-width: 100%;
