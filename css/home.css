@@ -734,9 +734,7 @@
     .hero h1 { font-size: clamp(40px, 10vw, 60px); }
     .hero-trust { display: none; }
 
-    .stat-bar-inner { flex-wrap: wrap; }
-    .stat-item { flex: 1 1 40%; }
-    .stat-sep { display: none; }
+    .stat-bar { display: none; }
 
     .gp-grid { grid-template-columns: 1fr; }
 

@@ -2,13 +2,90 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BWD Services — Genesee County Property Services</title>
-<meta name="description" content="Professional lawn care, debris removal, and property services in Genesee County, MI. Serving Flint, Burton, Grand Blanc, Fenton, and Swartz Creek.">
+<title>BWD Services | Lawn Care &amp; Property Services in Genesee County, MI</title>
+<meta name="description" content="BWD Services provides professional lawn mowing, debris removal, spring cleanup, and year-round property services in Flint, Burton, Grand Blanc, Fenton, and Swartz Creek, MI. Get an instant online price in under 60 seconds.">
+<meta name="keywords" content="lawn care Genesee County, lawn mowing Flint MI, lawn service Burton MI, Grand Blanc lawn care, Fenton lawn mowing, Swartz Creek lawn service, debris removal Michigan, spring cleanup Genesee County, property services Flint Michigan">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://getbwd.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://getbwd.com/">
+<meta property="og:title" content="BWD Services | Lawn Care &amp; Property Services in Genesee County, MI">
+<meta property="og:description" content="Professional lawn mowing, debris removal, and year-round property services across Genesee County. Get an instant price online — no wait, no site visit.">
+<meta property="og:image" content="https://getbwd.com/images/og-image.jpg">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BWD Services | Genesee County Lawn Care">
+<meta name="twitter:description" content="Lawn mowing starting at $20. Get an instant price in under 60 seconds. Serving Flint, Burton, Grand Blanc, Fenton, and Swartz Creek.">
+
 <link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/home.css">
+
+<!-- LocalBusiness Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "BWD Services",
+  "url": "https://getbwd.com",
+  "description": "Professional lawn care, debris removal, spring and fall cleanups, and year-round property services in Genesee County, Michigan.",
+  "areaServed": [
+    { "@type": "City", "name": "Flint", "containedInPlace": { "@type": "State", "name": "Michigan" } },
+    { "@type": "City", "name": "Burton", "containedInPlace": { "@type": "State", "name": "Michigan" } },
+    { "@type": "City", "name": "Grand Blanc", "containedInPlace": { "@type": "State", "name": "Michigan" } },
+    { "@type": "City", "name": "Fenton", "containedInPlace": { "@type": "State", "name": "Michigan" } },
+    { "@type": "City", "name": "Swartz Creek", "containedInPlace": { "@type": "State", "name": "Michigan" } }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressRegion": "MI",
+    "addressCountry": "US"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Lawn Care &amp; Property Services",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lawn Mowing &amp; Trimming" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": "20", "priceCurrency": "USD" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Spring Cleanup" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Debris &amp; Waste Removal" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Garden Bed Care" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom Lawn Treatments" } }
+    ]
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "3"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "author": { "@type": "Person", "name": "Michael R." },
+      "reviewBody": "BWD completely transformed our yard. They showed up on time, worked efficiently, and the results were better than we expected."
+    },
+    {
+      "@type": "Review",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "author": { "@type": "Person", "name": "Danielle T." },
+      "reviewBody": "Best lawn service we've used. Professional, affordable, and consistent."
+    },
+    {
+      "@type": "Review",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "author": { "@type": "Person", "name": "Chris M." },
+      "reviewBody": "Reliable in every season. From summer maintenance to winter snow removal, they've never missed a beat."
+    }
+  ]
+}
+</script>
 </head>
 
 <body>
@@ -41,7 +118,7 @@
 </section>
 
 <!-- ===== STAT BAR ===== -->
-<div class="stat-bar">
+<div class="stat-bar" aria-hidden="true">
     <div class="stat-bar-inner">
         <div class="stat-item">
             <span class="stat-num">$20</span>
@@ -65,92 +142,79 @@
     </div>
 </div>
 
-<!-- ===== GET A PRICE ===== -->
-<section class="home-section home-section--white">
-    <div class="home-inner home-inner--narrow">
-
-        <div class="home-section-header">
-            <p class="home-eyebrow">No waiting. No runaround.</p>
-            <h2>Get your price on your terms.</h2>
-            <p class="home-section-sub">Most companies make you wait for someone to come out before you get a number. We don't. Pick how you want to get your estimate and go.</p>
+<!-- ===== 1. SERVICE AREA ===== -->
+<section class="home-section home-section--dark" aria-labelledby="area-heading">
+    <div class="home-inner">
+        <div class="area-layout">
+            <div class="area-left">
+                <p class="home-eyebrow home-eyebrow--light">Service Area</p>
+                <h2 id="area-heading">Serving Genesee County and surrounding areas.</h2>
+                <p class="area-desc">BWD provides year-round property services across Genesee County, Michigan. From spring lawn care to fall cleanups and winter snow removal — professional service every season, every neighborhood.</p>
+                <span class="area-badge">Local. Reliable. 365 Days a Year.</span>
+            </div>
+            <div class="area-right">
+                <nav class="area-towns" aria-label="Cities served by BWD Services">
+                    <div class="area-town">Flint</div>
+                    <div class="area-town">Burton</div>
+                    <div class="area-town">Grand Blanc</div>
+                    <div class="area-town">Fenton</div>
+                    <div class="area-town">Swartz Creek</div>
+                    <div class="area-town area-town--more">+ surrounding areas</div>
+                </nav>
+            </div>
         </div>
-
-        <div class="gp-grid">
-            <a href="https://getbwd.com/pricing" class="gp-card gp-card--featured">
-                <div class="gp-card-icon">⚡</div>
-                <div class="gp-badge">Most popular</div>
-                <h3>Instant Estimate</h3>
-                <p>Answer a few quick questions and get a real price calculated on the spot. No account, no commitment.</p>
-                <span class="gp-cta">Get my price &rarr;</span>
-            </a>
-            <a href="https://getbwd.com/pricing" class="gp-card">
-                <div class="gp-card-icon">💬</div>
-                <h3>We'll Reach Out</h3>
-                <p>Leave your name and preferred contact method — call or text. We'll get back to you promptly.</p>
-                <span class="gp-cta">Have us contact you &rarr;</span>
-            </a>
-            <a href="https://getbwd.com/pricing" class="gp-card">
-                <div class="gp-card-icon">📲</div>
-                <h3>Contact Us Directly</h3>
-                <p>Prefer to initiate? Reach out by call or text — whichever works best for you.</p>
-                <span class="gp-cta">Get in touch &rarr;</span>
-            </a>
-        </div>
-
-        <p class="home-footnote">All three options available at <strong>getbwd.com/pricing</strong></p>
-
     </div>
 </section>
 
-<!-- ===== SERVICES ===== -->
-<section class="home-section home-section--gray">
+<!-- ===== 2. SERVICES ===== -->
+<section class="home-section home-section--gray" aria-labelledby="services-heading">
     <div class="home-inner">
 
         <div class="home-section-header">
             <p class="home-eyebrow">Spring &amp; Summer Services</p>
-            <h2>Everything your property needs.</h2>
+            <h2 id="services-heading">Everything your property needs.</h2>
         </div>
 
         <div class="svc-grid">
             <a href="/services/spring-summer/mowing-trimming/" class="svc-tile svc-tile--wide">
-                <div class="svc-tile-icon">🌿</div>
+                <div class="svc-tile-icon" aria-hidden="true">🌿</div>
                 <div class="svc-tile-body">
-                    <h3>Mowing &amp; Trimming</h3>
+                    <h3>Lawn Mowing &amp; Trimming</h3>
                     <p>Weekly, bi-weekly, or a custom cadence. Full mow, edge trim, and blowdown every visit. Starting at <strong>$20</strong>.</p>
                 </div>
-                <span class="svc-tile-arrow">&rarr;</span>
+                <span class="svc-tile-arrow" aria-hidden="true">&rarr;</span>
             </a>
             <a href="/services/spring-summer/spring-cleanup/" class="svc-tile">
-                <div class="svc-tile-icon">🌱</div>
+                <div class="svc-tile-icon" aria-hidden="true">🌱</div>
                 <div class="svc-tile-body">
                     <h3>Spring Cleanup</h3>
                     <p>Branches, debris, and winter buildup cleared before the season starts.</p>
                 </div>
-                <span class="svc-tile-arrow">&rarr;</span>
+                <span class="svc-tile-arrow" aria-hidden="true">&rarr;</span>
             </a>
             <a href="/services/spring-summer/debris-waste-removal/" class="svc-tile">
-                <div class="svc-tile-icon">🗑️</div>
+                <div class="svc-tile-icon" aria-hidden="true">🗑️</div>
                 <div class="svc-tile-body">
                     <h3>Debris &amp; Waste Removal</h3>
                     <p>Pet waste, sticks, and yard clutter removed completely.</p>
                 </div>
-                <span class="svc-tile-arrow">&rarr;</span>
+                <span class="svc-tile-arrow" aria-hidden="true">&rarr;</span>
             </a>
             <a href="/services/spring-summer/garden-bed-care/" class="svc-tile">
-                <div class="svc-tile-icon">🌸</div>
+                <div class="svc-tile-icon" aria-hidden="true">🌸</div>
                 <div class="svc-tile-body">
                     <h3>Garden Bed Care</h3>
                     <p>Weeding and mulching handled while we're already on site.</p>
                 </div>
-                <span class="svc-tile-arrow">&rarr;</span>
+                <span class="svc-tile-arrow" aria-hidden="true">&rarr;</span>
             </a>
             <a href="/services/spring-summer/custom-treatments/" class="svc-tile">
-                <div class="svc-tile-icon">🧪</div>
+                <div class="svc-tile-icon" aria-hidden="true">🧪</div>
                 <div class="svc-tile-body">
-                    <h3>Custom Treatments</h3>
+                    <h3>Custom Lawn Treatments</h3>
                     <p>Fertilization, weed control, and overseeding tailored to your property.</p>
                 </div>
-                <span class="svc-tile-arrow">&rarr;</span>
+                <span class="svc-tile-arrow" aria-hidden="true">&rarr;</span>
             </a>
             <a href="/services/" class="svc-tile svc-tile--all">
                 <div class="svc-tile-body">
@@ -163,14 +227,51 @@
     </div>
 </section>
 
-<!-- ===== WHY BWD ===== -->
-<section class="home-section home-section--white">
+<!-- ===== 3. GET A PRICE ===== -->
+<section class="home-section home-section--white" aria-labelledby="pricing-heading">
+    <div class="home-inner home-inner--narrow">
+
+        <div class="home-section-header">
+            <p class="home-eyebrow">No waiting. No runaround.</p>
+            <h2 id="pricing-heading">Get your price on your terms.</h2>
+            <p class="home-section-sub">Most companies make you wait for someone to come out before you get a number. We don't. Pick how you want to get your estimate and go.</p>
+        </div>
+
+        <div class="gp-grid">
+            <a href="https://getbwd.com/pricing" class="gp-card gp-card--featured">
+                <div class="gp-card-icon" aria-hidden="true">⚡</div>
+                <div class="gp-badge">Most popular</div>
+                <h3>Instant Estimate</h3>
+                <p>Answer a few quick questions and get a real price calculated on the spot. No account, no commitment.</p>
+                <span class="gp-cta">Get my price &rarr;</span>
+            </a>
+            <a href="https://getbwd.com/pricing" class="gp-card">
+                <div class="gp-card-icon" aria-hidden="true">💬</div>
+                <h3>We'll Reach Out</h3>
+                <p>Leave your name and preferred contact method — call or text. We'll get back to you promptly.</p>
+                <span class="gp-cta">Have us contact you &rarr;</span>
+            </a>
+            <a href="https://getbwd.com/pricing" class="gp-card">
+                <div class="gp-card-icon" aria-hidden="true">📲</div>
+                <h3>Contact Us Directly</h3>
+                <p>Prefer to initiate? Reach out by call or text — whichever works best for you.</p>
+                <span class="gp-cta">Get in touch &rarr;</span>
+            </a>
+        </div>
+
+        <p class="home-footnote">All three options available at <strong>getbwd.com/pricing</strong></p>
+
+    </div>
+</section>
+
+<!-- ===== 4. WHY BWD ===== -->
+<section class="home-section home-section--gray" aria-labelledby="why-heading">
     <div class="home-inner">
 
         <div class="why-layout">
             <div class="why-left">
                 <p class="home-eyebrow">Why BWD Services</p>
-                <h2>Built for reliability. Priced for transparency.</h2>
+                <h2 id="why-heading">Here's why your neighbors choose us.</h2>
                 <p class="why-desc">Year-round property service across Genesee County. Simple scheduling, clear pricing, consistent results.</p>
             </div>
             <div class="why-right">
@@ -208,11 +309,11 @@
     </div>
 </section>
 
-<!-- ===== GUARANTEE ===== -->
-<section class="guarantee-bar">
+<!-- ===== 5. GUARANTEE ===== -->
+<section class="guarantee-bar" aria-label="BWD Service Guarantee">
     <div class="home-inner">
         <div class="guarantee-inner">
-            <div class="guarantee-check">✔</div>
+            <div class="guarantee-check" aria-hidden="true">✔</div>
             <div class="guarantee-text">
                 <h2>BWD Guarantee</h2>
                 <p>If the result doesn't meet the standard, we return and make it right — at no additional charge.</p>
@@ -222,73 +323,49 @@
     </div>
 </section>
 
-<!-- ===== REVIEWS ===== -->
-<section class="home-section home-section--gray">
+<!-- ===== 6. REVIEWS ===== -->
+<section class="home-section home-section--white" aria-labelledby="reviews-heading">
     <div class="home-inner">
 
         <div class="home-section-header">
             <p class="home-eyebrow">Customer Reviews</p>
-            <h2>Consistent results, every visit.</h2>
+            <h2 id="reviews-heading">Promise made, promise kept.</h2>
         </div>
 
         <div class="reviews-grid">
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"BWD completely transformed our yard. They showed up on time, worked efficiently, and the results were better than we expected. You can tell they care about doing it right."</p>
-                <div class="review-author">
-                    <strong>Michael R.</strong>
+            <article class="review-card" itemscope itemtype="https://schema.org/Review">
+                <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                <p class="review-text" itemprop="reviewBody">"BWD completely transformed our yard. They showed up on time, worked efficiently, and the results were better than we expected. You can tell they care about doing it right."</p>
+                <div class="review-author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <strong itemprop="name">Michael R.</strong>
                     <span>Flint, MI</span>
                 </div>
-            </div>
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"Best lawn service we've used. Professional, affordable, and consistent. They've handled everything from mowing to fall cleanup and snow removal."</p>
-                <div class="review-author">
-                    <strong>Danielle T.</strong>
+            </article>
+            <article class="review-card" itemscope itemtype="https://schema.org/Review">
+                <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                <p class="review-text" itemprop="reviewBody">"Best lawn service we've used. Professional, affordable, and consistent. They've handled everything from mowing to fall cleanup and snow removal."</p>
+                <div class="review-author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <strong itemprop="name">Danielle T.</strong>
                     <span>Grand Blanc, MI</span>
                 </div>
-            </div>
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"Reliable in every season. From summer maintenance to winter snow removal, they've never missed a beat. Highly recommend to anyone in Genesee County."</p>
-                <div class="review-author">
-                    <strong>Chris M.</strong>
+            </article>
+            <article class="review-card" itemscope itemtype="https://schema.org/Review">
+                <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                <p class="review-text" itemprop="reviewBody">"Reliable in every season. From summer maintenance to winter snow removal, they've never missed a beat. Highly recommend to anyone in Genesee County."</p>
+                <div class="review-author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <strong itemprop="name">Chris M.</strong>
                     <span>Fenton, MI</span>
                 </div>
-            </div>
+            </article>
         </div>
 
     </div>
 </section>
 
-<!-- ===== SERVICE AREA ===== -->
-<section class="home-section home-section--dark">
-    <div class="home-inner">
-        <div class="area-layout">
-            <div class="area-left">
-                <p class="home-eyebrow home-eyebrow--light">Service Area</p>
-                <h2>Serving Genesee County and surrounding areas.</h2>
-                <p class="area-desc">BWD provides year-round property services across Genesee County. From spring lawn care to fall cleanups and winter snow removal — consistent service every season.</p>
-                <span class="area-badge">Local. Reliable. 365 Days a Year.</span>
-            </div>
-            <div class="area-right">
-                <div class="area-towns">
-                    <div class="area-town">Flint</div>
-                    <div class="area-town">Burton</div>
-                    <div class="area-town">Grand Blanc</div>
-                    <div class="area-town">Fenton</div>
-                    <div class="area-town">Swartz Creek</div>
-                    <div class="area-town area-town--more">+ surrounding areas</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ===== FINAL CTA ===== -->
-<section class="final-cta">
+<!-- ===== 7. FINAL CTA ===== -->
+<section class="final-cta" aria-labelledby="cta-heading">
     <div class="home-inner home-inner--narrow">
-        <h2>Ready to get started?</h2>
+        <h2 id="cta-heading">Ready to get started?</h2>
         <p>Get your price in under a minute. No phone tag, no site visit required.</p>
         <a href="https://getbwd.com/pricing" class="btn btn--primary btn--lg">Get My Instant Price &rarr;</a>
     </div>
