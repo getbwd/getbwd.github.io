@@ -40,7 +40,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding: 0 8%;
+    padding: 0 8% 0 18%;
 }
 
 .hero-container .home-inner {
@@ -309,6 +309,7 @@
 
 .gp-badge {
     display: inline-block;
+    align-self: flex-start;    /* ADD THIS LINE */
     background: var(--orange);
     color: var(--white);
     font-size: 10px;
@@ -357,7 +358,7 @@
 }
 
 .svc-tile {
-    background: var(--white);
+    background: var(--gray);
     border-radius: 16px;
     padding: 28px 24px;
     border: 2px solid transparent;
@@ -385,7 +386,7 @@
 .svc-tile--all:hover {
     border-color: var(--orange);
     border-style: solid;
-    background: var(--white);
+    background: var(--gray);   /* was: var(--white) */
 }
 
 .svc-tile-icon {
