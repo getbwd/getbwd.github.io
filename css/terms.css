@@ -49,9 +49,15 @@ body, html {
 }
 
 /* =============================================================
-   CHILD CONTAINERS (Respect Parent Padding)
+   FIX ALIGNMENT WITH HERO (DESKTOP & MOBILE)
    ============================================================= */
-.legal-content .svc-section-inner,
+.legal-content .svc-section-inner {
+    max-width: 100%;           /* allow full width but not overflow */
+    width: auto;               /* let padding control width */
+    margin: 0 auto;            /* center */
+    padding: 0 8%;             /* same as hero */
+    box-sizing: border-box;
+}
 .legal-content .legal-inner {
     width: 100%;
     max-width: 100%;
