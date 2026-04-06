@@ -44,11 +44,11 @@ body, html {
    ============================================================= */
 .legal-content {
     background: var(--white);
-    width: 100%;
-    max-width: 100% !important; /* override any inherited max-width */
-    padding: 90px 8%;
+    width: auto;                  /* change from 100% to auto */
+    max-width: 84%;               /* match hero's 8% left/right padding */
+    padding: 90px 0;              /* remove horizontal padding */
     box-sizing: border-box;
-    margin: 0 !important;       /* remove centering */
+    margin: 0 auto !important;    /* center within page */
 }
 
 /* =============================================================
