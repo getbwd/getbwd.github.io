@@ -1,5 +1,5 @@
 /* =============================================================
-   LEGAL PAGES (Terms, Privacy, etc.)
+   TERMS OF SERVICE PAGE
    ============================================================= */
 
 :root {
@@ -9,41 +9,22 @@
     --orange: #ff6600;
 }
 
-/* RESET */
-body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    font-family: 'Inter', sans-serif;
-}
-
-/* =============================================================
-   MASTER CONTAINER (THIS FIXES ALIGNMENT)
-   ============================================================= */
-.svc-section-inner {
-    max-width: 1280px;   /* controls alignment */
-    margin: 0 auto;      /* centers */
-    padding: 0 24px;     /* side breathing room */
-    box-sizing: border-box;
-    width: 100%;
-}
-
 /* =============================================================
    HERO
    ============================================================= */
-.legal-hero {
+.terms-hero {
     background: var(--dark);
     color: var(--white);
     padding: 80px 0 90px;
 }
 
-.legal-hero h1 {
+.terms-hero h1 {
     font-size: 52px;
     font-weight: 800;
     margin-bottom: 10px;
 }
 
-.legal-hero p {
+.terms-hero p {
     color: #bbb;
     font-size: 16px;
 }
@@ -51,19 +32,12 @@ body, html {
 /* =============================================================
    CONTENT
    ============================================================= */
-.legal-content {
+.terms-content {
     background: var(--white);
     padding: 90px 0;
 }
 
-.legal-inner {
-    width: 100%;
-}
-
-/* =============================================================
-   INTRO
-   ============================================================= */
-.legal-intro {
+.terms-intro {
     background: var(--gray);
     border-left: 4px solid var(--orange);
     border-radius: 0 14px 14px 0;
@@ -71,7 +45,7 @@ body, html {
     margin-bottom: 50px;
 }
 
-.legal-intro p {
+.terms-intro p {
     font-size: 17px;
     line-height: 1.7;
     color: var(--dark);
@@ -80,41 +54,41 @@ body, html {
 /* =============================================================
    SECTIONS
    ============================================================= */
-.legal-section {
+.terms-section {
     margin-bottom: 42px;
 }
 
-.legal-section h2 {
+.terms-section h2 {
     font-size: 26px;
     font-weight: 800;
     margin-bottom: 14px;
     color: var(--dark);
 }
 
-.legal-section p {
+.terms-section p {
     font-size: 16px;
     line-height: 1.75;
     color: #555;
     margin-bottom: 14px;
 }
 
-.legal-section ul {
+.terms-section ul {
     margin: 12px 0 16px 22px;
     color: #555;
     line-height: 1.7;
 }
 
-.legal-section li {
+.terms-section li {
     margin-bottom: 8px;
 }
 
-.legal-section a {
+.terms-section a {
     color: var(--orange);
     font-weight: 600;
     text-decoration: none;
 }
 
-.legal-section a:hover {
+.terms-section a:hover {
     text-decoration: underline;
 }
 
@@ -123,23 +97,23 @@ body, html {
    ============================================================= */
 @media (max-width: 900px) {
 
-    .legal-hero {
+    .terms-hero {
         padding: 60px 0 70px;
     }
 
-    .legal-hero h1 {
+    .terms-hero h1 {
         font-size: 36px;
     }
 
-    .legal-content {
+    .terms-content {
         padding: 70px 0;
     }
 
-    .legal-section h2 {
+    .terms-section h2 {
         font-size: 22px;
     }
 
-    .legal-intro {
+    .terms-intro {
         padding: 22px;
     }
 }
