@@ -1,5 +1,6 @@
 /* =============================================================
    LEGAL PAGES (Terms, Privacy, etc.)
+   Matches service-page layout + alignment
    ============================================================= */
 
 /* HERO */
@@ -20,18 +21,30 @@
     font-size: 16px;
 }
 
-/* CONTENT WRAPPER */
+/* =============================================================
+   CONTENT WRAPPER (ALIGNED WITH HERO)
+   ============================================================= */
+
 .legal-content {
     padding: 90px 8%;
     background: var(--white);
 }
 
-.legal-inner {
-    max-width: 900px;
-    margin: 0 auto;
+/* Uses same container as service pages */
+.legal-content .svc-section-inner {
+    display: flex;
+    justify-content: flex-start; /* aligns left edge with hero */
 }
 
-/* INTRO BOX */
+/* Readable text column */
+.legal-inner {
+    max-width: 900px;
+}
+
+/* =============================================================
+   INTRO BOX
+   ============================================================= */
+
 .legal-intro {
     background: var(--gray);
     border-left: 4px solid var(--orange);
@@ -46,7 +59,10 @@
     color: var(--dark);
 }
 
-/* SECTIONS */
+/* =============================================================
+   SECTION STYLING
+   ============================================================= */
+
 .legal-section {
     margin-bottom: 42px;
 }
@@ -65,7 +81,32 @@
     margin-bottom: 14px;
 }
 
-/* MOBILE */
+/* Optional lists for future legal content */
+.legal-section ul {
+    margin: 12px 0 16px 22px;
+    color: #555;
+    line-height: 1.7;
+}
+
+.legal-section li {
+    margin-bottom: 8px;
+}
+
+/* Links inside legal text */
+.legal-section a {
+    color: var(--orange);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.legal-section a:hover {
+    text-decoration: underline;
+}
+
+/* =============================================================
+   MOBILE
+   ============================================================= */
+
 @media (max-width: 900px) {
 
     .legal-hero {
@@ -82,5 +123,9 @@
 
     .legal-section h2 {
         font-size: 22px;
+    }
+
+    .legal-intro {
+        padding: 22px;
     }
 }
