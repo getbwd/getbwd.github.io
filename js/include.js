@@ -197,6 +197,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('Announcement initialized');
 
     } catch (e) {
-        console.error('BOOT ERROR:', e);
+        console.log('KODA BOOT ERROR:', e);
     }
 });
