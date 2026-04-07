@@ -1,44 +1,14 @@
 /* =============================================================
    BWD Services — signup.css
-   Font: Inter (matches site-wide)
-   Accent: var(--orange) — defined in style.css as #e05a12 or similar
+   Font: Inter (matches site-wide, loaded via style.css + head)
    ============================================================= */
-
-/* ===== CSS VARIABLES (fallbacks if style.css isn't loaded) ===== */
-:root {
-    --orange:      #e05a12;
-    --dark:        #0f0f0f;
-    --white:       #ffffff;
-    --gray:        #f5f5f3;
-    --light-gray:  #e0e0dc;
-    --text-muted:  #6b6b6b;
-    --border:      #e4e4e0;
-    --error:       #d93025;
-    --success:     #1e8a4a;
-}
-
-/* ===== RESET ===== */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    height: 100%;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: var(--dark);
-    background: var(--white);
-    -webkit-font-smoothing: antialiased;
-}
 
 /* ===== PAGE LAYOUT ===== */
 
 .signup-page {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    min-height: 100vh;
+    min-height: calc(100vh - var(--navbar-height, 64px));
 }
 
 /* ===== LEFT BRAND PANEL ===== */
@@ -46,7 +16,8 @@ html, body {
 .brand-panel {
     position: relative;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     background: var(--dark);
 }
@@ -70,7 +41,7 @@ html, body {
     background: linear-gradient(
         160deg,
         rgba(10,10,10,0.92) 0%,
-        rgba(10,10,10,0.75) 60%,
+        rgba(10,10,10,0.72) 60%,
         rgba(10,10,10,0.88) 100%
     );
 }
@@ -78,65 +49,45 @@ html, body {
 .brand-inner {
     position: relative;
     z-index: 2;
+    padding: 60px 52px;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    padding: 48px 52px 52px;
-    gap: 0;
-}
-
-/* Logo */
-.brand-logo {
-    display: inline-block;
-    margin-bottom: auto;
-    padding-bottom: 60px;
+    gap: 40px;
+    width: 100%;
+    max-width: 560px;
     opacity: 0;
-    animation: fadeUp 0.5s ease 0.1s forwards;
-}
-
-.brand-logo img {
-    height: 36px;
-    width: auto;
-    display: block;
-    filter: brightness(0) invert(1);
+    animation: fadeUp 0.6s ease 0.2s forwards;
 }
 
 /* Copy block */
-.brand-copy {
-    margin-bottom: 52px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.3s forwards;
-}
-
 .brand-eyebrow {
+    font-family: 'Inter', sans-serif;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: var(--orange);
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .brand-headline {
-    font-size: clamp(36px, 4vw, 52px);
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(34px, 3.5vw, 48px);
     font-weight: 800;
-    line-height: 1.1;
+    line-height: 1.12;
     color: var(--white);
-    margin-bottom: 20px;
-}
-
-.brand-headline em {
-    font-style: italic;
-    font-weight: 800;
-    color: var(--orange);
+    margin-bottom: 18px;
+    font-style: normal;
 }
 
 .brand-sub {
+    font-family: 'Inter', sans-serif;
     font-size: 15px;
-    color: rgba(255,255,255,0.50);
+    color: rgba(255,255,255,0.48);
     line-height: 1.7;
     max-width: 380px;
+    margin: 0;
 }
 
 /* Trust bullets */
@@ -144,17 +95,17 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.5s forwards;
+    padding-top: 4px;
 }
 
 .trust-item {
+    font-family: 'Inter', sans-serif;
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 13px;
     font-weight: 600;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.42);
     letter-spacing: 0.1px;
 }
 
@@ -178,7 +129,7 @@ html, body {
     align-items: center;
     justify-content: center;
     background: var(--white);
-    padding: 48px 40px;
+    padding: 60px 40px;
     overflow-y: auto;
 }
 
@@ -186,7 +137,8 @@ html, body {
     width: 100%;
     max-width: 420px;
     opacity: 0;
-    animation: fadeUp 0.5s ease 0.2s forwards;
+    animation: fadeUp 0.5s ease 0.25s forwards;
+    font-family: 'Inter', sans-serif;
 }
 
 /* Form header */
@@ -195,6 +147,7 @@ html, body {
 }
 
 .form-header h1 {
+    font-family: 'Inter', sans-serif;
     font-size: 28px;
     font-weight: 800;
     color: var(--dark);
@@ -203,8 +156,9 @@ html, body {
 }
 
 .form-header p {
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
-    color: var(--text-muted);
+    color: #6b6b6b;
 }
 
 .form-header a {
@@ -221,6 +175,7 @@ html, body {
     display: none;
     padding: 13px 16px;
     border-radius: 8px;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 500;
     line-height: 1.5;
@@ -230,14 +185,14 @@ html, body {
 .form-message.error {
     display: block;
     background: #fef0ef;
-    color: var(--error);
+    color: #d93025;
     border: 1px solid #fac8c6;
 }
 
 .form-message.success {
     display: block;
     background: #edf7f1;
-    color: var(--success);
+    color: #1e8a4a;
     border: 1px solid #b6dfc8;
 }
 
@@ -256,13 +211,13 @@ html, body {
 }
 
 .field label {
+    font-family: 'Inter', sans-serif;
     font-size: 13px;
     font-weight: 700;
     color: var(--dark);
     letter-spacing: 0.2px;
 }
 
-/* Input wrapper */
 .field-input-wrap {
     position: relative;
     display: flex;
@@ -299,6 +254,7 @@ html, body {
 
 .field-input-wrap input::placeholder {
     color: #bbb;
+    font-family: 'Inter', sans-serif;
 }
 
 .field-input-wrap input:hover {
@@ -311,18 +267,18 @@ html, body {
     box-shadow: 0 0 0 3px rgba(224, 90, 18, 0.12);
 }
 
-/* Error state */
 .field.has-error .field-input-wrap input {
-    border-color: var(--error);
+    border-color: #d93025;
     background: #fff8f8;
-    box-shadow: 0 0 0 3px rgba(217, 48, 37, 0.1);
+    box-shadow: 0 0 0 3px rgba(217, 48, 37, 0.10);
 }
 
-.field.has-error .field-icon { color: var(--error); }
+.field.has-error .field-icon { color: #d93025; }
 
 .field-error-msg {
+    font-family: 'Inter', sans-serif;
     font-size: 12px;
-    color: var(--error);
+    color: #d93025;
     font-weight: 500;
     display: none;
 }
@@ -373,6 +329,7 @@ html, body {
 }
 
 .strength-label {
+    font-family: 'Inter', sans-serif;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -411,14 +368,13 @@ html, body {
     box-shadow: none;
 }
 
-.btn-submit:disabled {
+.btn-submit:disabled,
+.btn-submit.is-loading {
     opacity: 0.65;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
-
-.btn-submit.is-loading { opacity: 0.75; cursor: not-allowed; }
 
 /* ===== DIVIDER ===== */
 
@@ -427,6 +383,7 @@ html, body {
     align-items: center;
     gap: 12px;
     color: #c8c8c4;
+    font-family: 'Inter', sans-serif;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -438,7 +395,7 @@ html, body {
     content: '';
     flex: 1;
     height: 1px;
-    background: var(--border);
+    background: #e4e4e0;
 }
 
 /* ===== GOOGLE BUTTON ===== */
@@ -448,7 +405,7 @@ html, body {
     height: 50px;
     background: var(--white);
     color: var(--dark);
-    border: 1.5px solid var(--border);
+    border: 1.5px solid #e4e4e0;
     border-radius: 10px;
     font-family: 'Inter', sans-serif;
     font-size: 14px;
@@ -479,6 +436,7 @@ html, body {
 
 .form-terms {
     margin-top: 22px;
+    font-family: 'Inter', sans-serif;
     font-size: 12px;
     color: #aaa;
     line-height: 1.6;
@@ -500,28 +458,18 @@ html, body {
 @media (max-width: 900px) {
     .signup-page {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
     }
 
     .brand-panel {
         min-height: auto;
-        padding: 0;
     }
 
     .brand-inner {
-        padding: 32px 28px 36px;
-        gap: 0;
+        padding: 40px 28px;
+        gap: 28px;
     }
 
-    .brand-logo {
-        margin-bottom: 0;
-        padding-bottom: 36px;
-    }
-
-    .brand-copy { margin-bottom: 28px; }
-
-    .brand-headline { font-size: 34px; }
-
+    .brand-headline { font-size: 32px; }
     .brand-sub { display: none; }
 
     .brand-trust {
@@ -533,7 +481,7 @@ html, body {
     .trust-item { font-size: 12px; }
 
     .form-panel {
-        padding: 40px 24px 48px;
+        padding: 48px 24px 56px;
         align-items: flex-start;
     }
 
@@ -541,9 +489,9 @@ html, body {
 }
 
 @media (max-width: 480px) {
-    .brand-inner { padding: 24px 20px 28px; }
+    .brand-inner { padding: 28px 20px; }
     .brand-headline { font-size: 28px; }
     .brand-trust { display: none; }
-    .form-panel { padding: 32px 20px 40px; }
+    .form-panel { padding: 36px 20px 48px; }
     .form-header h1 { font-size: 24px; }
 }
