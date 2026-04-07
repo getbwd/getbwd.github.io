@@ -184,9 +184,9 @@ function initAnnouncementBar() {
 document.addEventListener('DOMContentLoaded', async () => {
     // Load all three components in parallel
     await Promise.all([
-        loadComponent('announcement', '/components/announcement.html'),
-        loadComponent('navbar',       '/components/navbar.html'),
-        loadComponent('footer',       '/components/footer.html'),
+        loadComponent('announcement', '/Components/announcement.html'),
+        loadComponent('navbar',       '/Components/navbar.html'),
+        loadComponent('footer',       '/Components/footer.html'),
     ]);
 
     initNavbar();
