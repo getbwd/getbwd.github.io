@@ -31,13 +31,12 @@ body {
   margin: 0;
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER — full on step 1, compact after ===== */
 .iq-header {
   background: var(--dark);
-  padding: 64px 8% 56px;
-  text-align: center;
   position: relative;
   overflow: hidden;
+  transition: padding 0.4s cubic-bezier(0.4,0,0.2,1);
 }
 .iq-header::before {
   content: '';
@@ -45,8 +44,57 @@ body {
   inset: 0;
   background: radial-gradient(ellipse at 50% 0%, rgba(230,88,15,0.13) 0%, transparent 65%);
   pointer-events: none;
+  transition: opacity 0.4s ease;
 }
+.iq-header.hero-full {
+  padding: 64px 8% 56px;
+  text-align: center;
+}
+.iq-header.hero-compact {
+  padding: 16px 8%;
+  text-align: left;
+}
+.iq-header.hero-compact::before { opacity: 0; }
+
 .iq-header-inner { position: relative; z-index: 1; }
+
+/* Full hero content */
+.iq-hero-full-content {
+  transition: opacity 0.3s ease, max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+  overflow: hidden;
+}
+.iq-header.hero-compact .iq-hero-full-content {
+  opacity: 0;
+  max-height: 0;
+  pointer-events: none;
+}
+.iq-header.hero-full .iq-hero-full-content {
+  opacity: 1;
+  max-height: 200px;
+}
+
+/* Compact bar content */
+.iq-hero-compact-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: opacity 0.3s ease 0.1s;
+}
+.iq-header.hero-full .iq-hero-compact-content { opacity: 0; pointer-events: none; height: 0; overflow: hidden; }
+.iq-header.hero-compact .iq-hero-compact-content { opacity: 1; height: auto; }
+.iq-compact-logo {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--orange);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.iq-compact-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+}
+
 .iq-eyebrow {
   font-size: 11px;
   font-weight: 700;
@@ -408,13 +456,113 @@ input[type=range].iq-slider {
 }
 .iq-notice.visible { display: block; }
 
-/* ===== DISABLED NOTICE ===== */
-.iq-disabled-note {
+/* ===== ONE-TIME DISCOUNT BANNER ===== */
+.iq-discount-banner {
+  display: none;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+.iq-discount-banner.visible {
+  display: block;
+  animation: discountPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes discountPop {
+  0% { opacity: 0; transform: scale(0.92) translateY(-8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.iq-discount-inner {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a1a0a 100%);
+  border: 1.5px solid rgba(230,88,15,0.4);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.iq-discount-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 0% 50%, rgba(230,88,15,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Shimmer sweep animation */
+.iq-discount-inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  animation: shimmerSweep 1.2s ease 0.3s forwards;
+  pointer-events: none;
+}
+
+@keyframes shimmerSweep {
+  0% { left: -60%; }
+  100% { left: 120%; }
+}
+
+.iq-discount-tag {
+  background: var(--orange);
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 10px 14px;
+  line-height: 1;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
+}
+
+.iq-discount-text {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+.iq-discount-headline {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+.iq-discount-sub {
   font-size: 12px;
-  color: #bbb;
-  margin-left: 4px;
-  font-style: italic;
-  font-weight: 400;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.4;
+}
+
+.iq-discount-check {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(230,88,15,0.15);
+  border: 1.5px solid rgba(230,88,15,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+  animation: checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
+}
+
+@keyframes checkPop {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* ===== RESULTS ===== */
@@ -504,6 +652,7 @@ input[type=range].iq-slider {
 .iq-result-row-label { color: #555; }
 .iq-result-row-val { font-weight: 700; color: var(--dark); }
 .iq-result-row-val.orange { color: var(--orange); }
+.iq-result-row-val.green { color: #16a34a; }
 
 .iq-result-actions {
   display: grid;
@@ -569,11 +718,19 @@ input[type=range].iq-slider {
 <div id="navbar"></div>
 
 <!-- HEADER -->
-<div class="iq-header">
+<div class="iq-header hero-full" id="iqHeader">
   <div class="iq-header-inner">
-    <span class="iq-eyebrow">Instant Quote — Genesee County, MI</span>
-    <h1>Get Your Price<br>In Under 60 Seconds</h1>
-    <p class="iq-header-sub">Answer a few quick questions. Get a guaranteed price range on the spot.</p>
+    <!-- Full hero (step 1 only) -->
+    <div class="iq-hero-full-content">
+      <span class="iq-eyebrow">Instant Quote — Genesee County, MI</span>
+      <h1>Get Your Price<br>In Under 60 Seconds</h1>
+      <p class="iq-header-sub">Answer a few quick questions. Get a guaranteed price range on the spot.</p>
+    </div>
+    <!-- Compact bar (all other steps) -->
+    <div class="iq-hero-compact-content">
+      <span class="iq-compact-logo">BWD</span>
+      <span class="iq-compact-title">Instant Quote — Genesee County, MI</span>
+    </div>
   </div>
 </div>
 
@@ -598,7 +755,7 @@ input[type=range].iq-slider {
      STEP 1.1 — One-time or Recurring
      ============================== -->
 <div class="iq-step active" id="step-1-1">
-  <span class="iq-step-label">Step 1 of 7</span>
+  <span class="iq-step-label">Step 1 of <span class="total-steps-label">7</span></span>
   <h2>Is this a one-time job or a recurring service?</h2>
   <p class="iq-step-hint">Recurring customers get <strong>25% off their second service</strong> — automatically applied.</p>
 
@@ -625,7 +782,7 @@ input[type=range].iq-slider {
      STEP 1.2 — Schedule (recurring only)
      ============================== -->
 <div class="iq-step" id="step-1-2">
-  <span class="iq-step-label">Step 2 of 7</span>
+  <span class="iq-step-label">Step 2 of <span class="total-steps-label">7</span></span>
   <h2>How often would you like service?</h2>
   <p class="iq-step-hint">More frequent visits mean a fresher yard — and a better base rate.</p>
 
@@ -672,7 +829,7 @@ input[type=range].iq-slider {
      STEP 2 — Yard Size
      ============================== -->
 <div class="iq-step" id="step-2">
-  <span class="iq-step-label" id="step2label">Step 2 of 7</span>
+  <span class="iq-step-label" id="step2label">Step 2 of <span class="total-steps-label">7</span></span>
   <h2>What size is your yard?</h2>
   <p class="iq-step-hint">Approximate is fine — be honest and your quote is guaranteed.</p>
 
@@ -707,13 +864,25 @@ input[type=range].iq-slider {
      STEP 3 — Services
      ============================== -->
 <div class="iq-step" id="step-3">
-  <span class="iq-step-label">Step 3 of 7</span>
+  <span class="iq-step-label">Step 3 of <span class="total-steps-label">7</span></span>
   <h2>What services do you need?</h2>
-  <p class="iq-step-hint">Select everything that applies. Mowing & trimming is always included.</p>
+  <p class="iq-step-hint">Select everything that applies. You can deselect mowing if you only want specific services.</p>
+
+  <!-- One-time discount banner (shown after step 1 if one-time selected) -->
+  <div class="iq-discount-banner" id="onetimeDiscountBanner">
+    <div class="iq-discount-inner">
+      <div class="iq-discount-tag">15% OFF</div>
+      <div class="iq-discount-text">
+        <div class="iq-discount-headline">One-time visit discount applied</div>
+        <div class="iq-discount-sub">We automatically knock 15% off one-time jobs. No code needed.</div>
+      </div>
+      <div class="iq-discount-check">✓</div>
+    </div>
+  </div>
 
   <div class="iq-choices" style="gap:10px;" id="servicesList">
 
-    <div class="iq-check-choice selected disabled" data-svc="mowing" onclick="toggleService(this)">
+    <div class="iq-check-choice selected" data-svc="mowing" onclick="toggleService(this)">
       <div class="iq-check-box"></div>
       <div class="iq-check-body">
         <div class="iq-check-title">Mowing &amp; Line Trimming</div>
@@ -791,6 +960,11 @@ input[type=range].iq-slider {
 
   </div>
 
+  <!-- Warn if nothing is selected -->
+  <div class="iq-notice visible" id="noServiceNotice" style="display:none;">
+    ⚠️ Please select at least one service to continue.
+  </div>
+
   <div class="iq-nav">
     <button class="iq-btn-back" onclick="goTo('step-2')">← Back</button>
     <button class="iq-btn-next" onclick="goFromStep3()">Continue &rarr;</button>
@@ -801,7 +975,7 @@ input[type=range].iq-slider {
      STEP 4 — Garden Bed Size
      ============================== -->
 <div class="iq-step" id="step-4">
-  <span class="iq-step-label">Step 4 of 7</span>
+  <span class="iq-step-label">Step 4 of <span class="total-steps-label">7</span></span>
   <h2>How large are your garden beds?</h2>
   <p class="iq-step-hint" id="step4hint">Tell us roughly how much garden bed area we're working with.</p>
 
@@ -833,9 +1007,9 @@ input[type=range].iq-slider {
      STEP 5 — Garden Bed Condition
      ============================== -->
 <div class="iq-step" id="step-5">
-  <span class="iq-step-label">Step 5 of 7</span>
+  <span class="iq-step-label">Step 5 of <span class="total-steps-label">7</span></span>
   <h2>What condition are the garden beds in?</h2>
-  <p class="iq-step-hint">Be honest — this protects your price guarantee.</p>
+  <p class="iq-step-hint">Only severely overgrown or neglected beds carry an extra charge. Be honest — it protects your price guarantee.</p>
 
   <div class="iq-condition-grid">
     <div class="iq-cond" data-val="pristine" onclick="selectCond(this, 'bedCondition')">
@@ -870,7 +1044,7 @@ input[type=range].iq-slider {
      STEP 6 — Mulch
      ============================== -->
 <div class="iq-step" id="step-6">
-  <span class="iq-step-label">Step 6 of 7</span>
+  <span class="iq-step-label">Step 6 of <span class="total-steps-label">7</span></span>
   <h2>Do you need mulch installation?</h2>
   <p class="iq-step-hint">Fresh mulch protects roots, retains moisture, and sharpens curb appeal.</p>
 
@@ -909,9 +1083,9 @@ input[type=range].iq-slider {
      STEP 7 — Yard Condition
      ============================== -->
 <div class="iq-step" id="step-7">
-  <span class="iq-step-label" id="step7label">Step 7 of 7</span>
+  <span class="iq-step-label" id="step7label">Step 7 of <span class="total-steps-label">7</span></span>
   <h2>What condition is your yard in?</h2>
-  <p class="iq-step-hint">This is the last question. Be accurate — your quote guarantee depends on it.</p>
+  <p class="iq-step-hint">This is the last question. Only heavily overgrown lawns carry an extra charge — average is no problem.</p>
 
   <div class="iq-condition-grid">
     <div class="iq-cond" data-val="great" onclick="selectCond(this, 'yardCondition')">
@@ -983,27 +1157,54 @@ input[type=range].iq-slider {
 // STATE
 // ============================================================
 const state = {
-  jobType: null,       // 'onetime' | 'recurring'
-  schedule: null,      // 'weekly' | 'biweekly' | 'custom' | 'onetime'
+  jobType: null,
+  schedule: null,
   customWeeks: 3,
-  yardSize: null,      // 'small' | 'standard' | 'large'
+  yardSize: null,
   services: new Set(['mowing']),
-  bedSize: null,       // 'bed-small' | 'bed-medium' | 'bed-large'
+  bedSize: null,
   bedCondition: null,
   mulch: null,
   yardCondition: null,
 };
 
-const TOTAL_STEPS = 7;
+// ============================================================
+// DYNAMIC STEP COUNT
+// Fewer steps when no garden bed is selected.
+// With garden bed: 7 steps (1.1, [1.2], 2, 3, 4, 5, 6, 7)
+// Without garden bed: 5 steps (1.1, [1.2], 2, 3, 7)
+// ============================================================
+function getTotalSteps() {
+  return state.services.has('gardenbed') ? 7 : 5;
+}
+function updateStepLabels() {
+  const total = getTotalSteps();
+  document.querySelectorAll('.total-steps-label').forEach(el => el.textContent = total);
+}
 
 // ============================================================
 // PROGRESS
 // ============================================================
 function setProgress(stepNum) {
-  const pct = Math.round(((stepNum - 1) / TOTAL_STEPS) * 100);
+  const total = getTotalSteps();
+  const pct = Math.round(((stepNum - 1) / total) * 100);
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressText').textContent = 'Step ' + stepNum + ' of ' + TOTAL_STEPS;
+  document.getElementById('progressText').textContent = 'Step ' + stepNum + ' of ' + total;
   document.getElementById('progressPct').textContent = pct + '%';
+}
+
+// ============================================================
+// HERO SHRINK
+// ============================================================
+function setHeroCompact(compact) {
+  const header = document.getElementById('iqHeader');
+  if (compact) {
+    header.classList.remove('hero-full');
+    header.classList.add('hero-compact');
+  } else {
+    header.classList.remove('hero-compact');
+    header.classList.add('hero-full');
+  }
 }
 
 // ============================================================
@@ -1016,12 +1217,24 @@ function goTo(stepId) {
   document.getElementById(stepId).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
+  // Hero compact on any step beyond step-1-1
+  setHeroCompact(stepId !== 'step-1-1');
+
+  updateStepLabels();
+
   // Update progress
   const stepMap = {
     'step-1-1': 1, 'step-1-2': 2, 'step-2': 2,
     'step-3': 3, 'step-4': 4, 'step-5': 5,
     'step-6': 6, 'step-7': 7, 'result-screen': 7
   };
+
+  // If no garden bed, remap step-7 to step 5 in progress
+  if (!state.services.has('gardenbed')) {
+    stepMap['step-7'] = 5;
+    stepMap['result-screen'] = 5;
+  }
+
   setProgress(stepMap[stepId] || 1);
 }
 
@@ -1031,7 +1244,6 @@ function selectChoice(el, key) {
   el.classList.add('selected');
   state[key] = el.dataset.val;
 
-  // Enable next buttons
   const nextMap = {
     jobType: 'next-1-1',
     schedule: 'next-1-2',
@@ -1043,7 +1255,6 @@ function selectChoice(el, key) {
     document.getElementById(nextMap[key]).disabled = false;
   }
 
-  // Custom schedule slider
   if (key === 'schedule') {
     document.getElementById('customSliderWrap').classList.toggle('visible', el.dataset.val === 'custom');
   }
@@ -1069,8 +1280,7 @@ function updateSlider(val) {
 function goFrom1_1() {
   if (state.jobType === 'onetime') {
     state.schedule = 'onetime';
-    // Update step 2 label
-    document.getElementById('step2label').textContent = 'Step 2 of 7';
+    document.getElementById('step2label').innerHTML = 'Step 2 of <span class="total-steps-label">' + getTotalSteps() + '</span>';
     document.getElementById('back-step2').onclick = function() { goTo('step-1-1'); };
     goTo('step-2');
     setProgress(2);
@@ -1093,11 +1303,11 @@ function backFromStep2() {
 
 // ============================================================
 // STEP 3 — services multi-select
+// Mowing is now toggleable (not disabled), but at least one
+// service must be selected to continue.
 // ============================================================
 function toggleService(el) {
-  if (el.classList.contains('disabled')) return;
   const svc = el.dataset.svc;
-  if (svc === 'mowing') return; // always selected
 
   if (el.classList.contains('selected')) {
     el.classList.remove('selected');
@@ -1108,20 +1318,40 @@ function toggleService(el) {
   }
 
   // Spring cleanup <-> debris logic
-  if (svc === 'springcleanup' && state.services.has('springcleanup')) {
-    const debrisEl = document.querySelector('[data-svc="debris"]');
-    debrisEl.classList.add('disabled');
-    debrisEl.classList.remove('selected');
-    state.services.delete('debris');
-    document.getElementById('springDebrisNotice').classList.add('visible');
-  } else if (svc === 'springcleanup' && !state.services.has('springcleanup')) {
-    const debrisEl = document.querySelector('[data-svc="debris"]');
-    debrisEl.classList.remove('disabled');
-    document.getElementById('springDebrisNotice').classList.remove('visible');
+  if (svc === 'springcleanup') {
+    if (state.services.has('springcleanup')) {
+      const debrisEl = document.querySelector('[data-svc="debris"]');
+      debrisEl.classList.add('disabled');
+      debrisEl.classList.remove('selected');
+      state.services.delete('debris');
+      document.getElementById('springDebrisNotice').classList.add('visible');
+    } else {
+      const debrisEl = document.querySelector('[data-svc="debris"]');
+      debrisEl.classList.remove('disabled');
+      document.getElementById('springDebrisNotice').classList.remove('visible');
+    }
   }
 
-  // Update seeding/fertilization markup label based on yard size
+  // Spring cleanup deselects mowing (spring cleanup handles the yard)
+  if (svc === 'springcleanup' && state.services.has('springcleanup')) {
+    const mowingEl = document.querySelector('[data-svc="mowing"]');
+    mowingEl.classList.remove('selected');
+    state.services.delete('mowing');
+  }
+
+  // Garden bed care deselects mowing if it's the only thing left
+  // (user just wants garden bed work — handled naturally now)
+
+  // Show/hide no-service notice
+  const noServiceNotice = document.getElementById('noServiceNotice');
+  if (state.services.size === 0) {
+    noServiceNotice.style.display = 'block';
+  } else {
+    noServiceNotice.style.display = 'none';
+  }
+
   updateMarkupLabels();
+  updateStepLabels();
 }
 
 function updateMarkupLabels() {
@@ -1138,19 +1368,43 @@ function updateMarkupLabels() {
 }
 
 function goFromStep3() {
+  // Must have at least one service
+  if (state.services.size === 0) {
+    const notice = document.getElementById('noServiceNotice');
+    notice.style.display = 'block';
+    return;
+  }
+
   updateMarkupLabels();
+  updateStepLabels();
+
+  const hasLawnServices = hasAnyLawnService();
+
   if (state.services.has('gardenbed')) {
-    // Check if lawn services also selected (besides mowing alone)
-    const lawnServices = ['mowing','seeding','aeration','fertilization','weedcontrol','springcleanup'];
-    const hasLawn = lawnServices.some(s => state.services.has(s));
-    updateStep4Hint(hasLawn);
+    updateStep4Hint(hasLawnServices);
     goTo('step-4');
     setProgress(4);
   } else {
-    goTo('step-7');
-    setProgress(7);
-    document.getElementById('back-step7').onclick = function() { goTo('step-3'); };
+    // No garden bed — skip to yard condition (or results if no lawn either)
+    if (hasLawnServices || state.services.has('mowing')) {
+      goTo('step-7');
+      document.getElementById('back-step7').onclick = function() { goTo('step-3'); };
+      // Remap progress: step-7 is step 4 of 5 when no garden bed
+      const total = getTotalSteps();
+      const pct = Math.round((3 / total) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent = 'Step 4 of ' + total;
+      document.getElementById('progressPct').textContent = pct + '%';
+    } else {
+      // Only services that don't need yard condition (e.g. spring cleanup only, garden bed only)
+      showResults();
+    }
   }
+}
+
+function hasAnyLawnService() {
+  const lawnServices = ['mowing','seeding','aeration','fertilization','weedcontrol','springcleanup'];
+  return lawnServices.some(s => state.services.has(s));
 }
 
 function updateStep4Hint(hasLawn) {
@@ -1166,13 +1420,10 @@ function updateStep4Hint(hasLawn) {
 // STEP 6 → next
 // ============================================================
 function goFromStep6() {
-  const lawnServices = ['mowing','seeding','aeration','fertilization','weedcontrol','springcleanup'];
-  const hasLawn = lawnServices.some(s => state.services.has(s));
-  document.getElementById('step7label').textContent = 'Step 7 of 7';
-  if (hasLawn) {
+  if (hasAnyLawnService()) {
     goTo('step-7');
-    setProgress(7);
     document.getElementById('back-step7').onclick = function() { goTo('step-6'); };
+    setProgress(7);
   } else {
     showResults();
   }
@@ -1190,87 +1441,71 @@ function backFromStep7() {
 }
 
 // ============================================================
+// SHOW ONE-TIME DISCOUNT BANNER
+// ============================================================
+function maybeShowDiscountBanner() {
+  const banner = document.getElementById('onetimeDiscountBanner');
+  if (state.jobType === 'onetime') {
+    banner.classList.add('visible');
+  } else {
+    banner.classList.remove('visible');
+  }
+}
+
+// ============================================================
 // PRICING ENGINE
 // ============================================================
 function calcPrice() {
   const size = state.yardSize;
-
-  // --- Base price ---
-  // If ONLY garden bed (no lawn services selected at all besides mowing-which is forced)
-  const lawnServices = ['seeding','aeration','fertilization','weedcontrol','springcleanup'];
-  const hasLawnAddon = lawnServices.some(s => state.services.has(s));
-  const onlyBeds = !hasLawnAddon && state.services.has('gardenbed') && !state.services.has('mowing');
-  // mowing is always in state.services, so check if it's the ONLY lawn thing
-  const lawnOnlyMowing = state.services.has('mowing') && !hasLawnAddon;
-
   let base = { small: 20, standard: 30, large: 40 }[size] || 30;
-
-  // If no lawn size selected (shouldn't happen in normal flow), fallback
-  if (!size) base = 30;
 
   // --- Schedule / frequency markup (applied to base) ---
   let freqMultiplier = 1;
   const sched = state.schedule;
-  if (sched === 'onetime' || sched === 'biweekly') {
+  if (sched === 'biweekly') {
     freqMultiplier = 1.15;
   } else if (sched === 'custom') {
-    // 15% for being bi-weekly equivalent, then +10% per week beyond 2
     freqMultiplier = 1.15;
     for (let w = 3; w <= state.customWeeks; w++) {
       freqMultiplier = freqMultiplier * 1.10;
     }
   }
-  // weekly = no markup
+  // onetime and weekly = no frequency markup
 
   const afterFreq = Math.ceil(base * freqMultiplier);
 
-  // --- Service markups (each calculated from base, not stacked on each other) ---
+  // --- Service markups (each calculated from base) ---
   let serviceAdded = 0;
 
-  // Debris & Waste Removal: +25%, round DOWN
-  if (state.services.has('debris')) {
-    serviceAdded += Math.floor(base * 0.25);
-  }
+  if (state.services.has('debris')) serviceAdded += Math.floor(base * 0.25);
+  if (state.services.has('springcleanup')) serviceAdded += Math.floor(base * 0.25);
 
-  // Spring Cleanup: same as debris (+25%), round DOWN
-  if (state.services.has('springcleanup')) {
-    serviceAdded += Math.floor(base * 0.25);
-  }
-
-  // Seeding: small=+50% rd down, avg/large=+35% rd down
   if (state.services.has('seeding')) {
     const pct = size === 'small' ? 0.50 : 0.35;
     serviceAdded += Math.floor(base * pct);
   }
-
-  // Aeration: +25% all, rd down for avg/large
   if (state.services.has('aeration')) {
     const raw = base * 0.25;
     serviceAdded += size === 'small' ? Math.ceil(raw) : Math.floor(raw);
   }
-
-  // Fertilization: small=+50% rd down, avg/large=+35% rd down
   if (state.services.has('fertilization')) {
     const pct = size === 'small' ? 0.50 : 0.35;
     serviceAdded += Math.floor(base * pct);
   }
-
-  // Weed Control: +25% all, rd down for avg/large
   if (state.services.has('weedcontrol')) {
     const raw = base * 0.25;
     serviceAdded += size === 'small' ? Math.ceil(raw) : Math.floor(raw);
   }
-
-  // Garden Bed Care: +25%, round DOWN
   if (state.services.has('gardenbed')) {
     const bedMult = { 'bed-small': 1.0, 'bed-medium': 1.4, 'bed-large': 1.9 }[state.bedSize] || 1.0;
     serviceAdded += Math.floor(base * 0.25 * bedMult);
   }
 
-  // --- Bed condition markup (on garden bed portion only) ---
+  // --- Bed condition markup — only for overgrown/neglected ---
   let bedCondAdd = 0;
   if (state.services.has('gardenbed') && state.bedCondition) {
-    const condMultMap = { pristine: 0, fair: 0.10, overgrown: 0.25, neglected: 0.45 };
+    // pristine and fair: no extra charge
+    const condMultMap = { pristine: 0, fair: 0, overgrown: 0.25, neglected: 0.45 };
     const bedBase = Math.floor(base * 0.25 * ({ 'bed-small': 1.0, 'bed-medium': 1.4, 'bed-large': 1.9 }[state.bedSize] || 1.0));
     bedCondAdd = Math.floor(bedBase * (condMultMap[state.bedCondition] || 0));
   }
@@ -1283,17 +1518,26 @@ function calcPrice() {
     if (state.mulch === 'full-mulch') mulchAdd = Math.floor(base * 0.40 * bedSizeMultiplier);
   }
 
-  // --- Yard condition markup ---
+  // --- Yard condition markup — only for overgrown/heavy ---
   let yardCondAdd = 0;
   if (state.yardCondition) {
-    const yardCondMap = { great: 0, average: 0.08, overgrown: 0.20, heavy: 0.40 };
+    // great and average: no extra charge
+    const yardCondMap = { great: 0, average: 0, overgrown: 0.20, heavy: 0.40 };
     yardCondAdd = Math.floor(afterFreq * (yardCondMap[state.yardCondition] || 0));
   }
 
-  const totalLow = afterFreq + serviceAdded + bedCondAdd + mulchAdd + yardCondAdd;
-  const totalHigh = Math.ceil(totalLow * 1.12); // ~12% upper bound for the range
+  let totalBeforeDiscount = afterFreq + serviceAdded + bedCondAdd + mulchAdd + yardCondAdd;
 
-  return { base, afterFreq, serviceAdded, bedCondAdd, mulchAdd, yardCondAdd, totalLow, totalHigh };
+  // --- One-time discount: 15% off ---
+  let onetimeDiscount = 0;
+  if (state.jobType === 'onetime') {
+    onetimeDiscount = Math.floor(totalBeforeDiscount * 0.15);
+  }
+
+  const totalLow = totalBeforeDiscount - onetimeDiscount;
+  const totalHigh = Math.ceil(totalLow * 1.12);
+
+  return { base, afterFreq, serviceAdded, bedCondAdd, mulchAdd, yardCondAdd, onetimeDiscount, totalBeforeDiscount, totalLow, totalHigh };
 }
 
 // ============================================================
@@ -1308,37 +1552,39 @@ function showResults() {
   const isRecurring = state.jobType === 'recurring';
   document.getElementById('resultPer').textContent = isRecurring ? 'per visit' : 'one-time service';
 
-  // Build breakdown rows
   const rows = [];
   const sizeLabel = { small: 'Small yard (up to ~4,000 sq ft)', standard: 'Standard yard (4,000–8,000 sq ft)', large: 'Large yard (8,000+ sq ft)' }[state.yardSize] || '';
 
-  rows.push({ label: 'Base price — ' + sizeLabel, val: '$' + p.base });
+  if (sizeLabel) rows.push({ label: 'Base price — ' + sizeLabel, val: '$' + p.base });
 
-  if (state.schedule === 'onetime') rows.push({ label: 'One-time visit adjustment (+15%)', val: '+$' + (p.afterFreq - p.base), orange: true });
   if (state.schedule === 'biweekly') rows.push({ label: 'Bi-weekly frequency adjustment (+15%)', val: '+$' + (p.afterFreq - p.base), orange: true });
   if (state.schedule === 'custom') rows.push({ label: 'Custom schedule adjustment (every ' + state.customWeeks + ' wks)', val: '+$' + (p.afterFreq - p.base), orange: true });
 
   if (p.serviceAdded > 0) rows.push({ label: 'Additional services', val: '+$' + p.serviceAdded, orange: true });
-  if (p.bedCondAdd > 0) rows.push({ label: 'Garden bed condition adjustment', val: '+$' + p.bedCondAdd, orange: true });
+  if (p.bedCondAdd > 0) rows.push({ label: 'Garden bed condition adjustment (overgrown/neglected)', val: '+$' + p.bedCondAdd, orange: true });
   if (p.mulchAdd > 0) rows.push({ label: 'Mulch installation', val: '+$' + p.mulchAdd, orange: true });
-  if (p.yardCondAdd > 0) rows.push({ label: 'Yard condition adjustment', val: '+$' + p.yardCondAdd, orange: true });
+  if (p.yardCondAdd > 0) rows.push({ label: 'Yard condition adjustment (overgrown/heavy)', val: '+$' + p.yardCondAdd, orange: true });
 
-  if (isRecurring) rows.push({ label: '🎉 2nd visit discount (recurring)', val: '25% off visit 2', orange: true });
+  if (p.onetimeDiscount > 0) {
+    rows.push({ label: '🎉 One-time visit discount (–15%)', val: '–$' + p.onetimeDiscount, green: true });
+  }
+
+  if (isRecurring) rows.push({ label: '🎉 2nd visit discount (recurring)', val: '25% off second visit', orange: true });
 
   const schedLabel = { weekly: 'Weekly', biweekly: 'Bi-weekly', custom: 'Every ' + state.customWeeks + ' weeks', onetime: 'One-time' }[state.schedule] || '';
-  rows.push({ label: 'Service frequency', val: schedLabel });
+  if (schedLabel) rows.push({ label: 'Service frequency', val: schedLabel });
 
   const svcsSelected = [...state.services].map(s => ({
     mowing: 'Mowing & Trimming', debris: 'Debris & Waste Removal', seeding: 'Seeding',
     aeration: 'Aeration', fertilization: 'Fertilization', weedcontrol: 'Weed Control',
     springcleanup: 'Spring Cleanup', gardenbed: 'Garden Bed Care'
   })[s]).filter(Boolean).join(', ');
-  rows.push({ label: 'Services included', val: svcsSelected });
+  if (svcsSelected) rows.push({ label: 'Services included', val: svcsSelected });
 
   const html = rows.map(r => `
     <div class="iq-result-row">
       <span class="iq-result-row-label">${r.label}</span>
-      <span class="iq-result-row-val${r.orange ? ' orange' : ''}">${r.val}</span>
+      <span class="iq-result-row-val${r.orange ? ' orange' : ''}${r.green ? ' green' : ''}">${r.val}</span>
     </div>
   `).join('');
   document.getElementById('breakdownRows').innerHTML = html;
@@ -1359,29 +1605,50 @@ function restartQuote() {
 
   document.querySelectorAll('.iq-choice, .iq-cond').forEach(el => el.classList.remove('selected'));
   document.querySelectorAll('.iq-check-choice').forEach(el => {
-    if (el.dataset.svc !== 'mowing') el.classList.remove('selected');
-    el.classList.remove('disabled');
+    el.classList.remove('selected', 'disabled');
   });
-  document.querySelector('[data-svc="mowing"]').classList.add('selected', 'disabled');
+  // Re-select mowing by default
+  document.querySelector('[data-svc="mowing"]').classList.add('selected');
   document.getElementById('springDebrisNotice').classList.remove('visible');
   document.getElementById('customSliderWrap').classList.remove('visible');
-  document.querySelectorAll('.iq-btn-next').forEach(b => { if (b.id !== 'next-3') b.disabled = true; });
+  document.getElementById('noServiceNotice').style.display = 'none';
+  document.querySelectorAll('.iq-btn-next').forEach(b => {
+    if (!['next-3'].includes(b.id)) b.disabled = true;
+  });
+  document.getElementById('onetimeDiscountBanner').classList.remove('visible');
 
   goTo('step-1-1');
+  setHeroCompact(false);
   setProgress(1);
+  updateStepLabels();
 }
 
 // ============================================================
 // INIT
 // ============================================================
 setProgress(1);
+updateStepLabels();
 
-// Wire up the step 1.1 choice enable
+// Wire up step 1.1 to show discount banner & enable next
 document.querySelectorAll('#step-1-1 .iq-choice').forEach(el => {
   el.addEventListener('click', () => {
     document.getElementById('next-1-1').disabled = false;
+    // Show discount banner preview on step 3 when they get there
   });
 });
+
+// Show discount banner when arriving at step 3
+// We hook into goTo by patching it
+const _origGoTo = goTo;
+window.goTo = function(stepId) {
+  _origGoTo(stepId);
+  if (stepId === 'step-3') {
+    maybeShowDiscountBanner();
+  }
+};
+
+// Also show on goFrom1_1 (one-time goes straight to step-2, then step-3)
+// Already handled by goTo hook above.
 </script>
 
 </body>
