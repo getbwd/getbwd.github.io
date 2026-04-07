@@ -180,15 +180,23 @@ function initAnnouncementBar() {
     }
 }
 
-/* –– Boot –– */
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load all three components in parallel
-    await Promise.all([
-        loadComponent('announcement', '/components/announcement.html'),
-        loadComponent('navbar',       '/components/navbar.html'),
-        loadComponent('footer',       '/components/footer.html'),
-    ]);
+    try {
+        await Promise.all([
+            loadComponent('announcement', '/components/announcement.html'),
+            loadComponent('navbar',       '/components/navbar.html'),
+            loadComponent('footer',       '/components/footer.html'),
+        ]);
 
-    initNavbar();
-    initAnnouncementBar();
+        console.log('Components loaded');
+
+        initNavbar();
+        console.log('Navbar initialized');
+
+        initAnnouncementBar();
+        console.log('Announcement initialized');
+
+    } catch (e) {
+        console.error('BOOT ERROR:', e);
+    }
 });
