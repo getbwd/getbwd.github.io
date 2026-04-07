@@ -73,27 +73,8 @@ body {
   max-height: 200px;
 }
 
-/* Compact bar content */
-.iq-hero-compact-content {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: opacity 0.3s ease 0.1s;
-}
-.iq-header.hero-full .iq-hero-compact-content { opacity: 0; pointer-events: none; height: 0; overflow: hidden; }
-.iq-header.hero-compact .iq-hero-compact-content { opacity: 1; height: auto; }
-.iq-compact-logo {
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--orange);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-.iq-compact-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.5);
-}
+/* Compact bar content — hidden entirely, progress bar is enough */
+.iq-hero-compact-content { display: none; }
 
 .iq-eyebrow {
   font-size: 11px;
@@ -549,12 +530,13 @@ input[type=range].iq-slider {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(230,88,15,0.15);
-  border: 1.5px solid rgba(230,88,15,0.4);
+  background: var(--orange);
+  border: 1.5px solid rgba(230,88,15,0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  color: #fff;
   position: relative;
   z-index: 1;
   animation: checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
@@ -873,8 +855,8 @@ input[type=range].iq-slider {
     <div class="iq-discount-inner">
       <div class="iq-discount-tag">15% OFF</div>
       <div class="iq-discount-text">
-        <div class="iq-discount-headline">One-time visit discount applied</div>
-        <div class="iq-discount-sub">We automatically knock 15% off one-time jobs. No code needed.</div>
+        <div class="iq-discount-headline">First-time customer discount applied</div>
+        <div class="iq-discount-sub">New customers get 15% off their first visit — locked in automatically.</div>
       </div>
       <div class="iq-discount-check">✓</div>
     </div>
@@ -1222,6 +1204,11 @@ function goTo(stepId) {
 
   updateStepLabels();
 
+  // Show discount banner whenever step-3 is shown
+  if (stepId === 'step-3') {
+    maybeShowDiscountBanner();
+  }
+
   // Update progress
   const stepMap = {
     'step-1-1': 1, 'step-1-2': 2, 'step-2': 2,
@@ -1377,28 +1364,23 @@ function goFromStep3() {
 
   updateMarkupLabels();
   updateStepLabels();
-
-  const hasLawnServices = hasAnyLawnService();
+  maybeShowDiscountBanner();
 
   if (state.services.has('gardenbed')) {
-    updateStep4Hint(hasLawnServices);
+    updateStep4Hint(hasAnyLawnService());
     goTo('step-4');
     setProgress(4);
+  } else if (hasAnyLawnService() || state.services.has('mowing')) {
+    // No garden bed, has lawn work — go straight to yard condition
+    document.getElementById('back-step7').onclick = function() { goTo('step-3'); };
+    goTo('step-7');
+    const total = getTotalSteps();
+    const pct = Math.round((3 / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = 'Step 4 of ' + total;
+    document.getElementById('progressPct').textContent = pct + '%';
   } else {
-    // No garden bed — skip to yard condition (or results if no lawn either)
-    if (hasLawnServices || state.services.has('mowing')) {
-      goTo('step-7');
-      document.getElementById('back-step7').onclick = function() { goTo('step-3'); };
-      // Remap progress: step-7 is step 4 of 5 when no garden bed
-      const total = getTotalSteps();
-      const pct = Math.round((3 / total) * 100);
-      document.getElementById('progressFill').style.width = pct + '%';
-      document.getElementById('progressText').textContent = 'Step 4 of ' + total;
-      document.getElementById('progressPct').textContent = pct + '%';
-    } else {
-      // Only services that don't need yard condition (e.g. spring cleanup only, garden bed only)
-      showResults();
-    }
+    showResults();
   }
 }
 
@@ -1527,15 +1509,18 @@ function calcPrice() {
   }
 
   let totalBeforeDiscount = afterFreq + serviceAdded + bedCondAdd + mulchAdd + yardCondAdd;
+  const totalBeforeDiscountHigh = Math.ceil(totalBeforeDiscount * 1.12);
 
-  // --- One-time discount: 15% off ---
+  // --- One-time discount: 15% off both ends ---
   let onetimeDiscount = 0;
   if (state.jobType === 'onetime') {
     onetimeDiscount = Math.floor(totalBeforeDiscount * 0.15);
   }
 
   const totalLow = totalBeforeDiscount - onetimeDiscount;
-  const totalHigh = Math.ceil(totalLow * 1.12);
+  const totalHigh = state.jobType === 'onetime'
+    ? Math.ceil(totalBeforeDiscountHigh * 0.85)
+    : totalBeforeDiscountHigh;
 
   return { base, afterFreq, serviceAdded, bedCondAdd, mulchAdd, yardCondAdd, onetimeDiscount, totalBeforeDiscount, totalLow, totalHigh };
 }
@@ -1629,26 +1614,11 @@ function restartQuote() {
 setProgress(1);
 updateStepLabels();
 
-// Wire up step 1.1 to show discount banner & enable next
 document.querySelectorAll('#step-1-1 .iq-choice').forEach(el => {
   el.addEventListener('click', () => {
     document.getElementById('next-1-1').disabled = false;
-    // Show discount banner preview on step 3 when they get there
   });
 });
-
-// Show discount banner when arriving at step 3
-// We hook into goTo by patching it
-const _origGoTo = goTo;
-window.goTo = function(stepId) {
-  _origGoTo(stepId);
-  if (stepId === 'step-3') {
-    maybeShowDiscountBanner();
-  }
-};
-
-// Also show on goFrom1_1 (one-time goes straight to step-2, then step-3)
-// Already handled by goTo hook above.
 </script>
 
 </body>
