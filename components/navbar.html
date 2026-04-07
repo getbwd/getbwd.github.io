@@ -1,156 +1,150 @@
-<header>
-    <div class="container header-inner">
+<header id="site-header">
+    <div class="header-inner">
 
-<div class="logo">
-    <a href="/">
-        <img src="/images/nav.png" alt="BWD Logo">
-    </a>
-</div>
-<div class="hamburger-wrapper">
-    <div class="hamburger" id="hamburger">
-        <img src="/images/hamburger.png" alt="Menu" id="hamburger-icon">
-    </div>
-</div>
-        <nav class="main-nav">
-            <div class="mobile-menu-top">
-    <img src="/images/nav.png" alt="BWD Logo">
-    <div class="hamburger-x">
-        <img src="/images/close.png" alt="Close Menu">
-    </div>
-</div>
-            <a href="/">Home</a>
-            <a href="/about/">About</a>
-
-            <div class="dropdown">
-                <a href="/services/" class="services-link mobile-services">
-    Services
-</a>
-                <div class="mega-menu">
-                    <div class="mobile-back"><strong>←</strong> Back</div>
-                    <div class="mega-inner">
-
-<!-- SPRING & SUMMER -->
-<div class="mega-column">
-    <h4>SPRING & SUMMER</h4>
-
-    <a href="/services/mowing-trimming/" class="mega-item">
-        <span class="mega-title">Mowing & Trimming</span>
-        <span class="mega-desc">Keep your lawn pristine with regular mowing and precision trimming around edges.</span>
+```
+    <a href="/" class="logo" aria-label="BWD Services — Home">
+        <img src="/images/nav.png" alt="BWD Services">
     </a>
 
-    <a href="/services/spring-cleanup/" class="mega-item">
-        <span class="mega-title">Spring Cleanup</span>
-        <span class="mega-desc">Clear winter debris and prep your lawn and garden for healthy growth.</span>
-    </a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+        <img src="/images/hamburger.png" alt="" aria-hidden="true" id="hamburger-icon">
+    </button>
 
-    <a href="/services/garden-bed/" class="mega-item">
-        <span class="mega-title">Garden Bed Care</span>
-        <span class="mega-desc">Weeding, mulching, and refreshing garden beds for a vibrant yard.</span>
-    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Main navigation">
 
-<a href="/services/debris-removal/" class="mega-item">
-    <span class="mega-title">Debris & Waste Removal</span>
-    <span class="mega-desc">Remove pet waste, leaves, sticks, trash, and other yard debris for a clean, safe property.</span>
-</a>
+        <!-- Mobile-only top bar -->
+        <div class="mobile-menu-top" aria-hidden="true">
+            <img src="/images/nav.png" alt="BWD Services">
+            <button class="hamburger-x" id="nav-close" aria-label="Close menu">
+                <img src="/images/close.png" alt="" aria-hidden="true">
+            </button>
+        </div>
 
-    <a href="/services/treatments/" class="mega-item">
-        <span class="mega-title">Custom Treatments</span>
-        <span class="mega-desc">Seeding, aeration, fertilization, and weed control for a thicker, greener, healthier lawn.</span>
-    </a>
+        <a href="/" class="nav-link" data-navkey="home">Home</a>
+        <a href="/about/" class="nav-link" data-navkey="about">About</a>
 
-    <a href="/services/spring-summer/" class="mega-item view-all">
-        <span class="mega-title">VIEW ALL</span>
-    </a>
-</div>
+        <div class="dropdown">
+            <a href="/services/" class="nav-link services-link" data-navkey="services">
+                Services <span class="dropdown-caret" aria-hidden="true">&#8964;</span>
+            </a>
 
-<!-- FALL -->
-<div class="mega-column">
-    <h4>FALL</h4>
+            <div class="mega-menu" id="mega-menu" role="region" aria-label="Services menu">
+                <button class="mobile-back" id="mobile-back" aria-label="Back to menu">
+                    <span aria-hidden="true">←</span> Back
+                </button>
 
-    <a href="/services/leaf-removal/" class="mega-item">
-        <span class="mega-title">Leaf Removal</span>
-        <span class="mega-desc">Prevent buildup and protect your lawn with full leaf removal.</span>
-    </a>
+                <div class="mega-inner">
 
-    <a href="/services/seasonal-cleanup/" class="mega-item">
-        <span class="mega-title">Seasonal Cleanup</span>
-        <span class="mega-desc">End-of-season clearing to keep your property neat and ready for winter.</span>
-    </a>
-
-    <a href="/services/gutter-cleaning/" class="mega-item">
-        <span class="mega-title">Gutter Cleaning</span>
-        <span class="mega-desc">Prevent clogs and water damage with thorough gutter maintenance.</span>
-    </a>
-
-    <a href="/services/winter-prep/" class="mega-item">
-        <span class="mega-title">Winter Prep</span>
-        <span class="mega-desc">Protect your property with pre-winter services for lawns and landscaping.</span>
-    </a>
-
-    <a href="/services/fall-lawn-treatment/" class="mega-item">
-        <span class="mega-title">Fall Lawn Treatment</span>
-        <span class="mega-desc">Fertilization and soil care to ensure a strong lawn next spring.</span>
-    </a>
-
-    <a href="/services/fall/" class="mega-item view-all">
-        <span class="mega-title">VIEW ALL</span>
-    </a>
-</div>
-
-<!-- WINTER -->
-<div class="mega-column">
-    <h4>WINTER</h4>
-
-    <a href="/services/snow-removal/" class="mega-item">
-        <span class="mega-title">Snow Removal</span>
-        <span class="mega-desc">Reliable plowing for driveways, walkways, and parking areas.</span>
-    </a>
-
-    <a href="/services/salting-services/" class="mega-item">
-        <span class="mega-title">Salting Services</span>
-        <span class="mega-desc">Commercial-grade salt application to reduce slip hazards.</span>
-    </a>
-
-    <a href="/services/emergency-plowing/" class="mega-item">
-        <span class="mega-title">Emergency Plowing</span>
-        <span class="mega-desc">Fast response for heavy storms or unexpected snow events.</span>
-    </a>
-
-    <a href="/services/ice-management/" class="mega-item">
-        <span class="mega-title">Ice Management</span>
-        <span class="mega-desc">Proactive measures to prevent ice buildup and enhance safety.</span>
-    </a>
-
-    <a href="/services/winter-property-care/" class="mega-item">
-        <span class="mega-title">Winter Property Care</span>
-        <span class="mega-desc">Full winter maintenance to keep your property accessible and safe.</span>
-    </a>
-
-    <a href="/services/winter/" class="mega-item view-all">
-        <span class="mega-title">VIEW ALL</span>
-    </a>
-</div>
-
+                    <div class="mega-column">
+                        <h4>Spring &amp; Summer</h4>
+                        <a href="/services/mowing-trimming/" class="mega-item">
+                            <span class="mega-title">Mowing &amp; Trimming</span>
+                            <span class="mega-desc">Keep your lawn pristine with regular mowing and precision trimming around edges.</span>
+                        </a>
+                        <a href="/services/spring-cleanup/" class="mega-item">
+                            <span class="mega-title">Spring Cleanup</span>
+                            <span class="mega-desc">Clear winter debris and prep your lawn and garden for healthy growth.</span>
+                        </a>
+                        <a href="/services/garden-bed/" class="mega-item">
+                            <span class="mega-title">Garden Bed Care</span>
+                            <span class="mega-desc">Weeding, mulching, and refreshing garden beds for a vibrant yard.</span>
+                        </a>
+                        <a href="/services/debris-removal/" class="mega-item">
+                            <span class="mega-title">Debris &amp; Waste Removal</span>
+                            <span class="mega-desc">Remove pet waste, leaves, sticks, trash, and other yard debris.</span>
+                        </a>
+                        <a href="/services/treatments/" class="mega-item">
+                            <span class="mega-title">Custom Treatments</span>
+                            <span class="mega-desc">Seeding, aeration, fertilization, and weed control for a healthier lawn.</span>
+                        </a>
+                        <a href="/services/spring-summer/" class="mega-item view-all">
+                            <span class="mega-title">View All Spring &amp; Summer →</span>
+                        </a>
                     </div>
-                </div>
-            </div>
 
-            <a href="/faq/">FAQ</a>
-            <a href="/support/">Support</a>
-            <hr class="mobile-divider">
-            <a href="/account/dashboard/" class="mobile-login">Log In</a>
-<a href="/quote/" class="mobile-quote">Get a Quote</a>
-            <hr class="mobile-divider">
+                    <div class="mega-column">
+                        <h4>Fall</h4>
+                        <a href="/services/leaf-removal/" class="mega-item">
+                            <span class="mega-title">Leaf Removal</span>
+                            <span class="mega-desc">Prevent buildup and protect your lawn with full leaf removal.</span>
+                        </a>
+                        <a href="/services/seasonal-cleanup/" class="mega-item">
+                            <span class="mega-title">Seasonal Cleanup</span>
+                            <span class="mega-desc">End-of-season clearing to keep your property neat and ready for winter.</span>
+                        </a>
+                        <a href="/services/gutter-cleaning/" class="mega-item">
+                            <span class="mega-title">Gutter Cleaning</span>
+                            <span class="mega-desc">Prevent clogs and water damage with thorough gutter maintenance.</span>
+                        </a>
+                        <a href="/services/winter-prep/" class="mega-item">
+                            <span class="mega-title">Winter Prep</span>
+                            <span class="mega-desc">Protect your property with pre-winter services for lawns and landscaping.</span>
+                        </a>
+                        <a href="/services/fall-lawn-treatment/" class="mega-item">
+                            <span class="mega-title">Fall Lawn Treatment</span>
+                            <span class="mega-desc">Fertilization and soil care to ensure a strong lawn next spring.</span>
+                        </a>
+                        <a href="/services/fall/" class="mega-item view-all">
+                            <span class="mega-title">View All Fall →</span>
+                        </a>
+                    </div>
 
-<p class="switch-commercial">
-    Switch to <strong>Commercial</strong>
-</p>
-        <a href="/account/dashboard/" class="desktop-account">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-4 0-8 2-8 5v3h16v-3c0-3-4-5-8-5z"/>
-    </svg>
-</a>
-        </nav>
+                    <div class="mega-column">
+                        <h4>Winter</h4>
+                        <a href="/services/snow-removal/" class="mega-item">
+                            <span class="mega-title">Snow Removal</span>
+                            <span class="mega-desc">Reliable plowing for driveways, walkways, and parking areas.</span>
+                        </a>
+                        <a href="/services/salting-services/" class="mega-item">
+                            <span class="mega-title">Salting Services</span>
+                            <span class="mega-desc">Commercial-grade salt application to reduce slip hazards.</span>
+                        </a>
+                        <a href="/services/emergency-plowing/" class="mega-item">
+                            <span class="mega-title">Emergency Plowing</span>
+                            <span class="mega-desc">Fast response for heavy storms or unexpected snow events.</span>
+                        </a>
+                        <a href="/services/ice-management/" class="mega-item">
+                            <span class="mega-title">Ice Management</span>
+                            <span class="mega-desc">Proactive measures to prevent ice buildup and enhance safety.</span>
+                        </a>
+                        <a href="/services/winter-property-care/" class="mega-item">
+                            <span class="mega-title">Winter Property Care</span>
+                            <span class="mega-desc">Full winter maintenance to keep your property accessible and safe.</span>
+                        </a>
+                        <a href="/services/winter/" class="mega-item view-all">
+                            <span class="mega-title">View All Winter →</span>
+                        </a>
+                    </div>
 
+                </div><!-- /mega-inner -->
+            </div><!-- /mega-menu -->
+        </div><!-- /dropdown -->
+
+        <a href="/faq/" class="nav-link" data-navkey="faq">FAQ</a>
+        <a href="/support/" class="nav-link" data-navkey="support">Support</a>
+
+        <!-- Mobile-only bottom links -->
+        <hr class="mobile-divider" aria-hidden="true">
+        <a href="/account/dashboard/" class="mobile-only nav-link-mobile-login">Log In</a>
+        <a href="/quote/" class="mobile-only nav-link-mobile-quote">Get a Quote</a>
+        <hr class="mobile-divider" aria-hidden="true">
+        <p class="mobile-only switch-commercial">Switch to <strong>Commercial</strong></p>
+
+    </nav><!-- /main-nav -->
+
+    <!-- Desktop right-side actions -->
+    <div class="header-actions">
+        <a href="/account/dashboard/" class="desktop-account" aria-label="My account">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5z"/>
+            </svg>
+        </a>
     </div>
+
+</div><!-- /header-inner -->
+
+<!-- Mobile nav overlay -->
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+```
+
 </header>

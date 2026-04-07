@@ -1,103 +1,206 @@
+/* =============================================================
+BWD Services — include.js
+Loads shared components, initialises navbar + announcement bar.
+
+## ACTIVE PAGE USAGE
+
+On each page’s <html> tag, add a data-page attribute:
+
+```
+ <html lang="en" data-page="home">
+ <html lang="en" data-page="about">
+ <html lang="en" data-page="faq">
+ <html lang="en" data-page="support">
+ <html lang="en" data-page="services">          ← highlights Services link
+ <html lang="en" data-page="services/mowing-trimming"> ← also highlights Services
+```
+
+The script auto-detects the current path as a fallback even
+without data-page — so it works on every page automatically.
+============================================================= */
+
+/* –– Parallel component loader –– */
 async function loadComponent(id, file) {
-    try {
-        const res = await fetch(file);
-        const data = await res.text();
-        document.getElementById(id).innerHTML = data;
-    } catch (err) {
-        console.error("Component failed to load:", file, err);
-    }
+const el = document.getElementById(id);
+if (!el) return;
+try {
+const res = await fetch(file);
+if (!res.ok) throw new Error(res.status);
+el.innerHTML = await res.text();
+} catch (err) {
+console.warn(`BWD: failed to load component "${file}"`, err);
+}
 }
 
+/* –– Navbar –– */
 function initNavbar() {
-    const hamburger = document.getElementById("hamburger");
-    const nav = document.querySelector(".main-nav");
-    const servicesBtn = document.querySelector(".mobile-services");
-    const megaMenu = document.querySelector(".mega-menu");
-    const backBtn = document.querySelector(".mobile-back");
-    const xBtn = document.querySelector(".hamburger-x");
-    const header = document.querySelector("header");
+const header     = document.querySelector(’#site-header’);
+const hamburger  = document.getElementById(‘hamburger’);
+const navClose   = document.getElementById(‘nav-close’);
+const nav        = document.getElementById(‘main-nav’);
+const overlay    = document.getElementById(‘nav-overlay’);
+const servicesLink = document.querySelector(’.services-link’);
+const megaMenu   = document.getElementById(‘mega-menu’);
+const mobileBack = document.getElementById(‘mobile-back’);
 
-    if (!hamburger || !nav || !header) return;
+```
+if (!header || !hamburger || !nav) return;
 
-    function closeAll() {
-        nav.classList.remove("active");
-        megaMenu?.classList.remove("active");
-        document.body.classList.remove("no-scroll");
-        header.classList.remove("menu-open");
+/* -- Open / close helpers -- */
+function openNav() {
+    nav.classList.add('is-open');
+    overlay?.classList.add('is-visible');
+    document.body.classList.add('no-scroll');
+    hamburger.setAttribute('aria-expanded', 'true');
+}
+
+function closeNav() {
+    nav.classList.remove('is-open');
+    overlay?.classList.remove('is-visible');
+    document.body.classList.remove('no-scroll');
+    hamburger.setAttribute('aria-expanded', 'false');
+    closeMegaMobile();
+}
+
+function openMegaMobile() {
+    megaMenu?.classList.add('is-open');
+}
+
+function closeMegaMobile() {
+    megaMenu?.classList.remove('is-open');
+}
+
+function isMobile() {
+    return window.innerWidth <= 960;
+}
+
+/* -- Event listeners -- */
+hamburger.addEventListener('click', openNav);
+navClose?.addEventListener('click', closeNav);
+overlay?.addEventListener('click', closeNav);
+
+// Services link — on mobile opens the sliding mega panel
+servicesLink?.addEventListener('click', (e) => {
+    if (isMobile()) {
+        e.preventDefault();
+        openMegaMobile();
     }
+    // Desktop: CSS hover handles it
+});
 
-    hamburger.addEventListener("click", () => {
-        nav.classList.add("active");
-        document.body.classList.add("no-scroll");
-        header.classList.add("menu-open");
-    });
+mobileBack?.addEventListener('click', closeMegaMobile);
 
-    if (xBtn) {
-        xBtn.addEventListener("click", closeAll);
-    }
-
-    if (servicesBtn && megaMenu) {
-        servicesBtn.addEventListener("click", (e) => {
-            if (window.innerWidth <= 1200) {
-                e.preventDefault();
-                megaMenu.classList.add("active");
-            }
-        });
-    }
-
-    if (backBtn && megaMenu) {
-        backBtn.addEventListener("click", () => {
-            megaMenu.classList.remove("active");
-        });
-    }
-
-    // ===== Active link highlighting =====
-    const page = document.body.getAttribute("data-page");
-    if (!page) return;
-
-    const map = {
-        home: "/",
-        about: "/about/",
-        faq: "/faq/",
-        support: "/support/"
-    };
-
-    function normalizePath(path) {
-        return path.replace(/\/+$/, '');
-    }
-
-    document.querySelectorAll(".main-nav a").forEach(link => {
-        link.classList.remove("active");
-
-        const linkPath = normalizePath(new URL(link.href).pathname);
-        const targetPath = normalizePath(map[page] || '');
-
-        if (linkPath === targetPath) {
-            link.classList.add("active");
+// Close nav on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (megaMenu?.classList.contains('is-open')) {
+            closeMegaMobile();
+        } else {
+            closeNav();
         }
-    });
-}
-
-function initAnnouncementBar() {
-    const bar = document.getElementById("announcement-bar");
-    if (!bar) return;
-
-    if (window.innerWidth <= 900) {
-        window.addEventListener("scroll", () => {
-            if (window.scrollY > 50) {
-                bar.classList.add("hidden");
-            } else {
-                bar.classList.remove("hidden");
-            }
-        });
     }
+});
+
+// Close mobile nav if window resizes to desktop
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        if (!isMobile()) closeNav();
+    }, 150);
+});
+
+/* -- Active link highlighting -- */
+highlightActiveLink();
+```
+
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadComponent("announcement", "/components/announcement.html");
-    await loadComponent("navbar", "/components/navbar.html");
-    await loadComponent("footer", "/components/footer.html");
+/* –– Active link detection –– */
+function highlightActiveLink() {
+// 1. Try data-page on <html> first (explicit, reliable)
+const declared = document.documentElement.getAttribute(‘data-page’);
 
-    initNavbar();
-    initAnnouncementBar();
+```
+// 2. Fall back to current pathname
+const rawPath = declared
+    ? '/' + declared.replace(/^\//, '').replace(/\/?$/, '/') // normalise
+    : window.location.pathname;
+
+// Normalise: lowercase, ensure leading slash, strip trailing slash
+const currentPath = rawPath.toLowerCase().replace(/\/$/, '') || '/';
+
+document.querySelectorAll('.nav-link[data-navkey]').forEach(link => {
+    link.classList.remove('is-active', 'is-active-parent');
+});
+
+// Map navkeys to their paths
+const navMap = {
+    home:     '/',
+    about:    '/about',
+    services: '/services',
+    faq:      '/faq',
+    support:  '/support',
+};
+
+document.querySelectorAll('.nav-link[data-navkey]').forEach(link => {
+    const key  = link.getAttribute('data-navkey');
+    const path = (navMap[key] || '/' + key).toLowerCase();
+
+    if (key === 'home') {
+        if (currentPath === '' || currentPath === '/') {
+            link.classList.add('is-active');
+        }
+    } else if (key === 'services') {
+        // Highlight services for any /services/* URL
+        if (currentPath === path || currentPath.startsWith(path + '/')) {
+            link.classList.add('is-active-parent');
+        }
+    } else {
+        if (currentPath === path || currentPath.startsWith(path + '/')) {
+            link.classList.add('is-active');
+        }
+    }
+});
+```
+
+}
+
+/* –– Announcement bar –– */
+function initAnnouncementBar() {
+const bar = document.getElementById(‘announcement-bar’);
+if (!bar) return;
+
+```
+// Only hide on scroll for mobile — always show on desktop
+if (window.innerWidth <= 960) {
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                bar.classList.toggle('hidden', window.scrollY > 60);
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+}
+```
+
+}
+
+/* –– Boot –– */
+document.addEventListener(‘DOMContentLoaded’, async () => {
+// Load all three components in parallel
+await Promise.all([
+loadComponent(‘announcement’, ‘/components/announcement.html’),
+loadComponent(‘navbar’,       ‘/components/navbar.html’),
+loadComponent(‘footer’,       ‘/components/footer.html’),
+]);
+
+```
+initNavbar();
+initAnnouncementBar();
+```
+
 });
