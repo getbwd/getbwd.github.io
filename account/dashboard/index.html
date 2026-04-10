@@ -5,19 +5,18 @@
 <title>Overview | BWD Services</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="dashboard.css">
-<style>.loading-text{color:#ccc;font-size:14px;}</style>
+<link rel="stylesheet" href="../../css/dashboard.css">
 </head>
 <body>
 <div class="dash-shell">
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-top"></div>
         <nav class="sidebar-nav">
-            <a class="nav-item active" href="index.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
-            <a class="nav-item" href="appointments.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
-            <a class="nav-item" href="invoices.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
-            <a class="nav-item" href="services.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
-            <a class="nav-item" href="account.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
+            <a class="nav-item active" href="/account/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
+            <a class="nav-item" href="/account/dashboard/appointments/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
+            <a class="nav-item" href="/account/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
+            <a class="nav-item" href="/account/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
+            <a class="nav-item" href="/account/dashboard/account/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
         </nav>
         <div class="sidebar-footer">
             <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
@@ -44,16 +43,16 @@
             </div>
             <div class="overview-grid">
                 <div class="card">
-                    <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="appointments.html">View all</a></div>
+                    <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="/account/dashboard/appointments/">View all</a></div>
                     <div class="card-body" id="overviewApptBody"><span class="loading-text">Loading…</span></div>
                 </div>
                 <div class="card">
-                    <div class="card-header"><span class="card-title">Latest Invoice</span><a class="card-link" href="invoices.html">View all</a></div>
+                    <div class="card-header"><span class="card-title">Latest Invoice</span><a class="card-link" href="/account/dashboard/invoices/">View all</a></div>
                     <div class="card-body" id="overviewInvoiceBody"><span class="loading-text">Loading…</span></div>
                 </div>
             </div>
             <div class="card">
-                <div class="card-header"><span class="card-title">Active Services</span><a class="card-link" href="services.html">View all</a></div>
+                <div class="card-header"><span class="card-title">Active Services</span><a class="card-link" href="/account/dashboard/services/">View all</a></div>
                 <div class="service-chips" id="overviewServiceChips"><span class="loading-text">Loading…</span></div>
             </div>
         </div>
@@ -62,7 +61,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-<script src="dashboard.js"></script>
+<script src="../../js/dashboard.js"></script>
 <script>
 initFirebase();
 const auth = firebase.auth();
@@ -79,12 +78,11 @@ auth.onAuthStateChanged(async user => {
     const [invoiceRows, serviceRows, jobRows] = await Promise.all([
         fetchCSV(CSV.INVOICES), fetchCSV(CSV.SERVICES), fetchCSV(CSV.JOBS)
     ]);
-
     const myInvoices = invoiceRows.filter(r => r[1] === uid);
     const myServices = serviceRows.filter(r => r[0] === uid);
     const myJobs     = jobRows.filter(r => r[1] === uid);
 
-    // Next appointment stat
+    // Next appointment
     const now = new Date(); now.setHours(0,0,0,0);
     const upcoming = myJobs.filter(r => {
         const s = (r[2]||'').toLowerCase();
@@ -95,16 +93,13 @@ auth.onAuthStateChanged(async user => {
         ? new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric'})
         : 'None scheduled';
 
-    // Active services stat
-    const svcRow = myServices[0];
+    // Services count
+    const svcRow  = myServices[0];
     const svcList = svcRow ? parseServices(svcRow[3]) : [];
     document.getElementById('statServices').textContent = svcList.length;
 
     // Open invoices & amount due
-    const openInv = myInvoices.filter(r => {
-        const s = (r[3]||'').toLowerCase();
-        return s === 'unpaid' || s === 'overdue' || s === 'partial';
-    });
+    const openInv = myInvoices.filter(r => { const s=(r[3]||'').toLowerCase(); return s==='unpaid'||s==='overdue'||s==='partial'; });
     document.getElementById('statOpenInvoices').textContent = openInv.length;
     let totalDue = 0;
     openInv.forEach(r => {
@@ -117,16 +112,15 @@ auth.onAuthStateChanged(async user => {
     // Upcoming appointment card
     const apptEl = document.getElementById('overviewApptBody');
     if (nextJob) {
-        const svcNames = parseLineItems(nextJob[6]).map(i=>i.name).join(', ') || 'Service Visit';
-        const dateStr  = new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        const time     = nextJob[4] ? ` · ${nextJob[4]}` : '';
-        apptEl.innerHTML = `<div class="ov-row"><div><p class="ov-title">${svcNames}</p><p class="ov-sub">${dateStr}${time}</p></div>${badge(nextJob[2]||'Scheduled')}</div>`;
+        const names   = parseLineItems(nextJob[6]).map(i=>i.name).join(', ') || 'Service Visit';
+        const dateStr = new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        const time    = nextJob[4] ? ` · ${nextJob[4]}` : '';
+        apptEl.innerHTML = `<div class="ov-row"><div><p class="ov-title">${names}</p><p class="ov-sub">${dateStr}${time}</p></div>${badge(nextJob[2]||'Scheduled')}</div>`;
     } else { apptEl.innerHTML = empty('No upcoming appointments.'); }
 
     // Latest invoice card
     const invEl = document.getElementById('overviewInvoiceBody');
-    const sortedInv = [...myInvoices].sort((a,b)=>new Date(b[4])-new Date(a[4]));
-    const latest = sortedInv[0];
+    const latest = [...myInvoices].sort((a,b)=>new Date(b[4])-new Date(a[4]))[0];
     if (latest) {
         const items    = parseLineItems(latest[5]);
         const payments = parsePayments(latest[6]);
@@ -139,7 +133,7 @@ auth.onAuthStateChanged(async user => {
     } else { invEl.innerHTML = empty('No invoices yet.'); }
 
     // Service chips
-    const chipsEl = document.getElementById('overviewServiceChips');
+    const chipsEl  = document.getElementById('overviewServiceChips');
     const isActive = svcRow && (svcRow[2]||'').toLowerCase() === 'active';
     if (svcList.length) {
         chipsEl.innerHTML = svcList.map(s=>`<span class="svc-chip ${isActive?'active':''}">${s.name}</span>`).join('');

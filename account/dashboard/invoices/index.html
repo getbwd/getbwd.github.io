@@ -5,53 +5,18 @@
 <title>Invoices | BWD Services</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="dashboard.css">
-<style>
-.loading-text{color:#ccc;font-size:14px;}
-
-.inv-list { display: flex; flex-direction: column; gap: 14px; }
-.inv-card  { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-
-.inv-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 20px 12px; border-bottom: 1px solid var(--border-light); }
-.inv-card-title  { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.inv-card-meta   { font-size: 12px; color: var(--text-3); }
-.inv-card-right  { text-align: right; flex-shrink: 0; }
-.inv-total       { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-.inv-balance     { font-size: 12px; color: var(--text-3); }
-
-.inv-card-body   { padding: 14px 20px; display: flex; flex-direction: column; gap: 14px; }
-
-.inv-section-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #bbb; margin-bottom: 6px; }
-
-.line-items { width: 100%; border-collapse: collapse; font-size: 13px; }
-.line-items th { text-align: left; font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; padding: 0 0 6px; }
-.line-items td { padding: 5px 0; color: var(--text-2); border-top: 1px solid var(--border-light); }
-.line-items td.right { text-align: right; font-variant-numeric: tabular-nums; }
-.line-items .total-row td { font-weight: 700; color: var(--text); border-top: 1px solid var(--border); padding-top: 8px; }
-
-.pay-history { display: flex; flex-direction: column; gap: 6px; }
-.pay-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-2); padding: 5px 0; border-bottom: 1px solid #faf9f6; }
-.pay-row:last-child { border-bottom: none; }
-.pay-row .pay-amount { font-variant-numeric: tabular-nums; color: #1e8a4a; font-weight: 600; }
-
-.balance-row { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; padding-top: 8px; border-top: 1px solid var(--border); }
-.balance-due  { color: #d93025; }
-.balance-paid { color: #1e8a4a; }
-
-.inv-toggle { font-size: 12px; font-weight: 600; color: var(--orange); background: none; border: none; cursor: pointer; padding: 0; font-family: 'Inter', sans-serif; white-space: nowrap; margin-top: 4px; display: block; }
-.inv-card-body.collapsed { display: none; }
-</style>
+<link rel="stylesheet" href="../../../css/dashboard.css">
 </head>
 <body>
 <div class="dash-shell">
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-top"></div>
         <nav class="sidebar-nav">
-            <a class="nav-item" href="index.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
-            <a class="nav-item" href="appointments.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
-            <a class="nav-item active" href="invoices.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
-            <a class="nav-item" href="services.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
-            <a class="nav-item" href="account.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
+            <a class="nav-item" href="/account/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
+            <a class="nav-item" href="/account/dashboard/appointments/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
+            <a class="nav-item active" href="/account/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
+            <a class="nav-item" href="/account/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
+            <a class="nav-item" href="/account/dashboard/account/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
         </nav>
         <div class="sidebar-footer">
             <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
@@ -77,7 +42,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-<script src="dashboard.js"></script>
+<script src="../../../js/dashboard.js"></script>
 <script>
 initFirebase();
 const auth = firebase.auth();
@@ -90,9 +55,7 @@ auth.onAuthStateChanged(async user => {
     const uid = user.uid;
 
     const invoiceRows = await fetchCSV(CSV.INVOICES);
-    const myInvoices  = invoiceRows
-        .filter(r => r[1] === uid)
-        .sort((a,b) => new Date(b[4]) - new Date(a[4]));
+    const myInvoices  = invoiceRows.filter(r => r[1] === uid).sort((a,b) => new Date(b[4]) - new Date(a[4]));
 
     const container = document.getElementById('invListContainer');
     if (!myInvoices.length) {
@@ -101,23 +64,22 @@ auth.onAuthStateChanged(async user => {
     }
 
     container.innerHTML = `<div class="inv-list">${myInvoices.map((r, idx) => {
-        const invId    = r[0] || '—';
-        const jobId    = r[2] || '';
-        const status   = r[3] || 'Unpaid';
+        const invId    = r[0]||'—';
+        const jobId    = r[2]||'';
+        const status   = r[3]||'Unpaid';
         const date     = r[4] ? new Date(r[4]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
         const items    = parseLineItems(r[5]);
         const payments = parsePayments(r[6]);
-
-        const total    = items.reduce((s,i) => s + i.lineTotal, 0);
-        const paid     = payments.reduce((s,p) => s + p.amount, 0);
+        const total    = items.reduce((s,i)=>s+i.lineTotal,0);
+        const paid     = payments.reduce((s,p)=>s+p.amount,0);
         const balance  = Math.max(0, total - paid);
-        const desc     = items.map(i=>i.name).join(', ') || 'Invoice';
+        const desc     = items.map(i=>i.name).join(', ')||'Invoice';
 
         const lineItemsHTML = items.length ? `
             <div>
                 <div class="inv-section-label">Services</div>
                 <table class="line-items">
-                    <tr><th>Service</th><th>Qty</th><th class="right">Unit</th><th class="right">Total</th></tr>
+                    <tr><th>Service</th><th>Qty</th><th class="right">Unit Price</th><th class="right">Total</th></tr>
                     ${items.map(i=>`<tr><td>${i.name}</td><td>${i.qty}</td><td class="right">${fmtMoney(i.unitPrice)}</td><td class="right">${fmtMoney(i.lineTotal)}</td></tr>`).join('')}
                     <tr class="total-row"><td colspan="3">Invoice Total</td><td class="right">${fmtMoney(total)}</td></tr>
                 </table>
@@ -127,21 +89,13 @@ auth.onAuthStateChanged(async user => {
             <div>
                 <div class="inv-section-label">Payment History</div>
                 <div class="pay-history">
-                    ${payments.map(p=>`
-                        <div class="pay-row">
-                            <span>${p.date} · ${p.type}</span>
-                            <span class="pay-amount">+${fmtMoney(p.amount)}</span>
-                        </div>`).join('')}
+                    ${payments.map(p=>`<div class="pay-row"><span>${p.date} · ${p.type}</span><span class="pay-amount">+${fmtMoney(p.amount)}</span></div>`).join('')}
                     <div class="balance-row">
                         <span>Balance ${balance > 0 ? 'Remaining' : 'Settled'}</span>
                         <span class="${balance > 0 ? 'balance-due' : 'balance-paid'}">${fmtMoney(balance)}</span>
                     </div>
                 </div>
-            </div>` : (total > 0 ? `
-            <div class="balance-row">
-                <span>Balance Due</span>
-                <span class="balance-due">${fmtMoney(total)}</span>
-            </div>` : '');
+            </div>` : (total > 0 ? `<div class="balance-row"><span>Balance Due</span><span class="balance-due">${fmtMoney(total)}</span></div>` : '');
 
         return `
         <div class="inv-card">
@@ -158,8 +112,7 @@ auth.onAuthStateChanged(async user => {
                 </div>
             </div>
             <div class="inv-card-body collapsed" id="inv-body-${idx}">
-                ${lineItemsHTML}
-                ${payHistHTML}
+                ${lineItemsHTML}${payHistHTML}
             </div>
         </div>`;
     }).join('')}</div>`;
