@@ -503,4 +503,8 @@
     .signup-page {
         grid-template-columns: 1fr !important;
     }
+
+    .form-header h1 {
+    color: var(--orange);
+    }
 }
