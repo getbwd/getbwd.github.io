@@ -25,9 +25,8 @@
 .brand-bg {
     position: absolute;
     inset: 0;
-    background: url("/images/IMG_1267.jpeg") center/cover no-repeat;
+    background: none; /* removed image */
     opacity: 0.22;
-    animation: brandZoom 16s ease-out forwards;
 }
 
 @keyframes brandZoom {
@@ -494,4 +493,14 @@
     .brand-trust { display: none; }
     .form-panel { padding: 36px 20px 48px; }
     .form-header h1 { font-size: 24px; }
+}
+
+@media (max-width: 900px) {
+    .brand-panel {
+        display: none;
+    }
+
+    .signup-page {
+        grid-template-columns: 1fr;
+    }
 }
