@@ -2,106 +2,72 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>My Services | BWD Services</title>
+<title>Account | BWD Services</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="dashboard.css">
+<style>.loading-text{color:#ccc;font-size:14px;}</style>
 </head>
 <body>
 <div class="dash-shell">
-
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-top"></div>
         <nav class="sidebar-nav">
-            <a class="nav-item" href="index.html">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                Overview
-            </a>
-            <a class="nav-item" href="appointments.html">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                Appointments
-            </a>
-            <a class="nav-item" href="invoices.html">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                Invoices
-            </a>
-            <a class="nav-item active" href="services.html">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                My Services
-            </a>
-            <a class="nav-item" href="account.html">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                Account
-            </a>
+            <a class="nav-item" href="index.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
+            <a class="nav-item" href="appointments.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
+            <a class="nav-item" href="invoices.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
+            <a class="nav-item" href="services.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
+            <a class="nav-item active" href="account.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
         </nav>
         <div class="sidebar-footer">
-            <button class="nav-item signout-btn" id="signOutBtn">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Sign Out
-            </button>
+            <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
         </div>
     </aside>
-
-    <!-- MOBILE HEADER -->
     <header class="mobile-header">
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
         <span class="mobile-brand">BWD Services</span>
         <div class="mobile-avatar" id="mobileAvatar">?</div>
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- MAIN -->
     <main class="dash-main">
         <div class="dash-page">
             <div class="section-header">
-                <h1 class="section-title">My Services</h1>
-                <p class="section-sub">Your current lawn care plan.</p>
+                <h1 class="section-title">Account</h1>
+                <p class="section-sub">Your profile and contact details.</p>
             </div>
 
-            <div class="services-grid">
-                <div class="svc-card">
-                    <div class="svc-card-header">
-                        <span class="svc-card-name">Weekly Mowing</span>
-                        <span class="bdg bdg-active">Active</span>
+            <div class="card account-card">
+                <div class="account-avatar-row">
+                    <div class="account-avatar" id="accountAvatar">?</div>
+                    <div>
+                        <p class="account-name" id="accountName">—</p>
+                        <p class="account-since" id="accountSince">—</p>
                     </div>
-                    <p class="svc-detail"><strong>Frequency:</strong> Weekly</p>
-                    <p class="svc-detail"><strong>Price:</strong> $45.00 / visit</p>
-                    <p class="svc-detail">Front and back yard mowing, clippings bagged.</p>
-                    <p class="svc-detail muted">Started Jan 15, 2025</p>
                 </div>
-                <div class="svc-card">
-                    <div class="svc-card-header">
-                        <span class="svc-card-name">Edging &amp; Trimming</span>
-                        <span class="bdg bdg-active">Active</span>
+                <div class="account-fields">
+                    <div class="account-field">
+                        <span class="afl">Full Name</span>
+                        <span class="afv" id="afName">—</span>
                     </div>
-                    <p class="svc-detail"><strong>Frequency:</strong> Bi-weekly</p>
-                    <p class="svc-detail"><strong>Price:</strong> $25.00 / visit</p>
-                    <p class="svc-detail">Sidewalk, driveway, and fence line edging.</p>
-                    <p class="svc-detail muted">Started Jan 15, 2025</p>
-                </div>
-                <div class="svc-card">
-                    <div class="svc-card-header">
-                        <span class="svc-card-name">Seasonal Cleanup</span>
-                        <span class="bdg bdg-active">Active</span>
+                    <div class="account-field">
+                        <span class="afl">Email</span>
+                        <span class="afv" id="afEmail">—</span>
                     </div>
-                    <p class="svc-detail"><strong>Frequency:</strong> Seasonal</p>
-                    <p class="svc-detail"><strong>Price:</strong> $90.00 / service</p>
-                    <p class="svc-detail">Leaf removal, debris cleanup, and bed clearing.</p>
-                    <p class="svc-detail muted">Started Mar 1, 2025</p>
-                </div>
-                <div class="svc-card">
-                    <div class="svc-card-header">
-                        <span class="svc-card-name">Fertilization</span>
-                        <span class="bdg bdg-paused">Paused</span>
+                    <div class="account-field">
+                        <span class="afl">Sign-in Method</span>
+                        <span class="afv" id="afProvider">—</span>
                     </div>
-                    <p class="svc-detail"><strong>Frequency:</strong> Quarterly</p>
-                    <p class="svc-detail"><strong>Price:</strong> $55.00 / treatment</p>
-                    <p class="svc-detail">Seasonal granular fertilizer application.</p>
-                    <p class="svc-detail muted">Started Apr 1, 2024</p>
+                    <div class="account-field">
+                        <span class="afl">UID</span>
+                        <span class="afv uid" id="afUid">—</span>
+                    </div>
                 </div>
+                <div class="account-actions">
+                    <button class="btn-secondary" id="changePasswordBtn">Change Password</button>
+                    <button class="btn-danger" id="signOutBtn2">Sign Out</button>
+                </div>
+                <div class="acct-msg" id="accountMessage"></div>
             </div>
         </div>
     </main>
@@ -109,28 +75,52 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script src="dashboard.js"></script>
 <script>
-firebase.initializeApp({
-    apiKey:"AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
-    authDomain:"bwd-accounts.firebaseapp.com",
-    projectId:"bwd-accounts",
-    storageBucket:"bwd-accounts.firebasestorage.app",
-    messagingSenderId:"590001375282",
-    appId:"1:590001375282:web:bd1725d5a5be3f9d28542b"
-});
+initFirebase();
 const auth = firebase.auth();
-function initials(n){return n?n.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';}
-auth.onAuthStateChanged(user => {
+const db   = firebase.firestore();
+initSidebar();
+initSignOut(auth, 'signOutBtn', 'signOutBtn2');
+
+auth.onAuthStateChanged(async user => {
     if (!user) { window.location.replace('/account/login/'); return; }
-    document.getElementById('mobileAvatar').textContent = initials(user.displayName||'');
+
+    const name = user.displayName || 'User';
+    document.getElementById('mobileAvatar').textContent  = initials(name);
+    document.getElementById('accountAvatar').textContent = initials(name);
+    document.getElementById('accountName').textContent   = name;
+    document.getElementById('afName').textContent        = name;
+    document.getElementById('afEmail').textContent       = user.email || '—';
+    document.getElementById('afUid').textContent         = user.uid;
+    document.getElementById('afProvider').textContent    = user.providerData[0]?.providerId === 'google.com' ? 'Google' : 'Email & Password';
+
+    // Member since from Firestore
+    try {
+        const doc = await db.collection('customers').doc(user.uid).get();
+        if (doc.exists && doc.data().createdAt) {
+            const d = doc.data().createdAt.toDate ? doc.data().createdAt.toDate() : new Date(doc.data().createdAt);
+            document.getElementById('accountSince').textContent = 'Member since ' + d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+        } else {
+            document.getElementById('accountSince').textContent = '';
+        }
+    } catch(e) {
+        document.getElementById('accountSince').textContent = '';
+    }
 });
-document.getElementById('signOutBtn').addEventListener('click', () => {
-    auth.signOut().then(() => window.location.replace('/account/login/'));
+
+document.getElementById('changePasswordBtn').addEventListener('click', async () => {
+    const msgEl = document.getElementById('accountMessage');
+    try {
+        await auth.sendPasswordResetEmail(auth.currentUser.email);
+        msgEl.textContent = 'Password reset email sent. Check your inbox.';
+        msgEl.className   = 'acct-msg success';
+    } catch(e) {
+        msgEl.textContent = 'Failed to send reset email. Try again.';
+        msgEl.className   = 'acct-msg error';
+    }
 });
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-document.getElementById('mobileMenuBtn').addEventListener('click', () => { sidebar.classList.add('open'); overlay.classList.add('visible'); });
-overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
 </script>
 </body>
 </html>
