@@ -1,994 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-page="login">
 <head>
-<meta charset="UTF-8">
-<title>Log into BWD</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="images/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-
-body.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-}
-
-nav a.active {
-
-    position: relative;
-}
-
-:root {
-    --orange: #ff6404;
-    --dark: #121212;
-    --gray: #f4f4f4;
-    --light-gray: #e8e8e8;
-    --white: #ffffff;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-}
-
-body {
-    background: var(--white);
-    color: var(--dark);
-    line-height: 1.6;
-}
-
-/* ===== NAVIGATION ===== */
-
-nav a.active::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--orange);
-    border-radius: 2px;
-}
-
-/* ===== HEADER ===== */
-
-header {
-    background: var(--white);
-    border-bottom: 1px solid var(--light-gray);
-    position: relative;
-    z-index: 5000;
-        margin-top: 0;
-
-}
-
-.container {
-    width: 100%;
-    padding: 0 8%;
-}
-
-.header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 5px 0; /* reduce vertical padding */
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* ensures logo and hamburger align vertically */
-}
-
-.logo img {
-    height: 60px;
-    width: auto;
-    display: block;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-/* NAV */
-
-.main-nav {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.main-nav > a,
-.services-link {
-    color: var(--dark);
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.main-nav > a:hover,
-.services-link:hover {
-    color: var(--orange);
-}
-
-/* ===== HERO ===== */
-
-/* HERO */
-.hero {
-    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
-                url("/images/IMG_1267.jpeg") center/cover no-repeat;
-    color: var(--white);
-    padding: 120px 8%;       /* vertical and horizontal padding */
-    display: flex;
-    align-items: center;     /* vertical centering */
-}
-
-.hero-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.hero-content {
-    max-width: 500px;        /* limits text width so it wraps naturally */
-    text-align: left;        /* left-aligned */
-}
-
-.hero h1 {
-    font-size: 52px;
-    margin-bottom: 20px;
-    line-height: 1.2;        /* tighter header spacing */
-}
-
-.hero p {
-    font-size: 20px;
-    margin-bottom: 25px;     /* slightly tighter spacing */
-    line-height: 1.5;        /* readable but compact */
-    word-wrap: break-word;   /* ensures long text wraps nicely */
-}
-
-.btn {
-    background: var(--orange);
-    color: var(--white);
-    padding: 12px 28px;      /* compact button */
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-block;
-    transition: 0.3s;
-    font-size: 18px;
-}
-
-.btn:hover {
-    background: #e55a00;
-}
-
-/* Google Sign-In Button */
-.google-btn {
-    background: #4285F4;           /* Google Blue */
-    color: #fff;                   /* White text */
-    padding: 12px 28px;            /* same padding as your submit button */
-    border-radius: 8px;            /* same rounded corners */
-    font-weight: 600;
-    font-size: 18px;
-    text-decoration: none;
-    display: inline-flex;          /* allows icon + text alignment */
-    align-items: center;           /* vertical centering */
-    justify-content: center;       /* horizontal centering */
-    gap: 10px;                     /* space between icon & text */
-    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-    width: 100%;                   /* match email/password button width */
-    margin-top: 15px;              /* space above from other links/buttons */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        border: none;        /* remove default border */
-    outline: none;       /* remove default outline */
-}
-
-.google-btn:hover {
-    background: #357ae8;           /* slightly darker blue on hover */
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-}
-
-.hero span {
-    color: var(--orange);
-}
-
-/* ===== SECTIONS ===== */
-
-.section {
-    padding: 100px 8%;
-}
-
-.section h2 {
-    font-size: 40px;
-    text-align: center;
-    margin-bottom: 15px;
-    color: var(--orange); /* add this line */
-}
-
-.section-sub {
-    text-align: center;
-    margin-bottom: 60px;
-    color: #555;
-}
-
-/* ===== GRID ===== */
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 35px;
-}
-
-/* ===== CARDS ===== */
-
-.card {
-    background: var(--gray);
-    padding: 40px;
-    border-radius: 14px;
-    transition: 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    border: 1px solid transparent;
-    align-items: center; /* add this line to center content horizontally */
-    text-align: center;  /* optional: ensures text is centered under icon */
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    border: 1px solid var(--orange);
-}
-
-.card img {
-    width: 60px; 
-    height: 60px;
-    object-fit: contain;
-}
-
-.card h3 {
-    font-size: 22px;
-    color: var(--orange);
-}
-
-/* ===== ANNOUNCEMENT BANNER ===== */
-
-.announcement-bar {
-    background: var(--orange);
-    color: #fff;
-    text-align: center;
-    padding: 8px 8%;
-    font-size: 14px;
-    font-weight: 550;
-    letter-spacing: 0.2px;
-}
-
-.announcement-bar span {
-    color: var(--orange);
-    font-weight: 600;
-}
-
-.announcement-bar a {
-    color: #fff;
-    text-decoration: underline;
-    margin-left: 8px;
-    font-weight: 700;
-}
-.announcement-bar a:hover {
-    text-decoration: underline;
-}
-
-/* ===== FOOTER ===== */
-
-footer {
-    background: #000;
-    color: #ccc;
-    padding: 60px 8% 30px 8%;
-}
-
-.footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 40px;
-    margin-bottom: 40px;
-}
-
-.footer-column h4 {
-    color: var(--white);
-    margin-bottom: 15px;
-}
-
-.footer-column a {
-    display: block;
-    color: #aaa;
-    text-decoration: none;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.footer-column a:hover {
-    color: var(--orange);
-}
-
-.footer-bottom {
-    border-top: 1px solid #222;
-    padding-top: 20px;
-    text-align: center;
-    font-size: 13px;
-    color: #777;
-}
-
-/* ===== FULL WIDTH ENTERPRISE MEGA MENU ===== */
-
-.dropdown {
-    position: static; 
-}
-
-/* Mega menu */
-.mega-menu {
-    position: absolute;
-    top: 100%;             /* right below the nav link */
-    left: 0;
-    width: 100vw;           /* full viewport width */
-    margin-left: calc(-50vw + 50%); /* centers it across the screen */
-    background: var(--white);
-    padding: 70px 8%;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-    border-top: 4px solid var(--orange);
-
-    /* Hover transition */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.25s ease;
-    z-index: 999;          /* above other content */
-}
-
-.mega-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 80px;
-    align-items: stretch; /* important */
-}
-
-.mega-column {
-    display: flex;
-    flex-direction: column;
-}
-
-.mega-item.view-all {
-    margin-top: auto;
-}
-
-/* ===== MEGA MENU ITEMS ===== */
-
-.mega-item {
-    display: block;
-    padding: 12px 0;
-    text-decoration: none;
-    color: var(--dark);
-    transition: 0.25s ease;
-}
-
-.mega-item:hover .mega-title {
-    color: var(--orange);
-}
-
-.mega-title {
-    display: block;
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 4px;
-}
-
-.mega-desc {
-    display: block;
-    font-size: 13px;
-    color: #666;
-    line-height: 1.4;
-}
-
-/* Sections */
-
-.mega-column h4 {
-    color: var(--orange);
-    margin-bottom: 20px;
-    font-size: 18px;
-    letter-spacing: 1px;
-}
-
-
-.mega-column a {
-    display: block;
-    margin-bottom: 12px;
-    color: var(--dark);
-    text-decoration: none;
-    font-size: 15px;
-    transition: 0.2s;
-}
-
-.mega-column a:hover {
-    color: var(--orange);
-}
-
-/* Show dropdown */
-
-.dropdown:hover .mega-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-/* VIEW ALL Styling */
-
-.view-all {
-    margin-top: 10px;
-}
-
-.mega-item.view-all .mega-title {
-    color: var(--orange) !important;  /* force orange */
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.mega-item.view-all:hover .mega-title {
-    color: #e55a00 !important;  /* slightly darker on hover */
-}
-/* ===== MOBILE NAV ===== */
-/* Hamburger (menu icon) stays where it was in navbar */
-.hamburger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10002;
-    height: 60px;   /* same as logo */
-    width: 60px;
-}
-
-.hamburger img {
-    display: block;
-    height: 40px; /* adjust visually to match logo */
-    width: auto;
-}
-
-.mobile-menu-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.mobile-menu-top .hamburger-x {
-    display: none;
-    width: 60px;
-    height: 60px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-header.menu-open .mobile-menu-top .hamburger-x {
-    display: flex;
-}
-    
-header.menu-open {
-    z-index: 10005;
-}
-/* Show X when menu is open */
-header.menu-open .hamburger {
-    display: none;
-}
-    
-.hamburger-wrapper {
-    display: flex;
-    align-items: center; /* vertical align */
-    justify-content: center; /* optional, or space-between */
-    position: relative; /* for absolute child if needed */
-    width: 60px; /* same as hamburger */
-    height: 60px; /* same as hamburger */
-}
-
-.desktop-account {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    transition: 0.2s ease;
-    background: var(--light-gray);
-    color: var(--orange);
-}
-
-.desktop-account:hover {
-    background: var(--light-gray);
-    color: var(--orange);
-}
-    
-/* Hide mobile login on desktop */
-.mobile-login {
-    display: none;
-}
-/* ===== DESKTOP DEFAULT (hide mobile-only elements) ===== */
-/* ===== DESKTOP DEFAULT: hide mobile-only elements ===== */
-
-.main-nav .mobile-menu-top,
-.main-nav .mobile-divider,
-.main-nav .mobile-login,
-.main-nav .mobile-quote,
-.main-nav .switch-commercial,
-.main-nav .mobile-back {
-    display: none;
-}
-
-.hamburger {
-    display: none;
-}
-
-/* ===== LOGIN SECTION ===== */
-.login-section {
-    min-height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 60px 8%;
-    background: var(--white);
-}
-
-.login-container {
-    width: 100%;
-    max-width: 400px;
-    background: var(--gray);
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: 0.3s ease;
-}
-
-.login-container h2 {
-    font-size: 28px;
-    color: var(--orange);
-    margin-bottom: 30px;
-    font-weight: 700;
-}
-
-/* FORM ELEMENTS */
-.login-form label {
-    display: block;
-    text-align: left;
-    margin-bottom: 6px;
-    font-weight: 600;
-    font-size: 14px;
-    color: #333;
-}
-
-.login-form input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.login-form input:focus {
-    outline: none;
-    border-color: var(--orange);
-    box-shadow: 0 0 0 3px rgba(255,100,4,0.15);
-}
-
-/* LOGIN BUTTON */
-.login-form .btn {
-    background: linear-gradient(135deg, #ff6404, #e55a00);
-    color: #fff;
-    padding: 14px 32px;
-    border-radius: 12px;
-    border: none;
-    font-weight: 700;
-    font-size: 18px;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-}
-
-.login-form .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    background: linear-gradient(135deg, #e55a00, #ff6404);
-}
-
-/* FORGOT PASSWORD / CREATE ACCOUNT LINKS */
-.login-help {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    margin-top: 20px;
-}
-
-.login-help a {
-    color: var(--orange);
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.2s;
-}
-
-.login-help a:hover {
-    text-decoration: underline;
-    color: #e55a00;
-}
-
-/* STACK LINKS ON MOBILE */
-@media (max-width: 500px) {
-    .login-help {
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-    }
-}
-    
-@media (max-width: 900px) {
-  .hero {
-    padding: 120px 8%;           /* padding around hero */
-    display: flex;
-    flex-direction: column;     /* stack content vertically */
-    justify-content: center;    /* vertical centering */
-    align-items: center;        /* horizontal centering */
-    text-align: center;         /* center the text */
-  }
-
-  .hero-content {
-    max-width: 100%;            /* allow text to use full width inside padding */
-    width: auto;                /* flexible width */
-  }
-
-  .hero h1 {
-    font-size: 36px;            /* smaller header for phones */
-    line-height: 1.2;
-    margin-bottom: 15px;
-  }
-
-  .hero p {
-    font-size: 16px;            /* slightly smaller subheader */
-    line-height: 1.5;
-    margin-bottom: 20px;
-    word-wrap: break-word;      /* ensure it wraps nicely */
-  }
-
-  .hero .btn {
-    padding: 12px 28px;         /* compact button */
-    font-size: 16px;
-  }
-    
-.desktop-account {
-    display: none;
-}
-.hamburger {
-    display: flex;
-}
-
-.main-nav .mobile-login,
-.main-nav .mobile-quote,
-.main-nav .mobile-divider,
-.main-nav .switch-commercial {
-    display: block !important;
-}
-
-.mobile-login {
-    display: block;
-}
-    
-.main-nav.active .mobile-menu-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto 20px auto;
-    padding: 0;   /* EXACT same as .container */
-}
-
-.mobile-menu-top img {
-    height: 60px;
-    width: auto;
-}
-
-.mobile-menu-top .hamburger-x {
-    display: none;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.mobile-menu-top .hamburger-x img {
-    height: 22px;
-    width: auto;
-}
-
-header.menu-open .mobile-menu-top .hamburger-x {
-    display: flex;
-}
-
-  .main-nav {
-      padding-top: 30px;
-  }
-
-.mobile-services {
-    display: block;
-    width: 100%;
-    text-align: left;
-}
-
-.main-nav {
-    align-items: flex-start;
-}
-
-.mobile-services .arrow {
-    font-size: 22px;
-}
-
-    .mobile-services .arrow {
-    display: none;
-}
-    
-
-  /* FULL-SCREEN MOBILE NAV */
-    .main-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--white);
-        flex-direction: column;
-        padding: 20px 2%; /* reduce top padding */
-        gap: 15px;
-        transform: translateX(-100%);
-        z-index: 10000;
-        overflow-y: auto;
-        text-align: left !important;
-    }    
-
-  .main-nav.active {
-    transform: translateX(0); /* slide in */
-  }
-
-  .main-nav a {
-    font-weight: 600;
-    font-size: 18px;
-    width: 100%;
-    text-align: left;
-  }
-
-  .main-nav a.active {
-    color: var(--orange);
-    font-weight: 700;
-  }
-
-  /* MOBILE MEGA MENU */
-    .mega-menu {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--white);
-        padding: 20px;
-        overflow-y: auto;
-        z-index: 10001;
-  }
-
-  .mega-menu.active {
-    display: block;
-  }
-
-  .mobile-back {
-    font-weight: 500;
-    margin-bottom: 30px;
-    cursor: pointer;
-  }
-
-  .mega-inner {
-    display: block;
-  }
-
-  .mega-column {
-    margin-bottom: 40px;
-  }
-
-  .mega-column h4 {
-    font-size: 16px;
-    margin-bottom: 15px;
-  }
-
-  .mega-item {
-    padding: 10px 0;
-  }
-
-  .mega-title {
-    font-size: 18px;
-  }
-
-  /* BODY NO SCROLL */
-  body.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-  }
-
-  /* remove desktop hover underline */
-  nav a.active::after {
-    display: none;
-  }
-
-.mobile-divider {
-    border: none;
-    border-top: 1.5px solid #ccc;
-    margin: 8px 0;
-    width: 100%;
-    display: block;
-}
-    .mobile-login {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    border: 2px solid #000;
-    background: #fff;
-    color: #000;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 6px;
-    margin-bottom: 6px;
-}
-
-.main-nav a.mobile-login {
-    text-align: center;
-}
-
-.mobile-quote {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 6px;
-    background: var(--orange);
-    color: #fff;
-}
-
-.main-nav a.mobile-quote {
-    text-align: center;
-    color: #fff;   /* force white text */
-}
-
-
-.switch-commercial {
-    font-size: 14px;
-    color: #888;
-    margin-top: 10px;
-    cursor: pointer;
-}
-}
-    
-</style>
+    <meta charset="UTF-8">
+    <title>Log In | BWD Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Log in to your BWD Services account to manage your lawn care services, quotes, and appointments.">
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
-
 <body>
-<script src="/js/announcement.js"></script>
+
+<div id="announcement"></div>
 <div id="navbar"></div>
 
-<section class="login-section">
-    <div class="login-container">
-        <h2>Login to Your Account</h2>
-        
-        <form class="login-form" id="loginForm">
-            
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+<div class="login-page">
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    <!-- LEFT — Brand Panel -->
+    <div class="brand-panel">
+        <div class="brand-bg" aria-hidden="true"></div>
+        <div class="brand-overlay" aria-hidden="true"></div>
 
-            <button type="submit" class="btn">Log In</button>
-
-            <div class="login-help">
-                <a href="/account/forgot-password/">Forgot your password?</a>
-                <a href="/account/signup/">Create an account</a>
+        <div class="brand-inner">
+            <div class="brand-copy">
+                <p class="brand-eyebrow">Genesee County, MI</p>
+                <h2 class="brand-headline">
+                    Welcome<br>
+                    back.
+                </h2>
+                <p class="brand-sub">
+                    Manage your lawn care services, view upcoming appointments, and pay your invoices — all in one place.
+                </p>
             </div>
-            <button id="googleSignIn" class="google-btn">
-    <img src="/images/google.png" alt="Google Icon" style="height:20px; width:20px;">
-    Log in with Google
-</button>
-        </form>
+
+            <div class="brand-trust" aria-label="Trust indicators">
+                <div class="trust-item">
+                    <span class="trust-dot" aria-hidden="true"></span>
+                    Guaranteed pricing — no surprise charges
+                </div>
+                <div class="trust-item">
+                    <span class="trust-dot" aria-hidden="true"></span>
+                    Book, reschedule, and pay online
+                </div>
+                <div class="trust-item">
+                    <span class="trust-dot" aria-hidden="true"></span>
+                    Serving Genesee County since day one
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+
+    <!-- RIGHT — Form Panel -->
+    <div class="form-panel">
+        <div class="form-wrap">
+
+            <div class="form-header">
+                <h1>Log in to your account</h1>
+                <p>Don't have one? <a href="/account/signup/">Create account</a></p>
+            </div>
+
+            <div class="form-message" id="formMessage" role="alert" aria-live="polite"></div>
+
+            <form class="login-form" id="loginForm" novalidate>
+
+                <!-- Email -->
+                <div class="field" id="field-email">
+                    <label for="email">Email</label>
+                    <div class="field-input-wrap">
+                        <span class="field-icon" aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/>
+                            </svg>
+                        </span>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+                    </div>
+                    <span class="field-error-msg" id="error-email">Please enter a valid email address.</span>
+                </div>
+
+                <!-- Password -->
+                <div class="field" id="field-password">
+                    <div class="field-label-row">
+                        <label for="password">Password</label>
+                        <a href="/account/reset-password/" class="forgot-link">Forgot password?</a>
+                    </div>
+                    <div class="field-input-wrap">
+                        <span class="field-icon" aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </span>
+                        <input type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password" required>
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">
+                            <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span class="field-error-msg" id="error-password">Please enter your password.</span>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Log In</button>
+
+                <div class="form-divider"><span>or</span></div>
+
+                <button type="button" class="btn-google" id="googleSignIn">
+                    <img src="/images/google.png" alt="" aria-hidden="true" width="18" height="18">
+                    Continue with Google
+                </button>
+
+            </form>
+
+            <p class="form-terms">
+                By logging in you agree to our
+                <a href="/terms/">Terms of Service</a> and
+                <a href="/privacy/">Privacy Policy</a>.
+            </p>
+
+        </div>
+    </div>
+
+</div><!-- /login-page -->
 
 <div id="footer"></div>
 <script src="/js/include.js"></script>
 
-
-
-<!-- Firebase App (the core Firebase SDK) -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-
-<!-- Firebase Authentication -->
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // Initialize Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
-    authDomain: "bwd-accounts.firebaseapp.com",
-    projectId: "bwd-accounts",
-    storageBucket: "bwd-accounts.firebasestorage.app",
+const firebaseConfig = {
+    apiKey:            "AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
+    authDomain:        "bwd-accounts.firebaseapp.com",
+    projectId:         "bwd-accounts",
+    storageBucket:     "bwd-accounts.firebasestorage.app",
     messagingSenderId: "590001375282",
-    appId: "1:590001375282:web:bd1725d5a5be3f9d28542b",
-    measurementId: "G-BFYEG3EN0W"
-  };
+    appId:             "1:590001375282:web:bd1725d5a5be3f9d28542b",
+    measurementId:     "G-BFYEG3EN0W"
+};
 
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
-  const loginForm = document.getElementById('loginForm');
-  loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = loginForm.email.value;
-    const password = loginForm.password.value;
+const loginForm      = document.getElementById('loginForm');
+const submitBtn      = document.getElementById('submitBtn');
+const googleBtn      = document.getElementById('googleSignIn');
+const formMessage    = document.getElementById('formMessage');
+const passwordInput  = document.getElementById('password');
+const passwordToggle = document.getElementById('passwordToggle');
+const eyeIcon        = document.getElementById('eyeIcon');
 
-    auth.signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        console.log('Login successful:', userCredential.user);
-        window.location.href = '/account/dashboard/';
-      })
-      .catch((error) => {
-        console.error('Login error:', error.code, error.message);
-        alert('Login failed: ' + error.message);
-      });
-  });
+auth.onAuthStateChanged((user) => {
+    if (user) window.location.replace('/account/dashboard/');
+});
 
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      console.log('User already logged in:', user);
-      // window.location.href = '/account/dashboard/';
+function showMessage(text, type = 'error') {
+    formMessage.textContent = text;
+    formMessage.className   = 'form-message ' + type;
+    formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function clearMessage() {
+    formMessage.textContent = '';
+    formMessage.className   = 'form-message';
+}
+
+function setFieldError(fieldId, show) {
+    const field = document.getElementById('field-' + fieldId);
+    if (!field) return;
+    field.classList.toggle('has-error', show);
+}
+
+function setLoading(loading) {
+    submitBtn.classList.toggle('is-loading', loading);
+    submitBtn.textContent = loading ? 'Logging in…' : 'Log In';
+    submitBtn.disabled    = loading;
+}
+
+passwordToggle.addEventListener('click', () => {
+    const isPassword = passwordInput.type === 'password';
+    passwordInput.type = isPassword ? 'text' : 'password';
+    passwordToggle.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+    eyeIcon.innerHTML = isPassword
+        ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+           <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+           <line x1="1" y1="1" x2="23" y2="23"/>`
+        : `<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>`;
+});
+
+function validateForm(email, password) {
+    let valid = true;
+    clearMessage();
+    setFieldError('email', false);
+    setFieldError('password', false);
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setFieldError('email', true);
+        valid = false;
     }
-  });
-  // Google provider setup
-const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-const googleButton = document.getElementById('googleSignIn');
+    if (!password) {
+        setFieldError('password', true);
+        valid = false;
+    }
 
-googleButton.addEventListener('click', () => {
-  auth.signInWithPopup(googleProvider)
-    .then((result) => {
-      const user = result.user;
-      console.log('Google login successful:', user);
-      window.location.href = '/account/dashboard/'; // redirect after login
-    })
-    .catch((error) => {
-      console.error('Google login error:', error.code, error.message);
-      alert('Google login failed: ' + error.message);
-    });
+    return valid;
+}
+
+function friendlyError(code) {
+    const map = {
+        'auth/user-not-found':         'No account found with that email. Try creating one instead.',
+        'auth/wrong-password':         'Incorrect password. Please try again or reset your password.',
+        'auth/invalid-credential':     'Incorrect email or password. Please try again.',
+        'auth/invalid-email':          "That email address doesn't look right.",
+        'auth/user-disabled':          'This account has been disabled. Please contact support.',
+        'auth/network-request-failed': 'Network error — check your connection and try again.',
+        'auth/too-many-requests':      'Too many attempts. Please wait a moment and try again.',
+        'auth/popup-closed-by-user':   'Google sign-in was cancelled.',
+        'auth/popup-blocked':          'Pop-up blocked. Please allow pop-ups for this site.',
+    };
+    return map[code] || 'Something went wrong. Please try again.';
+}
+
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    if (!validateForm(email, password)) return;
+    setLoading(true);
+    try {
+        await auth.signInWithEmailAndPassword(email, password);
+        window.location.replace('/account/dashboard/');
+    } catch (err) {
+        console.error('Login error:', err.code, err.message);
+        showMessage(friendlyError(err.code));
+        setLoading(false);
+    }
+});
+
+googleBtn.addEventListener('click', async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+        await auth.signInWithPopup(provider);
+        window.location.replace('/account/dashboard/');
+    } catch (err) {
+        if (err.code !== 'auth/popup-closed-by-user') {
+            showMessage(friendlyError(err.code));
+        }
+    }
 });
 </script>
+
 </body>
 </html>
