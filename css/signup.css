@@ -497,10 +497,10 @@
 
 @media (max-width: 900px) {
     .brand-panel {
-        display: none;
+        display: none !important;
     }
 
     .signup-page {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 }
