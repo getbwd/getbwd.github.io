@@ -173,10 +173,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-logo">
-            <a href="#">
-                <span class="sidebar-logo-text">BWD</span>
-            </a>
+        <div style="padding:18px 22px 14px;border-bottom:1px solid rgba(255,255,255,0.07);">
+            <!-- logo space intentionally minimal -->
         </div>
         <nav class="sidebar-nav">
             <a class="nav-item active" data-section="overview" href="#overview">
@@ -225,7 +223,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
             <!-- OVERVIEW -->
             <section class="dash-section active" id="section-overview">
                 <div class="section-header">
-                    <h1 class="section-title">Good evening, Takoda.</h1>
+                    <h1 class="section-title">Welcome, <span id="userName">there</span>.</h1>
                     <p class="section-sub">Here's a look at your account.</p>
                 </div>
                 <div class="stat-grid">
@@ -397,28 +395,28 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
                 </div>
                 <div class="card account-card">
                     <div class="account-avatar-row">
-                        <div class="account-avatar">TS</div>
+                        <div class="account-avatar" id="accountAvatar">?</div>
                         <div>
-                            <p class="account-name">Takoda Stillwater</p>
-                            <p class="account-since">Member since January 2025</p>
+                            <p class="account-name" id="accountName">—</p>
+                            <p class="account-since" id="accountSince">Member since January 2025</p>
                         </div>
                     </div>
                     <div class="account-fields">
                         <div class="account-field">
                             <span class="afl">Full Name</span>
-                            <span class="afv">Takoda Stillwater</span>
+                            <span class="afv" id="afName">—</span>
                         </div>
                         <div class="account-field">
                             <span class="afl">Email</span>
-                            <span class="afv">takoda@example.com</span>
+                            <span class="afv" id="afEmail">—</span>
                         </div>
                         <div class="account-field">
                             <span class="afl">Sign-in Method</span>
-                            <span class="afv">Email & Password</span>
+                            <span class="afv" id="afProvider">—</span>
                         </div>
                         <div class="account-field">
                             <span class="afl">UID</span>
-                            <span class="afv uid">mock-uid-a8f3c2d9e1b7</span>
+                            <span class="afv uid" id="afUid">—</span>
                         </div>
                     </div>
                     <div class="account-actions">
@@ -433,8 +431,31 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
     </main>
 </div>
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 <script>
-function navigate(section) {
+firebase.initializeApp({
+    apiKey:"AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA",
+    authDomain:"bwd-accounts.firebaseapp.com",
+    projectId:"bwd-accounts",
+    storageBucket:"bwd-accounts.firebasestorage.app",
+    messagingSenderId:"590001375282",
+    appId:"1:590001375282:web:bd1725d5a5be3f9d28542b"
+});
+const auth = firebase.auth();
+function initials(name){return name?name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';}
+auth.onAuthStateChanged(user => {
+    if (!user) return;
+    const name = user.displayName || 'there';
+    document.getElementById('userName').textContent     = name.split(' ')[0];
+    document.getElementById('accountAvatar').textContent= initials(name);
+    document.getElementById('accountName').textContent  = name;
+    document.getElementById('afName').textContent       = name;
+    document.getElementById('afEmail').textContent      = user.email || '—';
+    document.getElementById('afUid').textContent        = user.uid;
+    document.getElementById('afProvider').textContent   = user.providerData[0]?.providerId==='google.com'?'Google':'Email & Password';
+});
+</script>
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
     const sec = document.getElementById('section-' + section);
@@ -451,10 +472,4 @@ document.getElementById('mobileMenuBtn').addEventListener('click', () => {
     document.getElementById('sidebar').classList.add('open');
     document.getElementById('sidebarOverlay').classList.add('visible');
 });
-document.getElementById('sidebarOverlay').addEventListener('click', () => {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-});
-</script>
-</body>
-</html>
+document.getEleme
