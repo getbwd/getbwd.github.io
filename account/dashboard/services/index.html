@@ -28,68 +28,85 @@
         <div class="mobile-avatar" id="mobileAvatar">?</div>
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
     <main class="dash-main">
         <div class="dash-page">
             <div class="section-header">
                 <h1 class="section-title">My Services</h1>
                 <p class="section-sub">Your current lawn care plan.</p>
             </div>
-            <div id="servicesContainer"><p class="loading-text">Loading…</p></div>
+            <div id="servicesContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
         </div>
     </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-<script src="../../../js/dashboard.js"></script>
 <script>
-initFirebase();
-const auth = firebase.auth();
-initSidebar();
-initSignOut(auth, 'signOutBtn');
+firebase.initializeApp({
+    apiKey: 'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+    authDomain: 'bwd-accounts.firebaseapp.com',
+    projectId: 'bwd-accounts',
+    storageBucket: 'bwd-accounts.firebasestorage.app',
+    messagingSenderId: '590001375282',
+    appId: '1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+var auth = firebase.auth();
 
-auth.onAuthStateChanged(async user => {
-    if (!user) { window.location.replace('/account/login/'); return; }
+document.getElementById('signOutBtn').addEventListener('click', function() {
+    auth.signOut().then(function() { window.location.href = '/account/login/'; });
+});
+document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('visible');
+});
+document.getElementById('sidebarOverlay').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+});
+
+function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
+function fmtMoney(n){return '$'+Number(n).toFixed(2);}
+function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
+function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
+function parseCSV(text){var rows=[];var lines=text.trim().split('\n');for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;for(var i=0;i<lines[l].length;i++){var c=lines[l][i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}cols.push(cur.trim());rows.push(cols);}return rows;}
+async function fetchCSV(url){var res=await fetch(url);var text=await res.text();return parseCSV(text).slice(1);}
+function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
+function parseServices(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{name:p[0]||'—',frequency:p[1]||'—',price:parseFloat(p[2])||0,description:p[3]||''};});}
+
+var CSV_SERVICES = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRty-4hQ_sZ8nI55zoNkbnjZwOGi5-NgKgDGlvsjP3x0aOmeYWxIZKJRpKIXGFgdkEvr4xmXThjbuRB/pub?gid=0&single=true&output=csv';
+
+auth.onAuthStateChanged(async function(user) {
+    if (!user) { window.location.href = '/account/login/'; return; }
     document.getElementById('mobileAvatar').textContent = initials(user.displayName||'');
-    const uid = user.uid;
+    var uid = user.uid;
 
-    const serviceRows = await fetchCSV(CSV.SERVICES);
-    const myServices  = serviceRows.filter(r => r[0] === uid);
-    const container   = document.getElementById('servicesContainer');
+    var serviceRows = await fetchCSV(CSV_SERVICES);
+    var myServices  = serviceRows.filter(function(r){return r[0]===uid;});
+    var container   = document.getElementById('servicesContainer');
 
     if (!myServices.length) {
-        container.innerHTML = `<div class="card"><div class="card-body">${empty('No services on your account yet.')}</div></div>`;
+        container.innerHTML = '<div class="card"><div class="card-body">'+empty('No services on your account yet.')+'</div></div>';
         return;
     }
 
-    const svcRow     = myServices[0];
-    const startDate  = svcRow[1] ? new Date(svcRow[1]).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—';
-    const planStatus = svcRow[2]||'Active';
-    const svcList    = parseServices(svcRow[3]);
-    const isActive   = planStatus.toLowerCase() === 'active';
+    var svcRow     = myServices[0];
+    var startDate  = svcRow[1] ? new Date(svcRow[1]).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—';
+    var planStatus = svcRow[2]||'Active';
+    var svcList    = parseServices(svcRow[3]);
+    var isActive   = planStatus.toLowerCase()==='active';
 
-    const headerHTML = `
-        <div class="plan-header">
-            <span class="plan-since">Plan started ${startDate}</span>
-            ${badge(planStatus)}
-        </div>`;
+    var headerHTML = '<div class="plan-header"><span class="plan-since">Plan started '+startDate+'</span>'+badge(planStatus)+'</div>';
 
     if (!svcList.length) {
-        container.innerHTML = headerHTML + `<div class="card"><div class="card-body">${empty('No services listed on your plan.')}</div></div>`;
+        container.innerHTML = headerHTML+'<div class="card"><div class="card-body">'+empty('No services listed on your plan.')+'</div></div>';
         return;
     }
 
-    container.innerHTML = headerHTML + `<div class="services-grid">${svcList.map(s => `
-        <div class="svc-card">
-            <div class="svc-card-header">
-                <span class="svc-card-name">${s.name}</span>
-                ${badge(isActive ? 'Active' : planStatus)}
-            </div>
-            <p class="svc-detail"><strong>Frequency:</strong> ${s.frequency}</p>
-            <p class="svc-detail"><strong>Price:</strong> ${fmtMoney(s.price)}</p>
-            ${s.description ? `<p class="svc-detail">${s.description}</p>` : ''}
-        </div>`).join('')}</div>`;
+    var cardsHTML = svcList.map(function(s){
+        return '<div class="svc-card"><div class="svc-card-header"><span class="svc-card-name">'+s.name+'</span>'+badge(isActive?'Active':planStatus)+'</div><p class="svc-detail"><strong>Frequency:</strong> '+s.frequency+'</p><p class="svc-detail"><strong>Price:</strong> '+fmtMoney(s.price)+'</p>'+(s.description?'<p class="svc-detail">'+s.description+'</p>':'')+'</div>';
+    }).join('');
+
+    container.innerHTML = headerHTML+'<div class="services-grid">'+cardsHTML+'</div>';
 });
 </script>
 </body>

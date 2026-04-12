@@ -28,102 +28,99 @@
         <div class="mobile-avatar" id="mobileAvatar">?</div>
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
     <main class="dash-main">
         <div class="dash-page">
             <div class="section-header">
                 <h1 class="section-title">Invoices</h1>
                 <p class="section-sub">Your billing history and outstanding payments.</p>
             </div>
-            <div id="invListContainer"><p class="loading-text">Loading…</p></div>
+            <div id="invListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
         </div>
     </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-<script src="../../../js/dashboard.js"></script>
 <script>
-initFirebase();
-const auth = firebase.auth();
-initSidebar();
-initSignOut(auth, 'signOutBtn');
+firebase.initializeApp({
+    apiKey: 'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+    authDomain: 'bwd-accounts.firebaseapp.com',
+    projectId: 'bwd-accounts',
+    storageBucket: 'bwd-accounts.firebasestorage.app',
+    messagingSenderId: '590001375282',
+    appId: '1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+var auth = firebase.auth();
 
-auth.onAuthStateChanged(async user => {
-    if (!user) { window.location.replace('/account/login/'); return; }
+document.getElementById('signOutBtn').addEventListener('click', function() {
+    auth.signOut().then(function() { window.location.href = '/account/login/'; });
+});
+document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('visible');
+});
+document.getElementById('sidebarOverlay').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+});
+
+function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
+function fmtMoney(n){return '$'+Number(n).toFixed(2);}
+function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
+function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
+function parseCSV(text){var rows=[];var lines=text.trim().split('\n');for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;for(var i=0;i<lines[l].length;i++){var c=lines[l][i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}cols.push(cur.trim());rows.push(cols);}return rows;}
+async function fetchCSV(url){var res=await fetch(url);var text=await res.text();return parseCSV(text).slice(1);}
+function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
+function parseLineItems(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});var qty=parseFloat(p[1])||1;var unit=parseFloat(p[2])||0;return{name:p[0]||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit};});}
+function parsePayments(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{date:p[0]||'—',type:p[1]||'—',amount:parseFloat(p[2])||0};});}
+
+var CSV_INVOICES = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSWX3vado-d6wVWtj4HT_rq9xLYMG-HqYC2wEOLVIefdWjflDEe6XoC3uClWCqWUXqSvYe4Z35HN3TM/pub?gid=0&single=true&output=csv';
+
+function toggleInv(idx) {
+    var body = document.getElementById('inv-body-'+idx);
+    var btn  = body.closest('.inv-card').querySelector('.inv-toggle');
+    var collapsed = body.classList.toggle('collapsed');
+    btn.textContent = collapsed ? 'View details' : 'Hide details';
+}
+
+auth.onAuthStateChanged(async function(user) {
+    if (!user) { window.location.href = '/account/login/'; return; }
     document.getElementById('mobileAvatar').textContent = initials(user.displayName||'');
-    const uid = user.uid;
+    var uid = user.uid;
 
-    const invoiceRows = await fetchCSV(CSV.INVOICES);
-    const myInvoices  = invoiceRows.filter(r => r[1] === uid).sort((a,b) => new Date(b[4]) - new Date(a[4]));
+    var invoiceRows = await fetchCSV(CSV_INVOICES);
+    var myInvoices  = invoiceRows.filter(function(r){return r[1]===uid;}).sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
+    var container   = document.getElementById('invListContainer');
 
-    const container = document.getElementById('invListContainer');
     if (!myInvoices.length) {
-        container.innerHTML = `<div class="card"><div class="card-body">${empty('No invoices on your account yet.')}</div></div>`;
+        container.innerHTML = '<div class="card"><div class="card-body">'+empty('No invoices on your account yet.')+'</div></div>';
         return;
     }
 
-    container.innerHTML = `<div class="inv-list">${myInvoices.map((r, idx) => {
-        const invId    = r[0]||'—';
-        const jobId    = r[2]||'';
-        const status   = r[3]||'Unpaid';
-        const date     = r[4] ? new Date(r[4]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
-        const items    = parseLineItems(r[5]);
-        const payments = parsePayments(r[6]);
-        const total    = items.reduce((s,i)=>s+i.lineTotal,0);
-        const paid     = payments.reduce((s,p)=>s+p.amount,0);
-        const balance  = Math.max(0, total - paid);
-        const desc     = items.map(i=>i.name).join(', ')||'Invoice';
+    var html = '<div class="inv-list">';
+    myInvoices.forEach(function(r, idx) {
+        var invId    = r[0]||'—';
+        var jobId    = r[2]||'';
+        var status   = r[3]||'Unpaid';
+        var date     = r[4] ? new Date(r[4]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+        var items    = parseLineItems(r[5]);
+        var payments = parsePayments(r[6]);
+        var total    = items.reduce(function(s,i){return s+i.lineTotal;},0);
+        var paid     = payments.reduce(function(s,p){return s+p.amount;},0);
+        var balance  = Math.max(0,total-paid);
+        var desc     = items.map(function(i){return i.name;}).join(', ')||'Invoice';
 
-        const lineItemsHTML = items.length ? `
-            <div>
-                <div class="inv-section-label">Services</div>
-                <table class="line-items">
-                    <tr><th>Service</th><th>Qty</th><th class="right">Unit Price</th><th class="right">Total</th></tr>
-                    ${items.map(i=>`<tr><td>${i.name}</td><td>${i.qty}</td><td class="right">${fmtMoney(i.unitPrice)}</td><td class="right">${fmtMoney(i.lineTotal)}</td></tr>`).join('')}
-                    <tr class="total-row"><td colspan="3">Invoice Total</td><td class="right">${fmtMoney(total)}</td></tr>
-                </table>
-            </div>` : '';
+        var lineItemsHTML = items.length ? '<div><div class="inv-section-label">Services</div><table class="line-items"><tr><th>Service</th><th>Qty</th><th class="right">Unit Price</th><th class="right">Total</th></tr>'+items.map(function(i){return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td class="right">'+fmtMoney(i.unitPrice)+'</td><td class="right">'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+'<tr class="total-row"><td colspan="3">Invoice Total</td><td class="right">'+fmtMoney(total)+'</td></tr></table></div>' : '';
 
-        const payHistHTML = payments.length ? `
-            <div>
-                <div class="inv-section-label">Payment History</div>
-                <div class="pay-history">
-                    ${payments.map(p=>`<div class="pay-row"><span>${p.date} · ${p.type}</span><span class="pay-amount">+${fmtMoney(p.amount)}</span></div>`).join('')}
-                    <div class="balance-row">
-                        <span>Balance ${balance > 0 ? 'Remaining' : 'Settled'}</span>
-                        <span class="${balance > 0 ? 'balance-due' : 'balance-paid'}">${fmtMoney(balance)}</span>
-                    </div>
-                </div>
-            </div>` : (total > 0 ? `<div class="balance-row"><span>Balance Due</span><span class="balance-due">${fmtMoney(total)}</span></div>` : '');
+        var payHistHTML = payments.length
+            ? '<div><div class="inv-section-label">Payment History</div><div class="pay-history">'+payments.map(function(p){return '<div class="pay-row"><span>'+p.date+' · '+p.type+'</span><span class="pay-amount">+'+fmtMoney(p.amount)+'</span></div>';}).join('')+'<div class="balance-row"><span>Balance '+(balance>0?'Remaining':'Settled')+'</span><span class="'+(balance>0?'balance-due':'balance-paid')+'">'+fmtMoney(balance)+'</span></div></div></div>'
+            : (total > 0 ? '<div class="balance-row"><span>Balance Due</span><span class="balance-due">'+fmtMoney(total)+'</span></div>' : '');
 
-        return `
-        <div class="inv-card">
-            <div class="inv-card-header">
-                <div>
-                    <div class="inv-card-title">${desc}</div>
-                    <div class="inv-card-meta">${date} · Invoice #${invId}${jobId ? ` · Job #${jobId}` : ''}</div>
-                    <button class="inv-toggle" onclick="toggleInv(${idx})">View details</button>
-                </div>
-                <div class="inv-card-right">
-                    <div class="inv-total">${fmtMoney(total)}</div>
-                    ${balance > 0 && balance < total ? `<div class="inv-balance">${fmtMoney(balance)} remaining</div>` : ''}
-                    ${badge(status)}
-                </div>
-            </div>
-            <div class="inv-card-body collapsed" id="inv-body-${idx}">
-                ${lineItemsHTML}${payHistHTML}
-            </div>
-        </div>`;
-    }).join('')}</div>`;
+        html += '<div class="inv-card"><div class="inv-card-header"><div><div class="inv-card-title">'+desc+'</div><div class="inv-card-meta">'+date+' · Invoice #'+invId+(jobId?' · Job #'+jobId:'')+'</div><button class="inv-toggle" onclick="toggleInv('+idx+')">View details</button></div><div class="inv-card-right"><div class="inv-total">'+fmtMoney(total)+'</div>'+(balance>0&&balance<total?'<div class="inv-balance">'+fmtMoney(balance)+' remaining</div>':'')+badge(status)+'</div></div><div class="inv-card-body collapsed" id="inv-body-'+idx+'">'+lineItemsHTML+payHistHTML+'</div></div>';
+    });
+    html += '</div>';
+    container.innerHTML = html;
 });
-
-function toggleInv(idx) {
-    const body = document.getElementById(`inv-body-${idx}`);
-    const btn  = body.closest('.inv-card').querySelector('.inv-toggle');
-    const collapsed = body.classList.toggle('collapsed');
-    btn.textContent = collapsed ? 'View details' : 'Hide details';
-}
 </script>
 </body>
 </html>

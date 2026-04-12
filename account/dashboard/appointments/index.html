@@ -28,141 +28,139 @@
         <div class="mobile-avatar" id="mobileAvatar">?</div>
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
     <main class="dash-main">
         <div class="dash-page">
             <div class="section-header">
                 <h1 class="section-title">Appointments</h1>
                 <p class="section-sub">Your upcoming and past service visits.</p>
             </div>
-            <div id="jobListContainer"><p class="loading-text">Loading…</p></div>
+            <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
         </div>
     </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-<script src="../../../js/dashboard.js"></script>
 <script>
-initFirebase();
-const auth = firebase.auth();
-initSidebar();
-initSignOut(auth, 'signOutBtn');
+firebase.initializeApp({
+    apiKey: 'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+    authDomain: 'bwd-accounts.firebaseapp.com',
+    projectId: 'bwd-accounts',
+    storageBucket: 'bwd-accounts.firebasestorage.app',
+    messagingSenderId: '590001375282',
+    appId: '1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+var auth = firebase.auth();
+
+document.getElementById('signOutBtn').addEventListener('click', function() {
+    auth.signOut().then(function() { window.location.href = '/account/login/'; });
+});
+document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('visible');
+});
+document.getElementById('sidebarOverlay').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+});
+
+function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
+function fmtMoney(n){return '$'+Number(n).toFixed(2);}
+function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
+function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
+function parseCSV(text){var rows=[];var lines=text.trim().split('\n');for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;for(var i=0;i<lines[l].length;i++){var c=lines[l][i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}cols.push(cur.trim());rows.push(cols);}return rows;}
+async function fetchCSV(url){var res=await fetch(url);var text=await res.text();return parseCSV(text).slice(1);}
+function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
+function parseLineItems(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});var qty=parseFloat(p[1])||1;var unit=parseFloat(p[2])||0;return{name:p[0]||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit};});}
+
+var CSV_JOBS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSfVRR2EnvXGH5nZBOesVJdoTl2p3bHun-oFYYSZrg7fEvGXyIDxPkycWTtCjWstt8ccFgpa8wlkg/pub?gid=0&single=true&output=csv';
 
 function renderStars(containerId, initial) {
-    const container = document.getElementById(containerId);
+    var container = document.getElementById(containerId);
     if (!container) return;
-    let current = parseInt(initial) || 0;
+    var current = parseInt(initial)||0;
     function draw() {
         container.innerHTML = '';
-        for (let i = 1; i <= 5; i++) {
-            const s = document.createElement('span');
-            s.className = 'star' + (i <= current ? ' filled' : '');
-            s.textContent = '★';
-            s.addEventListener('mouseover', () => container.querySelectorAll('.star').forEach((el,idx) => el.classList.toggle('filled', idx < i)));
-            s.addEventListener('mouseout', draw);
-            s.addEventListener('click', () => { current = i; draw(); });
-            container.appendChild(s);
+        for (var i = 1; i <= 5; i++) {
+            (function(i){
+                var s = document.createElement('span');
+                s.className = 'star'+(i<=current?' filled':'');
+                s.textContent = '★';
+                s.addEventListener('mouseover', function(){container.querySelectorAll('.star').forEach(function(el,idx){el.classList.toggle('filled',idx<i);});});
+                s.addEventListener('mouseout', draw);
+                s.addEventListener('click', function(){current=i;draw();});
+                container.appendChild(s);
+            })(i);
         }
     }
     draw();
 }
 
-auth.onAuthStateChanged(async user => {
-    if (!user) { window.location.replace('/account/login/'); return; }
+function toggleJob(idx) {
+    var body = document.getElementById('job-body-'+idx);
+    var btn  = body.closest('.job-card').querySelector('.job-toggle');
+    var collapsed = body.classList.toggle('collapsed');
+    btn.textContent = collapsed ? 'Details' : 'Hide';
+}
+
+auth.onAuthStateChanged(async function(user) {
+    if (!user) { window.location.href = '/account/login/'; return; }
     document.getElementById('mobileAvatar').textContent = initials(user.displayName||'');
-    const uid = user.uid;
+    var uid = user.uid;
 
-    const jobRows = await fetchCSV(CSV.JOBS);
-    const myJobs  = jobRows.filter(r => r[1] === uid).sort((a,b) => new Date(b[3]) - new Date(a[3]));
+    var jobRows = await fetchCSV(CSV_JOBS);
+    var myJobs  = jobRows.filter(function(r){return r[1]===uid;}).sort(function(a,b){return new Date(b[3])-new Date(a[3]);});
+    var container = document.getElementById('jobListContainer');
 
-    const container = document.getElementById('jobListContainer');
     if (!myJobs.length) {
-        container.innerHTML = `<div class="card"><div class="card-body">${empty('No appointments on your account yet.')}</div></div>`;
+        container.innerHTML = '<div class="card"><div class="card-body">'+empty('No appointments on your account yet.')+'</div></div>';
         return;
     }
 
-    container.innerHTML = `<div class="job-list">${myJobs.map((r, idx) => {
-        const jobId     = r[0]||'—';
-        const status    = r[2]||'Scheduled';
-        const date      = r[3] ? new Date(r[3]).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
-        const time      = r[4]||'';
-        const address   = r[5]||'';
-        const items     = parseLineItems(r[6]);
-        const invoiceId = r[7]||'';
-        const assigned  = r[8]||'';
-        const custNote  = r[9]||'';
-        const crewNote  = r[10]||'';
-        const rating    = r[11]||'';
-        const feedback  = r[12]||'';
-        const total     = items.reduce((s,i)=>s+i.lineTotal,0);
-        const completed = (r[2]||'').toLowerCase() === 'completed';
+    var html = '<div class="job-list">';
+    myJobs.forEach(function(r, idx) {
+        var jobId     = r[0]||'—';
+        var status    = r[2]||'Scheduled';
+        var date      = r[3] ? new Date(r[3]).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
+        var time      = r[4]||'';
+        var address   = r[5]||'';
+        var items     = parseLineItems(r[6]);
+        var invoiceId = r[7]||'';
+        var assigned  = r[8]||'';
+        var custNote  = r[9]||'';
+        var crewNote  = r[10]||'';
+        var rating    = r[11]||'';
+        var feedback  = r[12]||'';
+        var total     = items.reduce(function(s,i){return s+i.lineTotal;},0);
+        var completed = (r[2]||'').toLowerCase()==='completed';
 
-        const metaParts = [
-            date    ? `<span>📅 ${date}</span>` : '',
-            time    ? `<span>🕐 ${time}</span>` : '',
-            address ? `<span>📍 ${address}</span>` : '',
-            assigned  ? `<span>👷 ${assigned}</span>` : '',
-            invoiceId ? `<span>🧾 Invoice #${invoiceId}</span>` : '',
+        var metaParts = [
+            date    ?'<span>📅 '+date+'</span>'   : '',
+            time    ?'<span>🕐 '+time+'</span>'   : '',
+            address ?'<span>📍 '+address+'</span>': '',
+            assigned  ?'<span>👷 '+assigned+'</span>'      : '',
+            invoiceId ?'<span>🧾 Invoice #'+invoiceId+'</span>' : '',
         ].filter(Boolean).join('');
 
-        const lineItemsHTML = items.length ? `
-            <table class="line-items">
-                <tr><th>Service</th><th>Qty</th><th style="text-align:right">Total</th></tr>
-                ${items.map(i=>`<tr><td>${i.name}</td><td>${i.qty}</td><td style="text-align:right">${fmtMoney(i.lineTotal)}</td></tr>`).join('')}
-                <tr class="total-row"><td colspan="2">Total</td><td style="text-align:right">${fmtMoney(total)}</td></tr>
-            </table>` : '';
+        var lineItemsHTML = items.length ? '<table class="line-items"><tr><th>Service</th><th>Qty</th><th style="text-align:right">Total</th></tr>'+items.map(function(i){return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td style="text-align:right">'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+'<tr class="total-row"><td colspan="2">Total</td><td style="text-align:right">'+fmtMoney(total)+'</td></tr></table>' : '';
+        var notesHTML = (custNote?'<div><div class="note-label">Your Notes</div><div class="note-block">'+custNote+'</div></div>':'')+(crewNote?'<div><div class="note-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>':'');
+        var ratingHTML = completed ? '<div class="rating-section"><div class="note-label">Rate this visit</div><div class="stars" id="stars-'+idx+'"></div><textarea class="feedback-input" id="fb-'+idx+'" placeholder="Leave feedback (optional)…">'+feedback+'</textarea><div><button class="btn-rate" id="btn-'+idx+'">Submit</button><span class="rate-thanks" id="thank-'+idx+'" style="display:none;margin-left:10px;">Thanks for your feedback!</span></div></div>' : '';
 
-        const notesHTML = [
-            custNote ? `<div><div class="note-label">Your Notes</div><div class="note-block">${custNote}</div></div>` : '',
-            crewNote ? `<div><div class="note-label">Crew Notes</div><div class="note-block">${crewNote}</div></div>` : '',
-        ].join('');
+        html += '<div class="job-card"><div class="job-card-header"><div><div class="job-card-title">'+items.map(function(i){return i.name;}).join(', ')||'Service Visit'+'<span style="font-weight:400;color:var(--text-3);font-size:12px;"> · Job #'+jobId+'</span></div><div class="job-card-meta">'+metaParts+'</div></div><div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<button class="job-toggle" onclick="toggleJob('+idx+')">Details</button></div></div><div class="job-card-body collapsed" id="job-body-'+idx+'">'+lineItemsHTML+notesHTML+ratingHTML+'</div></div>';
+    });
+    html += '</div>';
+    container.innerHTML = html;
 
-        const ratingHTML = completed ? `
-            <div class="rating-section">
-                <div class="note-label">Rate this visit</div>
-                <div class="stars" id="stars-${idx}"></div>
-                <textarea class="feedback-input" id="fb-${idx}" placeholder="Leave feedback (optional)…">${feedback}</textarea>
-                <div>
-                    <button class="btn-rate" id="btn-${idx}">Submit</button>
-                    <span class="rate-thanks" id="thank-${idx}" style="display:none;margin-left:10px;">Thanks for your feedback!</span>
-                </div>
-            </div>` : '';
-
-        return `
-        <div class="job-card">
-            <div class="job-card-header">
-                <div>
-                    <div class="job-card-title">${items.map(i=>i.name).join(', ')||'Service Visit'} <span style="font-weight:400;color:var(--text-3);font-size:12px;">· Job #${jobId}</span></div>
-                    <div class="job-card-meta">${metaParts}</div>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-                    ${badge(status)}
-                    <button class="job-toggle" onclick="toggleJob(${idx})">Details</button>
-                </div>
-            </div>
-            <div class="job-card-body collapsed" id="job-body-${idx}">
-                ${lineItemsHTML}${notesHTML}${ratingHTML}
-            </div>
-        </div>`;
-    }).join('')}</div>`;
-
-    myJobs.forEach((r, idx) => {
-        if ((r[2]||'').toLowerCase() === 'completed') {
-            renderStars(`stars-${idx}`, r[11]);
-            const btn   = document.getElementById(`btn-${idx}`);
-            const thank = document.getElementById(`thank-${idx}`);
-            if (btn) btn.addEventListener('click', () => { btn.style.display='none'; thank.style.display='inline'; });
+    // Wire stars and submit buttons
+    myJobs.forEach(function(r, idx) {
+        if ((r[2]||'').toLowerCase()==='completed') {
+            renderStars('stars-'+idx, r[11]);
+            var btn   = document.getElementById('btn-'+idx);
+            var thank = document.getElementById('thank-'+idx);
+            if (btn) btn.addEventListener('click', function(){ btn.style.display='none'; thank.style.display='inline'; });
         }
     });
 });
-
-function toggleJob(idx) {
-    const body = document.getElementById(`job-body-${idx}`);
-    const btn  = body.closest('.job-card').querySelector('.job-toggle');
-    const collapsed = body.classList.toggle('collapsed');
-    btn.textContent = collapsed ? 'Details' : 'Hide';
-}
 </script>
 </body>
 </html>

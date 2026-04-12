@@ -28,7 +28,6 @@
         <div class="mobile-avatar" id="mobileAvatar">?</div>
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
     <main class="dash-main">
         <div class="dash-page">
             <div class="section-header">
@@ -40,7 +39,7 @@
                     <div class="account-avatar" id="accountAvatar">?</div>
                     <div>
                         <p class="account-name" id="accountName">—</p>
-                        <p class="account-since" id="accountSince">—</p>
+                        <p class="account-since" id="accountSince"></p>
                     </div>
                 </div>
                 <div class="account-fields">
@@ -62,36 +61,59 @@
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
-<script src="../../../js/dashboard.js"></script>
 <script>
-initFirebase();
-const auth = firebase.auth();
-const db   = firebase.firestore();
-initSidebar();
-initSignOut(auth, 'signOutBtn', 'signOutBtn2');
+firebase.initializeApp({
+    apiKey: 'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+    authDomain: 'bwd-accounts.firebaseapp.com',
+    projectId: 'bwd-accounts',
+    storageBucket: 'bwd-accounts.firebasestorage.app',
+    messagingSenderId: '590001375282',
+    appId: '1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+var auth = firebase.auth();
+var db   = firebase.firestore();
 
-auth.onAuthStateChanged(async user => {
-    if (!user) { window.location.replace('/account/login/'); return; }
-    const name = user.displayName||'User';
+function doSignOut() {
+    auth.signOut().then(function() { window.location.href = '/account/login/'; });
+}
+document.getElementById('signOutBtn').addEventListener('click', doSignOut);
+document.getElementById('signOutBtn2').addEventListener('click', doSignOut);
+
+document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('visible');
+});
+document.getElementById('sidebarOverlay').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+});
+
+function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
+
+auth.onAuthStateChanged(async function(user) {
+    if (!user) { window.location.href = '/account/login/'; return; }
+
+    var name = user.displayName || 'User';
     document.getElementById('mobileAvatar').textContent  = initials(name);
     document.getElementById('accountAvatar').textContent = initials(name);
     document.getElementById('accountName').textContent   = name;
     document.getElementById('afName').textContent        = name;
-    document.getElementById('afEmail').textContent       = user.email||'—';
+    document.getElementById('afEmail').textContent       = user.email || '—';
     document.getElementById('afUid').textContent         = user.uid;
-    document.getElementById('afProvider').textContent    = user.providerData[0]?.providerId==='google.com' ? 'Google' : 'Email & Password';
+    document.getElementById('afProvider').textContent    = (user.providerData[0] && user.providerData[0].providerId === 'google.com') ? 'Google' : 'Email & Password';
 
+    // Member since from Firestore
     try {
-        const doc = await db.collection('customers').doc(user.uid).get();
+        var doc = await db.collection('customers').doc(user.uid).get();
         if (doc.exists && doc.data().createdAt) {
-            const d = doc.data().createdAt.toDate ? doc.data().createdAt.toDate() : new Date(doc.data().createdAt);
+            var d = doc.data().createdAt.toDate ? doc.data().createdAt.toDate() : new Date(doc.data().createdAt);
             document.getElementById('accountSince').textContent = 'Member since ' + d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
-        } else { document.getElementById('accountSince').textContent = ''; }
-    } catch(e) { document.getElementById('accountSince').textContent = ''; }
+        }
+    } catch(e) { /* no-op */ }
 });
 
-document.getElementById('changePasswordBtn').addEventListener('click', async () => {
-    const msgEl = document.getElementById('accountMessage');
+document.getElementById('changePasswordBtn').addEventListener('click', async function() {
+    var msgEl = document.getElementById('accountMessage');
     try {
         await auth.sendPasswordResetEmail(auth.currentUser.email);
         msgEl.textContent = 'Password reset email sent. Check your inbox.';
