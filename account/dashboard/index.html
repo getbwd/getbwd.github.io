@@ -41,6 +41,7 @@
                 <div class="stat-card"><span class="stat-label">Open Invoices</span><span class="stat-value" id="statOpenInvoices">—</span></div>
                 <div class="stat-card accent"><span class="stat-label">Amount Due</span><span class="stat-value" id="statAmountDue">—</span></div>
             </div>
+            <div id="reviewPrompt" style="display:none;"></div>
             <div class="overview-grid">
                 <div class="card">
                     <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="/account/dashboard/appointments/">View all</a></div>
@@ -130,6 +131,29 @@ auth.onAuthStateChanged(async function(user){
     var myInvoices=invoiceRows.filter(function(r){return r[1]===uid;});
     var myServices=serviceRows.filter(function(r){return r[0]===uid;});
     var myJobs=jobRows.filter(function(r){return r[1]===uid;});
+
+    // ── Review prompt — completed jobs within last 5 days with no local review ──
+    var fiveDaysAgo=new Date();fiveDaysAgo.setDate(fiveDaysAgo.getDate()-5);fiveDaysAgo.setHours(0,0,0,0);
+    var reviewPromptJob=null;
+    var completedRecent=myJobs.filter(function(r){
+        if((r[2]||'').toLowerCase()!=='completed')return false;
+        var d=new Date(r[3]);
+        return d>=fiveDaysAgo&&d<=new Date();
+    }).sort(function(a,b){return new Date(b[3])-new Date(a[3]);});
+    for(var ri=0;ri<completedRecent.length;ri++){
+        var jr=completedRecent[ri];
+        var jId=(jr[0]||'').trim();
+        var saved=null;try{saved=JSON.parse(localStorage.getItem('bwd_review_'+jId));}catch(e){}
+        if(!saved||(!saved.rating&&!saved.feedback)){reviewPromptJob=jr;break;}
+    }
+    var promptEl=document.getElementById('reviewPrompt');
+    if(reviewPromptJob&&promptEl){
+        var rpId=(reviewPromptJob[0]||'').trim();
+        var rpNames=(parseLineItems(reviewPromptJob[6]).map(function(i){return i.name;}).join(', '))||'your recent visit';
+        var rpDate=new Date(reviewPromptJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        promptEl.style.display='block';
+        promptEl.innerHTML='<a href="/account/dashboard/appointments/#'+rpId+'" style="text-decoration:none;"><div style="background:var(--orange-dim);border:1px solid rgba(224,90,18,0.25);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;"><div><p style="font-size:13px;font-weight:700;color:var(--orange-dark);margin-bottom:2px;">⭐ How was your visit on '+rpDate+'?</p><p style="font-size:12px;color:var(--orange-dark);opacity:0.8;">'+rpNames+' — tap to leave a rating and feedback.</p></div><span style="font-size:20px;">→</span></div></a>';
+    }
 
     // Next appointment
     var now=new Date();now.setHours(0,0,0,0);
