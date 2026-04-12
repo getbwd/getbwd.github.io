@@ -197,9 +197,24 @@ auth.onAuthStateChanged(async function(user){
         if(invoiceId)detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/account/dashboard/invoices/#'+invoiceId+'" style="color:var(--orange);">#'+invoiceId+'</a></div></div>');
         var detailGridHTML=detailItems.length?'<div class="detail-grid">'+detailItems.join('')+'</div>':'';
 
-        // Notes
+        // Customer notes — editable if Scheduled, read-only otherwise
+        // Check localStorage for any locally saved note (overrides CSV value for display)
+        var savedNoteData=null;try{savedNoteData=JSON.parse(localStorage.getItem('bwd_cnote_'+jobId));}catch(e){}
+        var displayNote=savedNoteData&&savedNoteData.note!==undefined?savedNoteData.note:custNote;
+
         var notesHTML='';
-        if(custNote)notesHTML+='<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+custNote+'</div></div>';
+        if(isScheduled){
+            // Editable textarea
+            notesHTML+='<div><div class="detail-section-label">Your Notes</div>'+
+                '<textarea class="feedback-input" id="cnote-'+jobId+'" placeholder="Add a note for your crew (gate code, special instructions, etc.)…" style="min-height:80px;">'+displayNote+'</textarea>'+
+                '<div style="margin-top:6px;display:flex;align-items:center;gap:10px;">'+
+                '<button class="btn-rate" id="cnote-btn-'+jobId+'">Save Note</button>'+
+                '<span id="cnote-conf-'+jobId+'" style="font-size:12px;color:var(--text-3);display:none;"></span>'+
+                '</div></div>';
+        } else {
+            // Read-only display
+            if(displayNote)notesHTML+='<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+displayNote+'</div></div>';
+        }
         if(crewNote)notesHTML+='<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>';
 
         // Rating — only show if status is NOT Scheduled
@@ -246,6 +261,28 @@ auth.onAuthStateChanged(async function(user){
 
     html+='</div>';
     container.innerHTML=html;
+
+    // Wire customer note save for Scheduled jobs
+    myJobs.forEach(function(r){
+        var jobId=(r[0]||'').trim();
+        var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
+        if(!isScheduled)return;
+        var noteBtn=document.getElementById('cnote-btn-'+jobId);
+        var noteInput=document.getElementById('cnote-'+jobId);
+        var noteConf=document.getElementById('cnote-conf-'+jobId);
+        if(!noteBtn||!noteInput)return;
+        noteBtn.addEventListener('click',function(){
+            var val=noteInput.value;
+            try{localStorage.setItem('bwd_cnote_'+jobId,JSON.stringify({note:val}));}catch(e){}
+            noteConf.textContent='Note saved!';
+            noteConf.style.color='#1e8a4a';
+            noteConf.style.display='inline';
+            setTimeout(function(){
+                noteConf.textContent='Changes are visible to your crew.';
+                noteConf.style.color='var(--text-3)';
+            },2000);
+        });
+    });
 
     // Wire stars and feedback for all non-scheduled jobs
     myJobs.forEach(function(r){
