@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BWD Firestore Diagnostic</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:monospace;padding:24px;background:#111;color:#eee;font-size:13px;}
+h2{color:#f90;margin-bottom:16px;}
+.line{padding:5px 0;border-bottom:1px solid #222;}
+.ok{color:#4c4;}
+.err{color:#f44;}
+.info{color:#8af;}
+button{margin-top:20px;padding:10px 24px;background:#e05a12;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer;}
+button:hover{background:#c94b08;}
+</style>
+</head>
+<body>
+<h2>BWD Firestore Diagnostic</h2>
+<div id="log"></div>
+<button onclick="runTests()">Run Tests</button>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+    authDomain:'bwd-accounts.firebaseapp.com',
+    projectId:'bwd-accounts',
+    storageBucket:'bwd-accounts.firebasestorage.app',
+    messagingSenderId:'590001375282',
+    appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+var auth = firebase.auth();
+var db   = firebase.firestore();
+
+function log(msg, cls){
+    var d = document.createElement('div');
+    d.className = 'line ' + (cls||'info');
+    d.textContent = new Date().toLocaleTimeString() + '  ' + msg;
+    document.getElementById('log').appendChild(d);
+}
+
+async function runTests(){
+    document.getElementById('log').innerHTML = '';
+    log('Starting diagnostic…');
+
+    // 1. Auth state
+    var user = auth.currentUser;
+    if(!user){
+        log('No current user — waiting for auth state…', 'info');
+        await new Promise(function(resolve){
+            var unsub = auth.onAuthStateChanged(function(u){
+                unsub();
+                user = u;
+                resolve();
+            });
+        });
+    }
+
+    if(!user){
+        log('❌ AUTH FAILED — not signed in. Sign in first then re-run.', 'err');
+        return;
+    }
+    log('✅ Auth OK — UID: ' + user.uid, 'ok');
+    log('   Email: ' + user.email, 'info');
+    log('   Display name: ' + (user.displayName||'(none)'), 'info');
+
+    // 2. Get ID token to confirm it's valid
+    try{
+        var token = await user.getIdToken(true);
+        log('✅ ID token refreshed — length: ' + token.length + ' chars', 'ok');
+    }catch(e){
+        log('❌ Token refresh failed: ' + e.message, 'err');
+        return;
+    }
+
+    // 3. Firestore READ
+    try{
+        log('Testing Firestore READ on customers/' + user.uid + '…', 'info');
+        var doc = await db.collection('customers').doc(user.uid).get();
+        log('✅ READ succeeded — doc exists: ' + doc.exists, 'ok');
+        if(doc.exists){
+            var d = doc.data();
+            log('   Fields: ' + Object.keys(d).join(', '), 'info');
+        }
+    }catch(e){
+        log('❌ READ FAILED: ' + e.code + ' — ' + e.message, 'err');
+        log('   → Fix Firestore rules to allow read for authenticated users matching their UID', 'err');
+    }
+
+    // 4. Firestore WRITE
+    try{
+        log('Testing Firestore WRITE on customers/' + user.uid + '…', 'info');
+        await db.collection('customers').doc(user.uid).set({
+            _diagnosticTest: new Date().toISOString()
+        }, {merge:true});
+        log('✅ WRITE succeeded!', 'ok');
+        log('   → Firestore rules are correct. The account page should work now.', 'ok');
+    }catch(e){
+        log('❌ WRITE FAILED: ' + e.code + ' — ' + e.message, 'err');
+        if(e.code === 'permission-denied'){
+            log('   → Your Firestore rules are BLOCKING writes.', 'err');
+            log('   → Go to Firebase Console → Firestore → Rules and add:', 'err');
+            log('     match /customers/{userId} {', 'err');
+            log('       allow read, write: if request.auth.uid == userId;', 'err');
+            log('     }', 'err');
+        } else if(e.code === 'not-found'){
+            log('   → Firestore database may not be created yet.', 'err');
+            log('   → Go to Firebase Console → Firestore Database → Create database', 'err');
+        } else {
+            log('   → Unexpected error. Check browser console for full stack trace.', 'err');
+        }
+    }
+
+    log('Diagnostic complete.', 'info');
+}
+
+// Auto-run on load
+auth.onAuthStateChanged(function(user){
+    if(user){
+        log('Auto-detected signed-in user: ' + user.email, 'ok');
+        log('Click "Run Tests" to test Firestore read/write.', 'info');
+    } else {
+        log('Not signed in. Please sign in to your BWD account first, then return to this page.', 'err');
+    }
+});
+</script>
+</body>
+</html>
