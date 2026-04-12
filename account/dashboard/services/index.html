@@ -6,6 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../../../css/dashboard.css">
+<style>
+.plan-block{margin-bottom:28px;}
+.plan-block-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.plan-block-meta{font-size:13px;color:var(--text-3);}
+</style>
 </head>
 <body>
 <div class="dash-shell">
@@ -28,6 +33,7 @@
         <div class="mobile-avatar" id="mobileAvatar">?</div>
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <main class="dash-main">
         <div class="dash-page">
             <div class="section-header">
@@ -43,70 +49,84 @@
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 <script>
 firebase.initializeApp({
-    apiKey: 'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
-    authDomain: 'bwd-accounts.firebaseapp.com',
-    projectId: 'bwd-accounts',
-    storageBucket: 'bwd-accounts.firebasestorage.app',
-    messagingSenderId: '590001375282',
-    appId: '1:590001375282:web:bd1725d5a5be3f9d28542b'
+    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
+    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
+    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
-var auth = firebase.auth();
-
-document.getElementById('signOutBtn').addEventListener('click', function() {
-    auth.signOut().then(function() { window.location.href = '/account/login/'; });
-});
-document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebarOverlay').classList.add('visible');
-});
-document.getElementById('sidebarOverlay').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-});
+var auth=firebase.auth();
+document.getElementById('signOutBtn').addEventListener('click',function(){auth.signOut().then(function(){window.location.href='/account/login/';});});
+document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
+document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');});
 
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 function fmtMoney(n){return '$'+Number(n).toFixed(2);}
 function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
 function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
 function parseCSV(text){var rows=[];var lines=text.trim().split('\n');for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;for(var i=0;i<lines[l].length;i++){var c=lines[l][i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}cols.push(cur.trim());rows.push(cols);}return rows;}
-async function fetchCSV(url){var res=await fetch(url);var text=await res.text();return parseCSV(text).slice(1);}
 function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
 function parseServices(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{name:p[0]||'—',frequency:p[1]||'—',price:parseFloat(p[2])||0,description:p[3]||''};});}
 
-var CSV_SERVICES = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRty-4hQ_sZ8nI55zoNkbnjZwOGi5-NgKgDGlvsjP3x0aOmeYWxIZKJRpKIXGFgdkEvr4xmXThjbuRB/pub?gid=0&single=true&output=csv';
+var CSV_SERVICES='https://docs.google.com/spreadsheets/d/e/2PACX-1vRty-4hQ_sZ8nI55zoNkbnjZwOGi5-NgKgDGlvsjP3x0aOmeYWxIZKJRpKIXGFgdkEvr4xmXThjbuRB/pub?gid=0&single=true&output=csv';
 
-auth.onAuthStateChanged(async function(user) {
-    if (!user) { window.location.href = '/account/login/'; return; }
-    document.getElementById('mobileAvatar').textContent = initials(user.displayName||'');
-    var uid = user.uid;
+async function cachedCSV(key,url){var cacheKey='bwd_csv_'+key;var cached=sessionStorage.getItem(cacheKey);if(cached){try{return JSON.parse(cached);}catch(e){}}var res=await fetch(url);var text=await res.text();var rows=parseCSV(text).slice(1);try{sessionStorage.setItem(cacheKey,JSON.stringify(rows));}catch(e){}return rows;}
 
-    var serviceRows = await fetchCSV(CSV_SERVICES);
-    var myServices  = serviceRows.filter(function(r){return r[0]===uid;});
-    var container   = document.getElementById('servicesContainer');
+auth.onAuthStateChanged(async function(user){
+    if(!user){window.location.href='/account/login/';return;}
+    document.getElementById('mobileAvatar').textContent=initials(user.displayName||'');
+    var uid=user.uid;
 
-    if (!myServices.length) {
-        container.innerHTML = '<div class="card"><div class="card-body">'+empty('No services on your account yet.')+'</div></div>';
-        return;
-    }
+    var serviceRows=await cachedCSV('services',CSV_SERVICES);
+    // cols: 0=UID, 1=DATE, 2=STATUS, 3=SERVICES
+    var myServices=serviceRows.filter(function(r){return r[0]===uid;});
+    var container=document.getElementById('servicesContainer');
 
-    var svcRow     = myServices[0];
-    var startDate  = svcRow[1] ? new Date(svcRow[1]).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—';
-    var planStatus = svcRow[2]||'Active';
-    var svcList    = parseServices(svcRow[3]);
-    var isActive   = planStatus.toLowerCase()==='active';
+    if(!myServices.length){
+        container.innerHTML='<div class="card"><div class="card-body">'+empty('No services on your account yet.')+'</div></div>';
+        return;}
 
-    var headerHTML = '<div class="plan-header"><span class="plan-since">Plan started '+startDate+'</span>'+badge(planStatus)+'</div>';
+    var html='';
 
-    if (!svcList.length) {
-        container.innerHTML = headerHTML+'<div class="card"><div class="card-body">'+empty('No services listed on your plan.')+'</div></div>';
-        return;
-    }
+    myServices.forEach(function(row,planIdx){
+        var rawDate  = row[1]||'';
+        var planStatus = row[2]||'Active';
+        var svcList  = parseServices(row[3]);
+        var isActive = planStatus.toLowerCase()==='active';
 
-    var cardsHTML = svcList.map(function(s){
-        return '<div class="svc-card"><div class="svc-card-header"><span class="svc-card-name">'+s.name+'</span>'+badge(isActive?'Active':planStatus)+'</div><p class="svc-detail"><strong>Frequency:</strong> '+s.frequency+'</p><p class="svc-detail"><strong>Price:</strong> '+fmtMoney(s.price)+'</p>'+(s.description?'<p class="svc-detail">'+s.description+'</p>':'')+'</div>';
-    }).join('');
+        var dateStr='';
+        if(rawDate){try{dateStr=new Date(rawDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}catch(e){dateStr=rawDate;}}
 
-    container.innerHTML = headerHTML+'<div class="services-grid">'+cardsHTML+'</div>';
+        // If multiple rows, show a divider/header per plan; if only one, no extra header needed
+        html+='<div class="plan-block">';
+        if(myServices.length>1){
+            html+='<div class="plan-block-header">';
+            if(dateStr)html+='<span class="plan-block-meta">Started '+dateStr+'</span>';
+            html+=badge(planStatus);
+            html+='</div>';
+        } else {
+            // Single plan — show start date inline above grid
+            if(dateStr){html+='<div class="plan-block-header"><span class="plan-block-meta">Plan started '+dateStr+'</span>'+badge(planStatus)+'</div>';}
+        }
+
+        if(!svcList.length){
+            html+='<div class="card"><div class="card-body">'+empty('No services listed on this plan.')+'</div></div>';
+        } else {
+            html+='<div class="services-grid">';
+            svcList.forEach(function(s){
+                html+='<div class="svc-card"><div class="svc-card-header"><span class="svc-card-name">'+s.name+'</span>'+badge(isActive?'Active':planStatus)+'</div>';
+                html+='<p class="svc-detail"><strong>Frequency:</strong> '+s.frequency+'</p>';
+                html+='<p class="svc-detail"><strong>Price:</strong> '+fmtMoney(s.price)+'</p>';
+                if(s.description)html+='<p class="svc-detail">'+s.description+'</p>';
+                html+='</div>';
+            });
+            html+='</div>';
+        }
+        html+='</div>';
+
+        // Divider between plans
+        if(planIdx<myServices.length-1){html+='<hr style="border:none;border-top:1px solid var(--border);margin:0 0 28px;">';}
+    });
+
+    container.innerHTML=html;
 });
 </script>
 </body>

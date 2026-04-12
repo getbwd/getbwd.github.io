@@ -57,71 +57,44 @@
         </div>
     </main>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 <script>
 firebase.initializeApp({
-    apiKey: 'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
-    authDomain: 'bwd-accounts.firebaseapp.com',
-    projectId: 'bwd-accounts',
-    storageBucket: 'bwd-accounts.firebasestorage.app',
-    messagingSenderId: '590001375282',
-    appId: '1:590001375282:web:bd1725d5a5be3f9d28542b'
+    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
+    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
+    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
-var auth = firebase.auth();
-var db   = firebase.firestore();
-
-function doSignOut() {
-    auth.signOut().then(function() { window.location.href = '/account/login/'; });
-}
-document.getElementById('signOutBtn').addEventListener('click', doSignOut);
-document.getElementById('signOutBtn2').addEventListener('click', doSignOut);
-
-document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebarOverlay').classList.add('visible');
-});
-document.getElementById('sidebarOverlay').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-});
-
+var auth=firebase.auth();var db=firebase.firestore();
+function doSignOut(){auth.signOut().then(function(){window.location.href='/account/login/';});}
+document.getElementById('signOutBtn').addEventListener('click',doSignOut);
+document.getElementById('signOutBtn2').addEventListener('click',doSignOut);
+document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
+document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');});
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 
-auth.onAuthStateChanged(async function(user) {
-    if (!user) { window.location.href = '/account/login/'; return; }
-
-    var name = user.displayName || 'User';
-    document.getElementById('mobileAvatar').textContent  = initials(name);
-    document.getElementById('accountAvatar').textContent = initials(name);
-    document.getElementById('accountName').textContent   = name;
-    document.getElementById('afName').textContent        = name;
-    document.getElementById('afEmail').textContent       = user.email || '—';
-    document.getElementById('afUid').textContent         = user.uid;
-    document.getElementById('afProvider').textContent    = (user.providerData[0] && user.providerData[0].providerId === 'google.com') ? 'Google' : 'Email & Password';
-
-    // Member since from Firestore
-    try {
-        var doc = await db.collection('customers').doc(user.uid).get();
-        if (doc.exists && doc.data().createdAt) {
-            var d = doc.data().createdAt.toDate ? doc.data().createdAt.toDate() : new Date(doc.data().createdAt);
-            document.getElementById('accountSince').textContent = 'Member since ' + d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
-        }
-    } catch(e) { /* no-op */ }
+auth.onAuthStateChanged(async function(user){
+    if(!user){window.location.href='/account/login/';return;}
+    var name=user.displayName||'User';
+    document.getElementById('mobileAvatar').textContent=initials(name);
+    document.getElementById('accountAvatar').textContent=initials(name);
+    document.getElementById('accountName').textContent=name;
+    document.getElementById('afName').textContent=name;
+    document.getElementById('afEmail').textContent=user.email||'—';
+    document.getElementById('afUid').textContent=user.uid;
+    document.getElementById('afProvider').textContent=(user.providerData[0]&&user.providerData[0].providerId==='google.com')?'Google':'Email & Password';
+    try{
+        var doc=await db.collection('customers').doc(user.uid).get();
+        if(doc.exists&&doc.data().createdAt){
+            var d=doc.data().createdAt.toDate?doc.data().createdAt.toDate():new Date(doc.data().createdAt);
+            document.getElementById('accountSince').textContent='Member since '+d.toLocaleDateString('en-US',{month:'long',year:'numeric'});}
+    }catch(e){}
 });
-
-document.getElementById('changePasswordBtn').addEventListener('click', async function() {
-    var msgEl = document.getElementById('accountMessage');
-    try {
-        await auth.sendPasswordResetEmail(auth.currentUser.email);
-        msgEl.textContent = 'Password reset email sent. Check your inbox.';
-        msgEl.className   = 'acct-msg success';
-    } catch(e) {
-        msgEl.textContent = 'Failed to send reset email. Try again.';
-        msgEl.className   = 'acct-msg error';
-    }
+document.getElementById('changePasswordBtn').addEventListener('click',async function(){
+    var msgEl=document.getElementById('accountMessage');
+    try{await auth.sendPasswordResetEmail(auth.currentUser.email);msgEl.textContent='Password reset email sent. Check your inbox.';msgEl.className='acct-msg success';}
+    catch(e){msgEl.textContent='Failed to send reset email. Try again.';msgEl.className='acct-msg error';}
 });
 </script>
 </body>

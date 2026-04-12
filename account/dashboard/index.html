@@ -62,162 +62,122 @@
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 <script>
-// ── Firebase init ──
 firebase.initializeApp({
-    apiKey: 'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
-    authDomain: 'bwd-accounts.firebaseapp.com',
-    projectId: 'bwd-accounts',
-    storageBucket: 'bwd-accounts.firebasestorage.app',
-    messagingSenderId: '590001375282',
-    appId: '1:590001375282:web:bd1725d5a5be3f9d28542b'
+    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
+    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
+    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
-const auth = firebase.auth();
+var auth = firebase.auth();
 
-// ── Sign out ──
-document.getElementById('signOutBtn').addEventListener('click', function() {
-    auth.signOut().then(function() { window.location.href = '/account/login/'; });
-});
+document.getElementById('signOutBtn').addEventListener('click',function(){auth.signOut().then(function(){window.location.href='/account/login/';});});
+document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
+document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');});
 
-// ── Mobile sidebar ──
-document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebarOverlay').classList.add('visible');
-});
-document.getElementById('sidebarOverlay').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-});
+// ── Shared utilities ──
+function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
+function fmtMoney(n){return '$'+Number(n).toFixed(2);}
+function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
+function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
 
-// ── Utilities ──
-function initials(n) { return n ? n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2) : '?'; }
-function fmtMoney(n) { return '$' + Number(n).toFixed(2); }
-function badge(status) {
-    var s = (status||'').toLowerCase().trim();
-    var map = {scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};
-    return '<span class="bdg ' + (map[s]||'bdg-default') + '">' + (status||'—') + '</span>';
-}
-function empty(msg) { return '<p class="empty-state">' + msg + '</p>'; }
+function parseCSV(text){
+    var rows=[];var lines=text.trim().split('\n');
+    for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;
+        for(var i=0;i<lines[l].length;i++){var c=lines[l][i];
+            if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}
+        cols.push(cur.trim());rows.push(cols);}return rows;}
 
-function parseCSV(text) {
-    var rows = []; var lines = text.trim().split('\n');
-    for (var l = 0; l < lines.length; l++) {
-        var cols = []; var cur = ''; var inQ = false;
-        for (var i = 0; i < lines[l].length; i++) {
-            var c = lines[l][i];
-            if (c === '"') { inQ = !inQ; }
-            else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-            else { cur += c; }
-        }
-        cols.push(cur.trim()); rows.push(cols);
-    }
-    return rows;
-}
-async function fetchCSV(url) {
-    var res = await fetch(url); var text = await res.text();
-    return parseCSV(text).slice(1);
-}
-function parsePipe(str) { return str ? str.split('|').map(function(s){return s.trim();}).filter(Boolean) : []; }
-function parseLineItems(str) {
-    return parsePipe(str).map(function(seg) {
-        var p = seg.split(',').map(function(s){return s.trim();});
-        var qty = parseFloat(p[1])||1; var unit = parseFloat(p[2])||0;
-        return {name:p[0]||'—', qty:qty, unitPrice:unit, lineTotal:qty*unit};
-    });
-}
-function parsePayments(str) {
-    return parsePipe(str).map(function(seg) {
-        var p = seg.split(',').map(function(s){return s.trim();});
-        return {date:p[0]||'—', type:p[1]||'—', amount:parseFloat(p[2])||0};
-    });
-}
-function parseServices(str) {
-    return parsePipe(str).map(function(seg) {
-        var p = seg.split(',').map(function(s){return s.trim();});
-        return {name:p[0]||'—', frequency:p[1]||'—', price:parseFloat(p[2])||0, description:p[3]||''};
-    });
-}
+function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
+function parseLineItems(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});var qty=parseFloat(p[1])||1;var unit=parseFloat(p[2])||0;return{name:p[0]||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit};});}
+function parsePayments(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{date:p[0]||'—',type:p[1]||'—',amount:parseFloat(p[2])||0};});}
+function parseServices(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{name:p[0]||'—',frequency:p[1]||'—',price:parseFloat(p[2])||0,description:p[3]||''};});}
+function invoiceBalance(r){
+    var t=parseLineItems(r[5]).reduce(function(s,i){return s+i.lineTotal;},0);
+    var p=parsePayments(r[6]).reduce(function(s,p){return s+p.amount;},0);
+    return Math.max(0,Math.round((t-p)*100)/100);}
 
-var CSV_INVOICES = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSWX3vado-d6wVWtj4HT_rq9xLYMG-HqYC2wEOLVIefdWjflDEe6XoC3uClWCqWUXqSvYe4Z35HN3TM/pub?gid=0&single=true&output=csv';
-var CSV_SERVICES = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRty-4hQ_sZ8nI55zoNkbnjZwOGi5-NgKgDGlvsjP3x0aOmeYWxIZKJRpKIXGFgdkEvr4xmXThjbuRB/pub?gid=0&single=true&output=csv';
-var CSV_JOBS     = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSfVRR2EnvXGH5nZBOesVJdoTl2p3bHun-oFYYSZrg7fEvGXyIDxPkycWTtCjWstt8ccFgpa8wlkg/pub?gid=0&single=true&output=csv';
+var CSV_INVOICES='https://docs.google.com/spreadsheets/d/e/2PACX-1vSWX3vado-d6wVWtj4HT_rq9xLYMG-HqYC2wEOLVIefdWjflDEe6XoC3uClWCqWUXqSvYe4Z35HN3TM/pub?gid=0&single=true&output=csv';
+var CSV_SERVICES='https://docs.google.com/spreadsheets/d/e/2PACX-1vRty-4hQ_sZ8nI55zoNkbnjZwOGi5-NgKgDGlvsjP3x0aOmeYWxIZKJRpKIXGFgdkEvr4xmXThjbuRB/pub?gid=0&single=true&output=csv';
+var CSV_JOBS='https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSfVRR2EnvXGH5nZBOesVJdoTl2p3bHun-oFYYSZrg7fEvGXyIDxPkycWTtCjWstt8ccFgpa8wlkg/pub?gid=0&single=true&output=csv';
 
-// ── Auth gate — everything runs inside here ──
-auth.onAuthStateChanged(async function(user) {
-    if (!user) {
-        window.location.href = '/account/login/';
-        return;
-    }
+// ── Cache layer — sessionStorage keyed by UID ──
+async function cachedCSV(key,url){
+    var cacheKey='bwd_csv_'+key;
+    var cached=sessionStorage.getItem(cacheKey);
+    if(cached){try{return JSON.parse(cached);}catch(e){}}
+    var res=await fetch(url);var text=await res.text();
+    var rows=parseCSV(text).slice(1);
+    try{sessionStorage.setItem(cacheKey,JSON.stringify(rows));}catch(e){}
+    return rows;}
 
-    var name = user.displayName || 'there';
-    document.getElementById('userName').textContent     = name.split(' ')[0];
-    document.getElementById('mobileAvatar').textContent = initials(name);
+auth.onAuthStateChanged(async function(user){
+    if(!user){window.location.href='/account/login/';return;}
+    var name=user.displayName||'there';
+    document.getElementById('userName').textContent=name.split(' ')[0];
+    document.getElementById('mobileAvatar').textContent=initials(name);
+    var uid=user.uid;
 
-    var uid = user.uid;
+    var results=await Promise.all([cachedCSV('invoices',CSV_INVOICES),cachedCSV('services',CSV_SERVICES),cachedCSV('jobs',CSV_JOBS)]);
+    var invoiceRows=results[0];var serviceRows=results[1];var jobRows=results[2];
 
-    var results = await Promise.all([fetchCSV(CSV_INVOICES), fetchCSV(CSV_SERVICES), fetchCSV(CSV_JOBS)]);
-    var invoiceRows = results[0]; var serviceRows = results[1]; var jobRows = results[2];
-
-    var myInvoices = invoiceRows.filter(function(r){return r[1]===uid;});
-    var myServices = serviceRows.filter(function(r){return r[0]===uid;});
-    var myJobs     = jobRows.filter(function(r){return r[1]===uid;});
+    var myInvoices=invoiceRows.filter(function(r){return r[1]===uid;});
+    var myServices=serviceRows.filter(function(r){return r[0]===uid;});
+    var myJobs=jobRows.filter(function(r){return r[1]===uid;});
 
     // Next appointment
-    var now = new Date(); now.setHours(0,0,0,0);
-    var upcoming = myJobs.filter(function(r){
+    var now=new Date();now.setHours(0,0,0,0);
+    var upcoming=myJobs.filter(function(r){
         var s=(r[2]||'').toLowerCase();
-        return new Date(r[3])>=now && s!=='cancelled' && s!=='completed';
+        return new Date(r[3])>=now&&s!=='cancelled'&&s!=='completed';
     }).sort(function(a,b){return new Date(a[3])-new Date(b[3]);});
-    var nextJob = upcoming[0]||null;
-    document.getElementById('statNextAppt').textContent = nextJob
-        ? new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric'})
-        : 'None scheduled';
+    var nextJob=upcoming[0]||null;
+    document.getElementById('statNextAppt').textContent=nextJob
+        ?new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric'})
+        :'None scheduled';
 
-    // Services
-    var svcRow  = myServices[0]||null;
-    var svcList = svcRow ? parseServices(svcRow[3]) : [];
-    document.getElementById('statServices').textContent = svcList.length;
+    // Services count — all unique service names across all rows
+    var allSvcNames={};
+    myServices.forEach(function(row){parseServices(row[3]).forEach(function(s){allSvcNames[s.name]=true;});});
+    document.getElementById('statServices').textContent=Object.keys(allSvcNames).length;
 
-    // Open invoices & amount due
-    var openInv = myInvoices.filter(function(r){var s=(r[3]||'').toLowerCase();return s==='unpaid'||s==='overdue'||s==='partial';});
-    document.getElementById('statOpenInvoices').textContent = openInv.length;
-    var totalDue = 0;
-    openInv.forEach(function(r){
-        var t=parseLineItems(r[5]).reduce(function(s,i){return s+i.lineTotal;},0);
-        var p=parsePayments(r[6]).reduce(function(s,p){return s+p.amount;},0);
-        totalDue+=Math.max(0,t-p);
+    // Open invoices & amount due — balance > 0.01 means open
+    var openInv=myInvoices.filter(function(r){return invoiceBalance(r)>=0.01;});
+    document.getElementById('statOpenInvoices').textContent=openInv.length;
+    var totalDue=openInv.reduce(function(s,r){return s+invoiceBalance(r);},0);
+    document.getElementById('statAmountDue').textContent=fmtMoney(totalDue);
+
+    // Upcoming appointment card — clickable link to detail
+    var apptEl=document.getElementById('overviewApptBody');
+    if(nextJob){
+        var names=(parseLineItems(nextJob[6]).map(function(i){return i.name;}).join(', '))||'Service Visit';
+        var dateStr=new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        var time=nextJob[4]?' · '+nextJob[4]:'';
+        var jobId=nextJob[0];
+        apptEl.innerHTML='<a href="/account/dashboard/appointments/#'+jobId+'" style="text-decoration:none;display:block;"><div class="ov-row" style="cursor:pointer;"><div><p class="ov-title" style="color:var(--orange);">'+names+'</p><p class="ov-sub">'+dateStr+time+'</p></div>'+badge(nextJob[2]||'Scheduled')+'</div></a>';
+    } else {apptEl.innerHTML=empty('No upcoming appointments.');}
+
+    // Latest invoice card — clickable
+    var invEl=document.getElementById('overviewInvoiceBody');
+    var sortedInv=myInvoices.slice().sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
+    var latest=sortedInv[0]||null;
+    if(latest){
+        var items=parseLineItems(latest[5]);
+        var total=items.reduce(function(s,i){return s+i.lineTotal;},0);
+        var balance=invoiceBalance(latest);
+        var desc=items.map(function(i){return i.name;}).join(', ')||'Invoice';
+        var dStr=new Date(latest[4]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        invEl.innerHTML='<a href="/account/dashboard/invoices/#'+latest[0]+'" style="text-decoration:none;display:block;"><div class="ov-row" style="cursor:pointer;"><div><p class="ov-title" style="color:var(--orange);">'+desc+'</p><p class="ov-sub">'+dStr+' · #'+latest[0]+'</p></div><div style="text-align:right"><p class="ov-title mono">'+fmtMoney(balance>0?balance:total)+'</p>'+badge(latest[3])+'</div></div></a>';
+    } else {invEl.innerHTML=empty('No invoices yet.');}
+
+    // Service chips — all rows, all services
+    var chipsEl=document.getElementById('overviewServiceChips');
+    var allChips=[];
+    myServices.forEach(function(row){
+        var isActive=(row[2]||'').toLowerCase()==='active';
+        parseServices(row[3]).forEach(function(s){
+            allChips.push('<a href="/account/dashboard/services/" style="text-decoration:none;"><span class="svc-chip '+(isActive?'active':'')+'">'+s.name+'</span></a>');
+        });
     });
-    document.getElementById('statAmountDue').textContent = fmtMoney(totalDue);
-
-    // Upcoming appt card
-    var apptEl = document.getElementById('overviewApptBody');
-    if (nextJob) {
-        var names   = parseLineItems(nextJob[6]).map(function(i){return i.name;}).join(', ')||'Service Visit';
-        var dateStr = new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        var time    = nextJob[4] ? ' · '+nextJob[4] : '';
-        apptEl.innerHTML = '<div class="ov-row"><div><p class="ov-title">'+names+'</p><p class="ov-sub">'+dateStr+time+'</p></div>'+badge(nextJob[2]||'Scheduled')+'</div>';
-    } else { apptEl.innerHTML = empty('No upcoming appointments.'); }
-
-    // Latest invoice card
-    var invEl   = document.getElementById('overviewInvoiceBody');
-    var sorted  = myInvoices.slice().sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
-    var latest  = sorted[0]||null;
-    if (latest) {
-        var items    = parseLineItems(latest[5]);
-        var payments = parsePayments(latest[6]);
-        var total    = items.reduce(function(s,i){return s+i.lineTotal;},0);
-        var paid     = payments.reduce(function(s,p){return s+p.amount;},0);
-        var balance  = Math.max(0,total-paid);
-        var desc     = items.map(function(i){return i.name;}).join(', ')||'Invoice';
-        var dStr     = new Date(latest[4]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        invEl.innerHTML = '<div class="ov-row"><div><p class="ov-title">'+desc+'</p><p class="ov-sub">'+dStr+' · #'+latest[0]+'</p></div><div style="text-align:right"><p class="ov-title mono">'+fmtMoney(balance||total)+'</p>'+badge(latest[3])+'</div></div>';
-    } else { invEl.innerHTML = empty('No invoices yet.'); }
-
-    // Service chips
-    var chipsEl  = document.getElementById('overviewServiceChips');
-    var isActive = svcRow && (svcRow[2]||'').toLowerCase()==='active';
-    if (svcList.length) {
-        chipsEl.innerHTML = svcList.map(function(s){return '<span class="svc-chip '+(isActive?'active':'')+'">'+s.name+'</span>';}).join('');
-    } else { chipsEl.innerHTML = empty('No active services.'); }
+    chipsEl.innerHTML=allChips.length?allChips.join(''):empty('No active services.');
 });
 </script>
 </body>

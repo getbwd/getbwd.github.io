@@ -6,6 +6,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../../../css/dashboard.css">
+<style>
+.job-list{display:flex;flex-direction:column;gap:14px;}
+.job-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;scroll-margin-top:24px;}
+.job-card.highlight{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-dim);}
+.job-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 20px 14px;cursor:pointer;user-select:none;}
+.job-card-header:hover{background:#fafaf8;}
+.job-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.job-card-id{font-size:11px;font-weight:400;color:var(--text-3);}
+.job-card-meta{font-size:12px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
+.job-card-meta span{display:inline-flex;align-items:center;gap:4px;}
+.job-card-body{padding:18px 20px;border-top:1px solid var(--border-light);display:flex;flex-direction:column;gap:16px;}
+.job-card-body.collapsed{display:none;}
+.detail-section-label{font-size:10px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:#bbb;margin-bottom:6px;}
+.line-items{width:100%;border-collapse:collapse;font-size:13px;}
+.line-items th{text-align:left;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#bbb;padding:0 8px 6px 0;}
+.line-items th:last-child,.line-items td:last-child{text-align:right;}
+.line-items td{padding:6px 8px 6px 0;color:var(--text-2);border-top:1px solid var(--border-light);font-size:13px;}
+.line-items .total-row td{font-weight:700;color:var(--text);border-top:2px solid var(--border);padding-top:8px;}
+.note-block{background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);line-height:1.6;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.detail-item{background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;}
+.detail-item-label{font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#bbb;margin-bottom:3px;}
+.detail-item-value{font-size:13px;color:var(--text-2);line-height:1.4;}
+.rating-section{display:flex;flex-direction:column;gap:8px;}
+.stars{display:flex;gap:4px;cursor:pointer;}
+.star{font-size:24px;color:#ddd;transition:color 0.1s;user-select:none;}
+.star.filled{color:#f5a623;}
+.feedback-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);resize:vertical;min-height:70px;background:var(--white);}
+.feedback-input:focus{outline:none;border-color:var(--orange);}
+.btn-rate{margin-top:4px;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;background:var(--orange);color:#fff;border:none;cursor:pointer;}
+.btn-rate:hover{background:var(--orange-dark);}
+.rate-thanks{font-size:13px;color:#1e8a4a;font-weight:500;margin-left:10px;}
+.toggle-chevron{font-size:18px;color:var(--muted);transition:transform 0.2s;flex-shrink:0;line-height:1;}
+.job-card-body:not(.collapsed) ~ * .toggle-chevron,
+.job-card.open .toggle-chevron{transform:rotate(180deg);}
+@media(max-width:600px){.detail-grid{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
 <div class="dash-shell">
@@ -28,6 +65,7 @@
         <div class="mobile-avatar" id="mobileAvatar">?</div>
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <main class="dash-main">
         <div class="dash-page">
             <div class="section-header">
@@ -43,123 +81,165 @@
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 <script>
 firebase.initializeApp({
-    apiKey: 'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
-    authDomain: 'bwd-accounts.firebaseapp.com',
-    projectId: 'bwd-accounts',
-    storageBucket: 'bwd-accounts.firebasestorage.app',
-    messagingSenderId: '590001375282',
-    appId: '1:590001375282:web:bd1725d5a5be3f9d28542b'
+    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
+    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
+    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
-var auth = firebase.auth();
-
-document.getElementById('signOutBtn').addEventListener('click', function() {
-    auth.signOut().then(function() { window.location.href = '/account/login/'; });
-});
-document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebarOverlay').classList.add('visible');
-});
-document.getElementById('sidebarOverlay').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-});
+var auth=firebase.auth();
+document.getElementById('signOutBtn').addEventListener('click',function(){auth.signOut().then(function(){window.location.href='/account/login/';});});
+document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
+document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');});
 
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 function fmtMoney(n){return '$'+Number(n).toFixed(2);}
 function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
 function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
 function parseCSV(text){var rows=[];var lines=text.trim().split('\n');for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;for(var i=0;i<lines[l].length;i++){var c=lines[l][i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}cols.push(cur.trim());rows.push(cols);}return rows;}
-async function fetchCSV(url){var res=await fetch(url);var text=await res.text();return parseCSV(text).slice(1);}
 function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
 function parseLineItems(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});var qty=parseFloat(p[1])||1;var unit=parseFloat(p[2])||0;return{name:p[0]||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit};});}
 
-var CSV_JOBS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSfVRR2EnvXGH5nZBOesVJdoTl2p3bHun-oFYYSZrg7fEvGXyIDxPkycWTtCjWstt8ccFgpa8wlkg/pub?gid=0&single=true&output=csv';
+var CSV_JOBS='https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSfVRR2EnvXGH5nZBOesVJdoTl2p3bHun-oFYYSZrg7fEvGXyIDxPkycWTtCjWstt8ccFgpa8wlkg/pub?gid=0&single=true&output=csv';
 
-function renderStars(containerId, initial) {
-    var container = document.getElementById(containerId);
-    if (!container) return;
-    var current = parseInt(initial)||0;
-    function draw() {
-        container.innerHTML = '';
-        for (var i = 1; i <= 5; i++) {
+async function cachedCSV(key,url){
+    var cacheKey='bwd_csv_'+key;var cached=sessionStorage.getItem(cacheKey);
+    if(cached){try{return JSON.parse(cached);}catch(e){}}
+    var res=await fetch(url);var text=await res.text();
+    var rows=parseCSV(text).slice(1);
+    try{sessionStorage.setItem(cacheKey,JSON.stringify(rows));}catch(e){}
+    return rows;}
+
+function toggleCard(jobId){
+    var body=document.getElementById('body-'+jobId);
+    var card=document.getElementById('card-'+jobId);
+    if(!body)return;
+    var isOpen=!body.classList.contains('collapsed');
+    body.classList.toggle('collapsed');
+    card.classList.toggle('open',isOpen);
+    // update URL hash without scroll
+    if(!isOpen){history.replaceState(null,null,'#'+jobId);}
+    else if(window.location.hash==='#'+jobId){history.replaceState(null,null,' ');}
+}
+
+function renderStars(containerId,initial){
+    var container=document.getElementById(containerId);
+    if(!container)return;
+    var current=parseInt(initial)||0;
+    function draw(){
+        container.innerHTML='';
+        for(var i=1;i<=5;i++){
             (function(i){
-                var s = document.createElement('span');
-                s.className = 'star'+(i<=current?' filled':'');
-                s.textContent = '★';
-                s.addEventListener('mouseover', function(){container.querySelectorAll('.star').forEach(function(el,idx){el.classList.toggle('filled',idx<i);});});
-                s.addEventListener('mouseout', draw);
-                s.addEventListener('click', function(){current=i;draw();});
+                var s=document.createElement('span');
+                s.className='star'+(i<=current?' filled':'');s.textContent='★';
+                s.addEventListener('mouseover',function(){container.querySelectorAll('.star').forEach(function(el,idx){el.classList.toggle('filled',idx<i);});});
+                s.addEventListener('mouseout',draw);
+                s.addEventListener('click',function(){current=i;draw();});
                 container.appendChild(s);
-            })(i);
-        }
-    }
-    draw();
-}
+            })(i);}
+    }draw();}
 
-function toggleJob(idx) {
-    var body = document.getElementById('job-body-'+idx);
-    var btn  = body.closest('.job-card').querySelector('.job-toggle');
-    var collapsed = body.classList.toggle('collapsed');
-    btn.textContent = collapsed ? 'Details' : 'Hide';
-}
+auth.onAuthStateChanged(async function(user){
+    if(!user){window.location.href='/account/login/';return;}
+    document.getElementById('mobileAvatar').textContent=initials(user.displayName||'');
+    var uid=user.uid;
 
-auth.onAuthStateChanged(async function(user) {
-    if (!user) { window.location.href = '/account/login/'; return; }
-    document.getElementById('mobileAvatar').textContent = initials(user.displayName||'');
-    var uid = user.uid;
+    var jobRows=await cachedCSV('jobs',CSV_JOBS);
+    var myJobs=jobRows.filter(function(r){return r[1]===uid;}).sort(function(a,b){return new Date(b[3])-new Date(a[3]);});
+    var container=document.getElementById('jobListContainer');
 
-    var jobRows = await fetchCSV(CSV_JOBS);
-    var myJobs  = jobRows.filter(function(r){return r[1]===uid;}).sort(function(a,b){return new Date(b[3])-new Date(a[3]);});
-    var container = document.getElementById('jobListContainer');
+    if(!myJobs.length){container.innerHTML='<div class="card"><div class="card-body">'+empty('No appointments on your account yet.')+'</div></div>';return;}
 
-    if (!myJobs.length) {
-        container.innerHTML = '<div class="card"><div class="card-body">'+empty('No appointments on your account yet.')+'</div></div>';
-        return;
-    }
+    var targetHash=window.location.hash.replace('#','');
+    var html='<div class="job-list">';
 
-    var html = '<div class="job-list">';
-    myJobs.forEach(function(r, idx) {
-        var jobId     = r[0]||'—';
-        var status    = r[2]||'Scheduled';
-        var date      = r[3] ? new Date(r[3]).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
-        var time      = r[4]||'';
-        var address   = r[5]||'';
-        var items     = parseLineItems(r[6]);
-        var invoiceId = r[7]||'';
-        var assigned  = r[8]||'';
-        var custNote  = r[9]||'';
-        var crewNote  = r[10]||'';
-        var rating    = r[11]||'';
-        var feedback  = r[12]||'';
-        var total     = items.reduce(function(s,i){return s+i.lineTotal;},0);
-        var completed = (r[2]||'').toLowerCase()==='completed';
+    myJobs.forEach(function(r){
+        // cols: 0=ID, 1=UID, 2=STATUS, 3=DATE, 4=TIME, 5=ADDRESS, 6=SERVICES, 7=INVOICE_ID, 8=ASSIGNED, 9=CUST_NOTES, 10=CREW_NOTES, 11=RATING, 12=FEEDBACK
+        var jobId    = (r[0]||'').trim();
+        var status   = r[2]||'Scheduled';
+        var rawDate  = r[3]||'';
+        var time     = r[4]||'';
+        var address  = r[5]||'';
+        var items    = parseLineItems(r[6]);
+        var invoiceId= r[7]||'';
+        var assigned = r[8]||'';
+        var custNote = r[9]||'';
+        var crewNote = r[10]||'';
+        var rating   = r[11]||'';
+        var feedback = r[12]||'';
+        var total    = items.reduce(function(s,i){return s+i.lineTotal;},0);
+        var completed= (r[2]||'').toLowerCase()==='completed';
+        var isTarget = jobId===targetHash;
 
-        var metaParts = [
-            date    ?'<span>📅 '+date+'</span>'   : '',
-            time    ?'<span>🕐 '+time+'</span>'   : '',
-            address ?'<span>📍 '+address+'</span>': '',
-            assigned  ?'<span>👷 '+assigned+'</span>'      : '',
-            invoiceId ?'<span>🧾 Invoice #'+invoiceId+'</span>' : '',
-        ].filter(Boolean).join('');
+        var dateStr='—';
+        if(rawDate){try{dateStr=new Date(rawDate).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}catch(e){dateStr=rawDate;}}
 
-        var lineItemsHTML = items.length ? '<table class="line-items"><tr><th>Service</th><th>Qty</th><th style="text-align:right">Total</th></tr>'+items.map(function(i){return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td style="text-align:right">'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+'<tr class="total-row"><td colspan="2">Total</td><td style="text-align:right">'+fmtMoney(total)+'</td></tr></table>' : '';
-        var notesHTML = (custNote?'<div><div class="note-label">Your Notes</div><div class="note-block">'+custNote+'</div></div>':'')+(crewNote?'<div><div class="note-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>':'');
-        var ratingHTML = completed ? '<div class="rating-section"><div class="note-label">Rate this visit</div><div class="stars" id="stars-'+idx+'"></div><textarea class="feedback-input" id="fb-'+idx+'" placeholder="Leave feedback (optional)…">'+feedback+'</textarea><div><button class="btn-rate" id="btn-'+idx+'">Submit</button><span class="rate-thanks" id="thank-'+idx+'" style="display:none;margin-left:10px;">Thanks for your feedback!</span></div></div>' : '';
+        var svcNames=items.map(function(i){return i.name;}).join(', ')||'Service Visit';
 
-        html += '<div class="job-card"><div class="job-card-header"><div><div class="job-card-title">'+items.map(function(i){return i.name;}).join(', ')||'Service Visit'+'<span style="font-weight:400;color:var(--text-3);font-size:12px;"> · Job #'+jobId+'</span></div><div class="job-card-meta">'+metaParts+'</div></div><div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<button class="job-toggle" onclick="toggleJob('+idx+')">Details</button></div></div><div class="job-card-body collapsed" id="job-body-'+idx+'">'+lineItemsHTML+notesHTML+ratingHTML+'</div></div>';
+        // Meta row
+        var metaParts=[];
+        if(rawDate)metaParts.push('<span>📅 '+dateStr+'</span>');
+        if(time)metaParts.push('<span>🕐 '+time+'</span>');
+        if(address)metaParts.push('<span>📍 '+address+'</span>');
+        if(assigned)metaParts.push('<span>👷 '+assigned+'</span>');
+        if(invoiceId)metaParts.push('<span><a href="/account/dashboard/invoices/#'+invoiceId+'" style="color:var(--orange);text-decoration:none;">🧾 Invoice #'+invoiceId+'</a></span>');
+
+        // Line items table
+        var lineItemsHTML='';
+        if(items.length){
+            lineItemsHTML='<div><div class="detail-section-label">Services Performed</div><table class="line-items"><tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
+                items.map(function(i){return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+
+                '<tr class="total-row"><td colspan="3">Job Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>';}
+
+        // Detail grid (address, time, assigned, invoice)
+        var detailItems=[];
+        if(address)detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+address+'</div></div>');
+        if(time)detailItems.push('<div class="detail-item"><div class="detail-item-label">Arrival Time</div><div class="detail-item-value">'+time+'</div></div>');
+        if(assigned)detailItems.push('<div class="detail-item"><div class="detail-item-label">Assigned Crew</div><div class="detail-item-value">'+assigned+'</div></div>');
+        if(invoiceId)detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/account/dashboard/invoices/#'+invoiceId+'" style="color:var(--orange);">#'+invoiceId+'</a></div></div>');
+        var detailGridHTML=detailItems.length?'<div class="detail-grid">'+detailItems.join('')+'</div>':'';
+
+        // Notes
+        var notesHTML='';
+        if(custNote)notesHTML+='<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+custNote+'</div></div>';
+        if(crewNote)notesHTML+='<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>';
+
+        // Rating
+        var ratingHTML='';
+        if(completed){ratingHTML='<div class="rating-section"><div class="detail-section-label">Rate this visit</div><div class="stars" id="stars-'+jobId+'"></div><textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…">'+feedback+'</textarea><div><button class="btn-rate" id="btn-'+jobId+'">Submit</button><span class="rate-thanks" id="thank-'+jobId+'" style="display:none;">Thanks for your feedback!</span></div></div>';}
+
+        var bodyClass='job-card-body'+(isTarget?'':' collapsed');
+
+        html+='<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
+        html+='<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
+        html+='<div style="min-width:0;flex:1;">';
+        html+='<div class="job-card-title">'+svcNames+' <span class="job-card-id">· Job #'+jobId+'</span></div>';
+        html+='<div class="job-card-meta">'+metaParts.slice(0,2).join('')+'</div>';
+        html+='</div>';
+        html+='<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<span class="toggle-chevron">▾</span></div>';
+        html+='</div>';
+        html+='<div class="'+bodyClass+'" id="body-'+jobId+'">';
+        html+=detailGridHTML+lineItemsHTML+notesHTML+ratingHTML;
+        html+='</div></div>';
     });
-    html += '</div>';
-    container.innerHTML = html;
 
-    // Wire stars and submit buttons
-    myJobs.forEach(function(r, idx) {
-        if ((r[2]||'').toLowerCase()==='completed') {
-            renderStars('stars-'+idx, r[11]);
-            var btn   = document.getElementById('btn-'+idx);
-            var thank = document.getElementById('thank-'+idx);
-            if (btn) btn.addEventListener('click', function(){ btn.style.display='none'; thank.style.display='inline'; });
+    html+='</div>';
+    container.innerHTML=html;
+
+    // Wire stars
+    myJobs.forEach(function(r){
+        var jobId=(r[0]||'').trim();
+        if((r[2]||'').toLowerCase()==='completed'){
+            renderStars('stars-'+jobId,r[11]);
+            var btn=document.getElementById('btn-'+jobId);
+            var thank=document.getElementById('thank-'+jobId);
+            if(btn)btn.addEventListener('click',function(){btn.style.display='none';thank.style.display='inline';});
         }
     });
+
+    // Scroll to target
+    if(targetHash){
+        var el=document.getElementById('card-'+targetHash);
+        if(el)setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},100);
+    }
 });
 </script>
 </body>
