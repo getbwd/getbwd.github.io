@@ -60,7 +60,15 @@ document.getElementById('sidebarOverlay').addEventListener('click',function(){do
 
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 function fmtMoney(n){return '$'+Number(n).toFixed(2);}
-function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
+function badge(status){
+    var s=(status||'').toLowerCase().trim();
+    var map={
+        'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed',
+        'draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue',
+        'active':'bdg-active','paused':'bdg-paused','on hold':'bdg-overdue','terminated':'bdg-cancelled',
+    };
+    return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
+}
 function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
 function parseCSV(text){var rows=[];var lines=text.trim().split('\n');for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;for(var i=0;i<lines[l].length;i++){var c=lines[l][i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}cols.push(cur.trim());rows.push(cols);}return rows;}
 function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}

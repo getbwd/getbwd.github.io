@@ -92,7 +92,28 @@ document.getElementById('sidebarOverlay').addEventListener('click',function(){do
 
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 function fmtMoney(n){return '$'+Number(n).toFixed(2);}
-function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
+function badge(status){
+    var s=(status||'').toLowerCase().trim();
+    var map={
+        // Appointment statuses
+        'scheduled':'bdg-scheduled',
+        'rescheduled':'bdg-paused',
+        'canceled':'bdg-cancelled',
+        'cancelled':'bdg-cancelled',
+        'completed':'bdg-completed',
+        // Invoice statuses
+        'draft':'bdg-default',
+        'payment due':'bdg-unpaid',
+        'paid':'bdg-paid',
+        'overdue':'bdg-overdue',
+        // Service statuses
+        'active':'bdg-active',
+        'paused':'bdg-paused',
+        'on hold':'bdg-overdue',
+        'terminated':'bdg-cancelled',
+    };
+    return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
+}
 function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
 function parseCSV(text){var rows=[];var lines=text.trim().split('\n');for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;for(var i=0;i<lines[l].length;i++){var c=lines[l][i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}cols.push(cur.trim());rows.push(cols);}return rows;}
 function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
@@ -174,25 +195,22 @@ auth.onAuthStateChanged(async function(user){
 
         var svcNames=items.map(function(i){return i.name;}).join(', ')||'Service Visit';
 
-        // Meta row
+        // Meta row — date + time only (no address or assigned here, those are in detail grid)
         var metaParts=[];
-        if(rawDate)metaParts.push('<span>📅 '+dateStr+'</span>');
-        if(time)metaParts.push('<span>🕐 '+time+'</span>');
+        if(rawDate)metaParts.push('<span>📅 '+dateStr+(time?' · '+time:'')+'</span>');
         if(address)metaParts.push('<span>📍 '+address+'</span>');
-        if(assigned)metaParts.push('<span>👷 '+assigned+'</span>');
         if(invoiceId)metaParts.push('<span><a href="/account/dashboard/invoices/#'+invoiceId+'" style="color:var(--orange);text-decoration:none;">🧾 Invoice #'+invoiceId+'</a></span>');
 
-        // Line items table
+        // Line items table — no "Services Performed" label (table header "SERVICE" is enough)
         var lineItemsHTML='';
         if(items.length){
-            lineItemsHTML='<div><div class="detail-section-label">Services Performed</div><table class="line-items"><tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
+            lineItemsHTML='<div><table class="line-items"><tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
                 items.map(function(i){return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+
                 '<tr class="total-row"><td colspan="3">Job Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>';}
 
-        // Detail grid (address, time, assigned, invoice)
+        // Detail grid — address, assigned crew, invoice (NO time here since it's already in header meta)
         var detailItems=[];
         if(address)detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+address+'</div></div>');
-        if(time)detailItems.push('<div class="detail-item"><div class="detail-item-label">Arrival Time</div><div class="detail-item-value">'+time+'</div></div>');
         if(assigned)detailItems.push('<div class="detail-item"><div class="detail-item-label">Assigned Crew</div><div class="detail-item-value">'+assigned+'</div></div>');
         if(invoiceId)detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/account/dashboard/invoices/#'+invoiceId+'" style="color:var(--orange);">#'+invoiceId+'</a></div></div>');
         var detailGridHTML=detailItems.length?'<div class="detail-grid">'+detailItems.join('')+'</div>':'';
@@ -202,9 +220,8 @@ auth.onAuthStateChanged(async function(user){
         if(custNote)notesHTML+='<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+custNote+'</div></div>';
         if(crewNote)notesHTML+='<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>';
 
-        // Rating
-        var ratingHTML='';
-        if(completed){ratingHTML='<div class="rating-section"><div class="detail-section-label">Rate this visit</div><div class="stars" id="stars-'+jobId+'"></div><textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…">'+feedback+'</textarea><div><button class="btn-rate" id="btn-'+jobId+'">Submit</button><span class="rate-thanks" id="thank-'+jobId+'" style="display:none;">Thanks for your feedback!</span></div></div>';}
+        // Rating — show for all appointments so customer can always rate/give feedback
+        var ratingHTML='<div class="rating-section"><div class="detail-section-label">Rate this visit</div><div class="stars" id="stars-'+jobId+'"></div><textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…">'+feedback+'</textarea><div><button class="btn-rate" id="btn-'+jobId+'">Submit</button><span class="rate-thanks" id="thank-'+jobId+'" style="display:none;">Thanks for your feedback!</span></div></div>';
 
         var bodyClass='job-card-body'+(isTarget?'':' collapsed');
 
@@ -212,7 +229,7 @@ auth.onAuthStateChanged(async function(user){
         html+='<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
         html+='<div style="min-width:0;flex:1;">';
         html+='<div class="job-card-title">'+svcNames+' <span class="job-card-id">· Job #'+jobId+'</span></div>';
-        html+='<div class="job-card-meta">'+metaParts.slice(0,2).join('')+'</div>';
+        html+='<div class="job-card-meta">'+metaParts.join('')+'</div>';
         html+='</div>';
         html+='<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<span class="toggle-chevron">▾</span></div>';
         html+='</div>';
@@ -224,15 +241,13 @@ auth.onAuthStateChanged(async function(user){
     html+='</div>';
     container.innerHTML=html;
 
-    // Wire stars
+    // Wire stars for all jobs
     myJobs.forEach(function(r){
         var jobId=(r[0]||'').trim();
-        if((r[2]||'').toLowerCase()==='completed'){
-            renderStars('stars-'+jobId,r[11]);
-            var btn=document.getElementById('btn-'+jobId);
-            var thank=document.getElementById('thank-'+jobId);
-            if(btn)btn.addEventListener('click',function(){btn.style.display='none';thank.style.display='inline';});
-        }
+        renderStars('stars-'+jobId,r[11]);
+        var btn=document.getElementById('btn-'+jobId);
+        var thank=document.getElementById('thank-'+jobId);
+        if(btn)btn.addEventListener('click',function(){btn.style.display='none';thank.style.display='inline';});
     });
 
     // Scroll to target

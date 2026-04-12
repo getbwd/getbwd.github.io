@@ -76,7 +76,15 @@ document.getElementById('sidebarOverlay').addEventListener('click',function(){do
 // ── Shared utilities ──
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 function fmtMoney(n){return '$'+Number(n).toFixed(2);}
-function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
+function badge(status){
+    var s=(status||'').toLowerCase().trim();
+    var map={
+        'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed',
+        'draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue',
+        'active':'bdg-active','paused':'bdg-paused','on hold':'bdg-overdue','terminated':'bdg-cancelled',
+    };
+    return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
+}
 function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
 
 function parseCSV(text){
@@ -139,8 +147,8 @@ auth.onAuthStateChanged(async function(user){
     myServices.forEach(function(row){parseServices(row[3]).forEach(function(s){allSvcNames[s.name]=true;});});
     document.getElementById('statServices').textContent=Object.keys(allSvcNames).length;
 
-    // Open invoices & amount due — balance > 0.01 means open
-    var openInv=myInvoices.filter(function(r){return invoiceBalance(r)>=0.01;});
+    // Open invoices & amount due — balance > 0.01 means open, exclude drafts
+    var openInv=myInvoices.filter(function(r){return invoiceBalance(r)>=0.01 && (r[3]||'').toLowerCase()!=='draft';});
     document.getElementById('statOpenInvoices').textContent=openInv.length;
     var totalDue=openInv.reduce(function(s,r){return s+invoiceBalance(r);},0);
     document.getElementById('statAmountDue').textContent=fmtMoney(totalDue);
@@ -157,7 +165,7 @@ auth.onAuthStateChanged(async function(user){
 
     // Latest invoice card — clickable
     var invEl=document.getElementById('overviewInvoiceBody');
-    var sortedInv=myInvoices.slice().sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
+    var sortedInv=myInvoices.filter(function(r){return (r[3]||'').toLowerCase()!=='draft';}).slice().sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
     var latest=sortedInv[0]||null;
     if(latest){
         var items=parseLineItems(latest[5]);

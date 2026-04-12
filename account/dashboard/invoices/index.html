@@ -90,7 +90,15 @@ document.getElementById('sidebarOverlay').addEventListener('click',function(){do
 
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 function fmtMoney(n){return '$'+Number(n).toFixed(2);}
-function badge(status){var s=(status||'').toLowerCase().trim();var map={scheduled:'bdg-scheduled',completed:'bdg-completed',cancelled:'bdg-cancelled',paid:'bdg-paid',unpaid:'bdg-unpaid',overdue:'bdg-overdue',active:'bdg-active',paused:'bdg-paused','in progress':'bdg-scheduled',pending:'bdg-paused',partial:'bdg-paused'};return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';}
+function badge(status){
+    var s=(status||'').toLowerCase().trim();
+    var map={
+        'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed',
+        'draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue',
+        'active':'bdg-active','paused':'bdg-paused','on hold':'bdg-overdue','terminated':'bdg-cancelled',
+    };
+    return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
+}
 function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
 function parseCSV(text){var rows=[];var lines=text.trim().split('\n');for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;for(var i=0;i<lines[l].length;i++){var c=lines[l][i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}cols.push(cur.trim());rows.push(cols);}return rows;}
 function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
@@ -118,7 +126,7 @@ auth.onAuthStateChanged(async function(user){
     var uid=user.uid;
 
     var invoiceRows=await cachedCSV('invoices',CSV_INVOICES);
-    var myInvoices=invoiceRows.filter(function(r){return r[1]===uid;}).sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
+    var myInvoices=invoiceRows.filter(function(r){return r[1]===uid && (r[3]||'').toLowerCase()!=='draft';}).sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
     var container=document.getElementById('invListContainer');
 
     if(!myInvoices.length){container.innerHTML='<div class="card"><div class="card-body">'+empty('No invoices on your account yet.')+'</div></div>';return;}
@@ -148,7 +156,7 @@ auth.onAuthStateChanged(async function(user){
         // Line items
         var lineItemsHTML='';
         if(items.length){
-            lineItemsHTML='<div><div class="inv-section-label">Services</div><table class="line-items"><tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
+            lineItemsHTML='<div><table class="line-items"><tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
                 items.map(function(i){return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+
                 '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>';}
 
