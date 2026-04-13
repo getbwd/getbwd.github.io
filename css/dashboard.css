@@ -34,6 +34,7 @@ html, body {
 .dash-shell {
     display: grid;
     grid-template-columns: 240px 1fr;
+    grid-template-rows: auto;
     min-height: 100vh;
 }
 
@@ -122,7 +123,14 @@ html, body {
 .sidebar-overlay.visible { display: block; }
 
 /* ── MAIN ── */
-.dash-main { display: flex; flex-direction: column; min-height: 100vh; min-width: 0; }
+.dash-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 0;
+    /* Ensure main content fills its grid cell and doesn't collapse */
+    overflow: hidden;
+}
 
 .dash-page {
     padding: 40px 40px 60px;
@@ -302,11 +310,37 @@ html, body {
 @media (max-width: 1060px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
 
 @media (max-width: 860px) {
-    .dash-shell { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; }
-    .sidebar { position: fixed; top: 0; left: -260px; height: 100%; z-index: 200; transition: left 0.25s ease; }
+    /* Switch to single-column: mobile header row + main content row */
+    .dash-shell {
+        grid-template-columns: 1fr;
+        grid-template-rows: 56px 1fr;
+    }
+    /* Sidebar slides in from left as an overlay */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -260px;
+        height: 100%;
+        z-index: 200;
+        transition: left 0.25s ease;
+        /* Remove from grid flow */
+        grid-row: 1 / -1;
+        grid-column: 1;
+    }
     .sidebar.open { left: 0; }
-    .mobile-header { display: flex; }
-    .dash-main { grid-column: 1; }
+    /* Mobile header spans full width in row 1 */
+    .mobile-header {
+        display: flex;
+        grid-row: 1;
+        grid-column: 1;
+    }
+    /* Main content in row 2 */
+    .dash-main {
+        grid-row: 2;
+        grid-column: 1;
+        min-height: calc(100vh - 56px);
+        overflow: visible;
+    }
     .dash-page { padding: 24px 20px 48px; }
     .overview-grid { grid-template-columns: 1fr; }
     .lhead, .lrow { grid-template-columns: 110px 1fr 90px; }
