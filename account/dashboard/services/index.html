@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -34,30 +35,35 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <main class="dash-main">
-        <div class="dash-page">
-            <div class="section-header">
-                <h1 class="section-title">My Services</h1>
-                <p class="section-sub">Your current lawn care plan.</p>
-            </div>
-            <div id="servicesContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+```
+<main class="dash-main">
+    <div class="dash-page">
+        <div class="section-header">
+            <h1 class="section-title">My Services</h1>
+            <p class="section-sub">Your current lawn care plan.</p>
         </div>
-    </main>
+        <div id="servicesContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+    </div>
+</main>
+```
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-<script>
-firebase.initializeApp({
-    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
-    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
-    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
-});
-var auth=firebase.auth();
-document.getElementById('signOutBtn').addEventListener('click',function(){auth.signOut().then(function(){window.location.href='/account/login/';});});
-document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
-document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');});
 
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+<script src="../../../js/bwd-auth.js"></script>
+
+<script>
+BWD.initFirebase();
+var auth=firebase.auth();
+var db=firebase.firestore();
+BWD.initSidebar();
+BWD.initSignOut(auth);
+document.getElementById('signOutBtn').addEventListener('click',function(){auth.signOut().then(function(){window.location.href='/account/login/';});});
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 function fmtMoney(n){return '$'+Number(n).toFixed(2);}
 function badge(status){
@@ -80,6 +86,11 @@ async function cachedCSV(key,url){var cacheKey='bwd_csv_'+key;var cached=session
 
 auth.onAuthStateChanged(async function(user){
     if(!user){window.location.href='/account/login/';return;}
+    var role='Homeowner';
+    try{var rdoc=await db.collection('customers').doc(user.uid).get();if(rdoc.exists&&rdoc.data().role)role=rdoc.data().role;}catch(e){}
+    // Staff don't have services — redirect
+    if(BWD.isStaff(role)){window.location.href='/account/dashboard/appointments/';return;}
+    BWD.injectNav('services','../../../',role);
     document.getElementById('mobileAvatar').textContent=initials(user.displayName||'');
     var uid=user.uid;
 
@@ -137,5 +148,6 @@ auth.onAuthStateChanged(async function(user){
     container.innerHTML=html;
 });
 </script>
+
 </body>
 </html>
