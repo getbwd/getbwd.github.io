@@ -343,6 +343,8 @@ header {
 /* ===== MEGA MENU (desktop) ===== */
 .dropdown {
     position: static;
+    padding-bottom: 8px;  /* ADD THIS — bridges the transform gap */
+    margin-bottom: -8px;  /* ADD THIS — keeps layout unchanged */
 }
 
 .mega-menu {
