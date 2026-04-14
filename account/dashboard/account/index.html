@@ -356,21 +356,24 @@ auth.onAuthStateChanged(function(user){
     if(!user){ window.location.href='/account/login/'; return; }
     activeUid = user.uid;
 
-    // Profile display
-    var name = user.displayName || 'User';
-    document.getElementById('mobileAvatar').textContent  = initials(name);
-    document.getElementById('accountAvatar').textContent = initials(name);
-    document.getElementById('accountName').textContent   = name;
-    document.getElementById('afName').textContent        = name;
-    document.getElementById('afEmail').textContent       = user.email || '—';
-    document.getElementById('afUid').textContent         = user.uid;
-    document.getElementById('afProvider').textContent    =
-        (user.providerData[0] && user.providerData[0].providerId==='google.com') ? 'Google' : 'Email & Password';
 
-    // Load Firestore data
-    db.collection('customers').doc(user.uid).get()
-        .then(function(doc){
-            var data = doc.exists ? doc.data() : {};
+// These don't need a name, set them immediately
+document.getElementById('afEmail').textContent = user.email || '—';
+document.getElementById('afUid').textContent   = user.uid;
+document.getElementById('afProvider').textContent =
+    (user.providerData[0] && user.providerData[0].providerId==='google.com') ? 'Google' : 'Email & Password';
+
+// Load Firestore data
+db.collection('customers').doc(user.uid).get()
+    .then(function(doc){
+        var data = doc.exists ? doc.data() : {};
+
+        // Use Firestore name as source of truth, fall back to Google's displayName
+        var name = data.name || user.displayName || 'User';
+        document.getElementById('mobileAvatar').textContent  = initials(name);
+        document.getElementById('accountAvatar').textContent = initials(name);
+        document.getElementById('accountName').textContent   = name;
+        document.getElementById('afName').textContent        = name;
 
             // Member since
             if(data.createdAt){
