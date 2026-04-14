@@ -197,7 +197,7 @@ header {
 .header-inner {
     max-width: var(--content-max);
     margin: 0 auto;
-    padding: 0 var(--side-pad);
+    padding: 0 8%;          /* was: 0 var(--side-pad) */
     height: var(--nav-height);
     display: flex;
     align-items: center;
@@ -353,7 +353,7 @@ header {
     left: 0;
     right: 0;
     background: var(--white);
-    padding: clamp(32px, 4vw, 60px) var(--side-pad);
+    padding: clamp(32px, 4vw, 60px) 8%;
     box-shadow: 0 20px 48px rgba(0,0,0,0.12);
     border-top: 3px solid var(--orange);
     opacity: 0;
