@@ -279,12 +279,13 @@ async function onSignupSuccess(user, displayName) {
             email:     user.email,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
+        await user.reload();
     } catch (err) {
         console.warn('Post-signup update failed:', err);
     }
     window.location.replace('/account/dashboard/');
 }
-
+    
 function friendlyError(code) {
     const map = {
         'auth/email-already-in-use':   'An account with this email already exists. Try logging in instead.',
