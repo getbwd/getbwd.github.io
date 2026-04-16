@@ -126,13 +126,6 @@
         <div class="acct-section">
             <div class="acct-section-header"><span class="acct-section-title">Contact &amp; Preferences</span></div>
             <div class="acct-section-body">
-
-                <!-- ── Full Name (editable) ── -->
-                <div class="form-row">
-                    <label class="form-label" for="nameInput">Full Name</label>
-                    <input class="form-input" id="nameInput" type="text" placeholder="Jane Smith" autocomplete="name">
-                </div>
-
                 <div class="form-row">
                     <label class="form-label" for="phoneInput">Phone Number</label>
                     <div class="phone-row">
@@ -276,6 +269,7 @@ function renderProperties(){
     });
 }
 
+// These functions call firestoreSave which uses the activeUid set after auth resolves
 var activeUid = '';
 
 function firestoreSave(data, statusEl, cb){
@@ -368,36 +362,29 @@ document.getElementById(‘newPropNotes’).value = ‘’;
 document.getElementById(‘propAddStatus’).textContent = ‘’;
 });
 
-// ── Auth ──
+// ── Auth — everything that needs user runs here ──
 auth.onAuthStateChanged(function(user){
 if(!user){ window.location.href=’/account/login/’; return; }
 activeUid = user.uid;
 
-```
-document.getElementById('afEmail').textContent = user.email || '—';
-document.getElementById('afUid').textContent   = user.uid;
-document.getElementById('afProvider').textContent =
-    (user.providerData[0] && user.providerData[0].providerId==='google.com') ? 'Google' : 'Email & Password';
+// These don’t need a name, set them immediately
+document.getElementById(‘afEmail’).textContent = user.email || ‘—’;
+document.getElementById(‘afUid’).textContent   = user.uid;
+document.getElementById(‘afProvider’).textContent =
+(user.providerData[0] && user.providerData[0].providerId===‘google.com’) ? ‘Google’ : ‘Email & Password’;
 
 // Load Firestore data
-db.collection('customers').doc(user.uid).get()
-    .then(function(doc){
-        var data = doc.exists ? doc.data() : {};
+db.collection(‘customers’).doc(user.uid).get()
+.then(function(doc){
+var data = doc.exists ? doc.data() : {};
 
-        // Name: Firestore is source of truth, fall back to Auth displayName
-        var name = data.name || user.displayName || '';
-
-        // If name is still missing, write Auth displayName to Firestore so it's there next time
-        if(!data.name && user.displayName){
-            db.collection('customers').doc(user.uid).set({ name: user.displayName }, { merge: true }).catch(console.warn);
-        }
-
-        // Populate name field and header
-        document.getElementById('nameInput').value              = name;
-        document.getElementById('mobileAvatar').textContent     = initials(name);
-        document.getElementById('accountAvatar').textContent    = initials(name);
-        document.getElementById('accountName').textContent      = name || '—';
-        document.getElementById('afName').textContent           = name || '—';
+```
+    // Use Firestore name as source of truth, fall back to Google's displayName
+    var name = data.name || user.displayName || 'User';
+    document.getElementById('mobileAvatar').textContent  = initials(name);
+    document.getElementById('accountAvatar').textContent = initials(name);
+    document.getElementById('accountName').textContent   = name;
+    document.getElementById('afName').textContent        = name;
 
         // Member since
         if(data.createdAt){
@@ -427,31 +414,16 @@ db.collection('customers').doc(user.uid).get()
         renderProperties();
     });
 
-// ── Save contact + name ──
+// ── Save contact (uses user from closure, not auth.currentUser) ──
 document.getElementById('saveContactBtn').onclick = function(){
-    var nameVal = document.getElementById('nameInput').value.trim();
     var country = document.getElementById('phoneCountry').value.trim() || '+1';
     var number  = document.getElementById('phoneInput').value.trim();
     var full    = number ? (country + ' ' + number) : '';
     var btn     = document.getElementById('saveContactBtn');
     var status  = document.getElementById('contactStatus');
     btn.disabled = true;
-
-    // Sync name to Firebase Auth displayName
-    if(nameVal){
-        user.updateProfile({ displayName: nameVal }).catch(console.warn);
-    }
-
-    // Update the header/profile panel live
-    if(nameVal){
-        document.getElementById('accountName').textContent      = nameVal;
-        document.getElementById('afName').textContent           = nameVal;
-        document.getElementById('accountAvatar').textContent    = initials(nameVal);
-        document.getElementById('mobileAvatar').textContent     = initials(nameVal);
-    }
-
     firestoreSave(
-        { name: nameVal, phone: full, phoneCountry: country, phoneNumber: number, preferredContact: selectedMethod },
+        { phone:full, phoneCountry:country, phoneNumber:number, preferredContact:selectedMethod },
         status,
         function(){ btn.disabled = false; }
     );
@@ -479,7 +451,7 @@ document.getElementById('savePropBtn').onclick = function(){
                 status.textContent = '';
             }, 800);
         } else {
-            properties.pop();
+            properties.pop(); // revert on error
         }
     });
 };
