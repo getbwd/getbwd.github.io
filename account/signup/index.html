@@ -281,16 +281,31 @@ function validateForm(name, email, password) {
 }
 
 async function onSignupSuccess(user, displayName) {
+    // Use the passed displayName, or fall back to what Google gave us
+    const name = displayName || user.displayName || '';
+
     try {
-        await user.updateProfile({ displayName });
+        // Always write name to both Auth and Firestore
+        await user.updateProfile({ displayName: name });
+
         await db.collection('customers').doc(user.uid).set({
-            name:      displayName,
+            name:      name,
             email:     user.email,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
+        }, { merge: true }); // merge so we don't overwrite existing fields on re-login
+
         await user.reload();
     } catch (err) {
         console.warn('Post-signup update failed:', err);
+        // Still try to at least write the name to Firestore even if updateProfile failed
+        try {
+            await db.collection('customers').doc(user.uid).set({
+                name:  name,
+                email: user.email,
+            }, { merge: true });
+        } catch (e) {
+            console.warn('Firestore fallback also failed:', e);
+        }
     }
     window.location.replace('/account/dashboard/');
 }
@@ -329,6 +344,7 @@ googleBtn.addEventListener('click', async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
         const result = await auth.signInWithPopup(provider);
+        // For Google sign-in, pass the Google display name so it gets saved to Firestore
         await onSignupSuccess(result.user, result.user.displayName || '');
     } catch (err) {
         if (err.code !== 'auth/popup-closed-by-user') {
