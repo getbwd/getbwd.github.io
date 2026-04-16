@@ -167,6 +167,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
+let isSigningUp = false;
 
 const signupForm     = document.getElementById('signupForm');
 const submitBtn      = document.getElementById('submitBtn');
@@ -180,7 +181,9 @@ const strengthFill   = document.getElementById('strengthBarFill');
 const strengthLabel  = document.getElementById('strengthLabel');
 
 auth.onAuthStateChanged((user) => {
-    if (user) window.location.replace('/account/dashboard/');
+    if (user && !isSigningUp) {
+        window.location.replace('/account/dashboard/');
+    }
 });
 
 function showMessage(text, type = 'error') {
@@ -278,7 +281,7 @@ async function onSignupSuccess(user, displayName) {
             name:      displayName,
             email:     user.email,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
+ }, { merge: true });
         await user.reload();
     } catch (err) {
         console.warn('Post-signup update failed:', err);
@@ -301,15 +304,20 @@ function friendlyError(code) {
 
 signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    isSigningUp = true;
     const name     = document.getElementById('name').value;
     const email    = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
-    if (!validateForm(name, email, password)) return;
+    if (!validateForm(name, email, password)) {
+    isSigningUp = false;
+    return;
+    }
     setLoading(true);
     try {
         const cred = await auth.createUserWithEmailAndPassword(email, password);
         await onSignupSuccess(cred.user, name.trim());
     } catch (err) {
+        isSigningUp = false;
         console.error('Signup error:', err.code, err.message);
         showMessage(friendlyError(err.code));
         setLoading(false);
@@ -317,15 +325,18 @@ signupForm.addEventListener('submit', async (e) => {
 });
 
 googleBtn.addEventListener('click', async () => {
+    isSigningUp = true;
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
         const result = await auth.signInWithPopup(provider);
         await onSignupSuccess(result.user, result.user.displayName || '');
-    } catch (err) {
-        if (err.code !== 'auth/popup-closed-by-user') {
-            showMessage(friendlyError(err.code));
-        }
+} catch (err) {
+    isSigningUp = false;
+
+    if (err.code !== 'auth/popup-closed-by-user') {
+        showMessage(friendlyError(err.code));
     }
+}
 });
 </script>
 
