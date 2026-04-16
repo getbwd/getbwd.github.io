@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--
+  ============================================================
+  PLACEHOLDERS — find & replace these before going live:
+
+  [[SERVICE_NAME]]         → e.g. "Spring Cleanup"
+  [[SERVICE_NAME_SLUG]]    → e.g. "spring-cleanup" (used in CSS link + JSON-LD)
+  [[SERVICE_DESC_META]]    → Meta description (keep under ~155 chars)
+  [[PARENT_LABEL]]         → Breadcrumb text, e.g. "Spring & Summer Services"
+  [[PARENT_URL]]           → Breadcrumb href, e.g. /services/spring-summer/
+  [[HERO_SUBTITLE]]        → One-line hero subhead
+  [[INCLUDED_SUBTITLE]]    → Subline under "What's Included" heading
+  [[SCHEDULE_BODY]]        → Text inside the schedule callout block
+  [[SERVICE_IMAGE_SRC]]    → Image path, e.g. /images/spring-cleanup.png
+  [[SERVICE_IMAGE_ALT]]    → Alt text for the image
+  [[SERVICE_TYPE]]         → Schema.org serviceType value
+  [[LOCAL_H2]]             → Heading for the local trust section
+  [[LOCAL_P1]]             → First paragraph in local trust
+  [[LOCAL_P2]]             → Second paragraph in local trust
+  [[ADDON_LABEL]]          → Pill row label, e.g. "Need more from us?"
+  [[BADGE_1]] … [[BADGE_4]] → Trust badge text (keep short)
+
+  RESIDENTIAL PRICING (3 tiers):
+  [[RES_TIER_1_LABEL]]  [[RES_TIER_1_PRICE]]  [[RES_TIER_1_DESC]]
+  [[RES_TIER_2_LABEL]]  [[RES_TIER_2_PRICE]]  [[RES_TIER_2_DESC]]
+  [[RES_TIER_3_LABEL]]  [[RES_TIER_3_PRICE]]  [[RES_TIER_3_DESC]]
+  [[RES_PRICING_NOTE]]
+
+  COMMERCIAL PRICING (3 tiers):
+  [[COM_TIER_1_LABEL]]  [[COM_TIER_1_PRICE]]  [[COM_TIER_1_DESC]]
+  [[COM_TIER_2_LABEL]]  [[COM_TIER_2_PRICE]]  [[COM_TIER_2_DESC]]
+  [[COM_TIER_3_LABEL]]  [[COM_TIER_3_PRICE]]  [[COM_TIER_3_DESC]]
+  [[COM_PRICING_NOTE]]
+
+  CHECKLIST ITEMS — edit the <li> list directly (add/remove as needed)
+
+  ADDON PILLS — edit the <a> pill list directly (add/remove as needed)
+
+  GET A PRICE section — same for every service, no placeholders needed
+  unless you want a different CTA URL than getbwd.com/pricing
+  ============================================================
+-->
+<title>[[SERVICE_NAME]] — BWD Services | Genesee County</title>
+<meta name="description" content="[[SERVICE_DESC_META]]">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/[[SERVICE_NAME_SLUG]].css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "[[SERVICE_NAME]]",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "BWD Services",
+    "areaServed": ["Flint", "Burton", "Grand Blanc", "Fenton", "Swartz Creek"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "MI",
+      "addressCountry": "US"
+    }
+  },
+  "description": "[[SERVICE_DESC_META]]",
+  "serviceType": "[[SERVICE_TYPE]]"
+}
+</script>
+</head>
+
+<body>
+
+<script src="/js/announcement.js"></script>
+<div id="navbar"></div>
+
+<!-- ===== HERO ===== -->
+<section class="svc-hero">
+    <div class="svc-inner">
+        <a href="[[PARENT_URL]]" class="svc-back">&lt; [[PARENT_LABEL]]</a>
+        <h1>[[SERVICE_NAME]]</h1>
+        <p class="svc-hero-desc">[[HERO_SUBTITLE]]</p>
+    </div>
+</section>
+
+<!-- ===== WHAT'S INCLUDED ===== -->
+<section class="svc-included">
+    <div class="svc-inner">
+
+        <div class="svc-included-content">
+            <h2>What's Included</h2>
+            <p class="svc-sub">[[INCLUDED_SUBTITLE]]</p>
+
+            <!-- Add or remove <li> items as needed for this service -->
+            <ul class="svc-checklist">
+                <li><span class="svc-chk">&#10003;</span> Checklist item one</li>
+                <li><span class="svc-chk">&#10003;</span> Checklist item two</li>
+                <li><span class="svc-chk">&#10003;</span> Checklist item three</li>
+                <li><span class="svc-chk">&#10003;</span> Checklist item four</li>
+                <li><span class="svc-chk">&#10003;</span> Checklist item five</li>
+                <li><span class="svc-chk">&#10003;</span> Checklist item six</li>
+            </ul>
+
+            <div class="svc-schedule-highlight">
+                <div class="svc-schedule-icon">&#128197;</div>
+                <div>
+                    <h3>We Work Around Your Schedule</h3>
+                    <p>[[SCHEDULE_BODY]]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="svc-included-image">
+            <img src="[[SERVICE_IMAGE_SRC]]" alt="[[SERVICE_IMAGE_ALT]]" onerror="this.style.display='none'">
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="svc-pricing">
+    <div class="svc-inner svc-inner--narrow">
+
+        <div class="svc-pricing-header">
+            <h2>Simple, Flat Pricing</h2>
+            <p>No hidden fees. No surprise charges. Just clear pricing before we ever show up.</p>
+
+            <div class="svc-ad-guarantee">
+                <div>
+                    <strong>See an ad with a different price?</strong>
+                    <p>We honor it. Mention it when you get your estimate and we'll lock in whatever price we promised — guaranteed.</p>
+                </div>
+            </div>
+
+            <div class="svc-pricing-toggle">
+                <button class="svc-toggle-btn svc-toggle-btn--active" id="btn-residential" onclick="showPricing('residential')">Residential</button>
+                <button class="svc-toggle-btn" id="btn-commercial" onclick="showPricing('commercial')">Commercial</button>
+            </div>
+        </div>
+
+        <!-- Residential Pricing -->
+        <div class="svc-pricing-grid" id="pricing-residential">
+            <div class="svc-price-card">
+                <p class="svc-price-tier">[[RES_TIER_1_LABEL]]</p>
+                <p class="svc-price-amount">Starting at <strong>[[RES_TIER_1_PRICE]]</strong></p>
+                <p class="svc-price-desc">[[RES_TIER_1_DESC]]</p>
+            </div>
+            <div class="svc-price-card svc-price-card--featured">
+                <p class="svc-price-tier">[[RES_TIER_2_LABEL]]</p>
+                <p class="svc-price-amount">Starting at <strong>[[RES_TIER_2_PRICE]]</strong></p>
+                <p class="svc-price-desc">[[RES_TIER_2_DESC]]</p>
+            </div>
+            <div class="svc-price-card">
+                <p class="svc-price-tier">[[RES_TIER_3_LABEL]]</p>
+                <p class="svc-price-amount">Starting at <strong>[[RES_TIER_3_PRICE]]</strong></p>
+                <p class="svc-price-desc">[[RES_TIER_3_DESC]]</p>
+            </div>
+        </div>
+
+        <!-- Commercial Pricing -->
+        <div id="pricing-commercial" style="display:none;">
+            <div class="svc-pricing-grid">
+                <div class="svc-price-card">
+                    <p class="svc-price-tier">[[COM_TIER_1_LABEL]]</p>
+                    <p class="svc-price-amount">Starting at <strong>[[COM_TIER_1_PRICE]]</strong></p>
+                    <p class="svc-price-desc">[[COM_TIER_1_DESC]]</p>
+                </div>
+                <div class="svc-price-card svc-price-card--featured">
+                    <p class="svc-price-tier">[[COM_TIER_2_LABEL]]</p>
+                    <p class="svc-price-amount">Starting at <strong>[[COM_TIER_2_PRICE]]</strong></p>
+                    <p class="svc-price-desc">[[COM_TIER_2_DESC]]</p>
+                </div>
+                <div class="svc-price-card">
+                    <p class="svc-price-tier">[[COM_TIER_3_LABEL]]</p>
+                    <p class="svc-price-amount">[[COM_TIER_3_PRICE]]</p>
+                    <p class="svc-price-desc">[[COM_TIER_3_DESC]]</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="svc-pricing-note" id="note-residential">[[RES_PRICING_NOTE]]</p>
+        <p class="svc-pricing-note" id="note-commercial" style="display:none;">[[COM_PRICING_NOTE]]</p>
+
+    </div>
+</section>
+
+<!-- ===== GET A PRICE ===== -->
+<!-- This section is identical across all service pages. Only change the URLs if needed. -->
+<section class="svc-getprice">
+    <div class="svc-inner svc-inner--narrow">
+
+        <div class="svc-getprice-header">
+            <h2>Get Your Price — Right Now</h2>
+            <p>No waiting, no phone tag. Pick how you want to do it:</p>
+        </div>
+
+        <div class="svc-getprice-grid">
+
+            <a href="https://getbwd.com/pricing" class="svc-getprice-card svc-getprice-card--primary">
+                <div class="svc-getprice-icon">&#9889;</div>
+                <h3>Instant Estimate</h3>
+                <p>Answer a few quick questions and get a real price calculated instantly. No commitment, no pressure.</p>
+                <span class="svc-getprice-cta">Get Instant Price &rarr;</span>
+            </a>
+
+            <a href="https://getbwd.com/pricing" class="svc-getprice-card">
+                <div class="svc-getprice-icon">&#128172;</div>
+                <h3>We'll Reach Out to You</h3>
+                <p>Drop your name and the best way to reach you — call or text, your call. We'll get back to you fast.</p>
+                <span class="svc-getprice-cta">Have Us Reach Out &rarr;</span>
+            </a>
+
+            <a href="https://getbwd.com/pricing" class="svc-getprice-card">
+                <div class="svc-getprice-icon">&#128222;</div>
+                <h3>Reach Out to Us</h3>
+                <p>Prefer to start the conversation yourself? Call or text us directly — whatever's easier for you.</p>
+                <span class="svc-getprice-cta">Contact Us &rarr;</span>
+            </a>
+
+        </div>
+
+        <p class="svc-getprice-note">All three options live at <strong>getbwd.com/pricing</strong> — click any card above to go straight there.</p>
+
+    </div>
+</section>
+
+<!-- ===== LOCAL TRUST ===== -->
+<section class="svc-local">
+    <div class="svc-inner">
+
+        <div class="svc-local-text">
+            <h2>[[LOCAL_H2]]</h2>
+            <p>[[LOCAL_P1]]</p>
+            <p>[[LOCAL_P2]]</p>
+
+            <!-- Add or remove addon pill <a> tags as needed -->
+            <div class="svc-addon-row">
+                <p class="svc-addon-label">[[ADDON_LABEL]]</p>
+                <div class="svc-addon-pills">
+                    <a href="/services/spring-summer/mowing-trimming/" class="svc-addon-pill"><span class="svc-addon-pill-icon">&#127807;</span> Mowing &amp; Trimming</a>
+                    <a href="/services/spring-summer/debris-waste-removal/" class="svc-addon-pill"><span class="svc-addon-pill-icon">&#128465;</span> Debris &amp; Waste Removal</a>
+                    <a href="/services/spring-summer/garden-bed-care/" class="svc-addon-pill"><span class="svc-addon-pill-icon">&#127804;</span> Garden Bed Care</a>
+                    <a href="/services/spring-summer/custom-treatments/" class="svc-addon-pill"><span class="svc-addon-pill-icon">&#129716;</span> Custom Treatments</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="svc-local-badges">
+            <div class="svc-badge">[[BADGE_1]]</div>
+            <div class="svc-badge">[[BADGE_2]]</div>
+            <div class="svc-badge">[[BADGE_3]]</div>
+            <div class="svc-badge">[[BADGE_4]]</div>
+        </div>
+
+    </div>
+</section>
+
+<div id="footer"></div>
+<script src="/js/include.js"></script>
+
+<script>
+function showPricing(type) {
+    document.getElementById('pricing-residential').style.display = type === 'residential' ? 'grid' : 'none';
+    document.getElementById('pricing-commercial').style.display = type === 'commercial' ? 'block' : 'none';
+    document.getElementById('note-residential').style.display = type === 'residential' ? 'block' : 'none';
+    document.getElementById('note-commercial').style.display = type === 'commercial' ? 'block' : 'none';
+    document.getElementById('btn-residential').classList.toggle('svc-toggle-btn--active', type === 'residential');
+    document.getElementById('btn-commercial').classList.toggle('svc-toggle-btn--active', type === 'commercial');
+}
+</script>
+
+</body>
+</html>

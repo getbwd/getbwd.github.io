@@ -1,8 +1,30 @@
 /* =============================================================
-   BWD Services — service-page.css  (all service pages)
+   BWD Services — [SERVICE_NAME_SLUG].css
+   ---------------------------------------------------------------
+   HOW TO USE THIS TEMPLATE:
+   1. Save this file as /css/[service-name-slug].css
+      e.g. spring-cleanup.css, garden-bed-care.css
+   2. Link it in your HTML: <link rel="stylesheet" href="/css/[service-name-slug].css">
+   3. No other changes needed — all class names are already generic (svc-*)
+      and safe to reuse across every service page.
+   4. If a specific service needs a visual tweak (different hero bg,
+      unique section color, etc.) add overrides at the bottom of THIS
+      file under the "SERVICE-SPECIFIC OVERRIDES" section. Do not
+      touch the shared blocks above.
    ============================================================= */
 
-/* ===== SERVICE HERO ===== */
+/* ===== SHARED LAYOUT ===== */
+
+.svc-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.svc-inner--narrow {
+    max-width: 1100px;
+}
+
+/* ===== HERO ===== */
 
 .svc-hero {
     background: var(--dark);
@@ -44,17 +66,6 @@
     max-width: 560px;
 }
 
-/* ===== SHARED SECTION INNER ===== */
-
-.svc-section-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.svc-section-inner--narrow {
-    max-width: 1100px;
-}
-
 /* ===== WHAT'S INCLUDED ===== */
 
 .svc-included {
@@ -62,7 +73,7 @@
     background: var(--white);
 }
 
-.svc-included .svc-section-inner {
+.svc-included .svc-inner {
     display: flex;
     gap: 80px;
     align-items: center;
@@ -103,7 +114,7 @@
     line-height: 1.5;
 }
 
-.chk {
+.svc-chk {
     color: var(--orange);
     font-size: 18px;
     font-weight: 700;
@@ -111,7 +122,6 @@
     margin-top: 1px;
 }
 
-/* Schedule Highlight Block */
 .svc-schedule-highlight {
     display: flex;
     align-items: flex-start;
@@ -122,7 +132,7 @@
     padding: 22px 24px;
 }
 
-.schedule-icon {
+.svc-schedule-icon {
     font-size: 28px;
     flex-shrink: 0;
     margin-top: 2px;
@@ -162,22 +172,6 @@
     inset: 0;
 }
 
-.svc-img-placeholder {
-    text-align: center;
-    color: #aaa;
-}
-
-.svc-img-placeholder span {
-    font-size: 48px;
-    display: block;
-    margin-bottom: 12px;
-}
-
-.svc-img-placeholder p {
-    font-size: 14px;
-    font-weight: 600;
-}
-
 /* ===== PRICING ===== */
 
 .svc-pricing {
@@ -203,7 +197,6 @@
     margin-bottom: 28px;
 }
 
-/* Ad / Flyer Price Guarantee */
 .svc-ad-guarantee {
     display: inline-flex;
     align-items: flex-start;
@@ -215,12 +208,6 @@
     text-align: left;
     max-width: 620px;
     margin: 0 auto 32px;
-}
-
-.ad-guarantee-icon {
-    font-size: 26px;
-    flex-shrink: 0;
-    margin-top: 2px;
 }
 
 .svc-ad-guarantee strong {
@@ -238,7 +225,6 @@
     margin: 0;
 }
 
-/* Pricing Toggle */
 .svc-pricing-toggle {
     display: inline-flex;
     background: #e5e5e5;
@@ -248,7 +234,7 @@
     margin-bottom: 8px;
 }
 
-.toggle-btn {
+.svc-toggle-btn {
     padding: 10px 24px;
     border: none;
     border-radius: 8px;
@@ -261,7 +247,7 @@
     font-family: inherit;
 }
 
-.toggle-btn--active {
+.svc-toggle-btn--active {
     background: var(--white);
     color: var(--dark);
     box-shadow: 0 1px 4px rgba(0,0,0,0.12);
@@ -296,59 +282,11 @@
     color: var(--white);
 }
 
-.svc-price-card--featured .price-desc {
+.svc-price-card--featured .svc-price-desc {
     color: #aaa;
 }
 
-/* Commercial info card */
-.svc-price-card--commercial-info {
-    background: var(--white);
-    border: 2px solid var(--orange);
-    padding: 40px;
-}
-
-.commercial-notice {
-    display: flex;
-    align-items: flex-start;
-    gap: 24px;
-}
-
-.commercial-icon {
-    font-size: 40px;
-    flex-shrink: 0;
-}
-
-.commercial-notice h3 {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--dark);
-    margin-bottom: 10px;
-}
-
-.commercial-notice p {
-    font-size: 16px;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.btn--dark {
-    background: var(--dark);
-    color: var(--white);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    text-decoration: none;
-    display: inline-block;
-    transition: 0.2s ease;
-}
-
-.btn--dark:hover {
-    background: #222;
-}
-
-.price-tier {
+.svc-price-tier {
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
@@ -356,17 +294,17 @@
     color: var(--orange);
 }
 
-.price-amount {
+.svc-price-amount {
     font-size: 18px;
     color: inherit;
 }
 
-.price-amount strong {
+.svc-price-amount strong {
     font-size: 36px;
     font-weight: 800;
 }
 
-.price-desc {
+.svc-price-desc {
     font-size: 15px;
     color: #555;
     line-height: 1.5;
@@ -413,7 +351,7 @@
     margin-bottom: 28px;
 }
 
-.getprice-card {
+.svc-getprice-card {
     background: #1a1a1a;
     border-radius: 18px;
     padding: 36px 30px;
@@ -426,29 +364,29 @@
     gap: 12px;
 }
 
-.getprice-card:hover {
+.svc-getprice-card:hover {
     border-color: var(--orange);
     transform: translateY(-5px);
     background: #1e1e1e;
 }
 
-.getprice-card--primary {
+.svc-getprice-card--primary {
     border-color: var(--orange);
     background: #1e1200;
 }
 
-.getprice-icon {
+.svc-getprice-icon {
     font-size: 36px;
 }
 
-.getprice-card h3 {
+.svc-getprice-card h3 {
     font-size: 20px;
     font-weight: 800;
     color: var(--white);
     margin: 0;
 }
 
-.getprice-card p {
+.svc-getprice-card p {
     font-size: 15px;
     color: #999;
     line-height: 1.6;
@@ -456,20 +394,20 @@
     flex: 1;
 }
 
-.getprice-cta {
+.svc-getprice-cta {
     font-size: 14px;
     font-weight: 700;
     color: var(--orange);
     margin-top: 8px;
 }
 
-.getprice-note {
+.svc-getprice-note {
     text-align: center;
     font-size: 14px;
     color: #666;
 }
 
-.getprice-note strong {
+.svc-getprice-note strong {
     color: #999;
 }
 
@@ -480,7 +418,7 @@
     background: var(--white);
 }
 
-.svc-local .svc-section-inner {
+.svc-local .svc-inner {
     display: flex;
     gap: 80px;
     align-items: center;
@@ -523,85 +461,8 @@
     color: var(--dark);
 }
 
-/* ===== OTHER SERVICES UPSELL ===== */
+/* ===== ADDON PILLS ===== */
 
-.svc-upsell {
-    padding: 100px 8%;
-    background: var(--gray);
-}
-
-.svc-upsell-header {
-    text-align: center;
-    margin-bottom: 55px;
-}
-
-.svc-upsell-header h2 {
-    font-size: 40px;
-    font-weight: 800;
-    color: var(--dark);
-    margin-bottom: 12px;
-}
-
-.svc-upsell-header p {
-    font-size: 18px;
-    color: #555;
-}
-
-.svc-upsell-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-}
-
-.svc-upsell-card {
-    background: var(--white);
-    border-radius: 16px;
-    padding: 32px;
-    border: 1px solid transparent;
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    text-decoration: none;
-    color: var(--dark);
-    transition: 0.3s ease;
-}
-
-.svc-upsell-card:hover {
-    border-color: var(--orange);
-    transform: translateY(-5px);
-}
-
-.upsell-icon {
-    font-size: 32px;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-
-.svc-upsell-card h3 {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--dark);
-    margin-bottom: 6px;
-}
-
-.svc-upsell-card p {
-    font-size: 14px;
-    color: #666;
-    line-height: 1.5;
-}
-
-/* Hide on mobile */
-@media (max-width: 600px) {
-    .hide-mobile { display: none !important; }
-}
-
-/* Commercial full link */
-.commercial-full-link {
-    text-align: center;
-    margin-top: 28px;
-}
-
-/* Service addon pills */
 .svc-addon-row {
     margin-top: 32px;
     padding-top: 28px;
@@ -624,7 +485,7 @@
     gap: 10px;
 }
 
-.addon-pill {
+.svc-addon-pill {
     display: inline-flex;
     align-items: center;
     gap: 7px;
@@ -640,12 +501,12 @@
     white-space: nowrap;
 }
 
-.addon-pill-icon {
+.svc-addon-pill-icon {
     font-size: 15px;
     line-height: 1;
 }
 
-.addon-pill:hover {
+.svc-addon-pill:hover {
     border-color: var(--orange);
     color: var(--orange);
     background: #fff8f0;
@@ -669,8 +530,7 @@
         font-size: 16px;
     }
 
-    /* Included */
-    .svc-included .svc-section-inner {
+    .svc-included .svc-inner {
         flex-direction: column;
         gap: 50px;
     }
@@ -684,7 +544,6 @@
         font-size: 30px;
     }
 
-    /* Pricing */
     .svc-pricing-grid {
         grid-template-columns: 1fr;
     }
@@ -698,12 +557,6 @@
         gap: 10px;
     }
 
-    .commercial-notice {
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    /* Get Price */
     .svc-getprice-grid {
         grid-template-columns: 1fr;
     }
@@ -712,8 +565,7 @@
         font-size: 30px;
     }
 
-    /* Local */
-    .svc-local .svc-section-inner {
+    .svc-local .svc-inner {
         flex-direction: column;
         gap: 50px;
     }
@@ -721,13 +573,13 @@
     .svc-local-text h2 {
         font-size: 30px;
     }
-
-    /* Upsell */
-    .svc-upsell-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .svc-upsell-header h2 {
-        font-size: 30px;
-    }
 }
+
+/* =============================================================
+   SERVICE-SPECIFIC OVERRIDES
+   Add any tweaks unique to this service below this line.
+   Examples:
+     - Different hero background image or gradient
+     - Unique section background color
+     - Extra section only on this page
+   ============================================================= */
