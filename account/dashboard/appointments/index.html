@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,43 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../../../css/dashboard.css">
-<style>
-.job-list{display:flex;flex-direction:column;gap:14px;}
-.job-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;scroll-margin-top:24px;}
-.job-card.highlight{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-dim);}
-.job-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 20px 14px;cursor:pointer;user-select:none;}
-.job-card-header:hover{background:#fafaf8;}
-.job-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
-.job-card-id{font-size:11px;font-weight:400;color:var(--text-3);}
-.job-card-meta{font-size:12px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
-.job-card-meta span{display:inline-flex;align-items:center;gap:4px;}
-.job-card-body{padding:18px 20px;border-top:1px solid var(--border-light);display:flex;flex-direction:column;gap:16px;}
-.job-card-body.collapsed{display:none;}
-.detail-section-label{font-size:10px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:#bbb;margin-bottom:6px;}
-.line-items{width:100%;border-collapse:collapse;font-size:13px;}
-.line-items th{text-align:left;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#bbb;padding:0 8px 6px 0;}
-.line-items th:last-child,.line-items td:last-child{text-align:right;}
-.line-items td{padding:6px 8px 6px 0;color:var(--text-2);border-top:1px solid var(--border-light);font-size:13px;}
-.line-items .total-row td{font-weight:700;color:var(--text);border-top:2px solid var(--border);padding-top:8px;}
-.note-block{background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);line-height:1.6;}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.detail-item{background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;}
-.detail-item-label{font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#bbb;margin-bottom:3px;}
-.detail-item-value{font-size:13px;color:var(--text-2);line-height:1.4;}
-.rating-section{display:flex;flex-direction:column;gap:8px;}
-.stars{display:flex;gap:4px;cursor:pointer;}
-.star{font-size:24px;color:#ddd;transition:color 0.1s;user-select:none;}
-.star.filled{color:#f5a623;}
-.feedback-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);resize:vertical;min-height:70px;background:var(--white);}
-.feedback-input:focus{outline:none;border-color:var(--orange);}
-.btn-rate{margin-top:4px;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;background:var(--orange);color:#fff;border:none;cursor:pointer;}
-.btn-rate:hover{background:var(--orange-dark);}
-.rate-thanks{font-size:13px;color:#1e8a4a;font-weight:500;margin-left:10px;}
-.toggle-chevron{font-size:18px;color:var(--muted);transition:transform 0.2s;flex-shrink:0;line-height:1;}
-.job-card-body:not(.collapsed) ~ * .toggle-chevron,
-.job-card.open .toggle-chevron{transform:rotate(180deg);}
-@media(max-width:600px){.detail-grid{grid-template-columns:1fr;}}
-</style>
 </head>
 <body>
 <div class="dash-shell">
@@ -66,19 +30,24 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <main class="dash-main">
-        <div class="dash-page">
-            <div class="section-header">
-                <h1 class="section-title">Appointments</h1>
-                <p class="section-sub">Your upcoming and past service visits.</p>
-            </div>
-            <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+```
+<main class="dash-main">
+    <div class="dash-page">
+        <div class="section-header">
+            <h1 class="section-title">Appointments</h1>
+            <p class="section-sub">Your upcoming and past service visits.</p>
         </div>
-    </main>
+        <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+    </div>
+</main>
+```
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
@@ -95,22 +64,9 @@ function fmtMoney(n){return '$'+Number(n).toFixed(2);}
 function badge(status){
     var s=(status||'').toLowerCase().trim();
     var map={
-        // Appointment statuses
-        'scheduled':'bdg-scheduled',
-        'rescheduled':'bdg-paused',
-        'canceled':'bdg-cancelled',
-        'cancelled':'bdg-cancelled',
-        'completed':'bdg-completed',
-        // Invoice statuses
-        'draft':'bdg-default',
-        'payment due':'bdg-unpaid',
-        'paid':'bdg-paid',
-        'overdue':'bdg-overdue',
-        // Service statuses
-        'active':'bdg-active',
-        'paused':'bdg-paused',
-        'on hold':'bdg-overdue',
-        'terminated':'bdg-cancelled',
+        'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed',
+        'draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue',
+        'active':'bdg-active','paused':'bdg-paused','on hold':'bdg-overdue','terminated':'bdg-cancelled',
     };
     return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
 }
@@ -136,11 +92,9 @@ function toggleCard(jobId){
     var isOpen=!body.classList.contains('collapsed');
     body.classList.toggle('collapsed');
     card.classList.toggle('open',isOpen);
-    // update URL hash without scroll
     if(!isOpen){history.replaceState(null,null,'#'+jobId);}
     else if(window.location.hash==='#'+jobId){history.replaceState(null,null,' ');}
 }
-
 
 auth.onAuthStateChanged(async function(user){
     if(!user){window.location.href='/account/login/';return;}
@@ -168,10 +122,8 @@ auth.onAuthStateChanged(async function(user){
         var assigned = r[8]||'';
         var custNote = r[9]||'';
         var crewNote = r[10]||'';
-        var rating   = r[11]||'';
-        var feedback = r[12]||'';
         var total    = items.reduce(function(s,i){return s+i.lineTotal;},0);
-        var completed= (r[2]||'').toLowerCase()==='completed';
+        var isScheduled= (r[2]||'').toLowerCase()==='scheduled';
         var isTarget = jobId===targetHash;
 
         var dateStr='—';
@@ -179,7 +131,6 @@ auth.onAuthStateChanged(async function(user){
 
         var svcNames=items.map(function(i){return i.name;}).join(', ')||'Service Visit';
 
-        // Meta row — ONLY date + time
         var metaParts=[];
         if(rawDate)metaParts.push('<span>📅 '+dateStr+(time?' · '+time:'')+'</span>');
 
@@ -190,163 +141,157 @@ auth.onAuthStateChanged(async function(user){
                 items.map(function(i){return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+
                 '<tr class="total-row"><td colspan="3">Job Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>';}
 
-        // Detail grid — address, assigned crew, invoice
+        // Detail grid
         var detailItems=[];
         if(address)detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+address+'</div></div>');
         if(assigned)detailItems.push('<div class="detail-item"><div class="detail-item-label">Assigned Crew</div><div class="detail-item-value">'+assigned+'</div></div>');
         if(invoiceId)detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/account/dashboard/invoices/#'+invoiceId+'" style="color:var(--orange);">#'+invoiceId+'</a></div></div>');
         var detailGridHTML=detailItems.length?'<div class="detail-grid">'+detailItems.join('')+'</div>':'';
 
-        // Customer notes — editable if Scheduled, read-only otherwise
-        // Check localStorage for any locally saved note (overrides CSV value for display)
+        // Customer notes
         var savedNoteData=null;try{savedNoteData=JSON.parse(localStorage.getItem('bwd_cnote_'+jobId));}catch(e){}
         var displayNote=savedNoteData&&savedNoteData.note!==undefined?savedNoteData.note:custNote;
 
         var notesHTML='';
         if(isScheduled){
-            // Editable textarea
             notesHTML+='<div><div class="detail-section-label">Your Notes</div>'+
                 '<textarea class="feedback-input" id="cnote-'+jobId+'" placeholder="Add a note for your crew (gate code, special instructions, etc.)…" style="min-height:80px;">'+displayNote+'</textarea>'+
-                '<div style="margin-top:6px;display:flex;align-items:center;gap:10px;">'+
-                '<button class="btn-rate" id="cnote-btn-'+jobId+'">Save Note</button>'+
-                '<span id="cnote-conf-'+jobId+'" style="font-size:12px;color:var(--text-3);display:none;"></span>'+
+
+```
+            '<div style="margin-top:6px;display:flex;align-items:center;gap:10px;">'+
+            '<button class="btn-rate" id="cnote-btn-'+jobId+'">Save Note</button>'+
+            '<span id="cnote-conf-'+jobId+'" style="font-size:12px;color:var(--text-3);display:none;"></span>'+
+            '</div></div>';
+    } else {
+        if(displayNote)notesHTML+='<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+displayNote+'</div></div>';
+    }
+    if(crewNote)notesHTML+='<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>';
+
+    // Rating
+    var savedReview=null;try{savedReview=JSON.parse(localStorage.getItem('bwd_review_'+jobId));}catch(e){}
+    var hasReview=savedReview&&(savedReview.rating||savedReview.feedback);
+    var ratingHTML='';
+    if(!isScheduled){
+        var savedFb=hasReview?savedReview.feedback:'';
+        var savedRating=hasReview?savedReview.rating:0;
+        if(hasReview){
+            ratingHTML='<div class="rating-section"><div class="detail-section-label">Your Review</div>'+
+                '<div class="stars" id="stars-'+jobId+'" data-saved="'+savedRating+'"></div>'+
+                '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…">'+savedFb+'</textarea>'+
+                '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'+
+                '<button class="btn-rate" id="btn-'+jobId+'">Update Review</button>'+
+                '<span style="font-size:12px;color:var(--text-3);">You submitted a review — you can edit and update it anytime.</span>'+
                 '</div></div>';
         } else {
-            // Read-only display
-            if(displayNote)notesHTML+='<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+displayNote+'</div></div>';
+            ratingHTML='<div class="rating-section"><div class="detail-section-label">Rate this visit</div>'+
+                '<div class="stars" id="stars-'+jobId+'" data-saved="0"></div>'+
+                '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…"></textarea>'+
+                '<div><button class="btn-rate" id="btn-'+jobId+'">Submit</button>'+
+                '<span class="rate-thanks" id="thank-'+jobId+'" style="display:none;">Thanks for your feedback!</span>'+
+                '</div></div>';
         }
-        if(crewNote)notesHTML+='<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>';
+    }
 
-        // Rating — only show if status is NOT Scheduled
-        var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
-        var savedReview=null;try{savedReview=JSON.parse(localStorage.getItem('bwd_review_'+jobId));}catch(e){}
-        var hasReview=savedReview&&(savedReview.rating||savedReview.feedback);
-        var ratingHTML='';
-        if(!isScheduled){
-            var savedFb=hasReview?savedReview.feedback:'';
-            var savedRating=hasReview?savedReview.rating:0;
-            if(hasReview){
-                // Already submitted — show edit mode
-                ratingHTML='<div class="rating-section"><div class="detail-section-label">Your Review</div>'+
-                    '<div class="stars" id="stars-'+jobId+'" data-saved="'+savedRating+'"></div>'+
-                    '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…">'+savedFb+'</textarea>'+
-                    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'+
-                    '<button class="btn-rate" id="btn-'+jobId+'">Update Review</button>'+
-                    '<span style="font-size:12px;color:var(--text-3);">You submitted a review — you can edit and update it anytime.</span>'+
-                    '</div></div>';
-            } else {
-                ratingHTML='<div class="rating-section"><div class="detail-section-label">Rate this visit</div>'+
-                    '<div class="stars" id="stars-'+jobId+'" data-saved="0"></div>'+
-                    '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…"></textarea>'+
-                    '<div><button class="btn-rate" id="btn-'+jobId+'">Submit</button>'+
-                    '<span class="rate-thanks" id="thank-'+jobId+'" style="display:none;">Thanks for your feedback!</span>'+
-                    '</div></div>';
-            }
-        }
+    var bodyClass='job-card-body'+(isTarget?'':' collapsed');
 
-        var bodyClass='job-card-body'+(isTarget?'':' collapsed');
-
-        html+='<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
-        html+='<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
-        html+='<div style="min-width:0;flex:1;">';
-        html+='<div class="job-card-title">'+svcNames+' <span class="job-card-id">· Job #'+jobId+'</span></div>';
-        html+='<div class="job-card-meta">'+metaParts.join('')+'</div>';
-        html+='</div>';
-        html+='<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<span class="toggle-chevron">▾</span></div>';
-        html+='</div>';
-        html+='<div class="'+bodyClass+'" id="body-'+jobId+'">';
-        html+=detailGridHTML+lineItemsHTML+notesHTML+ratingHTML;
-        html+='</div></div>';
-    });
-
+    html+='<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
+    html+='<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
+    html+='<div style="min-width:0;flex:1;">';
+    html+='<div class="job-card-title">'+svcNames+' <span class="job-card-id">· Job #'+jobId+'</span></div>';
+    html+='<div class="job-card-meta">'+metaParts.join('')+'</div>';
     html+='</div>';
-    container.innerHTML=html;
+    html+='<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<span class="toggle-chevron">▾</span></div>';
+    html+='</div>';
+    html+='<div class="'+bodyClass+'" id="body-'+jobId+'">';
+    html+=detailGridHTML+lineItemsHTML+notesHTML+ratingHTML;
+    html+='</div></div>';
+});
 
-    // Wire customer note save for Scheduled jobs
-    myJobs.forEach(function(r){
-        var jobId=(r[0]||'').trim();
-        var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
-        if(!isScheduled)return;
-        var noteBtn=document.getElementById('cnote-btn-'+jobId);
-        var noteInput=document.getElementById('cnote-'+jobId);
-        var noteConf=document.getElementById('cnote-conf-'+jobId);
-        if(!noteBtn||!noteInput)return;
-        noteBtn.addEventListener('click',function(){
-            var val=noteInput.value;
-            try{localStorage.setItem('bwd_cnote_'+jobId,JSON.stringify({note:val}));}catch(e){}
-            noteConf.textContent='Note saved!';
-            noteConf.style.color='#1e8a4a';
-            noteConf.style.display='inline';
-            setTimeout(function(){
-                noteConf.textContent='Changes are visible to your crew.';
-                noteConf.style.color='var(--text-3)';
-            },2000);
-        });
+html+='</div>';
+container.innerHTML=html;
+
+// Wire customer note save for Scheduled jobs
+myJobs.forEach(function(r){
+    var jobId=(r[0]||'').trim();
+    var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
+    if(!isScheduled)return;
+    var noteBtn=document.getElementById('cnote-btn-'+jobId);
+    var noteInput=document.getElementById('cnote-'+jobId);
+    var noteConf=document.getElementById('cnote-conf-'+jobId);
+    if(!noteBtn||!noteInput)return;
+    noteBtn.addEventListener('click',function(){
+        var val=noteInput.value;
+        try{localStorage.setItem('bwd_cnote_'+jobId,JSON.stringify({note:val}));}catch(e){}
+        noteConf.textContent='Note saved!';
+        noteConf.style.color='#1e8a4a';
+        noteConf.style.display='inline';
+        setTimeout(function(){
+            noteConf.textContent='Changes are visible to your crew.';
+            noteConf.style.color='var(--text-3)';
+        },2000);
     });
+});
 
-    // Wire stars and feedback for all non-scheduled jobs
-    myJobs.forEach(function(r){
-        var jobId=(r[0]||'').trim();
-        var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
-        if(isScheduled)return; // no rating for scheduled
+// Wire stars and feedback for all non-scheduled jobs
+myJobs.forEach(function(r){
+    var jobId=(r[0]||'').trim();
+    var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
+    if(isScheduled)return;
 
-        var starsEl=document.getElementById('stars-'+jobId);
-        var btn=document.getElementById('btn-'+jobId);
-        var fbEl=document.getElementById('fb-'+jobId);
-        var thankEl=document.getElementById('thank-'+jobId);
-        if(!starsEl)return;
+    var starsEl=document.getElementById('stars-'+jobId);
+    var btn=document.getElementById('btn-'+jobId);
+    var fbEl=document.getElementById('fb-'+jobId);
+    var thankEl=document.getElementById('thank-'+jobId);
+    if(!starsEl)return;
 
-        // Load saved rating from localStorage
-        var saved=null;try{saved=JSON.parse(localStorage.getItem('bwd_review_'+jobId));}catch(e){}
-        var initRating=saved&&saved.rating?parseInt(saved.rating):0;
+    var saved=null;try{saved=JSON.parse(localStorage.getItem('bwd_review_'+jobId));}catch(e){}
+    var initRating=saved&&saved.rating?parseInt(saved.rating):0;
+    var currentRating=initRating;
 
-        // Render stars with current value
-        var currentRating=initRating;
-        function drawStars(){
-            starsEl.innerHTML='';
-            for(var i=1;i<=5;i++){
-                (function(i){
-                    var s=document.createElement('span');
-                    s.className='star'+(i<=currentRating?' filled':'');
-                    s.textContent='★';
-                    s.addEventListener('mouseover',function(){starsEl.querySelectorAll('.star').forEach(function(el,idx){el.classList.toggle('filled',idx<i);});});
-                    s.addEventListener('mouseout',drawStars);
-                    s.addEventListener('click',function(){currentRating=i;drawStars();});
-                    starsEl.appendChild(s);
-                })(i);
+    function drawStars(){
+        starsEl.innerHTML='';
+        for(var i=1;i<=5;i++){
+            (function(i){
+                var s=document.createElement('span');
+                s.className='star'+(i<=currentRating?' filled':'');
+                s.textContent='★';
+                s.addEventListener('mouseover',function(){starsEl.querySelectorAll('.star').forEach(function(el,idx){el.classList.toggle('filled',idx<i);});});
+                s.addEventListener('mouseout',drawStars);
+                s.addEventListener('click',function(){currentRating=i;drawStars();});
+                starsEl.appendChild(s);
+            })(i);
+        }
+    }
+    drawStars();
+
+    if(btn){
+        btn.addEventListener('click',function(){
+            var fbText=fbEl?fbEl.value:'';
+            try{localStorage.setItem('bwd_review_'+jobId,JSON.stringify({rating:currentRating,feedback:fbText}));}catch(e){}
+            btn.textContent='Update Review';
+            if(thankEl){thankEl.style.display='none';}
+            var conf=document.getElementById('conf-'+jobId);
+            if(!conf){
+                conf=document.createElement('span');
+                conf.id='conf-'+jobId;
+                conf.style.cssText='font-size:12px;color:#1e8a4a;font-weight:500;margin-left:10px;';
+                btn.parentNode.appendChild(conf);
             }
-        }
-        drawStars();
-
-        // Submit / Update button
-        if(btn){
-            btn.addEventListener('click',function(){
-                var fbText=fbEl?fbEl.value:'';
-                // Save to localStorage
-                try{localStorage.setItem('bwd_review_'+jobId,JSON.stringify({rating:currentRating,feedback:fbText}));}catch(e){}
-                // Switch button to "Update Review" mode
-                btn.textContent='Update Review';
-                if(thankEl){thankEl.style.display='none';}
-                // Show confirmation inline
-                var conf=document.getElementById('conf-'+jobId);
-                if(!conf){
-                    conf=document.createElement('span');
-                    conf.id='conf-'+jobId;
-                    conf.style.cssText='font-size:12px;color:#1e8a4a;font-weight:500;margin-left:10px;';
-                    btn.parentNode.appendChild(conf);
-                }
-                conf.textContent='Review saved!';
-                setTimeout(function(){conf.textContent='You can edit and update it anytime.';conf.style.color='var(--text-3)';},2000);
-            });
-        }
-    });
-
-    // Scroll to target
-    if(targetHash){
-        var el=document.getElementById('card-'+targetHash);
-        if(el)setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},100);
+            conf.textContent='Review saved!';
+            setTimeout(function(){conf.textContent='You can edit and update it anytime.';conf.style.color='var(--text-3)';},2000);
+        });
     }
 });
+
+// Scroll to target
+if(targetHash){
+    var el=document.getElementById('card-'+targetHash);
+    if(el)setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+```
+
+});
 </script>
+
 </body>
 </html>

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,68 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../../../css/dashboard.css">
-<style>
-.acct-section{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
-.acct-section-header{padding:14px 20px 12px;border-bottom:1px solid var(--border-light);}
-.acct-section-title{font-size:11px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:var(--text);}
-.acct-section-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px;}
-.form-row{display:flex;flex-direction:column;gap:5px;}
-.form-label{font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;color:#bbb;}
-.form-input{border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);width:100%;transition:border-color 0.15s;}
-.form-input:focus{outline:none;border-color:var(--orange);}
-.form-textarea{resize:vertical;min-height:72px;}
-.phone-row{display:flex;gap:8px;}
-.phone-prefix{border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text);background:#fafaf8;width:70px;flex-shrink:0;}
-.phone-prefix:focus{outline:none;border-color:var(--orange);}
-.contact-pills{display:flex;gap:8px;flex-wrap:wrap;}
-.contact-pill{padding:7px 16px;border-radius:100px;border:1.5px solid var(--border);font-size:13px;font-weight:600;font-family:'Inter',sans-serif;color:var(--text-3);background:var(--white);cursor:pointer;transition:all 0.15s;}
-.contact-pill:hover{border-color:var(--orange);color:var(--orange);}
-.contact-pill.selected{border-color:var(--orange);background:var(--orange-dim);color:var(--orange-dark);}
-.save-row{display:flex;align-items:center;gap:12px;}
-.btn-save{padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;background:var(--orange);color:#fff;border:none;cursor:pointer;transition:background 0.15s;}
-.btn-save:hover{background:var(--orange-dark);}
-.btn-save:disabled{background:#ccc;cursor:default;}
-.save-status{font-size:12px;font-weight:500;}
-.save-status.ok{color:#1e8a4a;}
-.save-status.err{color:#d93025;}
-.property-list{display:flex;flex-direction:column;gap:12px;}
-.property-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:#fafaf8;display:flex;flex-direction:column;gap:10px;}
-.property-card.is-primary{border-color:var(--orange);background:var(--orange-dim);}
-.property-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.primary-badge{font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--orange-dark);background:rgba(224,90,18,0.15);border-radius:100px;padding:3px 10px;white-space:nowrap;}
-.property-address-display{font-size:13.5px;font-weight:600;color:var(--text);}
-.property-notes-display{font-size:12.5px;color:var(--text-3);line-height:1.5;}
-.property-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-.btn-link{background:none;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;color:var(--orange);padding:0;text-decoration:underline;}
-.btn-link.danger{color:#d93025;}
-.primary-toggle{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-3);font-weight:500;cursor:pointer;user-select:none;}
-.primary-toggle input[type=checkbox]{accent-color:var(--orange);width:14px;height:14px;cursor:pointer;}
-.add-property-form{border:1.5px dashed var(--border);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;}
-.btn-add-property{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;border:1.5px solid var(--border);background:var(--white);color:var(--text-2);cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color 0.15s,color 0.15s;}
-.btn-add-property:hover{border-color:var(--orange);color:var(--orange);}
-.btn-cancel{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;border:1.5px solid var(--border);background:var(--white);color:var(--text-3);cursor:pointer;}
-.btn-cancel:hover{background:#f5f5f5;}
-.property-edit-form{display:flex;flex-direction:column;gap:10px;}
-.account-avatar-row{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border-light);}
-.account-avatar{width:50px;height:50px;border-radius:50%;background:var(--orange-dim);color:var(--orange-dark);font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.account-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px;}
-.account-since{font-size:13px;color:var(--muted);}
-.account-fields{padding:4px 20px;}
-.account-field{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid #faf9f6;}
-.account-field:last-child{border-bottom:none;}
-.afl{font-size:11.5px;font-weight:700;color:#bbb;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap;}
-.afv{font-size:13.5px;color:var(--text-2);text-align:right;word-break:break-all;}
-.afv.uid{font-family:monospace;font-size:11px;color:var(--muted);}
-.account-actions-row{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border-light);}
-.btn-secondary{padding:8px 16px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;border:1.5px solid var(--border);background:var(--white);color:var(--text-2);cursor:pointer;}
-.btn-secondary:hover{background:var(--bg);border-color:#bbb;}
-.btn-danger{padding:8px 16px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;border:1.5px solid transparent;background:#fef0ef;color:#d93025;cursor:pointer;}
-.btn-danger:hover{background:#fde0de;}
-.acct-msg{display:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;margin:0 20px 16px;}
-.acct-msg.error{display:block;background:#fef0ef;color:#d93025;border:1px solid #fac8c6;}
-.acct-msg.success{display:block;background:#edf7f1;color:#1e8a4a;border:1px solid #b6dfc8;}
-@media(max-width:540px){.phone-row{flex-direction:column;}.phone-prefix{width:100%;}.account-actions-row{flex-direction:column;}.account-actions-row button{width:100%;}}
-</style>
 </head>
 <body>
 <div class="dash-shell">
@@ -91,96 +30,102 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <main class="dash-main">
-        <div class="dash-page" style="max-width:680px;">
-            <div class="section-header">
-                <h1 class="section-title">Account</h1>
-                <p class="section-sub">Your profile, contact details, and properties.</p>
-            </div>
+```
+<main class="dash-main">
+    <div class="dash-page" style="max-width:680px;">
+        <div class="section-header">
+            <h1 class="section-title">Account</h1>
+            <p class="section-sub">Your profile, contact details, and properties.</p>
+        </div>
 
-            <!-- Profile (read-only) -->
-            <div class="acct-section">
-                <div class="account-avatar-row">
-                    <div class="account-avatar" id="accountAvatar">?</div>
-                    <div>
-                        <p class="account-name" id="accountName">—</p>
-                        <p class="account-since" id="accountSince"></p>
-                    </div>
-                </div>
-                <div class="account-fields">
-                    <div class="account-field"><span class="afl">Full Name</span><span class="afv" id="afName">—</span></div>
-                    <div class="account-field"><span class="afl">Email</span><span class="afv" id="afEmail">—</span></div>
-                    <div class="account-field"><span class="afl">Sign-in Method</span><span class="afv" id="afProvider">—</span></div>
-                    <div class="account-field"><span class="afl">UID</span><span class="afv uid" id="afUid">—</span></div>
-                </div>
-                <div class="account-actions-row">
-                    <button class="btn-secondary" id="changePasswordBtn">Change Password</button>
-                    <button class="btn-danger" id="signOutBtn2">Sign Out</button>
-                </div>
-                <div class="acct-msg" id="accountMessage"></div>
-            </div>
-
-            <!-- Contact & Preferences -->
-            <div class="acct-section">
-                <div class="acct-section-header"><span class="acct-section-title">Contact &amp; Preferences</span></div>
-                <div class="acct-section-body">
-                    <div class="form-row">
-                        <label class="form-label" for="phoneInput">Phone Number</label>
-                        <div class="phone-row">
-                            <input class="phone-prefix" id="phoneCountry" type="text" value="+1" maxlength="4">
-                            <input class="form-input" id="phoneInput" type="tel" placeholder="(555) 555-5555" maxlength="14">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label class="form-label">Preferred Contact Method</label>
-                        <div class="contact-pills" id="contactPills">
-                            <button class="contact-pill" data-method="Phone">📞 Phone</button>
-                            <button class="contact-pill" data-method="Text">💬 Text</button>
-                            <button class="contact-pill" data-method="Email">✉️ Email</button>
-                        </div>
-                    </div>
-                    <div class="save-row">
-                        <button class="btn-save" id="saveContactBtn">Save</button>
-                        <span class="save-status" id="contactStatus"></span>
-                    </div>
+        <!-- Profile (read-only) -->
+        <div class="acct-section">
+            <div class="account-avatar-row">
+                <div class="account-avatar" id="accountAvatar">?</div>
+                <div>
+                    <p class="account-name" id="accountName">—</p>
+                    <p class="account-since" id="accountSince"></p>
                 </div>
             </div>
+            <div class="account-fields">
+                <div class="account-field"><span class="afl">Full Name</span><span class="afv" id="afName">—</span></div>
+                <div class="account-field"><span class="afl">Email</span><span class="afv" id="afEmail">—</span></div>
+                <div class="account-field"><span class="afl">Sign-in Method</span><span class="afv" id="afProvider">—</span></div>
+                <div class="account-field"><span class="afl">UID</span><span class="afv uid" id="afUid">—</span></div>
+            </div>
+            <div class="account-actions-row">
+                <button class="btn-secondary" id="changePasswordBtn">Change Password</button>
+                <button class="btn-danger" id="signOutBtn2">Sign Out</button>
+            </div>
+            <div class="acct-msg" id="accountMessage"></div>
+        </div>
 
-            <!-- Properties -->
-            <div class="acct-section">
-                <div class="acct-section-header"><span class="acct-section-title">My Properties</span></div>
-                <div class="acct-section-body">
-                    <div class="property-list" id="propertyList"><p style="font-size:13px;color:#ccc;">Loading…</p></div>
-                    <div id="addPropertyFormWrap" style="display:none;">
-                        <div class="add-property-form">
-                            <div class="form-row">
-                                <label class="form-label" for="newPropAddress">Address</label>
-                                <input class="form-input" id="newPropAddress" type="text" placeholder="2905 Wyoming Ave, Flint, MI 48506">
-                                <span style="font-size:11px;color:var(--text-3);margin-top:2px;">Format: 1234 Road Name, City, State ZIP</span>
-                            </div>
-                            <div class="form-row">
-                                <label class="form-label" for="newPropNotes">Property Notes</label>
-                                <textarea class="form-input form-textarea" id="newPropNotes" placeholder="Gate code, parking, special instructions…"></textarea>
-                            </div>
-                            <div class="save-row" style="gap:8px;">
-                                <button class="btn-save" id="savePropBtn">Add Property</button>
-                                <button class="btn-cancel" id="cancelPropBtn">Cancel</button>
-                                <span class="save-status" id="propAddStatus"></span>
-                            </div>
-                        </div>
+        <!-- Contact & Preferences -->
+        <div class="acct-section">
+            <div class="acct-section-header"><span class="acct-section-title">Contact &amp; Preferences</span></div>
+            <div class="acct-section-body">
+                <div class="form-row">
+                    <label class="form-label" for="phoneInput">Phone Number</label>
+                    <div class="phone-row">
+                        <input class="phone-prefix" id="phoneCountry" type="text" value="+1" maxlength="4">
+                        <input class="form-input" id="phoneInput" type="tel" placeholder="(555) 555-5555" maxlength="14">
                     </div>
-                    <button class="btn-add-property" id="showAddPropBtn">
-                        <span style="font-size:18px;line-height:1;">+</span> Add Property
-                    </button>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Preferred Contact Method</label>
+                    <div class="contact-pills" id="contactPills">
+                        <button class="contact-pill" data-method="Phone">📞 Phone</button>
+                        <button class="contact-pill" data-method="Text">💬 Text</button>
+                        <button class="contact-pill" data-method="Email">✉️ Email</button>
+                    </div>
+                </div>
+                <div class="save-row">
+                    <button class="btn-save" id="saveContactBtn">Save</button>
+                    <span class="save-status" id="contactStatus"></span>
                 </div>
             </div>
         </div>
-    </main>
+
+        <!-- Properties -->
+        <div class="acct-section">
+            <div class="acct-section-header"><span class="acct-section-title">My Properties</span></div>
+            <div class="acct-section-body">
+                <div class="property-list" id="propertyList"><p style="font-size:13px;color:#ccc;">Loading…</p></div>
+                <div id="addPropertyFormWrap" style="display:none;">
+                    <div class="add-property-form">
+                        <div class="form-row">
+                            <label class="form-label" for="newPropAddress">Address</label>
+                            <input class="form-input" id="newPropAddress" type="text" placeholder="2905 Wyoming Ave, Flint, MI 48506">
+                            <span style="font-size:11px;color:var(--text-3);margin-top:2px;">Format: 1234 Road Name, City, State ZIP</span>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label" for="newPropNotes">Property Notes</label>
+                            <textarea class="form-input form-textarea" id="newPropNotes" placeholder="Gate code, parking, special instructions…"></textarea>
+                        </div>
+                        <div class="save-row" style="gap:8px;">
+                            <button class="btn-save" id="savePropBtn">Add Property</button>
+                            <button class="btn-cancel" id="cancelPropBtn">Cancel</button>
+                            <span class="save-status" id="propAddStatus"></span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-add-property" id="showAddPropBtn">
+                    <span style="font-size:18px;line-height:1;">+</span> Add Property
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+```
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
@@ -193,12 +138,10 @@ firebase.initializeApp({
 var auth = firebase.auth();
 var db   = firebase.firestore();
 
-// ── Sign out ──
 function doSignOut(){ auth.signOut().then(function(){ window.location.href='/account/login/'; }); }
 document.getElementById('signOutBtn').addEventListener('click', doSignOut);
 document.getElementById('signOutBtn2').addEventListener('click', doSignOut);
 
-// ── Mobile sidebar ──
 document.getElementById('mobileMenuBtn').addEventListener('click', function(){
     document.getElementById('sidebar').classList.add('open');
     document.getElementById('sidebarOverlay').classList.add('visible');
@@ -208,7 +151,6 @@ document.getElementById('sidebarOverlay').addEventListener('click', function(){
     document.getElementById('sidebarOverlay').classList.remove('visible');
 });
 
-// ── Utilities ──
 function initials(n){ return n ? n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2) : '?'; }
 
 function formatPhone(raw){
@@ -221,7 +163,6 @@ document.getElementById('phoneInput').addEventListener('input', function(){
     this.value = formatPhone(this.value);
 });
 
-// ── Contact method pills ──
 var selectedMethod = '';
 document.querySelectorAll('.contact-pill').forEach(function(pill){
     pill.addEventListener('click', function(){
@@ -231,7 +172,6 @@ document.querySelectorAll('.contact-pill').forEach(function(pill){
     });
 });
 
-// ── Properties state ──
 var properties = [];
 
 function genId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
@@ -262,7 +202,6 @@ function renderProperties(){
     });
 }
 
-// These functions call firestoreSave which uses the activeUid set after auth resolves
 var activeUid = '';
 
 function firestoreSave(data, statusEl, cb){
@@ -308,157 +247,152 @@ function editProperty(id){
             '<input class="form-input" id="ea-'+id+'" type="text" value="'+prop.address+'"></div>' +
             '<div class="form-row"><label class="form-label">Property Notes</label>' +
             '<textarea class="form-input form-textarea" id="en-'+id+'">'+prop.notes+'</textarea></div>' +
-            '<div class="property-actions" style="align-items:center;">' +
-                '<label class="primary-toggle">' +
-                    '<input type="checkbox" id="ep-'+id+'" '+(prop.primary?'checked':'')+
-                    (prop.primary&&properties.length===1?' disabled':'')+'>Primary property</label>' +
-                '<button class="btn-save" onclick="saveEditProperty(\''+id+'\')">Save</button>' +
-                '<button class="btn-cancel" onclick="renderProperties()">Cancel</button>' +
-                '<span id="es-'+id+'" class="save-status"></span>' +
-            '</div>' +
-        '</div>';
+
+```
+        '<div class="property-actions" style="align-items:center;">' +
+            '<label class="primary-toggle">' +
+                '<input type="checkbox" id="ep-'+id+'" '+(prop.primary?'checked':'')+
+                (prop.primary&&properties.length===1?' disabled':'')+'>Primary property</label>' +
+            '<button class="btn-save" onclick="saveEditProperty(\''+id+'\')">Save</button>' +
+            '<button class="btn-cancel" onclick="renderProperties()">Cancel</button>' +
+            '<span id="es-'+id+'" class="save-status"></span>' +
+        '</div>' +
+    '</div>';
+```
+
 }
 
 function saveEditProperty(id){
-    var addr  = (document.getElementById('ea-'+id)||{}).value||'';
-    var notes = (document.getElementById('en-'+id)||{}).value||'';
-    var isPrimary = document.getElementById('ep-'+id) ? document.getElementById('ep-'+id).checked : false;
-    addr = addr.trim();
-    if(!addr){ alert('Please enter an address.'); return; }
-    if(isPrimary){ properties = properties.map(function(p){ return Object.assign({},p,{primary:p.id===id}); }); }
-    properties = properties.map(function(p){
-        if(p.id!==id) return p;
-        return Object.assign({},p,{address:addr, notes:notes.trim(), primary:isPrimary||(p.primary&&properties.length===1)});
-    });
-    if(!properties.some(function(p){return p.primary;})){ properties[0].primary=true; }
-    var statusEl = document.getElementById('es-'+id);
-    firestoreSave({properties:properties}, statusEl, function(err){
-        if(!err) setTimeout(function(){ renderProperties(); }, 700);
-    });
+var addr  = (document.getElementById(‘ea-’+id)||{}).value||’’;
+var notes = (document.getElementById(‘en-’+id)||{}).value||’’;
+var isPrimary = document.getElementById(‘ep-’+id) ? document.getElementById(‘ep-’+id).checked : false;
+addr = addr.trim();
+if(!addr){ alert(‘Please enter an address.’); return; }
+if(isPrimary){ properties = properties.map(function(p){ return Object.assign({},p,{primary:p.id===id}); }); }
+properties = properties.map(function(p){
+if(p.id!==id) return p;
+return Object.assign({},p,{address:addr, notes:notes.trim(), primary:isPrimary||(p.primary&&properties.length===1)});
+});
+if(!properties.some(function(p){return p.primary;})){ properties[0].primary=true; }
+var statusEl = document.getElementById(‘es-’+id);
+firestoreSave({properties:properties}, statusEl, function(err){
+if(!err) setTimeout(function(){ renderProperties(); }, 700);
+});
 }
 
-// Add property form toggle
-document.getElementById('showAddPropBtn').addEventListener('click', function(){
-    document.getElementById('addPropertyFormWrap').style.display = 'block';
-    document.getElementById('showAddPropBtn').style.display = 'none';
-    document.getElementById('newPropAddress').focus();
+document.getElementById(‘showAddPropBtn’).addEventListener(‘click’, function(){
+document.getElementById(‘addPropertyFormWrap’).style.display = ‘block’;
+document.getElementById(‘showAddPropBtn’).style.display = ‘none’;
+document.getElementById(‘newPropAddress’).focus();
 });
-document.getElementById('cancelPropBtn').addEventListener('click', function(){
-    document.getElementById('addPropertyFormWrap').style.display = 'none';
-    document.getElementById('showAddPropBtn').style.display = 'flex';
-    document.getElementById('newPropAddress').value = '';
-    document.getElementById('newPropNotes').value = '';
-    document.getElementById('propAddStatus').textContent = '';
+document.getElementById(‘cancelPropBtn’).addEventListener(‘click’, function(){
+document.getElementById(‘addPropertyFormWrap’).style.display = ‘none’;
+document.getElementById(‘showAddPropBtn’).style.display = ‘flex’;
+document.getElementById(‘newPropAddress’).value = ‘’;
+document.getElementById(‘newPropNotes’).value = ‘’;
+document.getElementById(‘propAddStatus’).textContent = ‘’;
 });
 
-// ── Auth — everything that needs user runs here ──
 auth.onAuthStateChanged(function(user){
-    if(!user){ window.location.href='/account/login/'; return; }
-    activeUid = user.uid;
+if(!user){ window.location.href=’/account/login/’; return; }
+activeUid = user.uid;
 
-
-// These don't need a name, set them immediately
+```
 document.getElementById('afEmail').textContent = user.email || '—';
 document.getElementById('afUid').textContent   = user.uid;
 document.getElementById('afProvider').textContent =
     (user.providerData[0] && user.providerData[0].providerId==='google.com') ? 'Google' : 'Email & Password';
 
-// Load Firestore data
 db.collection('customers').doc(user.uid).get()
     .then(function(doc){
         var data = doc.exists ? doc.data() : {};
 
-        // Use Firestore name as source of truth, fall back to Google's displayName
         var name = data.name || user.displayName || 'User';
         document.getElementById('mobileAvatar').textContent  = initials(name);
         document.getElementById('accountAvatar').textContent = initials(name);
         document.getElementById('accountName').textContent   = name;
         document.getElementById('afName').textContent        = name;
 
-            // Member since
-            if(data.createdAt){
-                var d = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-                document.getElementById('accountSince').textContent =
-                    'Member since ' + d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
-            }
+        if(data.createdAt){
+            var d = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+            document.getElementById('accountSince').textContent =
+                'Member since ' + d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+        }
 
-            // Phone
-            if(data.phoneCountry) document.getElementById('phoneCountry').value = data.phoneCountry;
-            if(data.phoneNumber)  document.getElementById('phoneInput').value   = data.phoneNumber;
+        if(data.phoneCountry) document.getElementById('phoneCountry').value = data.phoneCountry;
+        if(data.phoneNumber)  document.getElementById('phoneInput').value   = data.phoneNumber;
 
-            // Contact method
-            if(data.preferredContact){
-                selectedMethod = data.preferredContact;
-                document.querySelectorAll('.contact-pill').forEach(function(p){
-                    p.classList.toggle('selected', p.dataset.method === data.preferredContact);
-                });
-            }
+        if(data.preferredContact){
+            selectedMethod = data.preferredContact;
+            document.querySelectorAll('.contact-pill').forEach(function(p){
+                p.classList.toggle('selected', p.dataset.method === data.preferredContact);
+            });
+        }
 
-            // Properties
-            if(data.properties && data.properties.length) properties = data.properties;
+        if(data.properties && data.properties.length) properties = data.properties;
+        renderProperties();
+    })
+    .catch(function(e){
+        console.error('Load error:', e);
+        renderProperties();
+    });
+
+document.getElementById('saveContactBtn').onclick = function(){
+    var country = document.getElementById('phoneCountry').value.trim() || '+1';
+    var number  = document.getElementById('phoneInput').value.trim();
+    var full    = number ? (country + ' ' + number) : '';
+    var btn     = document.getElementById('saveContactBtn');
+    var status  = document.getElementById('contactStatus');
+    btn.disabled = true;
+    firestoreSave(
+        { phone:full, phoneCountry:country, phoneNumber:number, preferredContact:selectedMethod },
+        status,
+        function(){ btn.disabled = false; }
+    );
+};
+
+document.getElementById('savePropBtn').onclick = function(){
+    var addr   = document.getElementById('newPropAddress').value.trim();
+    var notes  = document.getElementById('newPropNotes').value.trim();
+    var status = document.getElementById('propAddStatus');
+    if(!addr){ status.textContent='Please enter an address.'; status.className='save-status err'; return; }
+    var btn = document.getElementById('savePropBtn');
+    btn.disabled = true;
+    var newProp = { id:genId(), address:addr, notes:notes, primary:properties.length===0 };
+    properties.push(newProp);
+    firestoreSave({properties:properties}, status, function(err){
+        btn.disabled = false;
+        if(!err){
             renderProperties();
+            setTimeout(function(){
+                document.getElementById('addPropertyFormWrap').style.display = 'none';
+                document.getElementById('showAddPropBtn').style.display = 'flex';
+                document.getElementById('newPropAddress').value = '';
+                document.getElementById('newPropNotes').value   = '';
+                status.textContent = '';
+            }, 800);
+        } else {
+            properties.pop();
+        }
+    });
+};
+
+document.getElementById('changePasswordBtn').onclick = function(){
+    var msgEl = document.getElementById('accountMessage');
+    auth.sendPasswordResetEmail(user.email)
+        .then(function(){
+            msgEl.textContent = 'Password reset email sent. Check your inbox.';
+            msgEl.className   = 'acct-msg success';
         })
         .catch(function(e){
-            console.error('Load error:', e);
-            renderProperties();
+            msgEl.textContent = 'Failed to send reset email: ' + (e.message||'');
+            msgEl.className   = 'acct-msg error';
         });
+};
+```
 
-    // ── Save contact (uses user from closure, not auth.currentUser) ──
-    document.getElementById('saveContactBtn').onclick = function(){
-        var country = document.getElementById('phoneCountry').value.trim() || '+1';
-        var number  = document.getElementById('phoneInput').value.trim();
-        var full    = number ? (country + ' ' + number) : '';
-        var btn     = document.getElementById('saveContactBtn');
-        var status  = document.getElementById('contactStatus');
-        btn.disabled = true;
-        firestoreSave(
-            { phone:full, phoneCountry:country, phoneNumber:number, preferredContact:selectedMethod },
-            status,
-            function(){ btn.disabled = false; }
-        );
-    };
-
-    // ── Add property ──
-    document.getElementById('savePropBtn').onclick = function(){
-        var addr   = document.getElementById('newPropAddress').value.trim();
-        var notes  = document.getElementById('newPropNotes').value.trim();
-        var status = document.getElementById('propAddStatus');
-        if(!addr){ status.textContent='Please enter an address.'; status.className='save-status err'; return; }
-        var btn = document.getElementById('savePropBtn');
-        btn.disabled = true;
-        var newProp = { id:genId(), address:addr, notes:notes, primary:properties.length===0 };
-        properties.push(newProp);
-        firestoreSave({properties:properties}, status, function(err){
-            btn.disabled = false;
-            if(!err){
-                renderProperties();
-                setTimeout(function(){
-                    document.getElementById('addPropertyFormWrap').style.display = 'none';
-                    document.getElementById('showAddPropBtn').style.display = 'flex';
-                    document.getElementById('newPropAddress').value = '';
-                    document.getElementById('newPropNotes').value   = '';
-                    status.textContent = '';
-                }, 800);
-            } else {
-                properties.pop(); // revert on error
-            }
-        });
-    };
-
-    // ── Password reset ──
-    document.getElementById('changePasswordBtn').onclick = function(){
-        var msgEl = document.getElementById('accountMessage');
-        auth.sendPasswordResetEmail(user.email)
-            .then(function(){
-                msgEl.textContent = 'Password reset email sent. Check your inbox.';
-                msgEl.className   = 'acct-msg success';
-            })
-            .catch(function(e){
-                msgEl.textContent = 'Failed to send reset email: ' + (e.message||'');
-                msgEl.className   = 'acct-msg error';
-            });
-    };
 });
 </script>
+
 </body>
 </html>

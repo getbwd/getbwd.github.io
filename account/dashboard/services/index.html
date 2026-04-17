@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,11 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../../../css/dashboard.css">
-<style>
-.plan-block{margin-bottom:28px;}
-.plan-block-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
-.plan-block-meta{font-size:13px;color:var(--text-3);}
-</style>
 </head>
 <body>
 <div class="dash-shell">
@@ -34,19 +30,24 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <main class="dash-main">
-        <div class="dash-page">
-            <div class="section-header">
-                <h1 class="section-title">My Services</h1>
-                <p class="section-sub">Your current lawn care plan.</p>
-            </div>
-            <div id="servicesContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+```
+<main class="dash-main">
+    <div class="dash-page">
+        <div class="section-header">
+            <h1 class="section-title">My Services</h1>
+            <p class="section-sub">Your current lawn care plan.</p>
         </div>
-    </main>
+        <div id="servicesContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+    </div>
+</main>
+```
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
@@ -95,15 +96,14 @@ auth.onAuthStateChanged(async function(user){
     var html='';
 
     myServices.forEach(function(row,planIdx){
-        var rawDate  = row[1]||'';
+        var rawDate    = row[1]||'';
         var planStatus = row[2]||'Active';
-        var svcList  = parseServices(row[3]);
-        var isActive = planStatus.toLowerCase()==='active';
+        var svcList    = parseServices(row[3]);
+        var isActive   = planStatus.toLowerCase()==='active';
 
         var dateStr='';
         if(rawDate){try{dateStr=new Date(rawDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}catch(e){dateStr=rawDate;}}
 
-        // If multiple rows, show a divider/header per plan; if only one, no extra header needed
         html+='<div class="plan-block">';
         if(myServices.length>1){
             html+='<div class="plan-block-header">';
@@ -111,7 +111,6 @@ auth.onAuthStateChanged(async function(user){
             html+=badge(planStatus);
             html+='</div>';
         } else {
-            // Single plan — show start date inline above grid
             if(dateStr){html+='<div class="plan-block-header"><span class="plan-block-meta">Plan started '+dateStr+'</span>'+badge(planStatus)+'</div>';}
         }
 
@@ -130,12 +129,12 @@ auth.onAuthStateChanged(async function(user){
         }
         html+='</div>';
 
-        // Divider between plans
         if(planIdx<myServices.length-1){html+='<hr style="border:none;border-top:1px solid var(--border);margin:0 0 28px;">';}
     });
 
     container.innerHTML=html;
 });
 </script>
+
 </body>
 </html>
