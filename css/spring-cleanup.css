@@ -5,24 +5,24 @@
 
 /* ===== SHARED LAYOUT ===== */
 
-.scu-inner {
+.sc-inner {
     max-width: 1400px;
     margin: 0 auto;
 }
 
-.scu-inner--narrow {
+.sc-inner--narrow {
     max-width: 1100px;
 }
 
 /* ===== HERO ===== */
 
-.scu-hero {
+.sc-hero {
     background: var(--dark);
     color: var(--white);
     padding: 80px 8% 90px;
 }
 
-.scu-back {
+.sc-back {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -36,12 +36,12 @@
     transition: opacity 0.2s;
 }
 
-.scu-back:hover {
+.sc-back:hover {
     opacity: 1;
     text-decoration: underline;
 }
 
-.scu-hero h1 {
+.sc-hero h1 {
     font-size: 52px;
     font-weight: 800;
     line-height: 1.2;
@@ -49,7 +49,7 @@
     max-width: 600px;
 }
 
-.scu-hero-desc {
+.sc-hero-desc {
     font-size: 20px;
     color: #bbb;
     line-height: 1.5;
@@ -58,35 +58,35 @@
 
 /* ===== WHAT'S INCLUDED ===== */
 
-.scu-included {
+.sc-included {
     padding: 100px 8%;
     background: var(--white);
 }
 
-.scu-included .scu-inner {
+.sc-included .sc-inner {
     display: flex;
     gap: 80px;
     align-items: center;
 }
 
-.scu-included-content {
+.sc-included-content {
     flex: 1.2;
 }
 
-.scu-included-content h2 {
+.sc-included-content h2 {
     font-size: 40px;
     font-weight: 800;
     color: var(--dark);
     margin-bottom: 10px;
 }
 
-.scu-sub {
+.sc-sub {
     font-size: 17px;
     color: #777;
     margin-bottom: 36px;
 }
 
-.scu-checklist {
+.sc-checklist {
     list-style: none;
     padding: 0;
     display: flex;
@@ -95,7 +95,7 @@
     margin-bottom: 36px;
 }
 
-.scu-checklist li {
+.sc-checklist li {
     display: flex;
     align-items: flex-start;
     gap: 14px;
@@ -104,7 +104,7 @@
     line-height: 1.5;
 }
 
-.scu-chk {
+.sc-chk {
     color: var(--orange);
     font-size: 18px;
     font-weight: 700;
@@ -112,7 +112,7 @@
     margin-top: 1px;
 }
 
-.scu-schedule-highlight {
+.sc-schedule-highlight {
     display: flex;
     align-items: flex-start;
     gap: 16px;
@@ -122,27 +122,27 @@
     padding: 22px 24px;
 }
 
-.scu-schedule-icon {
+.sc-schedule-icon {
     font-size: 28px;
     flex-shrink: 0;
     margin-top: 2px;
 }
 
-.scu-schedule-highlight h3 {
+.sc-schedule-highlight h3 {
     font-size: 17px;
     font-weight: 700;
     color: var(--dark);
     margin-bottom: 6px;
 }
 
-.scu-schedule-highlight p {
+.sc-schedule-highlight p {
     font-size: 15px;
     color: #555;
     line-height: 1.6;
     margin: 0;
 }
 
-.scu-included-image {
+.sc-included-image {
     flex: 1;
     border-radius: 18px;
     overflow: hidden;
@@ -154,7 +154,7 @@
     position: relative;
 }
 
-.scu-included-image img {
+.sc-included-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -164,30 +164,30 @@
 
 /* ===== PRICING ===== */
 
-.scu-pricing {
+.sc-pricing {
     padding: 100px 8%;
     background: var(--gray);
 }
 
-.scu-pricing-header {
+.sc-pricing-header {
     text-align: center;
     margin-bottom: 55px;
 }
 
-.scu-pricing-header h2 {
+.sc-pricing-header h2 {
     font-size: 40px;
     font-weight: 800;
     color: var(--dark);
     margin-bottom: 12px;
 }
 
-.scu-pricing-header p {
+.sc-pricing-header p {
     font-size: 18px;
     color: #555;
     margin-bottom: 28px;
 }
 
-.scu-ad-guarantee {
+.sc-ad-guarantee {
     display: inline-flex;
     align-items: flex-start;
     gap: 14px;
@@ -200,7 +200,7 @@
     margin: 0 auto 32px;
 }
 
-.scu-ad-guarantee strong {
+.sc-ad-guarantee strong {
     display: block;
     font-size: 16px;
     font-weight: 700;
@@ -208,21 +208,49 @@
     margin-bottom: 5px;
 }
 
-.scu-ad-guarantee p {
+.sc-ad-guarantee p {
     font-size: 14px;
     color: #555;
     line-height: 1.6;
     margin: 0;
 }
 
-.scu-pricing-grid {
+.sc-pricing-toggle {
+    display: inline-flex;
+    background: #e5e5e5;
+    border-radius: 10px;
+    padding: 4px;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.sc-toggle-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    background: transparent;
+    color: #777;
+    transition: 0.2s ease;
+    font-family: inherit;
+}
+
+.sc-toggle-btn--active {
+    background: var(--white);
+    color: var(--dark);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+
+.sc-pricing-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     margin-bottom: 30px;
 }
 
-.scu-price-card {
+.sc-price-card {
     background: var(--white);
     border-radius: 16px;
     padding: 36px 30px;
@@ -233,22 +261,22 @@
     gap: 10px;
 }
 
-.scu-price-card:hover {
+.sc-price-card:hover {
     border-color: var(--orange);
     transform: translateY(-5px);
 }
 
-.scu-price-card--featured {
+.sc-price-card--featured {
     border-color: var(--orange);
     background: var(--dark);
     color: var(--white);
 }
 
-.scu-price-card--featured .scu-price-desc {
+.sc-price-card--featured .sc-price-desc {
     color: #aaa;
 }
 
-.scu-price-tier {
+.sc-price-tier {
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
@@ -256,23 +284,23 @@
     color: var(--orange);
 }
 
-.scu-price-amount {
+.sc-price-amount {
     font-size: 18px;
     color: inherit;
 }
 
-.scu-price-amount strong {
+.sc-price-amount strong {
     font-size: 36px;
     font-weight: 800;
 }
 
-.scu-price-desc {
+.sc-price-desc {
     font-size: 15px;
     color: #555;
     line-height: 1.5;
 }
 
-.scu-pricing-note {
+.sc-pricing-note {
     text-align: center;
     font-size: 14px;
     color: #888;
@@ -281,24 +309,24 @@
 
 /* ===== GET A PRICE ===== */
 
-.scu-getprice {
+.sc-getprice {
     padding: 100px 8%;
     background: var(--dark);
 }
 
-.scu-getprice-header {
+.sc-getprice-header {
     text-align: center;
     margin-bottom: 55px;
 }
 
-.scu-getprice-header h2 {
+.sc-getprice-header h2 {
     font-size: 40px;
     font-weight: 800;
     color: var(--white);
     margin-bottom: 14px;
 }
 
-.scu-getprice-header p {
+.sc-getprice-header p {
     font-size: 18px;
     color: #aaa;
     max-width: 560px;
@@ -306,14 +334,14 @@
     line-height: 1.6;
 }
 
-.scu-getprice-grid {
+.sc-getprice-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     margin-bottom: 28px;
 }
 
-.scu-getprice-card {
+.sc-getprice-card {
     background: #1a1a1a;
     border-radius: 18px;
     padding: 36px 30px;
@@ -326,29 +354,29 @@
     gap: 12px;
 }
 
-.scu-getprice-card:hover {
+.sc-getprice-card:hover {
     border-color: var(--orange);
     transform: translateY(-5px);
     background: #1e1e1e;
 }
 
-.scu-getprice-card--primary {
+.sc-getprice-card--primary {
     border-color: var(--orange);
     background: #1e1200;
 }
 
-.scu-getprice-icon {
+.sc-getprice-icon {
     font-size: 36px;
 }
 
-.scu-getprice-card h3 {
+.sc-getprice-card h3 {
     font-size: 20px;
     font-weight: 800;
     color: var(--white);
     margin: 0;
 }
 
-.scu-getprice-card p {
+.sc-getprice-card p {
     font-size: 15px;
     color: #999;
     line-height: 1.6;
@@ -356,64 +384,64 @@
     flex: 1;
 }
 
-.scu-getprice-cta {
+.sc-getprice-cta {
     font-size: 14px;
     font-weight: 700;
     color: var(--orange);
     margin-top: 8px;
 }
 
-.scu-getprice-note {
+.sc-getprice-note {
     text-align: center;
     font-size: 14px;
     color: #666;
 }
 
-.scu-getprice-note strong {
+.sc-getprice-note strong {
     color: #999;
 }
 
 /* ===== LOCAL TRUST ===== */
 
-.scu-local {
+.sc-local {
     padding: 100px 8%;
     background: var(--white);
 }
 
-.scu-local .scu-inner {
+.sc-local .sc-inner {
     display: flex;
     gap: 80px;
     align-items: center;
 }
 
-.scu-local-text {
+.sc-local-text {
     flex: 1.4;
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
 
-.scu-local-text h2 {
+.sc-local-text h2 {
     font-size: 40px;
     font-weight: 800;
     color: var(--dark);
     margin-bottom: 4px;
 }
 
-.scu-local-text p {
+.sc-local-text p {
     font-size: 17px;
     color: #555;
     line-height: 1.7;
 }
 
-.scu-local-badges {
+.sc-local-badges {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 14px;
 }
 
-.scu-badge {
+.sc-badge {
     background: var(--gray);
     border: 1px solid var(--light-gray);
     border-radius: 10px;
@@ -425,13 +453,13 @@
 
 /* ===== ADDON PILLS ===== */
 
-.scu-addon-row {
+.sc-addon-row {
     margin-top: 32px;
     padding-top: 28px;
     border-top: 1px solid #e8e8e8;
 }
 
-.scu-addon-label {
+.sc-addon-label {
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -441,13 +469,13 @@
     display: block;
 }
 
-.scu-addon-pills {
+.sc-addon-pills {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
 }
 
-.scu-addon-pill {
+.sc-addon-pill {
     display: inline-flex;
     align-items: center;
     gap: 7px;
@@ -463,12 +491,12 @@
     white-space: nowrap;
 }
 
-.scu-addon-pill-icon {
+.sc-addon-pill-icon {
     font-size: 15px;
     line-height: 1;
 }
 
-.scu-addon-pill:hover {
+.sc-addon-pill:hover {
     border-color: var(--orange);
     color: var(--orange);
     background: #fff8f0;
@@ -480,59 +508,59 @@
 
 @media (max-width: 900px) {
 
-    .scu-hero {
+    .sc-hero {
         padding: 60px 8% 70px;
     }
 
-    .scu-hero h1 {
+    .sc-hero h1 {
         font-size: 36px;
     }
 
-    .scu-hero-desc {
+    .sc-hero-desc {
         font-size: 16px;
     }
 
-    .scu-included .scu-inner {
+    .sc-included .sc-inner {
         flex-direction: column;
         gap: 50px;
     }
 
-    .scu-included-image {
+    .sc-included-image {
         width: 100%;
         min-height: 260px;
     }
 
-    .scu-included-content h2 {
+    .sc-included-content h2 {
         font-size: 30px;
     }
 
-    .scu-pricing-grid {
+    .sc-pricing-grid {
         grid-template-columns: 1fr;
     }
 
-    .scu-pricing-header h2 {
+    .sc-pricing-header h2 {
         font-size: 30px;
     }
 
-    .scu-ad-guarantee {
+    .sc-ad-guarantee {
         flex-direction: column;
         gap: 10px;
     }
 
-    .scu-getprice-grid {
+    .sc-getprice-grid {
         grid-template-columns: 1fr;
     }
 
-    .scu-getprice-header h2 {
+    .sc-getprice-header h2 {
         font-size: 30px;
     }
 
-    .scu-local .scu-inner {
+    .sc-local .sc-inner {
         flex-direction: column;
         gap: 50px;
     }
 
-    .scu-local-text h2 {
+    .sc-local-text h2 {
         font-size: 30px;
     }
 }
