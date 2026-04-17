@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -15,20 +14,20 @@
 .credit-stat.accent .credit-stat-value{color:var(--orange);}
 
 .credits-list{display:flex;flex-direction:column;gap:12px;}
-.credit-card{background:var(–white);border:1px solid var(–border);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+.credit-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
 .credit-card.expired{opacity:0.55;}
 .credit-card-left{flex:1;min-width:0;}
 .credit-type-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .credit-type-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.credit-type-icon.amount{background:#fff4ec;color:var(–orange);}
+.credit-type-icon.amount{background:#fff4ec;color:var(--orange);}
 .credit-type-icon.discount{background:#edf7f1;color:#1e8a4a;}
-.credit-label{font-size:14px;font-weight:700;color:var(–text);}
-.credit-sub{font-size:12px;color:var(–text-3);line-height:1.5;}
+.credit-label{font-size:14px;font-weight:700;color:var(--text);}
+.credit-sub{font-size:12px;color:var(--text-3);line-height:1.5;}
 .credit-sub span{display:inline-block;}
 
 .credit-card-right{text-align:right;flex-shrink:0;}
 .credit-amount-big{font-size:20px;font-weight:800;line-height:1.1;margin-bottom:4px;}
-.credit-amount-big.amount{color:var(–orange);}
+.credit-amount-big.amount{color:var(--orange);}
 .credit-amount-big.discount{color:#1e8a4a;}
 
 .bdg-active-credit{background:#edf7f1;color:#1e8a4a;border:1px solid #b6dfc8;}
@@ -37,14 +36,13 @@
 
 .empty-credits{text-align:center;padding:40px 20px;}
 .empty-credits-icon{font-size:36px;margin-bottom:12px;}
-.empty-credits-title{font-size:15px;font-weight:700;color:var(–text);margin-bottom:6px;}
-.empty-credits-sub{font-size:13px;color:var(–text-3);}
+.empty-credits-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.empty-credits-sub{font-size:13px;color:var(--text-3);}
 
 .section-divider{display:flex;align-items:center;gap:12px;margin:28px 0 16px;}
 .section-divider-label{font-size:11px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:#bbb;white-space:nowrap;}
-.section-divider-line{flex:1;height:1px;background:var(–border-light);}
+.section-divider-line{flex:1;height:1px;background:var(--border-light);}
 </style>
-
 </head>
 <body>
 <div class="dash-shell">
@@ -69,41 +67,36 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-```
-<main class="dash-main">
-    <div class="dash-page" style="max-width:720px;">
-        <div class="section-header">
-            <h1 class="section-title">Credits &amp; Deals</h1>
-            <p class="section-sub">Your account credits and available discounts.</p>
+    <main class="dash-main">
+        <div class="dash-page" style="max-width:720px;">
+            <div class="section-header">
+                <h1 class="section-title">Credits &amp; Deals</h1>
+                <p class="section-sub">Your account credits and available discounts.</p>
+            </div>
+
+            <!-- Summary stats -->
+            <div class="credits-summary" id="creditsSummary" style="display:none;">
+                <div class="credit-stat accent">
+                    <div class="credit-stat-label">Account Credit</div>
+                    <div class="credit-stat-value" id="statTotalCredit">$0.00</div>
+                </div>
+                <div class="credit-stat">
+                    <div class="credit-stat-label">Active Discounts</div>
+                    <div class="credit-stat-value" id="statActiveDiscounts">0</div>
+                </div>
+                <div class="credit-stat">
+                    <div class="credit-stat-label">Total Credits</div>
+                    <div class="credit-stat-value" id="statTotalCount">0</div>
+                </div>
+            </div>
+
+            <div id="creditsContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
         </div>
-
-        <!-- Summary stats -->
-        <div class="credits-summary" id="creditsSummary" style="display:none;">
-            <div class="credit-stat accent">
-                <div class="credit-stat-label">Account Credit</div>
-                <div class="credit-stat-value" id="statTotalCredit">$0.00</div>
-            </div>
-            <div class="credit-stat">
-                <div class="credit-stat-label">Active Discounts</div>
-                <div class="credit-stat-value" id="statActiveDiscounts">0</div>
-            </div>
-            <div class="credit-stat">
-                <div class="credit-stat-label">Total Credits</div>
-                <div class="credit-stat-value" id="statTotalCount">0</div>
-            </div>
-        </div>
-
-        <div id="creditsContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
-    </div>
-</main>
-```
-
+    </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
@@ -273,6 +266,5 @@ auth.onAuthStateChanged(async function(user){
     container.innerHTML=html;
 });
 </script>
-
 </body>
 </html>
