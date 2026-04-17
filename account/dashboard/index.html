@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -30,44 +29,39 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-```
-<main class="dash-main">
-    <div class="dash-page">
-        <div class="section-header">
-            <h1 class="section-title">Welcome, <span id="userName">there</span>.</h1>
-            <p class="section-sub">Here's a look at your account.</p>
-        </div>
-        <div class="stat-grid">
-            <div class="stat-card"><span class="stat-label">Next Appointment</span><span class="stat-value" id="statNextAppt">—</span></div>
-            <div class="stat-card"><span class="stat-label">Active Services</span><span class="stat-value" id="statServices">—</span></div>
-            <div class="stat-card"><span class="stat-label">Open Invoices</span><span class="stat-value" id="statOpenInvoices">—</span></div>
-            <div class="stat-card accent"><span class="stat-label">Amount Due</span><span class="stat-value" id="statAmountDue">—</span></div>
-        </div>
-        <div id="reviewPrompt" style="display:none;"></div>
-        <div class="overview-grid">
-            <div class="card">
-                <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="/account/dashboard/appointments/">View all</a></div>
-                <div class="card-body" id="overviewApptBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
+    <main class="dash-main">
+        <div class="dash-page">
+            <div class="section-header">
+                <h1 class="section-title">Welcome, <span id="userName">there</span>.</h1>
+                <p class="section-sub">Here's a look at your account.</p>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-card"><span class="stat-label">Next Appointment</span><span class="stat-value" id="statNextAppt">—</span></div>
+                <div class="stat-card"><span class="stat-label">Active Services</span><span class="stat-value" id="statServices">—</span></div>
+                <div class="stat-card"><span class="stat-label">Open Invoices</span><span class="stat-value" id="statOpenInvoices">—</span></div>
+                <div class="stat-card accent"><span class="stat-label">Amount Due</span><span class="stat-value" id="statAmountDue">—</span></div>
+            </div>
+            <div id="reviewPrompt" style="display:none;"></div>
+            <div class="overview-grid">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="/account/dashboard/appointments/">View all</a></div>
+                    <div class="card-body" id="overviewApptBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Latest Invoice</span><a class="card-link" href="/account/dashboard/invoices/">View all</a></div>
+                    <div class="card-body" id="overviewInvoiceBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
+                </div>
             </div>
             <div class="card">
-                <div class="card-header"><span class="card-title">Latest Invoice</span><a class="card-link" href="/account/dashboard/invoices/">View all</a></div>
-                <div class="card-body" id="overviewInvoiceBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
+                <div class="card-header"><span class="card-title">Active Services</span><a class="card-link" href="/account/dashboard/services/">View all</a></div>
+                <div class="service-chips" id="overviewServiceChips"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header"><span class="card-title">Active Services</span><a class="card-link" href="/account/dashboard/services/">View all</a></div>
-            <div class="service-chips" id="overviewServiceChips"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
-        </div>
-    </div>
-</main>
-```
-
+    </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
@@ -218,6 +212,5 @@ auth.onAuthStateChanged(async function(user){
     chipsEl.innerHTML=allChips.length?allChips.join(''):empty('No active services.');
 });
 </script>
-
 </body>
 </html>
