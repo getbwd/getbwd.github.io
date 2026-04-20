@@ -1509,7 +1509,20 @@ function calcPrice() {
   }
 
   let totalBeforeDiscount = afterFreq + serviceAdded + bedCondAdd + mulchAdd + yardCondAdd;
-  const totalBeforeDiscountHigh = Math.ceil(totalBeforeDiscount * 1.12);
+  let variabilityMultiplier = 1;
+
+// Only add variability if complexity exists
+if (
+  state.services.size > 1 ||
+  state.services.has('gardenbed') ||
+  state.services.has('mulch') ||
+  state.yardCondition === 'overgrown' ||
+  state.yardCondition === 'heavy'
+) {
+  variabilityMultiplier = 1.12;
+}
+
+const totalBeforeDiscountHigh = Math.ceil(totalBeforeDiscount * variabilityMultiplier);
 
   // --- One-time discount: 15% off both ends ---
   let onetimeDiscount = 0;
@@ -1532,7 +1545,11 @@ function showResults() {
   updateMarkupLabels();
   const p = calcPrice();
 
+  if (p.totalLow === p.totalHigh) {
+  document.getElementById('resultRange').textContent = '$' + p.totalLow;
+} else {
   document.getElementById('resultRange').textContent = '$' + p.totalLow + ' – $' + p.totalHigh;
+}
 
   const isRecurring = state.jobType === 'recurring';
   document.getElementById('resultPer').textContent = isRecurring ? 'per visit' : 'one-time service';
