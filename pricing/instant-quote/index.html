@@ -949,7 +949,7 @@ input[type=range].iq-slider {
 
   <div class="iq-nav">
     <button class="iq-btn-back" onclick="goTo('step-2')">← Back</button>
-    <button class="iq-btn-next" onclick="goFromStep3()">Continue &rarr;</button>
+    <button class="iq-btn-next" id="next-3" onclick="goFromStep3()">Continue &rarr;</button>
   </div>
 </div>
 
@@ -1206,8 +1206,9 @@ function goTo(stepId) {
 
   // Show discount banner whenever step-3 is shown
   if (stepId === 'step-3') {
-    maybeShowDiscountBanner();
-  }
+  maybeShowDiscountBanner();
+  updateStep3Button();
+}
 
   // Update progress
   const stepMap = {
@@ -1255,7 +1256,15 @@ function selectCond(el, key) {
   const nextMap = { bedCondition: 'next-5', yardCondition: 'next-7' };
   if (nextMap[key]) document.getElementById(nextMap[key]).disabled = false;
 }
+function canContinueStep3() {
+  return state.services && state.services.size > 0;
+}
 
+function updateStep3Button() {
+  const btn = document.querySelector('#step-3 .iq-btn-next');
+  if (!btn) return;
+  btn.disabled = !canContinueStep3();
+}
 function updateSlider(val) {
   state.customWeeks = parseInt(val);
   document.getElementById('sliderVal').textContent = val + ' weeks';
@@ -1339,6 +1348,7 @@ function toggleService(el) {
 
   updateMarkupLabels();
   updateStepLabels();
+  updateStep3Button();
 }
 
 function updateMarkupLabels() {
@@ -1356,7 +1366,7 @@ function updateMarkupLabels() {
 
 function goFromStep3() {
   // Must have at least one service
-  if (state.services.size === 0) {
+  if (!canContinueStep3()) {
     const notice = document.getElementById('noServiceNotice');
     notice.style.display = 'block';
     return;
