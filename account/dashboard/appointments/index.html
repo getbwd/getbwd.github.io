@@ -106,6 +106,31 @@ function badge(status){
 }
 function jobDate(j){return j.date&&j.date.toDate?j.date.toDate():new Date(j.date||0);}
 
+function createJob(newJobData) {
+  var user = auth.currentUser;
+  if(!user) return;
+
+var data = {
+  uid: user.uid,
+  date: firebase.firestore.Timestamp.fromDate(new Date()),
+  status: 'Scheduled'
+};
+
+for (var key in newJobData) {
+  if (newJobData.hasOwnProperty(key)) {
+    data[key] = newJobData[key];
+  }
+}
+
+db.collection('jobs').add(data)
+  .then(function(docRef){
+    console.log("Job created:", docRef.id);
+  })
+  .catch(function(error){
+    console.error("Error creating job:", error);
+  });
+}
+
 // ── UI wiring ──────────────────────────────────────────────────────────────
 document.getElementById('signOutBtn').addEventListener('click',function(){auth.signOut().then(function(){window.location.href='/account/login/';});});
 document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
@@ -137,7 +162,7 @@ function renderJobs(jobs){
   jobs.forEach(function(job){
     var jobId=job.id;
     var status=job.status||'Scheduled';
-    var d=jobDate(job);
+    var d = job.date && job.date.toDate ? job.date.toDate() : new Date();
     var isScheduled=(status).toLowerCase()==='scheduled';
     var isTarget=jobId===targetHash;
 
@@ -204,7 +229,7 @@ if(!isScheduled){
   }
 }
 
-var bodyClass='job-card-body'+(isTarget?'':' collapsed');
+var bodyClass = 'job-card-body' + (isTarget ? '' : ' collapsed');
 var chevRot=isTarget?'transform:rotate(180deg)':'';
 
 html+='<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
@@ -222,13 +247,13 @@ html+='</div></div>';
 
 });
 
-html+=’</div>’;
+html += '</div>';
 container.innerHTML=html;
 
 // Wire interactions
 jobs.forEach(function(job){
 var jobId=job.id;
-var isScheduled=(job.status||’’).toLowerCase()===‘scheduled’;
+var isScheduled = (job.status || '').toLowerCase() === 'scheduled';
 
 ```
 // Customer note save
@@ -317,23 +342,32 @@ if((job.status||'').toLowerCase()!=='scheduled'){
 
 // Scroll to hash target
 if(targetHash){
-var el=document.getElementById(‘card-’+targetHash);
-if(el)setTimeout(function(){el.scrollIntoView({behavior:‘smooth’,block:‘start’});},100);
+var el = document.getElementById('card-' + targetHash);
+if(el)setTimeout(function(){el.scrollIntoView({behavior:'smooth', block:'start'});},100);
 }
 }
 
-// ── Auth & real-time listener ──────────────────────────────────────────────
 auth.onAuthStateChanged(function(user){
-if(!user){window.location.href=’/account/login/’;return;}
-document.getElementById(‘mobileAvatar’).textContent=initials(user.displayName||’’);
+  if(!user){
+    window.location.href='/account/login/';
+    return;
+  }
 
-db.collection(‘jobs’)
-.where(‘uid’,’==’,user.uid)
-.orderBy(‘date’,‘desc’)
-.onSnapshot(function(snap){
-var jobs=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});
-renderJobs(jobs);
-});
+  document.getElementById('mobileAvatar').textContent =
+    initials(user.displayName || '');
+
+  db.collection('jobs')
+    .where('uid', '==', user.uid)
+    .orderBy('date', 'desc')
+    .onSnapshot(
+  function(snap){
+      var jobs = snap.docs.map(function(d){
+        return Object.assign({id: d.id}, d.data());
+      });
+      renderJobs(jobs);
+    }, function(error){
+      console.error("Firestore listener error:", error);
+    });
 });
 </script>
 
