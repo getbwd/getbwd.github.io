@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,208 +10,241 @@
 </head>
 <body>
 <div class="dash-shell">
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-top"></div>
-        <nav class="sidebar-nav">
-            <a class="nav-item active" href="/account/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
-            <a class="nav-item" href="/account/dashboard/appointments/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
-            <a class="nav-item" href="/account/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
-            <a class="nav-item" href="/account/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
-            <a class="nav-item" href="/account/dashboard/account/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
-        </nav>
-        <div class="sidebar-footer">
-            <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
-        </div>
-    </aside>
-    <header class="mobile-header">
-        <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-        <span class="mobile-brand">BWD Services</span>
-        <div class="mobile-avatar" id="mobileAvatar">?</div>
-    </header>
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top"></div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="/account/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
+      <a class="nav-item" href="/account/dashboard/appointments/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
+      <a class="nav-item" href="/account/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
+      <a class="nav-item" href="/account/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
+      <a class="nav-item" href="/account/dashboard/account/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
+    </div>
+  </aside>
+  <header class="mobile-header">
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <span class="mobile-brand">BWD Services</span>
+    <div class="mobile-avatar" id="mobileAvatar">?</div>
+  </header>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <main class="dash-main">
-        <div class="dash-page">
-            <div class="section-header">
-                <h1 class="section-title">Welcome, <span id="userName">there</span>.</h1>
-                <p class="section-sub">Here's a look at your account.</p>
-            </div>
-            <div class="stat-grid">
-                <div class="stat-card"><span class="stat-label">Next Appointment</span><span class="stat-value" id="statNextAppt">—</span></div>
-                <div class="stat-card"><span class="stat-label">Active Services</span><span class="stat-value" id="statServices">—</span></div>
-                <div class="stat-card"><span class="stat-label">Open Invoices</span><span class="stat-value" id="statOpenInvoices">—</span></div>
-                <div class="stat-card accent"><span class="stat-label">Amount Due</span><span class="stat-value" id="statAmountDue">—</span></div>
-            </div>
-            <div id="reviewPrompt" style="display:none;"></div>
-            <div class="overview-grid">
-                <div class="card">
-                    <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="/account/dashboard/appointments/">View all</a></div>
-                    <div class="card-body" id="overviewApptBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><span class="card-title">Latest Invoice</span><a class="card-link" href="/account/dashboard/invoices/">View all</a></div>
-                    <div class="card-body" id="overviewInvoiceBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header"><span class="card-title">Active Services</span><a class="card-link" href="/account/dashboard/services/">View all</a></div>
-                <div class="service-chips" id="overviewServiceChips"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
-            </div>
+  <main class="dash-main">
+    <div class="dash-page">
+      <div class="section-header">
+        <h1 class="section-title">Welcome, <span id="userName">there</span>.</h1>
+        <p class="section-sub">Here's a look at your account.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card"><span class="stat-label">Next Appointment</span><span class="stat-value" id="statNextAppt">—</span></div>
+        <div class="stat-card"><span class="stat-label">Active Services</span><span class="stat-value" id="statServices">—</span></div>
+        <div class="stat-card"><span class="stat-label">Open Invoices</span><span class="stat-value" id="statOpenInvoices">—</span></div>
+        <div class="stat-card accent"><span class="stat-label">Amount Due</span><span class="stat-value" id="statAmountDue">—</span></div>
+      </div>
+      <div id="reviewPrompt" style="display:none;"></div>
+      <div class="overview-grid">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="/account/dashboard/appointments/">View all</a></div>
+          <div class="card-body" id="overviewApptBody"><span class="loading-text">Loading…</span></div>
         </div>
-    </main>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Latest Invoice</span><a class="card-link" href="/account/dashboard/invoices/">View all</a></div>
+          <div class="card-body" id="overviewInvoiceBody"><span class="loading-text">Loading…</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Active Services</span><a class="card-link" href="/account/dashboard/services/">View all</a></div>
+        <div class="service-chips" id="overviewServiceChips"><span class="loading-text">Loading…</span></div>
+      </div>
+    </div>
+  </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
 <script>
 firebase.initializeApp({
-    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
-    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
-    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
+  apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
+  projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
+  messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
 var auth = firebase.auth();
+var db   = firebase.firestore();
 
-document.getElementById('signOutBtn').addEventListener('click',function(){auth.signOut().then(function(){window.location.href='/account/login/';});});
-document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
-document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');});
-
-// ── Shared utilities ──
+// ── Utilities ──────────────────────────────────────────────────────────────
 function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 function fmtMoney(n){return '$'+Number(n).toFixed(2);}
-function badge(status){
-    var s=(status||'').toLowerCase().trim();
-    var map={
-        'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed',
-        'draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue',
-        'active':'bdg-active','paused':'bdg-paused','on hold':'bdg-overdue','terminated':'bdg-cancelled',
-    };
-    return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
-}
 function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
 
-function parseCSV(text){
-    var rows=[];var lines=text.trim().split('\n');
-    for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;
-        for(var i=0;i<lines[l].length;i++){var c=lines[l][i];
-            if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}
-        cols.push(cur.trim());rows.push(cols);}return rows;}
+function badge(status){
+  var s=(status||'').toLowerCase().trim();
+  var map={
+    'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled',
+    'cancelled':'bdg-cancelled','completed':'bdg-completed','draft':'bdg-default',
+    'payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue',
+    'active':'bdg-active','paused':'bdg-paused','on hold':'bdg-overdue','terminated':'bdg-cancelled'
+  };
+  return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
+}
 
-function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
-function parseLineItems(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});var qty=parseFloat(p[1])||1;var unit=parseFloat(p[2])||0;return{name:p[0]||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit};});}
-function parsePayments(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{date:p[0]||'—',type:p[1]||'—',amount:parseFloat(p[2])||0};});}
-function parseServices(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{name:p[0]||'—',frequency:p[1]||'—',price:parseFloat(p[2])||0,description:p[3]||''};});}
-function invoiceBalance(r){
-    var t=parseLineItems(r[5]).reduce(function(s,i){return s+i.lineTotal;},0);
-    var p=parsePayments(r[6]).reduce(function(s,p){return s+p.amount;},0);
-    return Math.max(0,Math.round((t-p)*100)/100);}
+// Invoice balance: sum lineItems - sum payments
+function invoiceBalance(inv){
+  var total=(inv.lineItems||[]).reduce(function(s,i){return s+(i.qty||1)*(i.unitPrice||0);},0);
+  var paid=(inv.payments||[]).reduce(function(s,p){return s+(p.amount||0);},0);
+  return Math.max(0,Math.round((total-paid)*100)/100);
+}
 
-var CSV_INVOICES='https://docs.google.com/spreadsheets/d/e/2PACX-1vSWX3vado-d6wVWtj4HT_rq9xLYMG-HqYC2wEOLVIefdWjflDEe6XoC3uClWCqWUXqSvYe4Z35HN3TM/pub?gid=0&single=true&output=csv';
-var CSV_SERVICES='https://docs.google.com/spreadsheets/d/e/2PACX-1vRty-4hQ_sZ8nI55zoNkbnjZwOGi5-NgKgDGlvsjP3x0aOmeYWxIZKJRpKIXGFgdkEvr4xmXThjbuRB/pub?gid=0&single=true&output=csv';
-var CSV_JOBS='https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSfVRR2EnvXGH5nZBOesVJdoTl2p3bHun-oFYYSZrg7fEvGXyIDxPkycWTtCjWstt8ccFgpa8wlkg/pub?gid=0&single=true&output=csv';
+// ── UI wiring ──────────────────────────────────────────────────────────────
+document.getElementById('signOutBtn').addEventListener('click',function(){
+  auth.signOut().then(function(){window.location.href='/account/login/';});
+});
+document.getElementById('mobileMenuBtn').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('visible');
+});
+document.getElementById('sidebarOverlay').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('visible');
+});
 
-// ── Cache layer — sessionStorage keyed by UID ──
-async function cachedCSV(key,url){
-    var cacheKey='bwd_csv_'+key;
-    var cached=sessionStorage.getItem(cacheKey);
-    if(cached){try{return JSON.parse(cached);}catch(e){}}
-    var res=await fetch(url);var text=await res.text();
-    var rows=parseCSV(text).slice(1);
-    try{sessionStorage.setItem(cacheKey,JSON.stringify(rows));}catch(e){}
-    return rows;}
+// ── Auth & data ────────────────────────────────────────────────────────────
+auth.onAuthStateChanged(function(user){
+  if(!user){window.location.href='/account/login/';return;}
 
-auth.onAuthStateChanged(async function(user){
-    if(!user){window.location.href='/account/login/';return;}
-    var name=user.displayName||'there';
-    document.getElementById('userName').textContent=name.split(' ')[0];
-    document.getElementById('mobileAvatar').textContent=initials(name);
-    var uid=user.uid;
+  var name=user.displayName||'there';
+  document.getElementById('userName').textContent=name.split(' ')[0];
+  document.getElementById('mobileAvatar').textContent=initials(name);
 
-    var results=await Promise.all([cachedCSV('invoices',CSV_INVOICES),cachedCSV('services',CSV_SERVICES),cachedCSV('jobs',CSV_JOBS)]);
-    var invoiceRows=results[0];var serviceRows=results[1];var jobRows=results[2];
+  var uid=user.uid;
+  var now=new Date(); now.setHours(0,0,0,0);
+  var fiveDaysAgo=new Date(); fiveDaysAgo.setDate(fiveDaysAgo.getDate()-5); fiveDaysAgo.setHours(0,0,0,0);
 
-    var myInvoices=invoiceRows.filter(function(r){return r[1]===uid;});
-    var myServices=serviceRows.filter(function(r){return r[0]===uid;});
-    var myJobs=jobRows.filter(function(r){return r[1]===uid;});
+  // Three parallel real-time listeners — each updates its own section independently
+  // so whatever loads first renders immediately, no waiting for the others.
 
-    // ── Review prompt — completed jobs within last 5 days with no local review ──
-    var fiveDaysAgo=new Date();fiveDaysAgo.setDate(fiveDaysAgo.getDate()-5);fiveDaysAgo.setHours(0,0,0,0);
-    var reviewPromptJob=null;
-    var completedRecent=myJobs.filter(function(r){
-        if((r[2]||'').toLowerCase()!=='completed')return false;
-        var d=new Date(r[3]);
-        return d>=fiveDaysAgo&&d<=new Date();
-    }).sort(function(a,b){return new Date(b[3])-new Date(a[3]);});
-    for(var ri=0;ri<completedRecent.length;ri++){
-        var jr=completedRecent[ri];
-        var jId=(jr[0]||'').trim();
-        var saved=null;try{saved=JSON.parse(localStorage.getItem('bwd_review_'+jId));}catch(e){}
-        if(!saved||(!saved.rating&&!saved.feedback)){reviewPromptJob=jr;break;}
-    }
-    var promptEl=document.getElementById('reviewPrompt');
-    if(reviewPromptJob&&promptEl){
-        var rpId=(reviewPromptJob[0]||'').trim();
-        var rpNames=(parseLineItems(reviewPromptJob[6]).map(function(i){return i.name;}).join(', '))||'your recent visit';
-        var rpDate=new Date(reviewPromptJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-        promptEl.style.display='block';
-        promptEl.innerHTML='<a href="/account/dashboard/appointments/#'+rpId+'" style="text-decoration:none;"><div style="background:var(--orange-dim);border:1px solid rgba(224,90,18,0.25);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;"><div><p style="font-size:13px;font-weight:700;color:var(--orange-dark);margin-bottom:2px;">⭐ How was your visit on '+rpDate+'?</p><p style="font-size:12px;color:var(--orange-dark);opacity:0.8;">'+rpNames+' — tap to leave a rating and feedback.</p></div><span style="font-size:20px;">→</span></div></a>';
-    }
+  // ── JOBS listener ──
+  db.collection('jobs')
+    .where('uid','==',uid)
+    .onSnapshot(function(snap){
+      var jobs=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});
 
-    // Next appointment
-    var now=new Date();now.setHours(0,0,0,0);
-    var upcoming=myJobs.filter(function(r){
-        var s=(r[2]||'').toLowerCase();
-        return new Date(r[3])>=now&&s!=='cancelled'&&s!=='completed';
-    }).sort(function(a,b){return new Date(a[3])-new Date(b[3]);});
-    var nextJob=upcoming[0]||null;
-    document.getElementById('statNextAppt').textContent=nextJob
-        ?new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric'})
+      // Next appointment stat
+      var upcoming=jobs.filter(function(j){
+        var s=(j.status||'').toLowerCase();
+        var d=j.date&&j.date.toDate?j.date.toDate():new Date(j.date||0);
+        return d>=now && s!=='cancelled' && s!=='canceled' && s!=='completed';
+      }).sort(function(a,b){
+        var da=a.date&&a.date.toDate?a.date.toDate():new Date(a.date||0);
+        var db2=b.date&&b.date.toDate?b.date.toDate():new Date(b.date||0);
+        return da-db2;
+      });
+      var nextJob=upcoming[0]||null;
+      document.getElementById('statNextAppt').textContent=nextJob
+        ?(nextJob.date&&nextJob.date.toDate?nextJob.date.toDate():new Date(nextJob.date))
+            .toLocaleDateString('en-US',{month:'short',day:'numeric'})
         :'None scheduled';
 
-    // Services count — all unique service names across all rows
-    var allSvcNames={};
-    myServices.forEach(function(row){parseServices(row[3]).forEach(function(s){allSvcNames[s.name]=true;});});
-    document.getElementById('statServices').textContent=Object.keys(allSvcNames).length;
+      // Upcoming appointment card
+      var apptEl=document.getElementById('overviewApptBody');
+      if(nextJob){
+        var names=(nextJob.lineItems||[]).map(function(i){return i.name;}).join(', ')||'Service Visit';
+        var d=nextJob.date&&nextJob.date.toDate?nextJob.date.toDate():new Date(nextJob.date);
+        var dateStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        var time=nextJob.time?' · '+nextJob.time:'';
+        apptEl.innerHTML='<a href="/account/dashboard/appointments/#'+nextJob.id+'" style="text-decoration:none;display:block;"><div class="ov-row" style="cursor:pointer;"><div><p class="ov-title" style="color:var(--orange);">'+names+'</p><p class="ov-sub">'+dateStr+time+'</p></div>'+badge(nextJob.status||'Scheduled')+'</div></a>';
+      } else {apptEl.innerHTML=empty('No upcoming appointments.');}
 
-    // Open invoices & amount due — balance > 0.01 means open, exclude drafts
-    var openInv=myInvoices.filter(function(r){return invoiceBalance(r)>=0.01 && (r[3]||'').toLowerCase()!=='draft';});
-    document.getElementById('statOpenInvoices').textContent=openInv.length;
-    var totalDue=openInv.reduce(function(s,r){return s+invoiceBalance(r);},0);
-    document.getElementById('statAmountDue').textContent=fmtMoney(totalDue);
+      // Review prompt — completed jobs within last 5 days with no local review
+      var completedRecent=jobs.filter(function(j){
+        if((j.status||'').toLowerCase()!=='completed') return false;
+        var d=j.date&&j.date.toDate?j.date.toDate():new Date(j.date||0);
+        return d>=fiveDaysAgo && d<=new Date();
+      }).sort(function(a,b){
+        var da=a.date&&a.date.toDate?a.date.toDate():new Date(a.date||0);
+        var db2=b.date&&b.date.toDate?b.date.toDate():new Date(b.date||0);
+        return db2-da;
+      });
 
-    // Upcoming appointment card — clickable link to detail
-    var apptEl=document.getElementById('overviewApptBody');
-    if(nextJob){
-        var names=(parseLineItems(nextJob[6]).map(function(i){return i.name;}).join(', '))||'Service Visit';
-        var dateStr=new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        var time=nextJob[4]?' · '+nextJob[4]:'';
-        var jobId=nextJob[0];
-        apptEl.innerHTML='<a href="/account/dashboard/appointments/#'+jobId+'" style="text-decoration:none;display:block;"><div class="ov-row" style="cursor:pointer;"><div><p class="ov-title" style="color:var(--orange);">'+names+'</p><p class="ov-sub">'+dateStr+time+'</p></div>'+badge(nextJob[2]||'Scheduled')+'</div></a>';
-    } else {apptEl.innerHTML=empty('No upcoming appointments.');}
-
-    // Latest invoice card — clickable
-    var invEl=document.getElementById('overviewInvoiceBody');
-    var sortedInv=myInvoices.filter(function(r){return (r[3]||'').toLowerCase()!=='draft';}).slice().sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
-    var latest=sortedInv[0]||null;
-    if(latest){
-        var items=parseLineItems(latest[5]);
-        var total=items.reduce(function(s,i){return s+i.lineTotal;},0);
-        var balance=invoiceBalance(latest);
-        var desc=items.map(function(i){return i.name;}).join(', ')||'Invoice';
-        var dStr=new Date(latest[4]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        invEl.innerHTML='<a href="/account/dashboard/invoices/#'+latest[0]+'" style="text-decoration:none;display:block;"><div class="ov-row" style="cursor:pointer;"><div><p class="ov-title" style="color:var(--orange);">'+desc+'</p><p class="ov-sub">'+dStr+' · #'+latest[0]+'</p></div><div style="text-align:right"><p class="ov-title mono">'+fmtMoney(balance>0?balance:total)+'</p>'+badge(latest[3])+'</div></div></a>';
-    } else {invEl.innerHTML=empty('No invoices yet.');}
-
-    // Service chips — all rows, all services
-    var chipsEl=document.getElementById('overviewServiceChips');
-    var allChips=[];
-    myServices.forEach(function(row){
-        var isActive=(row[2]||'').toLowerCase()==='active';
-        parseServices(row[3]).forEach(function(s){
-            allChips.push('<a href="/account/dashboard/services/" style="text-decoration:none;"><span class="svc-chip '+(isActive?'active':'')+'">'+s.name+'</span></a>');
-        });
+      var reviewPromptJob=null;
+      for(var ri=0;ri<completedRecent.length;ri++){
+        var jr=completedRecent[ri];
+        // Rating lives directly on the job doc now (not localStorage)
+        if(!jr.rating && !jr.feedback){reviewPromptJob=jr;break;}
+      }
+      var promptEl=document.getElementById('reviewPrompt');
+      if(reviewPromptJob&&promptEl){
+        var rpNames=(reviewPromptJob.lineItems||[]).map(function(i){return i.name;}).join(', ')||'your recent visit';
+        var rpD=reviewPromptJob.date&&reviewPromptJob.date.toDate?reviewPromptJob.date.toDate():new Date(reviewPromptJob.date);
+        var rpDate=rpD.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        promptEl.style.display='block';
+        promptEl.innerHTML='<a href="/account/dashboard/appointments/#'+reviewPromptJob.id+'" style="text-decoration:none;"><div style="background:var(--orange-dim);border:1px solid rgba(224,90,18,0.25);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;"><div><p style="font-size:13px;font-weight:700;color:var(--orange-dark);margin-bottom:2px;">⭐ How was your visit on '+rpDate+'?</p><p style="font-size:12px;color:var(--orange-dark);opacity:0.8;">'+rpNames+' — tap to leave a rating and feedback.</p></div><span style="font-size:20px;">→</span></div></a>';
+      } else if(promptEl){promptEl.style.display='none';}
     });
-    chipsEl.innerHTML=allChips.length?allChips.join(''):empty('No active services.');
+
+  // ── INVOICES listener ──
+  db.collection('invoices')
+    .where('uid','==',uid)
+    .onSnapshot(function(snap){
+      var invoices=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());})
+        .filter(function(inv){return (inv.status||'').toLowerCase()!=='draft';});
+
+      // Stats
+      var openInv=invoices.filter(function(inv){return invoiceBalance(inv)>=0.01;});
+      document.getElementById('statOpenInvoices').textContent=openInv.length;
+      var totalDue=openInv.reduce(function(s,inv){return s+invoiceBalance(inv);},0);
+      document.getElementById('statAmountDue').textContent=fmtMoney(totalDue);
+
+      // Latest invoice card
+      var invEl=document.getElementById('overviewInvoiceBody');
+      var sorted=invoices.slice().sort(function(a,b){
+        var da=a.date&&a.date.toDate?a.date.toDate():new Date(a.date||0);
+        var db2=b.date&&b.date.toDate?b.date.toDate():new Date(b.date||0);
+        return db2-da;
+      });
+      var latest=sorted[0]||null;
+      if(latest){
+        var total=(latest.lineItems||[]).reduce(function(s,i){return s+(i.qty||1)*(i.unitPrice||0);},0);
+        var balance=invoiceBalance(latest);
+        var desc=(latest.lineItems||[]).map(function(i){return i.name;}).join(', ')||'Invoice';
+        var d=latest.date&&latest.date.toDate?latest.date.toDate():new Date(latest.date||0);
+        var dStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        invEl.innerHTML='<a href="/account/dashboard/invoices/#'+latest.id+'" style="text-decoration:none;display:block;"><div class="ov-row" style="cursor:pointer;"><div><p class="ov-title" style="color:var(--orange);">'+desc+'</p><p class="ov-sub">'+dStr+' · #'+latest.id+'</p></div><div style="text-align:right"><p class="ov-title mono">'+fmtMoney(balance>0?balance:total)+'</p>'+badge(latest.status)+'</div></div></a>';
+      } else {invEl.innerHTML=empty('No invoices yet.');}
+    });
+
+  // ── SERVICES listener ──
+  db.collection('services')
+    .where('uid','==',uid)
+    .onSnapshot(function(snap){
+      var services=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});
+
+      // Active service count — unique service names across all active plans
+      var allNames={};
+      services.forEach(function(plan){
+        if((plan.status||'').toLowerCase()==='active'){
+          (plan.services||[]).forEach(function(s){allNames[s.name]=true;});
+        }
+      });
+      document.getElementById('statServices').textContent=Object.keys(allNames).length;
+
+      // Service chips
+      var chipsEl=document.getElementById('overviewServiceChips');
+      var chips=[];
+      services.forEach(function(plan){
+        var isActive=(plan.status||'').toLowerCase()==='active';
+        (plan.services||[]).forEach(function(s){
+          chips.push('<a href="/account/dashboard/services/" style="text-decoration:none;"><span class="svc-chip '+(isActive?'active':'')+'">'+s.name+'</span></a>');
+        });
+      });
+      chipsEl.innerHTML=chips.length?chips.join(''):empty('No active services.');
+    });
 });
 </script>
+
 </body>
 </html>

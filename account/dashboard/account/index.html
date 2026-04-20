@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,7 +14,7 @@
 .acct-section-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px;}
 .form-row{display:flex;flex-direction:column;gap:5px;}
 .form-label{font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;color:#bbb;}
-.form-input{border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);width:100%;transition:border-color 0.15s;}
+.form-input{border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);width:100%;box-sizing:border-box;transition:border-color 0.15s;}
 .form-input:focus{outline:none;border-color:var(--orange);}
 .form-textarea{resize:vertical;min-height:72px;}
 .phone-row{display:flex;gap:8px;}
@@ -40,8 +41,6 @@
 .property-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 .btn-link{background:none;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;color:var(--orange);padding:0;text-decoration:underline;}
 .btn-link.danger{color:#d93025;}
-.primary-toggle{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-3);font-weight:500;cursor:pointer;user-select:none;}
-.primary-toggle input[type=checkbox]{accent-color:var(--orange);width:14px;height:14px;cursor:pointer;}
 .add-property-form{border:1.5px dashed var(--border);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;}
 .btn-add-property{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;border:1.5px solid var(--border);background:var(--white);color:var(--text-2);cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color 0.15s,color 0.15s;}
 .btn-add-property:hover{border-color:var(--orange);color:var(--orange);}
@@ -71,394 +70,358 @@
 </head>
 <body>
 <div class="dash-shell">
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-top"></div>
-        <nav class="sidebar-nav">
-            <a class="nav-item" href="/account/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
-            <a class="nav-item" href="/account/dashboard/appointments/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
-            <a class="nav-item" href="/account/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
-            <a class="nav-item" href="/account/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
-            <a class="nav-item active" href="/account/dashboard/account/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
-        </nav>
-        <div class="sidebar-footer">
-            <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top"></div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="/account/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
+      <a class="nav-item" href="/account/dashboard/appointments/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
+      <a class="nav-item" href="/account/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
+      <a class="nav-item" href="/account/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
+      <a class="nav-item active" href="/account/dashboard/account/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
+    </div>
+  </aside>
+  <header class="mobile-header">
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <span class="mobile-brand">BWD Services</span>
+    <div class="mobile-avatar" id="mobileAvatar">?</div>
+  </header>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <main class="dash-main">
+    <div class="dash-page" style="max-width:680px;">
+      <div class="section-header">
+        <h1 class="section-title">Account</h1>
+        <p class="section-sub">Your profile, contact details, and properties.</p>
+      </div>
+
+```
+  <!-- Profile (read-only) -->
+  <div class="acct-section">
+    <div class="account-avatar-row">
+      <div class="account-avatar" id="accountAvatar">?</div>
+      <div>
+        <p class="account-name" id="accountName">—</p>
+        <p class="account-since" id="accountSince"></p>
+      </div>
+    </div>
+    <div class="account-fields">
+      <div class="account-field"><span class="afl">Full Name</span><span class="afv" id="afName">—</span></div>
+      <div class="account-field"><span class="afl">Email</span><span class="afv" id="afEmail">—</span></div>
+      <div class="account-field"><span class="afl">Sign-in Method</span><span class="afv" id="afProvider">—</span></div>
+      <div class="account-field"><span class="afl">UID</span><span class="afv uid" id="afUid">—</span></div>
+    </div>
+    <div class="account-actions-row">
+      <button class="btn-secondary" id="changePasswordBtn">Change Password</button>
+      <button class="btn-danger" id="signOutBtn2">Sign Out</button>
+    </div>
+    <div class="acct-msg" id="accountMessage"></div>
+  </div>
+
+  <!-- Contact & Preferences -->
+  <div class="acct-section">
+    <div class="acct-section-header"><span class="acct-section-title">Contact &amp; Preferences</span></div>
+    <div class="acct-section-body">
+      <div class="form-row">
+        <label class="form-label" for="phoneInput">Phone Number</label>
+        <div class="phone-row">
+          <input class="phone-prefix" id="phoneCountry" type="text" value="+1" maxlength="4">
+          <input class="form-input" id="phoneInput" type="tel" placeholder="(555) 555-5555" maxlength="14">
         </div>
-    </aside>
-    <header class="mobile-header">
-        <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-        <span class="mobile-brand">BWD Services</span>
-        <div class="mobile-avatar" id="mobileAvatar">?</div>
-    </header>
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <main class="dash-main">
-        <div class="dash-page" style="max-width:680px;">
-            <div class="section-header">
-                <h1 class="section-title">Account</h1>
-                <p class="section-sub">Your profile, contact details, and properties.</p>
-            </div>
-
-            <!-- Profile (read-only) -->
-            <div class="acct-section">
-                <div class="account-avatar-row">
-                    <div class="account-avatar" id="accountAvatar">?</div>
-                    <div>
-                        <p class="account-name" id="accountName">—</p>
-                        <p class="account-since" id="accountSince"></p>
-                    </div>
-                </div>
-                <div class="account-fields">
-                    <div class="account-field"><span class="afl">Full Name</span><span class="afv" id="afName">—</span></div>
-                    <div class="account-field"><span class="afl">Email</span><span class="afv" id="afEmail">—</span></div>
-                    <div class="account-field"><span class="afl">Sign-in Method</span><span class="afv" id="afProvider">—</span></div>
-                    <div class="account-field"><span class="afl">UID</span><span class="afv uid" id="afUid">—</span></div>
-                </div>
-                <div class="account-actions-row">
-                    <button class="btn-secondary" id="changePasswordBtn">Change Password</button>
-                    <button class="btn-danger" id="signOutBtn2">Sign Out</button>
-                </div>
-                <div class="acct-msg" id="accountMessage"></div>
-            </div>
-
-            <!-- Contact & Preferences -->
-            <div class="acct-section">
-                <div class="acct-section-header"><span class="acct-section-title">Contact &amp; Preferences</span></div>
-                <div class="acct-section-body">
-                    <div class="form-row">
-                        <label class="form-label" for="phoneInput">Phone Number</label>
-                        <div class="phone-row">
-                            <input class="phone-prefix" id="phoneCountry" type="text" value="+1" maxlength="4">
-                            <input class="form-input" id="phoneInput" type="tel" placeholder="(555) 555-5555" maxlength="14">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label class="form-label">Preferred Contact Method</label>
-                        <div class="contact-pills" id="contactPills">
-                            <button class="contact-pill" data-method="Phone">📞 Phone</button>
-                            <button class="contact-pill" data-method="Text">💬 Text</button>
-                            <button class="contact-pill" data-method="Email">✉️ Email</button>
-                        </div>
-                    </div>
-                    <div class="save-row">
-                        <button class="btn-save" id="saveContactBtn">Save</button>
-                        <span class="save-status" id="contactStatus"></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Properties -->
-            <div class="acct-section">
-                <div class="acct-section-header"><span class="acct-section-title">My Properties</span></div>
-                <div class="acct-section-body">
-                    <div class="property-list" id="propertyList"><p style="font-size:13px;color:#ccc;">Loading…</p></div>
-                    <div id="addPropertyFormWrap" style="display:none;">
-                        <div class="add-property-form">
-                            <div class="form-row">
-                                <label class="form-label" for="newPropAddress">Address</label>
-                                <input class="form-input" id="newPropAddress" type="text" placeholder="2905 Wyoming Ave, Flint, MI 48506">
-                                <span style="font-size:11px;color:var(--text-3);margin-top:2px;">Format: 1234 Road Name, City, State ZIP</span>
-                            </div>
-                            <div class="form-row">
-                                <label class="form-label" for="newPropNotes">Property Notes</label>
-                                <textarea class="form-input form-textarea" id="newPropNotes" placeholder="Gate code, parking, special instructions…"></textarea>
-                            </div>
-                            <div class="save-row" style="gap:8px;">
-                                <button class="btn-save" id="savePropBtn">Add Property</button>
-                                <button class="btn-cancel" id="cancelPropBtn">Cancel</button>
-                                <span class="save-status" id="propAddStatus"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn-add-property" id="showAddPropBtn">
-                        <span style="font-size:18px;line-height:1;">+</span> Add Property
-                    </button>
-                </div>
-            </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Preferred Contact Method</label>
+        <div class="contact-pills" id="contactPills">
+          <button class="contact-pill" data-method="Phone">📞 Phone</button>
+          <button class="contact-pill" data-method="Text">💬 Text</button>
+          <button class="contact-pill" data-method="Email">✉️ Email</button>
         </div>
-    </main>
+      </div>
+      <div class="save-row">
+        <button class="btn-save" id="saveContactBtn">Save</button>
+        <span class="save-status" id="contactStatus"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Properties -->
+  <div class="acct-section">
+    <div class="acct-section-header"><span class="acct-section-title">My Properties</span></div>
+    <div class="acct-section-body">
+      <div class="property-list" id="propertyList"><p class="loading-text">Loading…</p></div>
+      <div id="addPropertyFormWrap" style="display:none;">
+        <div class="add-property-form">
+          <div class="form-row">
+            <label class="form-label" for="newPropAddress">Address</label>
+            <input class="form-input" id="newPropAddress" type="text" placeholder="2905 Wyoming Ave, Flint, MI 48506">
+            <span style="font-size:11px;color:var(--text-3);margin-top:2px;">Format: 1234 Road Name, City, State ZIP</span>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="newPropNotes">Property Notes</label>
+            <textarea class="form-input form-textarea" id="newPropNotes" placeholder="Gate code, parking, special instructions…"></textarea>
+          </div>
+          <div class="save-row" style="gap:8px;">
+            <button class="btn-save" id="savePropBtn">Add Property</button>
+            <button class="btn-cancel" id="cancelPropBtn">Cancel</button>
+            <span class="save-status" id="propAddStatus"></span>
+          </div>
+        </div>
+      </div>
+      <button class="btn-add-property" id="showAddPropBtn">
+        <span style="font-size:18px;line-height:1;">+</span> Add Property
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+  </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
 <script>
 firebase.initializeApp({
-    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
-    authDomain:'bwd-accounts.firebaseapp.com',
-    projectId:'bwd-accounts',
-    storageBucket:'bwd-accounts.firebasestorage.app',
-    messagingSenderId:'590001375282',
-    appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
+  apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+  authDomain:'bwd-accounts.firebaseapp.com',
+  projectId:'bwd-accounts',
+  storageBucket:'bwd-accounts.firebasestorage.app',
+  messagingSenderId:'590001375282',
+  appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
-var auth = firebase.auth();
-var db   = firebase.firestore();
+var auth=firebase.auth();
+var db=firebase.firestore();
 
-// ── Sign out ──
-function doSignOut(){ auth.signOut().then(function(){ window.location.href='/account/login/'; }); }
-document.getElementById('signOutBtn').addEventListener('click', doSignOut);
-document.getElementById('signOutBtn2').addEventListener('click', doSignOut);
+function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
 
-// ── Mobile sidebar ──
-document.getElementById('mobileMenuBtn').addEventListener('click', function(){
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebarOverlay').classList.add('visible');
-});
-document.getElementById('sidebarOverlay').addEventListener('click', function(){
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-});
-
-// ── Utilities ──
-function initials(n){ return n ? n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2) : '?'; }
+function doSignOut(){auth.signOut().then(function(){window.location.href='/account/login/';});}
+document.getElementById('signOutBtn').addEventListener('click',doSignOut);
+document.getElementById('signOutBtn2').addEventListener('click',doSignOut);
+document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
+document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');});
 
 function formatPhone(raw){
-    var d = raw.replace(/\D/g,'').slice(0,10);
-    if(d.length <= 3) return d.length ? '('+d : '';
-    if(d.length <= 6) return '('+d.slice(0,3)+') '+d.slice(3);
-    return '('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6);
+  var d=raw.replace(/\D/g,'').slice(0,10);
+  if(d.length<=3)return d.length?'('+d:'';
+  if(d.length<=6)return '('+d.slice(0,3)+') '+d.slice(3);
+  return '('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6);
 }
-document.getElementById('phoneInput').addEventListener('input', function(){
-    this.value = formatPhone(this.value);
-});
+document.getElementById('phoneInput').addEventListener('input',function(){this.value=formatPhone(this.value);});
 
-// ── Contact method pills ──
-var selectedMethod = '';
+var selectedMethod='';
 document.querySelectorAll('.contact-pill').forEach(function(pill){
-    pill.addEventListener('click', function(){
-        document.querySelectorAll('.contact-pill').forEach(function(p){ p.classList.remove('selected'); });
-        pill.classList.add('selected');
-        selectedMethod = pill.dataset.method;
-    });
+  pill.addEventListener('click',function(){
+    document.querySelectorAll('.contact-pill').forEach(function(p){p.classList.remove('selected');});
+    pill.classList.add('selected');
+    selectedMethod=pill.dataset.method;
+  });
 });
 
-// ── Properties state ──
-var properties = [];
+var properties=[];
+var activeUid='';
 
-function genId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+
+function firestoreSave(data,statusEl,cb){
+  if(!activeUid){if(statusEl){statusEl.textContent='Not signed in.';statusEl.className='save-status err';}return;}
+  if(statusEl){statusEl.textContent='Saving…';statusEl.className='save-status';}
+  db.collection('customers').doc(activeUid).set(data,{merge:true})
+    .then(function(){
+      if(statusEl){statusEl.textContent='Saved!';statusEl.className='save-status ok';}
+      if(cb)cb(null);
+      setTimeout(function(){if(statusEl&&statusEl.textContent==='Saved!')statusEl.textContent='';},3000);
+    })
+    .catch(function(e){
+      if(statusEl){statusEl.textContent='Error: '+(e.message||'Permission denied');statusEl.className='save-status err';}
+      if(cb)cb(e);
+    });
+}
 
 function renderProperties(){
-    var list = document.getElementById('propertyList');
-    if(!properties.length){
-        list.innerHTML = '<p style="font-size:13px;color:#ccc;text-align:center;padding:6px 0;">No properties added yet.</p>';
-        return;
-    }
-    list.innerHTML = '';
-    properties.forEach(function(prop){
-        var card = document.createElement('div');
-        card.className = 'property-card' + (prop.primary ? ' is-primary' : '');
-        card.id = 'prop-card-' + prop.id;
-        card.innerHTML =
-            '<div class="property-card-top">' +
-                '<span class="property-address-display">' + prop.address + '</span>' +
-                (prop.primary ? '<span class="primary-badge">Primary</span>' : '') +
-            '</div>' +
-            (prop.notes ? '<p class="property-notes-display">' + prop.notes + '</p>' : '') +
-            '<div class="property-actions">' +
-                (!prop.primary ? '<button class="btn-link" onclick="setPrimary(\'' + prop.id + '\')">Set as Primary</button>' : '') +
-                '<button class="btn-link" onclick="editProperty(\'' + prop.id + '\')">Edit</button>' +
-                '<button class="btn-link danger" onclick="removeProperty(\'' + prop.id + '\')">Remove</button>' +
-            '</div>';
-        list.appendChild(card);
-    });
-}
-
-// These functions call firestoreSave which uses the activeUid set after auth resolves
-var activeUid = '';
-
-function firestoreSave(data, statusEl, cb){
-    if(!activeUid){ if(statusEl){statusEl.textContent='Not signed in.';statusEl.className='save-status err';} return; }
-    if(statusEl){ statusEl.textContent='Saving…'; statusEl.className='save-status'; }
-    db.collection('customers').doc(activeUid).set(data, {merge:true})
-        .then(function(){
-            if(statusEl){ statusEl.textContent='Saved!'; statusEl.className='save-status ok'; }
-            if(cb) cb(null);
-            setTimeout(function(){ if(statusEl&&statusEl.textContent==='Saved!') statusEl.textContent=''; }, 3000);
-        })
-        .catch(function(e){
-            console.error('Firestore write error:', e);
-            if(statusEl){ statusEl.textContent='Error: '+(e.message||'Permission denied'); statusEl.className='save-status err'; }
-            if(cb) cb(e);
-        });
+  var list=document.getElementById('propertyList');
+  if(!properties.length){
+    list.innerHTML='<p style="font-size:13px;color:#ccc;text-align:center;padding:6px 0;">No properties added yet.</p>';
+    return;
+  }
+  list.innerHTML='';
+  properties.forEach(function(prop){
+    var card=document.createElement('div');
+    card.className='property-card'+(prop.primary?' is-primary':'');
+    card.id='prop-card-'+prop.id;
+    card.innerHTML=
+      '<div class="property-card-top">'+
+        '<span class="property-address-display">'+prop.address+'</span>'+
+        (prop.primary?'<span class="primary-badge">Primary</span>':'')+
+      '</div>'+
+      (prop.notes?'<p class="property-notes-display">'+prop.notes+'</p>':'')+
+      '<div class="property-actions">'+
+        (!prop.primary?'<button class="btn-link" onclick="setPrimary(\''+prop.id+'\')">Set as Primary</button>':'')+
+        '<button class="btn-link" onclick="editProperty(\''+prop.id+'\')">Edit</button>'+
+        '<button class="btn-link danger" onclick="removeProperty(\''+prop.id+'\')">Remove</button>'+
+      '</div>';
+    list.appendChild(card);
+  });
 }
 
 function setPrimary(id){
-    properties = properties.map(function(p){ return Object.assign({},p,{primary:p.id===id}); });
-    firestoreSave({properties:properties}, null, function(){ renderProperties(); });
+  properties=properties.map(function(p){return Object.assign({},p,{primary:p.id===id});});
+  firestoreSave({properties:properties},null,function(){renderProperties();});
 }
 
 function removeProperty(id){
-    var prop = properties.find(function(p){ return p.id===id; });
-    if(!prop) return;
-    if(prop.primary && properties.length===1){ alert('Add another property before removing the only one.'); return; }
-    if(prop.primary){
-        var others = properties.filter(function(p){ return p.id!==id; });
-        if(others.length) others[0].primary = true;
-    }
-    properties = properties.filter(function(p){ return p.id!==id; });
-    firestoreSave({properties:properties}, null, function(){ renderProperties(); });
+  var prop=properties.find(function(p){return p.id===id;});
+  if(!prop)return;
+  if(prop.primary&&properties.length===1){alert('Add another property before removing the only one.');return;}
+  if(prop.primary){var others=properties.filter(function(p){return p.id!==id;});if(others.length)others[0].primary=true;}
+  properties=properties.filter(function(p){return p.id!==id;});
+  firestoreSave({properties:properties},null,function(){renderProperties();});
 }
 
 function editProperty(id){
-    var prop = properties.find(function(p){ return p.id===id; });
-    if(!prop) return;
-    var card = document.getElementById('prop-card-'+id);
-    card.innerHTML =
-        '<div class="property-edit-form">' +
-            '<div class="form-row"><label class="form-label">Address</label>' +
-            '<input class="form-input" id="ea-'+id+'" type="text" value="'+prop.address+'"></div>' +
-            '<div class="form-row"><label class="form-label">Property Notes</label>' +
-            '<textarea class="form-input form-textarea" id="en-'+id+'">'+prop.notes+'</textarea></div>' +
-            '<div class="property-actions" style="align-items:center;">' +
-                '<label class="primary-toggle">' +
-                    '<input type="checkbox" id="ep-'+id+'" '+(prop.primary?'checked':'')+
-                    (prop.primary&&properties.length===1?' disabled':'')+'>Primary property</label>' +
-                '<button class="btn-save" onclick="saveEditProperty(\''+id+'\')">Save</button>' +
-                '<button class="btn-cancel" onclick="renderProperties()">Cancel</button>' +
-                '<span id="es-'+id+'" class="save-status"></span>' +
-            '</div>' +
-        '</div>';
+  var prop=properties.find(function(p){return p.id===id;});
+  if(!prop)return;
+  var card=document.getElementById('prop-card-'+id);
+  card.innerHTML=
+    '<div class="property-edit-form">'+
+      '<div class="form-row"><label class="form-label">Address</label>'+
+      '<input class="form-input" id="ea-'+id+'" type="text" value="'+prop.address+'"></div>'+
+      '<div class="form-row"><label class="form-label">Property Notes</label>'+
+      '<textarea class="form-input form-textarea" id="en-'+id+'">'+prop.notes+'</textarea></div>'+
+
+```
+  '<div class="property-actions" style="align-items:center;">'+
+    '<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-3);font-weight:500;cursor:pointer;">'+
+      '<input type="checkbox" id="ep-'+id+'" '+(prop.primary?'checked':'')+
+      (prop.primary&&properties.length===1?' disabled':'')+' style="accent-color:var(--orange);width:14px;height:14px;">Primary property</label>'+
+    '<button class="btn-save" onclick="saveEditProperty(\''+id+'\')">Save</button>'+
+    '<button class="btn-cancel" onclick="renderProperties()">Cancel</button>'+
+    '<span id="es-'+id+'" class="save-status"></span>'+
+  '</div>'+
+'</div>';
+```
+
 }
 
 function saveEditProperty(id){
-    var addr  = (document.getElementById('ea-'+id)||{}).value||'';
-    var notes = (document.getElementById('en-'+id)||{}).value||'';
-    var isPrimary = document.getElementById('ep-'+id) ? document.getElementById('ep-'+id).checked : false;
-    addr = addr.trim();
-    if(!addr){ alert('Please enter an address.'); return; }
-    if(isPrimary){ properties = properties.map(function(p){ return Object.assign({},p,{primary:p.id===id}); }); }
-    properties = properties.map(function(p){
-        if(p.id!==id) return p;
-        return Object.assign({},p,{address:addr, notes:notes.trim(), primary:isPrimary||(p.primary&&properties.length===1)});
-    });
-    if(!properties.some(function(p){return p.primary;})){ properties[0].primary=true; }
-    var statusEl = document.getElementById('es-'+id);
-    firestoreSave({properties:properties}, statusEl, function(err){
-        if(!err) setTimeout(function(){ renderProperties(); }, 700);
-    });
+var addr=(document.getElementById(‘ea-’+id)||{}).value||’’;
+var notes=(document.getElementById(‘en-’+id)||{}).value||’’;
+var isPrimary=document.getElementById(‘ep-’+id)?document.getElementById(‘ep-’+id).checked:false;
+addr=addr.trim();
+if(!addr){alert(‘Please enter an address.’);return;}
+if(isPrimary){properties=properties.map(function(p){return Object.assign({},p,{primary:p.id===id});});}
+properties=properties.map(function(p){
+if(p.id!==id)return p;
+return Object.assign({},p,{address:addr,notes:notes.trim(),primary:isPrimary||(p.primary&&properties.length===1)});
+});
+if(!properties.some(function(p){return p.primary;})){properties[0].primary=true;}
+var statusEl=document.getElementById(‘es-’+id);
+firestoreSave({properties:properties},statusEl,function(err){
+if(!err)setTimeout(function(){renderProperties();},700);
+});
 }
 
-// Add property form toggle
-document.getElementById('showAddPropBtn').addEventListener('click', function(){
-    document.getElementById('addPropertyFormWrap').style.display = 'block';
-    document.getElementById('showAddPropBtn').style.display = 'none';
-    document.getElementById('newPropAddress').focus();
+document.getElementById(‘showAddPropBtn’).addEventListener(‘click’,function(){
+document.getElementById(‘addPropertyFormWrap’).style.display=‘block’;
+document.getElementById(‘showAddPropBtn’).style.display=‘none’;
+document.getElementById(‘newPropAddress’).focus();
 });
-document.getElementById('cancelPropBtn').addEventListener('click', function(){
-    document.getElementById('addPropertyFormWrap').style.display = 'none';
-    document.getElementById('showAddPropBtn').style.display = 'flex';
-    document.getElementById('newPropAddress').value = '';
-    document.getElementById('newPropNotes').value = '';
-    document.getElementById('propAddStatus').textContent = '';
+document.getElementById(‘cancelPropBtn’).addEventListener(‘click’,function(){
+document.getElementById(‘addPropertyFormWrap’).style.display=‘none’;
+document.getElementById(‘showAddPropBtn’).style.display=‘flex’;
+document.getElementById(‘newPropAddress’).value=’’;
+document.getElementById(‘newPropNotes’).value=’’;
+document.getElementById(‘propAddStatus’).textContent=’’;
 });
 
-// ── Auth — everything that needs user runs here ──
 auth.onAuthStateChanged(function(user){
-    if(!user){ window.location.href='/account/login/'; return; }
-    activeUid = user.uid;
+if(!user){window.location.href=’/account/login/’;return;}
+activeUid=user.uid;
 
+document.getElementById(‘afEmail’).textContent=user.email||’—’;
+document.getElementById(‘afUid’).textContent=user.uid;
+document.getElementById(‘afProvider’).textContent=
+(user.providerData[0]&&user.providerData[0].providerId===‘google.com’)?‘Google’:‘Email & Password’;
 
-// These don't need a name, set them immediately
-document.getElementById('afEmail').textContent = user.email || '—';
-document.getElementById('afUid').textContent   = user.uid;
-document.getElementById('afProvider').textContent =
-    (user.providerData[0] && user.providerData[0].providerId==='google.com') ? 'Google' : 'Email & Password';
+// Real-time listener on customer doc
+db.collection(‘customers’).doc(user.uid).onSnapshot(function(doc){
+var data=doc.exists?doc.data():{};
 
-// Load Firestore data
-db.collection('customers').doc(user.uid).get()
-    .then(function(doc){
-        var data = doc.exists ? doc.data() : {};
+```
+var name=data.name||user.displayName||'User';
+document.getElementById('mobileAvatar').textContent=initials(name);
+document.getElementById('accountAvatar').textContent=initials(name);
+document.getElementById('accountName').textContent=name;
+document.getElementById('afName').textContent=name;
 
-        // Use Firestore name as source of truth, fall back to Google's displayName
-        var name = data.name || user.displayName || 'User';
-        document.getElementById('mobileAvatar').textContent  = initials(name);
-        document.getElementById('accountAvatar').textContent = initials(name);
-        document.getElementById('accountName').textContent   = name;
-        document.getElementById('afName').textContent        = name;
+if(data.createdAt){
+  var d=data.createdAt.toDate?data.createdAt.toDate():new Date(data.createdAt);
+  document.getElementById('accountSince').textContent='Member since '+d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+}
 
-            // Member since
-            if(data.createdAt){
-                var d = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-                document.getElementById('accountSince').textContent =
-                    'Member since ' + d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
-            }
+if(data.phoneCountry)document.getElementById('phoneCountry').value=data.phoneCountry;
+if(data.phoneNumber)document.getElementById('phoneInput').value=data.phoneNumber;
 
-            // Phone
-            if(data.phoneCountry) document.getElementById('phoneCountry').value = data.phoneCountry;
-            if(data.phoneNumber)  document.getElementById('phoneInput').value   = data.phoneNumber;
+if(data.preferredContact){
+  selectedMethod=data.preferredContact;
+  document.querySelectorAll('.contact-pill').forEach(function(p){
+    p.classList.toggle('selected',p.dataset.method===data.preferredContact);
+  });
+}
 
-            // Contact method
-            if(data.preferredContact){
-                selectedMethod = data.preferredContact;
-                document.querySelectorAll('.contact-pill').forEach(function(p){
-                    p.classList.toggle('selected', p.dataset.method === data.preferredContact);
-                });
-            }
+if(data.properties&&data.properties.length)properties=data.properties;
+renderProperties();
+```
 
-            // Properties
-            if(data.properties && data.properties.length) properties = data.properties;
-            renderProperties();
-        })
-        .catch(function(e){
-            console.error('Load error:', e);
-            renderProperties();
-        });
+});
 
-    // ── Save contact (uses user from closure, not auth.currentUser) ──
-    document.getElementById('saveContactBtn').onclick = function(){
-        var country = document.getElementById('phoneCountry').value.trim() || '+1';
-        var number  = document.getElementById('phoneInput').value.trim();
-        var full    = number ? (country + ' ' + number) : '';
-        var btn     = document.getElementById('saveContactBtn');
-        var status  = document.getElementById('contactStatus');
-        btn.disabled = true;
-        firestoreSave(
-            { phone:full, phoneCountry:country, phoneNumber:number, preferredContact:selectedMethod },
-            status,
-            function(){ btn.disabled = false; }
-        );
-    };
+document.getElementById(‘saveContactBtn’).onclick=function(){
+var country=document.getElementById(‘phoneCountry’).value.trim()||’+1’;
+var number=document.getElementById(‘phoneInput’).value.trim();
+var full=number?(country+’ ‘+number):’’;
+var btn=document.getElementById(‘saveContactBtn’);
+var status=document.getElementById(‘contactStatus’);
+btn.disabled=true;
+firestoreSave({phone:full,phoneCountry:country,phoneNumber:number,preferredContact:selectedMethod},status,function(){btn.disabled=false;});
+};
 
-    // ── Add property ──
-    document.getElementById('savePropBtn').onclick = function(){
-        var addr   = document.getElementById('newPropAddress').value.trim();
-        var notes  = document.getElementById('newPropNotes').value.trim();
-        var status = document.getElementById('propAddStatus');
-        if(!addr){ status.textContent='Please enter an address.'; status.className='save-status err'; return; }
-        var btn = document.getElementById('savePropBtn');
-        btn.disabled = true;
-        var newProp = { id:genId(), address:addr, notes:notes, primary:properties.length===0 };
-        properties.push(newProp);
-        firestoreSave({properties:properties}, status, function(err){
-            btn.disabled = false;
-            if(!err){
-                renderProperties();
-                setTimeout(function(){
-                    document.getElementById('addPropertyFormWrap').style.display = 'none';
-                    document.getElementById('showAddPropBtn').style.display = 'flex';
-                    document.getElementById('newPropAddress').value = '';
-                    document.getElementById('newPropNotes').value   = '';
-                    status.textContent = '';
-                }, 800);
-            } else {
-                properties.pop(); // revert on error
-            }
-        });
-    };
+document.getElementById(‘savePropBtn’).onclick=function(){
+var addr=document.getElementById(‘newPropAddress’).value.trim();
+var notes=document.getElementById(‘newPropNotes’).value.trim();
+var status=document.getElementById(‘propAddStatus’);
+if(!addr){status.textContent=‘Please enter an address.’;status.className=‘save-status err’;return;}
+var btn=document.getElementById(‘savePropBtn’);
+btn.disabled=true;
+var newProp={id:genId(),address:addr,notes:notes,primary:properties.length===0};
+properties.push(newProp);
+firestoreSave({properties:properties},status,function(err){
+btn.disabled=false;
+if(!err){
+renderProperties();
+setTimeout(function(){
+document.getElementById(‘addPropertyFormWrap’).style.display=‘none’;
+document.getElementById(‘showAddPropBtn’).style.display=‘flex’;
+document.getElementById(‘newPropAddress’).value=’’;
+document.getElementById(‘newPropNotes’).value=’’;
+status.textContent=’’;
+},800);
+} else {properties.pop();}
+});
+};
 
-    // ── Password reset ──
-    document.getElementById('changePasswordBtn').onclick = function(){
-        var msgEl = document.getElementById('accountMessage');
-        auth.sendPasswordResetEmail(user.email)
-            .then(function(){
-                msgEl.textContent = 'Password reset email sent. Check your inbox.';
-                msgEl.className   = 'acct-msg success';
-            })
-            .catch(function(e){
-                msgEl.textContent = 'Failed to send reset email: ' + (e.message||'');
-                msgEl.className   = 'acct-msg error';
-            });
-    };
+document.getElementById(‘changePasswordBtn’).onclick=function(){
+var msgEl=document.getElementById(‘accountMessage’);
+auth.sendPasswordResetEmail(user.email)
+.then(function(){msgEl.textContent=‘Password reset email sent. Check your inbox.’;msgEl.className=‘acct-msg success’;})
+.catch(function(e){msgEl.textContent=‘Failed to send reset email: ‘+(e.message||’’);msgEl.className=‘acct-msg error’;});
+};
 });
 </script>
+
 </body>
 </html>
