@@ -187,32 +187,42 @@
     margin-bottom: 28px;
 }
 
-.scu-ad-guarantee {
-    display: inline-flex;
-    align-items: flex-start;
-    gap: 14px;
-    background: #fff8f0;
-    border: 2px solid var(--orange);
-    border-radius: 14px;
-    padding: 18px 24px;
-    text-align: left;
+.scu-factors {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 24px 28px;
     max-width: 620px;
     margin: 0 auto 32px;
+    text-align: left;
 }
 
-.scu-ad-guarantee strong {
-    display: block;
-    font-size: 16px;
+.scu-factors-label {
+    font-size: 11px;
     font-weight: 700;
-    color: var(--dark);
-    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: #aaa;
+    margin-bottom: 16px;
 }
 
-.scu-ad-guarantee p {
+.scu-factors-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.scu-factor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 14px;
-    color: #555;
-    line-height: 1.6;
-    margin: 0;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.scu-factor-icon {
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
 .scu-pricing-toggle {
@@ -545,6 +555,10 @@
     .scu-ad-guarantee {
         flex-direction: column;
         gap: 10px;
+    }
+
+    .scu-factors-grid {
+        grid-template-columns: 1fr;
     }
 
     .scu-getprice-grid {
