@@ -233,8 +233,6 @@ auth.onAuthStateChanged(async function(user){
         if(isScheduled){
             notesHTML += '<div><div class="detail-section-label">Your Notes</div>'+
                 '<textarea class="feedback-input" id="cnote-'+jobId+'" placeholder="Add a note for your crew (gate code, special instructions, etc.)…" style="min-height:80px;">'+displayNote+'</textarea>'+
-
-```
             '<div style="margin-top:6px;display:flex;align-items:center;gap:10px;">'+
             '<button class="btn-rate" id="cnote-btn-'+jobId+'">Save Note</button>'+
             '<span id="cnote-conf-'+jobId+'" style="font-size:12px;color:var(--text-3);display:none;"></span>'+
