@@ -248,15 +248,16 @@ auth.onAuthStateChanged(function(user) {
     sb.className = ''; sb.textContent = '';
 
     var jobs = buildSampleJobs();
-    var jobsRef = db.collection('customers').doc(user.uid).collection('jobs');
+    var jobsRef = db.collection('jobs');
 
-    log('Writing ' + jobs.length + ' jobs to customers/' + user.uid + '/jobs/…', 'info');
+    log('Writing ' + jobs.length + ' jobs to jobs/...', 'info');
 
     var ok = 0, fail = 0;
 
     for (var i = 0; i < jobs.length; i++) {
       var job = jobs[i];
       var doc = {
+        uid: user.uid,
         status:        job.status,
         date:          job.date,
         time:          job.time,
