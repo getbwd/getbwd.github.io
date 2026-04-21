@@ -15,32 +15,32 @@
 .inv-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:16px 20px;cursor:pointer;user-select:none;}
 .inv-card-header:hover{background:#fafaf8;}
 .inv-header-left{flex:1;min-width:0;}
-.inv-card-title{font-size:15px;font-weight:700;color:var(–text);margin-bottom:4px;}
-.inv-card-meta{font-size:12px;color:var(–text-3);margin-bottom:6px;}
+.inv-card-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.inv-card-meta{font-size:12px;color:var(--text-3);margin-bottom:6px;}
 .inv-header-right{text-align:right;flex-shrink:0;}
-.inv-total-amt{font-size:20px;font-weight:800;color:var(–text);line-height:1.1;margin-bottom:4px;}
-.inv-remaining{font-size:12px;color:var(–text-3);margin-bottom:5px;}
+.inv-total-amt{font-size:20px;font-weight:800;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.inv-remaining{font-size:12px;color:var(--text-3);margin-bottom:5px;}
 
-.inv-card-body{border-top:1px solid var(–border-light);padding:18px 20px;display:flex;flex-direction:column;gap:16px;}
+.inv-card-body{border-top:1px solid var(--border-light);padding:18px 20px;display:flex;flex-direction:column;gap:16px;}
 .inv-card-body.collapsed{display:none;}
 
 .inv-section-label{font-size:10px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:#bbb;margin-bottom:8px;}
 .line-items{width:100%;border-collapse:collapse;font-size:13px;}
 .line-items th{text-align:left;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#bbb;padding:0 8px 6px 0;}
 .line-items th:last-child,.line-items td:last-child{text-align:right;}
-.line-items td{padding:6px 8px 6px 0;color:var(–text-2);border-top:1px solid var(–border-light);}
-.line-items .total-row td{font-weight:700;color:var(–text);border-top:2px solid var(–border);padding-top:8px;}
+.line-items td{padding:6px 8px 6px 0;color:var(--text-2);border-top:1px solid var(--border-light);}
+.line-items .total-row td{font-weight:700;color:var(--text);border-top:2px solid var(--border);padding-top:8px;}
 
 .pay-history{display:flex;flex-direction:column;}
-.pay-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #faf9f6;font-size:13px;color:var(–text-2);}
+.pay-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #faf9f6;font-size:13px;color:var(--text-2);}
 .pay-row:last-child{border-bottom:none;}
 .pay-amount{font-weight:600;color:#1e8a4a;font-variant-numeric:tabular-nums;}
 
-.balance-summary{display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;border-top:2px solid var(–border);font-size:14px;font-weight:700;}
+.balance-summary{display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;border-top:2px solid var(--border);font-size:14px;font-weight:700;}
 .balance-due{color:#d93025;}
 .balance-clear{color:#1e8a4a;}
 
-.toggle-chevron{font-size:18px;color:var(–muted);transition:transform 0.2s;flex-shrink:0;line-height:1;margin-top:2px;}
+.toggle-chevron{font-size:18px;color:var(--muted);transition:transform 0.2s;flex-shrink:0;line-height:1;margin-top:2px;}
 </style>
 
 </head>
@@ -66,24 +66,20 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-```
-<main class="dash-main">
-    <div class="dash-page">
-        <div class="section-header">
-            <h1 class="section-title">Invoices</h1>
-            <p class="section-sub">Your billing history and outstanding payments.</p>
+    <main class="dash-main">
+        <div class="dash-page">
+            <div class="section-header">
+                <h1 class="section-title">Invoices</h1>
+                <p class="section-sub">Your billing history and outstanding payments.</p>
+            </div>
+            <div id="invListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
         </div>
-        <div id="invListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
-    </div>
-</main>
-```
+    </main>
 
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 
 <script>
