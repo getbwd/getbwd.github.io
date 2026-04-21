@@ -6,57 +6,99 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Courier New',monospace;background:#0f0f0f;color:#d4d4d4;padding:32px 24px;min-height:100vh}
-h1{font-size:15px;font-weight:700;color:#f0f0f0;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
-.sub{font-size:12px;color:#666;margin-bottom:28px}
-.card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:20px 24px;margin-bottom:16px}
-.card-title{font-size:11px;font-weight:700;color:#888;letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px}
-pre{font-size:11.5px;line-height:1.7;color:#a8c7a0;white-space:pre-wrap}
-.btn{display:inline-block;padding:10px 22px;border-radius:6px;border:none;font-family:'Courier New',monospace;font-size:13px;font-weight:700;cursor:pointer;text-transform:uppercase}
-.btn-seed{background:#e05a12;color:#fff}
-.btn-clear{background:#2a2a2a;color:#aaa;margin-left:10px}
-.uid-bar{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:12px 18px;margin-bottom:16px;font-size:12px;display:flex;gap:10px}
-.uid-label{color:#555;text-transform:uppercase;font-size:10px;font-weight:700}
-.uid-value{color:#e05a12}
-.log-line{font-size:12px;line-height:1.8}
-.log-line.ok{color:#6cc06c}
-.log-line.err{color:#e06c6c}
-.log-line.info{color:#6aacda}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Courier New', monospace; background: #0f0f0f; color: #d4d4d4; padding: 32px 24px; min-height: 100vh; }
+  h1 { font-size: 15px; font-weight: 700; color: #f0f0f0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .sub { font-size: 12px; color: #666; margin-bottom: 28px; }
+  .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; }
+  .card-title { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 12px; }
+  pre { font-size: 11.5px; line-height: 1.7; color: #a8c7a0; white-space: pre-wrap; word-break: break-all; }
+  .btn { display: inline-block; padding: 10px 22px; border-radius: 6px; border: none; font-family: 'Courier New', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; text-transform: uppercase; transition: background 0.15s; }
+  .btn-seed  { background: #1a6ed8; color: #fff; }
+  .btn-seed:hover  { background: #155cbb; }
+  .btn-seed:disabled { background: #444; color: #777; cursor: default; }
+  .btn-clear { background: #2a2a2a; color: #aaa; margin-left: 10px; }
+  .btn-clear:hover { background: #333; color: #ddd; }
+  #log { margin-top: 20px; }
+  .log-line { font-size: 12px; line-height: 1.8; }
+  .log-line.ok   { color: #6cc06c; }
+  .log-line.err  { color: #e06c6c; }
+  .log-line.info { color: #6aacda; }
+  .log-line.warn { color: #d4a84b; }
+  #status-bar { margin-top: 24px; padding: 12px 16px; border-radius: 6px; font-size: 13px; display: none; }
+  #status-bar.ok  { background: #0d1f2b; border: 1px solid #1a4a6a; color: #6aacda; display: block; }
+  #status-bar.err { background: #2b0d0d; border: 1px solid #5a2a2a; color: #e06c6c; display: block; }
+  .schema-row { display: grid; grid-template-columns: 160px 1fr; gap: 6px; font-size: 12px; line-height: 1.9; }
+  .schema-key { color: #6aacda; }
+  .schema-val { color: #888; }
+  .uid-bar { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 12px 18px; margin-bottom: 16px; font-size: 12px; display: flex; align-items: center; gap: 10px; }
+  .uid-label { color: #555; text-transform: uppercase; letter-spacing: 0.6px; font-size: 10px; font-weight: 700; }
+  .uid-value { color: #1a6ed8; }
+  #authStatus { color: #d4a84b; }
+  code { color: #1a6ed8; }
+  .schema-section { margin-bottom: 10px; }
+  .schema-section-title { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700; margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid #222; }
 </style>
 </head>
 <body>
 
-<h1>BWD — Invoice Seeder</h1>
-<p class="sub">Creates invoices in <code>invoices/{invoiceId}</code></p>
+<h1>BWD — Invoices Firestore Seeder</h1>
+<p class="sub">Dev tool · Signs you in, then seeds sample invoices into <code>invoices/{invoiceId}</code></p>
 
+<!-- Auth status -->
 <div class="uid-bar">
   <span class="uid-label">Signed in as</span>
   <span class="uid-value" id="authStatus">Waiting for auth…</span>
 </div>
 
+<!-- Schema reference -->
 <div class="card">
-  <div class="card-title">Invoice Schema</div>
-  <pre>
-invoiceId   string
-uid         string
-jobId       string (links to job)
-status      Payment Due | Paid | Overdue
-date        Timestamp (issued date)
-items[]     { name, qty, unitPrice }
-payments[]  { date, type, amount }
-  </pre>
+  <div class="card-title">Document Path — invoices/{invoiceId}</div>
+
+  <div class="schema-section">
+    <div class="schema-section-title">Root Fields</div>
+    <div class="schema-row">
+      <span class="schema-key">invoiceId</span>     <span class="schema-val">string — document ID, e.g. "260421001" (YYMMDD + counter)</span>
+      <span class="schema-key">uid</span>            <span class="schema-val">string — Firebase Auth UID of the customer</span>
+      <span class="schema-key">jobId</span>          <span class="schema-val">string — linked job document ID, e.g. "260421001"</span>
+      <span class="schema-key">status</span>         <span class="schema-val">"Payment Due" | "Paid" | "Overdue"</span>
+      <span class="schema-key">dateIssued</span>     <span class="schema-val">Timestamp — date invoice was created</span>
+    </div>
+  </div>
+
+  <div class="schema-section" style="margin-top:12px">
+    <div class="schema-section-title">items — array of line items</div>
+    <div class="schema-row">
+      <span class="schema-key">items[].name</span>       <span class="schema-val">string — service name</span>
+      <span class="schema-key">items[].qty</span>        <span class="schema-val">number — quantity</span>
+      <span class="schema-key">items[].unitPrice</span>  <span class="schema-val">number — price per unit in USD</span>
+    </div>
+  </div>
+
+  <div class="schema-section" style="margin-top:12px">
+    <div class="schema-section-title">payments — array of payment records</div>
+    <div class="schema-row">
+      <span class="schema-key">payments[].date</span>    <span class="schema-val">Timestamp — date payment was received</span>
+      <span class="schema-key">payments[].type</span>    <span class="schema-val">"Card" | "Cash" | "Check" | "Transfer"</span>
+      <span class="schema-key">payments[].amount</span>  <span class="schema-val">number — payment amount in USD</span>
+    </div>
+  </div>
 </div>
 
+<!-- Sample data preview -->
 <div class="card">
-  <div class="card-title">Sample invoices</div>
+  <div class="card-title">Sample Documents — will be written to invoices/ collection</div>
   <pre id="samplePreview"></pre>
 </div>
 
-<button class="btn btn-seed" id="seedBtn" disabled>Waiting for auth</button>
-<button class="btn btn-clear" id="clearBtn">Clear Log</button>
+<!-- Controls -->
+<div>
+  <button class="btn btn-seed" id="seedBtn" disabled>⏳ Waiting for auth…</button>
+  <button class="btn btn-clear" id="clearBtn">✕ Clear Log</button>
+</div>
 
 <div id="log"></div>
+<div id="status-bar"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
@@ -64,111 +106,217 @@ payments[]  { date, type, amount }
 
 <script>
 firebase.initializeApp({
-  apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
-  authDomain:'bwd-accounts.firebaseapp.com',
-  projectId:'bwd-accounts'
+  apiKey:            'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+  authDomain:        'bwd-accounts.firebaseapp.com',
+  projectId:         'bwd-accounts',
+  storageBucket:     'bwd-accounts.firebasestorage.app',
+  messagingSenderId: '590001375282',
+  appId:             '1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
-var auth=firebase.auth();
-var db=firebase.firestore();
-var ts=firebase.firestore.Timestamp;
+var auth = firebase.auth();
+var db   = firebase.firestore();
+var ts   = firebase.firestore.Timestamp;
 
-function d(str){return ts.fromDate(new Date(str));}
-function item(name,qty,price){return{name,qty,unitPrice:price};}
-function payment(date,type,amount){return{date:d(date),type,amount};}
+// ─── Helpers ──────────────────────────────────────────────────────────────
+function d(str) { return ts.fromDate(new Date(str)); }
+function item(name, qty, unitPrice) { return { name, qty, unitPrice }; }
+function payment(dateStr, type, amount) { return { date: d(dateStr), type, amount }; }
 
-// Invoice ID generator (same pattern as jobs)
-let counter=1;
-function getTodayPrefix(){
-  const now=new Date();
-  return String(now.getFullYear()).slice(2)+
-         String(now.getMonth()+1).padStart(2,'0')+
-         String(now.getDate()).padStart(2,'0');
+function getTodayPrefix() {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  return yy + mm + dd;
 }
 
-// Sample invoices
-function buildSampleInvoices(){
-return[
-{
- jobId:"JOB-0001",
- status:"Paid",
- date:d("2025-04-05"),
- items:[
-   item("Lawn Mowing",1,45),
-   item("Edging & Trimming",1,20),
-   item("Blowing Debris",1,10)
- ],
- payments:[
-   payment("2025-04-05","Card",75)
- ]
-},
-{
- jobId:"JOB-0003",
- status:"Payment Due",
- date:d("2025-03-15"),
- items:[ item("Lawn Mowing",1,45) ],
- payments:[]
-},
-{
- jobId:"JOB-0004",
- status:"Overdue",
- date:d("2025-05-01"),
- items:[
-   item("Lawn Mowing",1,45),
-   item("Bush Trimming",2,25)
- ],
- payments:[
-   payment("2025-05-01","Cash",30)
- ]
+// ─── Sample invoices ──────────────────────────────────────────────────────
+function buildSampleInvoices() {
+  return [
+    {
+      // Fully paid invoice — matches JOB-0001
+      jobId:      'JOB-0001',
+      status:     'Paid',
+      dateIssued: d('2025-04-05'),
+      items: [
+        item('Lawn Mowing',       1, 45.00),
+        item('Edging & Trimming', 1, 20.00),
+        item('Blowing Debris',    1, 10.00),
+      ],
+      payments: [
+        payment('2025-04-06', 'Card', 75.00),
+      ],
+    },
+    {
+      // Unpaid upcoming job — matches JOB-0002
+      jobId:      'JOB-0002',
+      status:     'Payment Due',
+      dateIssued: d('2025-05-10'),
+      items: [
+        item('Spring Cleanup', 1, 120.00),
+        item('Mulch Refresh',  2,  35.00),
+      ],
+      payments: [],
+    },
+    {
+      // Paid in cash — matches JOB-0003
+      jobId:      'JOB-0003',
+      status:     'Paid',
+      dateIssued: d('2025-03-15'),
+      items: [
+        item('Lawn Mowing', 1, 45.00),
+      ],
+      payments: [
+        payment('2025-03-15', 'Cash', 45.00),
+      ],
+    },
+    {
+      // Rescheduled job — split payment, partially paid, now overdue
+      jobId:      'JOB-0004',
+      status:     'Overdue',
+      dateIssued: d('2025-04-22'),
+      items: [
+        item('Lawn Mowing',   1, 45.00),
+        item('Bush Trimming', 2, 25.00),
+      ],
+      payments: [
+        payment('2025-04-23', 'Card', 50.00),
+      ],
+    },
+    {
+      // Payment via multiple methods — fully settled
+      jobId:      'JOB-0006',
+      status:     'Paid',
+      dateIssued: d('2025-04-01'),
+      items: [
+        item('Lawn Mowing',    1, 45.00),
+        item('Gutter Cleaning',1, 80.00),
+        item('Leaf Removal',   1, 35.00),
+      ],
+      payments: [
+        payment('2025-04-01', 'Cash',     60.00),
+        payment('2025-04-03', 'Transfer', 100.00),
+      ],
+    },
+  ];
 }
-];
+
+// ─── Preview ──────────────────────────────────────────────────────────────
+var invoices = buildSampleInvoices();
+document.getElementById('samplePreview').textContent = invoices.map(function(inv, i) {
+  var copy = Object.assign({}, inv);
+  copy.invoiceId  = '(generated on seed)';
+  copy.uid        = '(your UID)';
+  copy.dateIssued = inv.dateIssued.toDate().toISOString().split('T')[0];
+  copy.payments   = inv.payments.map(function(p) {
+    return Object.assign({}, p, { date: p.date.toDate().toISOString().split('T')[0] });
+  });
+  var subtotal = inv.items.reduce(function(s, it) { return s + it.qty * it.unitPrice; }, 0);
+  var paid     = inv.payments.reduce(function(s, p) { return s + p.amount; }, 0);
+  return (
+    '// invoices/(generated) — ' + inv.jobId + ' · $' + subtotal.toFixed(2) +
+    ' · paid $' + paid.toFixed(2) + '\n' +
+    JSON.stringify(copy, null, 2)
+  );
+}).join('\n\n');
+
+// ─── Logging ──────────────────────────────────────────────────────────────
+function log(msg, type) {
+  var el = document.createElement('div');
+  el.className = 'log-line ' + (type || 'info');
+  el.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+  document.getElementById('log').appendChild(el);
 }
 
-// preview
-document.getElementById("samplePreview").textContent=
-JSON.stringify(buildSampleInvoices(),null,2);
+document.getElementById('clearBtn').addEventListener('click', function() {
+  document.getElementById('log').innerHTML = '';
+  var sb = document.getElementById('status-bar');
+  sb.className = ''; sb.style.display = 'none'; sb.textContent = '';
+});
 
-function log(msg,type="info"){
- const el=document.createElement("div");
- el.className="log-line "+type;
- el.textContent=msg;
- document.getElementById("log").appendChild(el);
-}
+// ─── Auth ─────────────────────────────────────────────────────────────────
+auth.onAuthStateChanged(function(user) {
+  var seedBtn    = document.getElementById('seedBtn');
+  var authStatus = document.getElementById('authStatus');
 
-auth.onAuthStateChanged(user=>{
- const btn=document.getElementById("seedBtn");
- const authStatus=document.getElementById("authStatus");
+  if (!user) {
+    authStatus.textContent = 'Not signed in — redirecting to login…';
+    authStatus.style.color = '#e06c6c';
+    setTimeout(function() { window.location.href = '/account/login/'; }, 1500);
+    return;
+  }
 
- if(!user){
-   authStatus.textContent="Not signed in — redirecting...";
-   setTimeout(()=>location.href="/account/login/",1500);
-   return;
- }
+  authStatus.textContent = user.email + '  ·  uid: ' + user.uid;
+  authStatus.style.color = '#6cc06c';
+  seedBtn.textContent    = '⚡ Seed to Firestore';
+  seedBtn.disabled       = false;
 
- authStatus.textContent=user.email+" · "+user.uid;
- btn.disabled=false;
- btn.textContent="Seed invoices";
+  var counter = 1;
 
- btn.onclick=async()=>{
-   const invoices=buildSampleInvoices();
-   const ref=db.collection("invoices");
-   const prefix=getTodayPrefix();
+  // ─── Seed ───────────────────────────────────────────────────────────────
+  seedBtn.addEventListener('click', async function() {
+    seedBtn.disabled    = true;
+    seedBtn.textContent = '⏳ Seeding…';
+    var sb = document.getElementById('status-bar');
+    sb.className = ''; sb.textContent = '';
 
-   for(const inv of invoices){
-     const invoiceId=prefix+(counter++);
-     await ref.doc(invoiceId).set({
-       invoiceId,
-       uid:user.uid,
-       jobId:inv.jobId,
-       status:inv.status,
-       date:inv.date,
-       items:inv.items,
-       payments:inv.payments
-     });
-     log("Created invoice "+invoiceId+" for "+inv.jobId,"ok");
-   }
-   log("Invoices seeded ✔","info");
- };
+    var invoices     = buildSampleInvoices();
+    var invoicesRef  = db.collection('invoices');
+
+    log('Writing ' + invoices.length + ' invoices to invoices/...', 'info');
+
+    var ok = 0, fail = 0;
+
+    for (var i = 0; i < invoices.length; i++) {
+      var inv = invoices[i];
+      var prefix      = getTodayPrefix();
+      var newInvoiceId = prefix + String(counter).padStart(3, '0');
+
+      var doc = {
+        uid:        user.uid,
+        jobId:      inv.jobId,
+        status:     inv.status,
+        dateIssued: inv.dateIssued,
+        items:      inv.items,
+        payments:   inv.payments,
+      };
+
+      try {
+        await invoicesRef.doc(newInvoiceId).set(doc);
+        counter++;
+
+        var itemNames = inv.items.map(function(it) { return it.name; }).join(', ');
+        var subtotal  = inv.items.reduce(function(s, it) { return s + it.qty * it.unitPrice; }, 0);
+        var paid      = inv.payments.reduce(function(s, p) { return s + p.amount; }, 0);
+        var balance   = subtotal - paid;
+
+        log(
+          '✓ ' + newInvoiceId +
+          ' — ' + inv.status +
+          ' · ' + inv.jobId +
+          ' · $' + subtotal.toFixed(2) +
+          ' total · $' + paid.toFixed(2) + ' paid' +
+          (balance > 0 ? ' · $' + balance.toFixed(2) + ' outstanding' : ''),
+          'ok'
+        );
+        ok++;
+      } catch (e) {
+        log('✗ ' + inv.jobId + ' invoice — ' + (e.message || e), 'err');
+        fail++;
+      }
+    }
+
+    log('Done. ' + ok + ' written, ' + fail + ' failed.', fail ? 'warn' : 'info');
+    sb.textContent = fail
+      ? fail + ' document(s) failed. Check the log above.'
+      : '✓ All ' + ok + ' invoices written to invoices/';
+    sb.className = fail ? 'err' : 'ok';
+
+    seedBtn.textContent = '⚡ Seed to Firestore';
+    seedBtn.disabled    = false;
+  });
 });
 </script>
+
 </body>
 </html>
