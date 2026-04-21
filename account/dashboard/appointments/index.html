@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../../../css/dashboard.css">
-
 <style>
 .job-list{display:flex;flex-direction:column;gap:14px;}
 .job-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;scroll-margin-top:24px;}
@@ -44,31 +44,37 @@
 @media(max-width:600px){.detail-grid{grid-template-columns:1fr;}}
 </style>
 </head>
-
 <body>
 <div class="dash-shell">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top"></div>
+        <nav class="sidebar-nav">
+            <a class="nav-item" href="/account/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
+            <a class="nav-item active" href="/account/dashboard/appointments/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</a>
+            <a class="nav-item" href="/account/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
+            <a class="nav-item" href="/account/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>My Services</a>
+            <a class="nav-item" href="/account/dashboard/account/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Account</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
+        </div>
+    </aside>
+    <header class="mobile-header">
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <span class="mobile-brand">BWD Services</span>
+        <div class="mobile-avatar" id="mobileAvatar">?</div>
+    </header>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-<nav class="sidebar-nav">
-<a class="nav-item active" href="/account/dashboard/appointments/">Appointments</a>
-<button class="nav-item signout-btn" id="signOutBtn">Sign Out</button>
-</nav>
-</aside>
-
-<header class="mobile-header">
-<button id="mobileMenuBtn">☰</button>
-<div id="mobileAvatar">?</div>
-</header>
-
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-<main class="dash-main">
-<div class="dash-page">
-<h1>Appointments</h1>
-<div id="jobListContainer">Loading…</div>
-</div>
-</main>
+    <main class="dash-main">
+        <div class="dash-page">
+            <div class="section-header">
+                <h1 class="section-title">Appointments</h1>
+                <p class="section-sub">Your upcoming and past service visits.</p>
+            </div>
+            <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+        </div>
+    </main>
 
 </div>
 
@@ -78,41 +84,280 @@
 
 <script>
 firebase.initializeApp({
- apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
- authDomain:'bwd-accounts.firebaseapp.com',
- projectId:'bwd-accounts'
+    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
+    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
+    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+var auth = firebase.auth();
+var db   = firebase.firestore();
+
+document.getElementById('signOutBtn').addEventListener('click', function(){
+    auth.signOut().then(function(){ window.location.href = '/account/login/'; });
+});
+document.getElementById('mobileMenuBtn').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('visible');
+});
+document.getElementById('sidebarOverlay').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
 });
 
-var auth=firebase.auth();
-var db=firebase.firestore();
+function initials(n){ return n ? n.trim().split(/\s+/).map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2) : '?'; }
+function fmtMoney(n){ return '$' + Number(n).toFixed(2); }
+function badge(status){
+    var s = (status||'').toLowerCase().trim();
+    var map = {
+        'scheduled':'bdg-scheduled','rescheduled':'bdg-paused',
+        'canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed',
+        'draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue',
+        'active':'bdg-active','paused':'bdg-paused','on hold':'bdg-overdue','terminated':'bdg-cancelled',
+    };
+    return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
+}
+function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
 
-document.getElementById('signOutBtn').onclick=()=>auth.signOut().then(()=>location='/account/login/');
-document.getElementById('mobileMenuBtn').onclick=()=>sidebar.classList.add('open');
-document.getElementById('sidebarOverlay').onclick=()=>sidebar.classList.remove('open');
+function toggleCard(jobId){
+    var body = document.getElementById('body-'+jobId);
+    var card = document.getElementById('card-'+jobId);
+    if(!body) return;
+    var isOpen = !body.classList.contains('collapsed');
+    body.classList.toggle('collapsed');
+    card.classList.toggle('open', isOpen);
+    if(!isOpen){ history.replaceState(null, null, '#'+jobId); }
+    else if(window.location.hash === '#'+jobId){ history.replaceState(null, null, ' '); }
+}
 
-auth.onAuthStateChanged(async user=>{
- if(!user){location='/account/login/';return;}
- mobileAvatar.textContent=(user.displayName||'?')[0]||'?';
+auth.onAuthStateChanged(async function(user){
+    if(!user){ window.location.href = '/account/login/'; return; }
+    document.getElementById('mobileAvatar').textContent = initials(user.displayName||'');
 
- let snap=await db.collection('jobs').where('uid','==',user.uid).get();
- if(snap.empty){jobListContainer.innerHTML='No appointments yet.';return;}
+    var container = document.getElementById('jobListContainer');
+    var targetHash = window.location.hash.replace('#','');
 
- let html='<div class="job-list">';
- snap.forEach(doc=>{
-   let d=doc.data();
-   html+=`
-   <div class="job-card">
-     <div class="job-card-header">
-       <b>${d.services?.map(s=>s.name).join(', ')||'Service Visit'}</b>
-     </div>
-     <div class="job-card-body">
-       <div>Date: ${d.date?.toDate().toDateString()||'—'}</div>
-       <div>Status: ${d.status||'Scheduled'}</div>
-     </div>
-   </div>`;
- });
- html+='</div>';
- jobListContainer.innerHTML=html;
+    var snapshot;
+    try {
+        snapshot = await db.collection('jobs')
+            .where('uid', '==', user.uid)
+            .orderBy('date', 'desc')
+            .get();
+    } catch(e) {
+        container.innerHTML = '<div class="card"><div class="card-body">'+empty('Failed to load appointments.')+'</div></div>';
+        console.error(e);
+        return;
+    }
+
+    if(snapshot.empty){
+        container.innerHTML = '<div class="card"><div class="card-body">'+empty('No appointments on your account yet.')+'</div></div>';
+        return;
+    }
+
+    // Normalize each Firestore doc into a plain job object
+    var jobs = [];
+    snapshot.forEach(function(doc){
+        var d = doc.data();
+        jobs.push({
+            jobId:         doc.id,
+            status:        d.status || 'Scheduled',
+            date:          d.date ? d.date.toDate() : null,   // Firestore Timestamp → JS Date
+            time:          d.time || '',
+            address:       d.address || '',
+            services:      Array.isArray(d.services) ? d.services : [],  // [{name, qty, unitPrice}]
+            invoiceId:     d.invoiceId || '',
+            assignedCrew:  d.assignedCrew || '',
+            customerNotes: d.customerNotes || '',
+            crewNotes:     d.crewNotes || '',
+            rating:        d.rating || 0,
+            feedback:      d.feedback || '',
+        });
+    });
+
+    var html = '<div class="job-list">';
+
+    jobs.forEach(function(job){
+        var jobId      = job.jobId;
+        var status     = job.status;
+        var isScheduled = status.toLowerCase() === 'scheduled';
+        var isTarget   = jobId === targetHash;
+
+        // Format date
+        var dateStr = '—';
+        if(job.date){
+            try{ dateStr = job.date.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'}); }
+            catch(e){ dateStr = job.date.toString(); }
+        }
+
+        // Services / line items
+        var items = job.services.map(function(s){
+            var qty  = Number(s.qty)       || 1;
+            var unit = Number(s.unitPrice) || 0;
+            return { name: s.name||'—', qty: qty, unitPrice: unit, lineTotal: qty*unit };
+        });
+        var total    = items.reduce(function(s,i){ return s+i.lineTotal; }, 0);
+        var svcNames = items.map(function(i){ return i.name; }).join(', ') || 'Service Visit';
+
+        // Meta row
+        var metaParts = [];
+        if(job.date) metaParts.push('<span>📅 '+dateStr+(job.time?' · '+job.time:'')+'</span>');
+
+        // Line items table
+        var lineItemsHTML = '';
+        if(items.length){
+            lineItemsHTML = '<div><table class="line-items">'+
+                '<tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
+                items.map(function(i){
+                    return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';
+                }).join('')+
+                '<tr class="total-row"><td colspan="3">Job Total</td><td>'+fmtMoney(total)+'</td></tr>'+
+                '</table></div>';
+        }
+
+        // Detail grid
+        var detailItems = [];
+        if(job.address)     detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+job.address+'</div></div>');
+        if(job.assignedCrew)detailItems.push('<div class="detail-item"><div class="detail-item-label">Assigned Crew</div><div class="detail-item-value">'+job.assignedCrew+'</div></div>');
+        if(job.invoiceId)   detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/account/dashboard/invoices/#'+job.invoiceId+'" style="color:var(--orange);">#'+job.invoiceId+'</a></div></div>');
+        var detailGridHTML = detailItems.length ? '<div class="detail-grid">'+detailItems.join('')+'</div>' : '';
+
+        // Customer notes — editable if Scheduled, read-only otherwise
+        var savedNoteData = null;
+        try{ savedNoteData = JSON.parse(localStorage.getItem('bwd_cnote_'+jobId)); }catch(e){}
+        var displayNote = (savedNoteData && savedNoteData.note !== undefined) ? savedNoteData.note : job.customerNotes;
+
+        var notesHTML = '';
+        if(isScheduled){
+            notesHTML += '<div><div class="detail-section-label">Your Notes</div>'+
+                '<textarea class="feedback-input" id="cnote-'+jobId+'" placeholder="Add a note for your crew (gate code, special instructions, etc.)…" style="min-height:80px;">'+displayNote+'</textarea>'+
+                '<div style="margin-top:6px;display:flex;align-items:center;gap:10px;">'+
+                '<button class="btn-rate" id="cnote-btn-'+jobId+'">Save Note</button>'+
+                '<span id="cnote-conf-'+jobId+'" style="font-size:12px;color:var(--text-3);display:none;"></span>'+
+                '</div></div>';
+        } else {
+            if(displayNote) notesHTML += '<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+displayNote+'</div></div>';
+        }
+        if(job.crewNotes) notesHTML += '<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+job.crewNotes+'</div></div>';
+
+        // Rating — only show if not Scheduled
+        var savedReview = null;
+        try{ savedReview = JSON.parse(localStorage.getItem('bwd_review_'+jobId)); }catch(e){}
+        var hasReview = savedReview && (savedReview.rating || savedReview.feedback);
+        var ratingHTML = '';
+        if(!isScheduled){
+            var savedFb     = hasReview ? savedReview.feedback : '';
+            var savedRating = hasReview ? savedReview.rating   : 0;
+            if(hasReview){
+                ratingHTML = '<div class="rating-section"><div class="detail-section-label">Your Review</div>'+
+                    '<div class="stars" id="stars-'+jobId+'" data-saved="'+savedRating+'"></div>'+
+                    '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…">'+savedFb+'</textarea>'+
+                    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'+
+                    '<button class="btn-rate" id="btn-'+jobId+'">Update Review</button>'+
+                    '<span style="font-size:12px;color:var(--text-3);">You submitted a review — you can edit and update it anytime.</span>'+
+                    '</div></div>';
+            } else {
+                ratingHTML = '<div class="rating-section"><div class="detail-section-label">Rate this visit</div>'+
+                    '<div class="stars" id="stars-'+jobId+'" data-saved="0"></div>'+
+                    '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…"></textarea>'+
+                    '<div><button class="btn-rate" id="btn-'+jobId+'">Submit</button>'+
+                    '<span class="rate-thanks" id="thank-'+jobId+'" style="display:none;">Thanks for your feedback!</span>'+
+                    '</div></div>';
+            }
+        }
+
+        var bodyClass = 'job-card-body' + (isTarget ? '' : ' collapsed');
+
+        html += '<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
+        html += '<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
+        html += '<div style="min-width:0;flex:1;">';
+        html += '<div class="job-card-title">'+svcNames+' <span class="job-card-id">· Job #'+jobId+'</span></div>';
+        html += '<div class="job-card-meta">'+metaParts.join('')+'</div>';
+        html += '</div>';
+        html += '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<span class="toggle-chevron">▾</span></div>';
+        html += '</div>';
+        html += '<div class="'+bodyClass+'" id="body-'+jobId+'">';
+        html += detailGridHTML + lineItemsHTML + notesHTML + ratingHTML;
+        html += '</div></div>';
+    });
+
+    html += '</div>';
+    container.innerHTML = html;
+
+    // Wire customer note save for Scheduled jobs
+    jobs.forEach(function(job){
+        if(job.status.toLowerCase() !== 'scheduled') return;
+        var jobId   = job.jobId;
+        var noteBtn = document.getElementById('cnote-btn-'+jobId);
+        var noteInput = document.getElementById('cnote-'+jobId);
+        var noteConf  = document.getElementById('cnote-conf-'+jobId);
+        if(!noteBtn || !noteInput) return;
+        noteBtn.addEventListener('click', function(){
+            var val = noteInput.value;
+            try{ localStorage.setItem('bwd_cnote_'+jobId, JSON.stringify({note:val})); }catch(e){}
+            noteConf.textContent = 'Note saved!';
+            noteConf.style.color = '#1e8a4a';
+            noteConf.style.display = 'inline';
+            setTimeout(function(){
+                noteConf.textContent = 'Changes are visible to your crew.';
+                noteConf.style.color = 'var(--text-3)';
+            }, 2000);
+        });
+    });
+
+    // Wire stars and feedback for non-Scheduled jobs
+    jobs.forEach(function(job){
+        if(job.status.toLowerCase() === 'scheduled') return;
+        var jobId  = job.jobId;
+        var starsEl = document.getElementById('stars-'+jobId);
+        var btn     = document.getElementById('btn-'+jobId);
+        var fbEl    = document.getElementById('fb-'+jobId);
+        var thankEl = document.getElementById('thank-'+jobId);
+        if(!starsEl) return;
+
+        var saved = null;
+        try{ saved = JSON.parse(localStorage.getItem('bwd_review_'+jobId)); }catch(e){}
+        var currentRating = (saved && saved.rating) ? parseInt(saved.rating) : 0;
+
+        function drawStars(){
+            starsEl.innerHTML = '';
+            for(var i=1; i<=5; i++){
+                (function(i){
+                    var s = document.createElement('span');
+                    s.className = 'star' + (i <= currentRating ? ' filled' : '');
+                    s.textContent = '★';
+                    s.addEventListener('mouseover', function(){
+                        starsEl.querySelectorAll('.star').forEach(function(el,idx){ el.classList.toggle('filled', idx<i); });
+                    });
+                    s.addEventListener('mouseout', drawStars);
+                    s.addEventListener('click', function(){ currentRating = i; drawStars(); });
+                    starsEl.appendChild(s);
+                })(i);
+            }
+        }
+        drawStars();
+
+        if(btn){
+            btn.addEventListener('click', function(){
+                var fbText = fbEl ? fbEl.value : '';
+                try{ localStorage.setItem('bwd_review_'+jobId, JSON.stringify({rating:currentRating, feedback:fbText})); }catch(e){}
+                btn.textContent = 'Update Review';
+                if(thankEl) thankEl.style.display = 'none';
+                var conf = document.getElementById('conf-'+jobId);
+                if(!conf){
+                    conf = document.createElement('span');
+                    conf.id = 'conf-'+jobId;
+                    conf.style.cssText = 'font-size:12px;color:#1e8a4a;font-weight:500;margin-left:10px;';
+                    btn.parentNode.appendChild(conf);
+                }
+                conf.textContent = 'Review saved!';
+                setTimeout(function(){ conf.textContent = 'You can edit and update it anytime.'; conf.style.color = 'var(--text-3)'; }, 2000);
+            });
+        }
+    });
+
+    // Scroll to target
+    if(targetHash){
+        var el = document.getElementById('card-'+targetHash);
+        if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+    }
 });
 </script>
 
