@@ -239,7 +239,15 @@ auth.onAuthStateChanged(function(user) {
   authStatus.style.color = '#6cc06c';
   seedBtn.textContent    = '⚡ Seed to Firestore';
   seedBtn.disabled       = false;
+let counter = 1;
 
+function getTodayPrefix() {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  return yy + mm + dd;
+}
   // ─── Seed ────────────────────────────────────────────────────────────────
   seedBtn.addEventListener('click', async function() {
     seedBtn.disabled    = true;
@@ -250,7 +258,7 @@ auth.onAuthStateChanged(function(user) {
     var jobs = buildSampleJobs();
     var jobsRef = db.collection('jobs');
 
-    log('Writing ' + jobs.length + ' jobs to jobs/...', 'info');
+    log('Writing ' + jobs.length + ' jobs with generated IDs to jobs/...', 'info');
 
     var ok = 0, fail = 0;
 
@@ -271,10 +279,13 @@ auth.onAuthStateChanged(function(user) {
         feedback:      job.feedback,
       };
       try {
-        await jobsRef.doc(job.jobId).set(doc);
+        const prefix = getTodayPrefix();
+        const newJobId = prefix + counter;
+        await jobsRef.doc(newJobId).set(doc);
+        counter++;
         var svcNames = job.services.map(function(s) { return s.name; }).join(', ');
         var subtotal = job.services.reduce(function(sum, s) { return sum + s.qty * s.unitPrice; }, 0);
-        log('✓ ' + job.jobId + ' — ' + job.status + ' · ' + svcNames + ' · $' + subtotal.toFixed(2), 'ok');
+        log('✓ ' + newJobId + ' — ' + job.status + ' · ' + svcNames + ' · $' + subtotal.toFixed(2), 'ok');
         ok++;
       } catch (e) {
         log('✗ ' + job.jobId + ' — ' + (e.message || e), 'err');
