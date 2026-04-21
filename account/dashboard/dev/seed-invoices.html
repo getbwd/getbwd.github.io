@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seed Invoices — BWD Dev Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Courier New',monospace;background:#0f0f0f;color:#d4d4d4;padding:32px 24px;min-height:100vh}
+h1{font-size:15px;font-weight:700;color:#f0f0f0;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.sub{font-size:12px;color:#666;margin-bottom:28px}
+.card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:20px 24px;margin-bottom:16px}
+.card-title{font-size:11px;font-weight:700;color:#888;letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px}
+pre{font-size:11.5px;line-height:1.7;color:#a8c7a0;white-space:pre-wrap}
+.btn{display:inline-block;padding:10px 22px;border-radius:6px;border:none;font-family:'Courier New',monospace;font-size:13px;font-weight:700;cursor:pointer;text-transform:uppercase}
+.btn-seed{background:#e05a12;color:#fff}
+.btn-clear{background:#2a2a2a;color:#aaa;margin-left:10px}
+.uid-bar{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:12px 18px;margin-bottom:16px;font-size:12px;display:flex;gap:10px}
+.uid-label{color:#555;text-transform:uppercase;font-size:10px;font-weight:700}
+.uid-value{color:#e05a12}
+.log-line{font-size:12px;line-height:1.8}
+.log-line.ok{color:#6cc06c}
+.log-line.err{color:#e06c6c}
+.log-line.info{color:#6aacda}
+</style>
+</head>
+<body>
+
+<h1>BWD — Invoice Seeder</h1>
+<p class="sub">Creates invoices in <code>invoices/{invoiceId}</code></p>
+
+<div class="uid-bar">
+  <span class="uid-label">Signed in as</span>
+  <span class="uid-value" id="authStatus">Waiting for auth…</span>
+</div>
+
+<div class="card">
+  <div class="card-title">Invoice Schema</div>
+  <pre>
+invoiceId   string
+uid         string
+jobId       string (links to job)
+status      Payment Due | Paid | Overdue
+date        Timestamp (issued date)
+items[]     { name, qty, unitPrice }
+payments[]  { date, type, amount }
+  </pre>
+</div>
+
+<div class="card">
+  <div class="card-title">Sample invoices</div>
+  <pre id="samplePreview"></pre>
+</div>
+
+<button class="btn btn-seed" id="seedBtn" disabled>Waiting for auth</button>
+<button class="btn btn-clear" id="clearBtn">Clear Log</button>
+
+<div id="log"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+<script>
+firebase.initializeApp({
+  apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+  authDomain:'bwd-accounts.firebaseapp.com',
+  projectId:'bwd-accounts'
+});
+var auth=firebase.auth();
+var db=firebase.firestore();
+var ts=firebase.firestore.Timestamp;
+
+function d(str){return ts.fromDate(new Date(str));}
+function item(name,qty,price){return{name,qty,unitPrice:price};}
+function payment(date,type,amount){return{date:d(date),type,amount};}
+
+// Invoice ID generator (same pattern as jobs)
+let counter=1;
+function getTodayPrefix(){
+  const now=new Date();
+  return String(now.getFullYear()).slice(2)+
+         String(now.getMonth()+1).padStart(2,'0')+
+         String(now.getDate()).padStart(2,'0');
+}
+
+// Sample invoices
+function buildSampleInvoices(){
+return[
+{
+ jobId:"JOB-0001",
+ status:"Paid",
+ date:d("2025-04-05"),
+ items:[
+   item("Lawn Mowing",1,45),
+   item("Edging & Trimming",1,20),
+   item("Blowing Debris",1,10)
+ ],
+ payments:[
+   payment("2025-04-05","Card",75)
+ ]
+},
+{
+ jobId:"JOB-0003",
+ status:"Payment Due",
+ date:d("2025-03-15"),
+ items:[ item("Lawn Mowing",1,45) ],
+ payments:[]
+},
+{
+ jobId:"JOB-0004",
+ status:"Overdue",
+ date:d("2025-05-01"),
+ items:[
+   item("Lawn Mowing",1,45),
+   item("Bush Trimming",2,25)
+ ],
+ payments:[
+   payment("2025-05-01","Cash",30)
+ ]
+}
+];
+}
+
+// preview
+document.getElementById("samplePreview").textContent=
+JSON.stringify(buildSampleInvoices(),null,2);
+
+function log(msg,type="info"){
+ const el=document.createElement("div");
+ el.className="log-line "+type;
+ el.textContent=msg;
+ document.getElementById("log").appendChild(el);
+}
+
+auth.onAuthStateChanged(user=>{
+ const btn=document.getElementById("seedBtn");
+ const authStatus=document.getElementById("authStatus");
+
+ if(!user){
+   authStatus.textContent="Not signed in — redirecting...";
+   setTimeout(()=>location.href="/account/login/",1500);
+   return;
+ }
+
+ authStatus.textContent=user.email+" · "+user.uid;
+ btn.disabled=false;
+ btn.textContent="Seed invoices";
+
+ btn.onclick=async()=>{
+   const invoices=buildSampleInvoices();
+   const ref=db.collection("invoices");
+   const prefix=getTodayPrefix();
+
+   for(const inv of invoices){
+     const invoiceId=prefix+(counter++);
+     await ref.doc(invoiceId).set({
+       invoiceId,
+       uid:user.uid,
+       jobId:inv.jobId,
+       status:inv.status,
+       date:inv.date,
+       items:inv.items,
+       payments:inv.payments
+     });
+     log("Created invoice "+invoiceId+" for "+inv.jobId,"ok");
+   }
+   log("Invoices seeded ✔","info");
+ };
+});
+</script>
+</body>
+</html>
