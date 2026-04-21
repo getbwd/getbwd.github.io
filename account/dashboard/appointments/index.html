@@ -16,6 +16,7 @@
 .job-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
 .job-card-id{font-size:11px;font-weight:400;color:var(--text-3);}
 .job-card-meta{font-size:12px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
+.job-card-meta span{display:inline-flex;align-items:center;gap:4px;}
 .job-card-body{padding:18px 20px;border-top:1px solid var(--border-light);display:flex;flex-direction:column;gap:16px;}
 .job-card-body.collapsed{display:none;}
 .detail-section-label{font-size:10px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:#bbb;margin-bottom:6px;}
@@ -45,28 +46,30 @@
 </head>
 
 <body>
-
 <div class="dash-shell">
+
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-    <div class="sidebar-top"></div>
-    <nav class="sidebar-nav">
-        <a class="nav-item" href="/account/dashboard/">Overview</a>
-        <a class="nav-item active" href="/account/dashboard/appointments/">Appointments</a>
-        <a class="nav-item" href="/account/dashboard/invoices/">Invoices</a>
-        <a class="nav-item" href="/account/dashboard/services/">My Services</a>
-        <a class="nav-item" href="/account/dashboard/account/">Account</a>
-    </nav>
+<nav class="sidebar-nav">
+<a class="nav-item active" href="/account/dashboard/appointments/">Appointments</a>
+<button class="nav-item signout-btn" id="signOutBtn">Sign Out</button>
+</nav>
 </aside>
+
+<header class="mobile-header">
+<button id="mobileMenuBtn">☰</button>
+<div id="mobileAvatar">?</div>
+</header>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <main class="dash-main">
 <div class="dash-page">
-    <div class="section-header">
-        <h1 class="section-title">Appointments</h1>
-        <p class="section-sub">Your upcoming and past service visits.</p>
-    </div>
-    <div id="jobListContainer"><p style="color:#ccc;">Loading…</p></div>
+<h1>Appointments</h1>
+<div id="jobListContainer">Loading…</div>
 </div>
 </main>
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
@@ -75,101 +78,41 @@
 
 <script>
 firebase.initializeApp({
-    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
-    authDomain:'bwd-accounts.firebaseapp.com',
-    projectId:'bwd-accounts',
-    storageBucket:'bwd-accounts.firebasestorage.app',
-    messagingSenderId:'590001375282',
-    appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
+ apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+ authDomain:'bwd-accounts.firebaseapp.com',
+ projectId:'bwd-accounts'
 });
 
-var auth = firebase.auth();
-var db = firebase.firestore();
+var auth=firebase.auth();
+var db=firebase.firestore();
 
-function fmtMoney(n){ return '$' + Number(n).toFixed(2); }
+document.getElementById('signOutBtn').onclick=()=>auth.signOut().then(()=>location='/account/login/');
+document.getElementById('mobileMenuBtn').onclick=()=>sidebar.classList.add('open');
+document.getElementById('sidebarOverlay').onclick=()=>sidebar.classList.remove('open');
 
-function toggleCard(jobId){
-    var body = document.getElementById('body-'+jobId);
-    var card = document.getElementById('card-'+jobId);
-    if(!body) return;
-    var isOpen = !body.classList.contains('collapsed');
-    body.classList.toggle('collapsed');
-    card.classList.toggle('open', isOpen);
-}
+auth.onAuthStateChanged(async user=>{
+ if(!user){location='/account/login/';return;}
+ mobileAvatar.textContent=(user.displayName||'?')[0]||'?';
 
-auth.onAuthStateChanged(async function(user){
-    if(!user) return window.location.href='/account/login/';
+ let snap=await db.collection('jobs').where('uid','==',user.uid).get();
+ if(snap.empty){jobListContainer.innerHTML='No appointments yet.';return;}
 
-    var container = document.getElementById('jobListContainer');
-
-    var snapshot = await db.collection('jobs')
-        .where('uid','==',user.uid)
-        .orderBy('date','desc')
-        .get();
-
-    if(snapshot.empty){
-        container.innerHTML = '<p>No appointments.</p>';
-        return;
-    }
-
-    var jobs = [];
-    snapshot.forEach(doc=>{
-        var d = doc.data();
-        jobs.push({
-            jobId:doc.id,
-            status:d.status||'Scheduled',
-            date:d.date?d.date.toDate():null,
-            address:d.address||'',
-            services:Array.isArray(d.services)?d.services:[],
-            customerNotes:d.customerNotes||'',
-            crewNotes:d.crewNotes||''
-        });
-    });
-
-    var html = '<div class="job-list">';
-
-    jobs.forEach(job=>{
-        var isScheduled = job.status.toLowerCase()==='scheduled';
-
-        var items = job.services.map(s=>{
-            var qty=Number(s.qty)||1;
-            var unit=Number(s.unitPrice)||0;
-            return `<tr><td>${s.name}</td><td>${qty}</td><td>${fmtMoney(unit)}</td><td>${fmtMoney(qty*unit)}</td></tr>`;
-        }).join('');
-
-        var displayNote = job.customerNotes||'';
-
-        var notesHTML = '';
-        if(isScheduled){
-            notesHTML =
-            '<div class="detail-section-label">Your Notes</div>'+
-            '<textarea class="feedback-input" id="cnote-'+job.jobId+'">'+displayNote+'</textarea>'+
-            '<button class="btn-rate">Save Note</button>';
-        } else if(displayNote){
-            notesHTML =
-            '<div class="detail-section-label">Your Notes</div>'+
-            '<div class="note-block">'+displayNote+'</div>';
-        }
-
-        html += `
-        <div class="job-card" id="card-${job.jobId}">
-            <div class="job-card-header" onclick="toggleCard('${job.jobId}')">
-                <div class="job-card-title">${job.jobId}</div>
-            </div>
-
-            <div class="job-card-body collapsed" id="body-${job.jobId}">
-                <table class="line-items">
-                    <tr><th>Service</th><th>Qty</th><th>Unit</th><th>Total</th></tr>
-                    ${items}
-                </table>
-
-                ${notesHTML}
-            </div>
-        </div>`;
-    });
-
-    html += '</div>';
-    container.innerHTML = html;
+ let html='<div class="job-list">';
+ snap.forEach(doc=>{
+   let d=doc.data();
+   html+=`
+   <div class="job-card">
+     <div class="job-card-header">
+       <b>${d.services?.map(s=>s.name).join(', ')||'Service Visit'}</b>
+     </div>
+     <div class="job-card-body">
+       <div>Date: ${d.date?.toDate().toDateString()||'—'}</div>
+       <div>Status: ${d.status||'Scheduled'}</div>
+     </div>
+   </div>`;
+ });
+ html+='</div>';
+ jobListContainer.innerHTML=html;
 });
 </script>
 
