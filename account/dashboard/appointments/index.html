@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -67,24 +66,19 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-```
-<main class="dash-main">
-    <div class="dash-page">
-        <div class="section-header">
-            <h1 class="section-title">Appointments</h1>
-            <p class="section-sub">Your upcoming and past service visits.</p>
+    <main class="dash-main">
+        <div class="dash-page">
+            <div class="section-header">
+                <h1 class="section-title">Appointments</h1>
+                <p class="section-sub">Your upcoming and past service visits.</p>
+            </div>
+            <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
         </div>
-        <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
-    </div>
-</main>
-```
-
+    </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
@@ -213,151 +207,146 @@ auth.onAuthStateChanged(async function(user){
             // Editable textarea
             notesHTML+='<div><div class="detail-section-label">Your Notes</div>'+
                 '<textarea class="feedback-input" id="cnote-'+jobId+'" placeholder="Add a note for your crew (gate code, special instructions, etc.)…" style="min-height:80px;">'+displayNote+'</textarea>'+
-
-```
-            '<div style="margin-top:6px;display:flex;align-items:center;gap:10px;">'+
-            '<button class="btn-rate" id="cnote-btn-'+jobId+'">Save Note</button>'+
-            '<span id="cnote-conf-'+jobId+'" style="font-size:12px;color:var(--text-3);display:none;"></span>'+
-            '</div></div>';
-    } else {
-        // Read-only display
-        if(displayNote)notesHTML+='<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+displayNote+'</div></div>';
-    }
-    if(crewNote)notesHTML+='<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>';
-
-    // Rating — only show if status is NOT Scheduled
-    var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
-    var savedReview=null;try{savedReview=JSON.parse(localStorage.getItem('bwd_review_'+jobId));}catch(e){}
-    var hasReview=savedReview&&(savedReview.rating||savedReview.feedback);
-    var ratingHTML='';
-    if(!isScheduled){
-        var savedFb=hasReview?savedReview.feedback:'';
-        var savedRating=hasReview?savedReview.rating:0;
-        if(hasReview){
-            // Already submitted — show edit mode
-            ratingHTML='<div class="rating-section"><div class="detail-section-label">Your Review</div>'+
-                '<div class="stars" id="stars-'+jobId+'" data-saved="'+savedRating+'"></div>'+
-                '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…">'+savedFb+'</textarea>'+
-                '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'+
-                '<button class="btn-rate" id="btn-'+jobId+'">Update Review</button>'+
-                '<span style="font-size:12px;color:var(--text-3);">You submitted a review — you can edit and update it anytime.</span>'+
+                '<div style="margin-top:6px;display:flex;align-items:center;gap:10px;">'+
+                '<button class="btn-rate" id="cnote-btn-'+jobId+'">Save Note</button>'+
+                '<span id="cnote-conf-'+jobId+'" style="font-size:12px;color:var(--text-3);display:none;"></span>'+
                 '</div></div>';
         } else {
-            ratingHTML='<div class="rating-section"><div class="detail-section-label">Rate this visit</div>'+
-                '<div class="stars" id="stars-'+jobId+'" data-saved="0"></div>'+
-                '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…"></textarea>'+
-                '<div><button class="btn-rate" id="btn-'+jobId+'">Submit</button>'+
-                '<span class="rate-thanks" id="thank-'+jobId+'" style="display:none;">Thanks for your feedback!</span>'+
-                '</div></div>';
+            // Read-only display
+            if(displayNote)notesHTML+='<div><div class="detail-section-label">Your Notes</div><div class="note-block">'+displayNote+'</div></div>';
         }
-    }
+        if(crewNote)notesHTML+='<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+crewNote+'</div></div>';
 
-    var bodyClass='job-card-body'+(isTarget?'':' collapsed');
-
-    html+='<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
-    html+='<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
-    html+='<div style="min-width:0;flex:1;">';
-    html+='<div class="job-card-title">'+svcNames+' <span class="job-card-id">· Job #'+jobId+'</span></div>';
-    html+='<div class="job-card-meta">'+metaParts.join('')+'</div>';
-    html+='</div>';
-    html+='<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<span class="toggle-chevron">▾</span></div>';
-    html+='</div>';
-    html+='<div class="'+bodyClass+'" id="body-'+jobId+'">';
-    html+=detailGridHTML+lineItemsHTML+notesHTML+ratingHTML;
-    html+='</div></div>';
-});
-
-html+='</div>';
-container.innerHTML=html;
-
-// Wire customer note save for Scheduled jobs
-myJobs.forEach(function(r){
-    var jobId=(r[0]||'').trim();
-    var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
-    if(!isScheduled)return;
-    var noteBtn=document.getElementById('cnote-btn-'+jobId);
-    var noteInput=document.getElementById('cnote-'+jobId);
-    var noteConf=document.getElementById('cnote-conf-'+jobId);
-    if(!noteBtn||!noteInput)return;
-    noteBtn.addEventListener('click',function(){
-        var val=noteInput.value;
-        try{localStorage.setItem('bwd_cnote_'+jobId,JSON.stringify({note:val}));}catch(e){}
-        noteConf.textContent='Note saved!';
-        noteConf.style.color='#1e8a4a';
-        noteConf.style.display='inline';
-        setTimeout(function(){
-            noteConf.textContent='Changes are visible to your crew.';
-            noteConf.style.color='var(--text-3)';
-        },2000);
-    });
-});
-
-// Wire stars and feedback for all non-scheduled jobs
-myJobs.forEach(function(r){
-    var jobId=(r[0]||'').trim();
-    var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
-    if(isScheduled)return; // no rating for scheduled
-
-    var starsEl=document.getElementById('stars-'+jobId);
-    var btn=document.getElementById('btn-'+jobId);
-    var fbEl=document.getElementById('fb-'+jobId);
-    var thankEl=document.getElementById('thank-'+jobId);
-    if(!starsEl)return;
-
-    // Load saved rating from localStorage
-    var saved=null;try{saved=JSON.parse(localStorage.getItem('bwd_review_'+jobId));}catch(e){}
-    var initRating=saved&&saved.rating?parseInt(saved.rating):0;
-
-    // Render stars with current value
-    var currentRating=initRating;
-    function drawStars(){
-        starsEl.innerHTML='';
-        for(var i=1;i<=5;i++){
-            (function(i){
-                var s=document.createElement('span');
-                s.className='star'+(i<=currentRating?' filled':'');
-                s.textContent='★';
-                s.addEventListener('mouseover',function(){starsEl.querySelectorAll('.star').forEach(function(el,idx){el.classList.toggle('filled',idx<i);});});
-                s.addEventListener('mouseout',drawStars);
-                s.addEventListener('click',function(){currentRating=i;drawStars();});
-                starsEl.appendChild(s);
-            })(i);
-        }
-    }
-    drawStars();
-
-    // Submit / Update button
-    if(btn){
-        btn.addEventListener('click',function(){
-            var fbText=fbEl?fbEl.value:'';
-            // Save to localStorage
-            try{localStorage.setItem('bwd_review_'+jobId,JSON.stringify({rating:currentRating,feedback:fbText}));}catch(e){}
-            // Switch button to "Update Review" mode
-            btn.textContent='Update Review';
-            if(thankEl){thankEl.style.display='none';}
-            // Show confirmation inline
-            var conf=document.getElementById('conf-'+jobId);
-            if(!conf){
-                conf=document.createElement('span');
-                conf.id='conf-'+jobId;
-                conf.style.cssText='font-size:12px;color:#1e8a4a;font-weight:500;margin-left:10px;';
-                btn.parentNode.appendChild(conf);
+        // Rating — only show if status is NOT Scheduled
+        var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
+        var savedReview=null;try{savedReview=JSON.parse(localStorage.getItem('bwd_review_'+jobId));}catch(e){}
+        var hasReview=savedReview&&(savedReview.rating||savedReview.feedback);
+        var ratingHTML='';
+        if(!isScheduled){
+            var savedFb=hasReview?savedReview.feedback:'';
+            var savedRating=hasReview?savedReview.rating:0;
+            if(hasReview){
+                // Already submitted — show edit mode
+                ratingHTML='<div class="rating-section"><div class="detail-section-label">Your Review</div>'+
+                    '<div class="stars" id="stars-'+jobId+'" data-saved="'+savedRating+'"></div>'+
+                    '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…">'+savedFb+'</textarea>'+
+                    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'+
+                    '<button class="btn-rate" id="btn-'+jobId+'">Update Review</button>'+
+                    '<span style="font-size:12px;color:var(--text-3);">You submitted a review — you can edit and update it anytime.</span>'+
+                    '</div></div>';
+            } else {
+                ratingHTML='<div class="rating-section"><div class="detail-section-label">Rate this visit</div>'+
+                    '<div class="stars" id="stars-'+jobId+'" data-saved="0"></div>'+
+                    '<textarea class="feedback-input" id="fb-'+jobId+'" placeholder="Leave feedback (optional)…"></textarea>'+
+                    '<div><button class="btn-rate" id="btn-'+jobId+'">Submit</button>'+
+                    '<span class="rate-thanks" id="thank-'+jobId+'" style="display:none;">Thanks for your feedback!</span>'+
+                    '</div></div>';
             }
-            conf.textContent='Review saved!';
-            setTimeout(function(){conf.textContent='You can edit and update it anytime.';conf.style.color='var(--text-3)';},2000);
+        }
+
+        var bodyClass='job-card-body'+(isTarget?'':' collapsed');
+
+        html+='<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
+        html+='<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
+        html+='<div style="min-width:0;flex:1;">';
+        html+='<div class="job-card-title">'+svcNames+' <span class="job-card-id">· Job #'+jobId+'</span></div>';
+        html+='<div class="job-card-meta">'+metaParts.join('')+'</div>';
+        html+='</div>';
+        html+='<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(status)+'<span class="toggle-chevron">▾</span></div>';
+        html+='</div>';
+        html+='<div class="'+bodyClass+'" id="body-'+jobId+'">';
+        html+=detailGridHTML+lineItemsHTML+notesHTML+ratingHTML;
+        html+='</div></div>';
+    });
+
+    html+='</div>';
+    container.innerHTML=html;
+
+    // Wire customer note save for Scheduled jobs
+    myJobs.forEach(function(r){
+        var jobId=(r[0]||'').trim();
+        var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
+        if(!isScheduled)return;
+        var noteBtn=document.getElementById('cnote-btn-'+jobId);
+        var noteInput=document.getElementById('cnote-'+jobId);
+        var noteConf=document.getElementById('cnote-conf-'+jobId);
+        if(!noteBtn||!noteInput)return;
+        noteBtn.addEventListener('click',function(){
+            var val=noteInput.value;
+            try{localStorage.setItem('bwd_cnote_'+jobId,JSON.stringify({note:val}));}catch(e){}
+            noteConf.textContent='Note saved!';
+            noteConf.style.color='#1e8a4a';
+            noteConf.style.display='inline';
+            setTimeout(function(){
+                noteConf.textContent='Changes are visible to your crew.';
+                noteConf.style.color='var(--text-3)';
+            },2000);
         });
+    });
+
+    // Wire stars and feedback for all non-scheduled jobs
+    myJobs.forEach(function(r){
+        var jobId=(r[0]||'').trim();
+        var isScheduled=(r[2]||'').toLowerCase()==='scheduled';
+        if(isScheduled)return; // no rating for scheduled
+
+        var starsEl=document.getElementById('stars-'+jobId);
+        var btn=document.getElementById('btn-'+jobId);
+        var fbEl=document.getElementById('fb-'+jobId);
+        var thankEl=document.getElementById('thank-'+jobId);
+        if(!starsEl)return;
+
+        // Load saved rating from localStorage
+        var saved=null;try{saved=JSON.parse(localStorage.getItem('bwd_review_'+jobId));}catch(e){}
+        var initRating=saved&&saved.rating?parseInt(saved.rating):0;
+
+        // Render stars with current value
+        var currentRating=initRating;
+        function drawStars(){
+            starsEl.innerHTML='';
+            for(var i=1;i<=5;i++){
+                (function(i){
+                    var s=document.createElement('span');
+                    s.className='star'+(i<=currentRating?' filled':'');
+                    s.textContent='★';
+                    s.addEventListener('mouseover',function(){starsEl.querySelectorAll('.star').forEach(function(el,idx){el.classList.toggle('filled',idx<i);});});
+                    s.addEventListener('mouseout',drawStars);
+                    s.addEventListener('click',function(){currentRating=i;drawStars();});
+                    starsEl.appendChild(s);
+                })(i);
+            }
+        }
+        drawStars();
+
+        // Submit / Update button
+        if(btn){
+            btn.addEventListener('click',function(){
+                var fbText=fbEl?fbEl.value:'';
+                // Save to localStorage
+                try{localStorage.setItem('bwd_review_'+jobId,JSON.stringify({rating:currentRating,feedback:fbText}));}catch(e){}
+                // Switch button to "Update Review" mode
+                btn.textContent='Update Review';
+                if(thankEl){thankEl.style.display='none';}
+                // Show confirmation inline
+                var conf=document.getElementById('conf-'+jobId);
+                if(!conf){
+                    conf=document.createElement('span');
+                    conf.id='conf-'+jobId;
+                    conf.style.cssText='font-size:12px;color:#1e8a4a;font-weight:500;margin-left:10px;';
+                    btn.parentNode.appendChild(conf);
+                }
+                conf.textContent='Review saved!';
+                setTimeout(function(){conf.textContent='You can edit and update it anytime.';conf.style.color='var(--text-3)';},2000);
+            });
+        }
+    });
+
+    // Scroll to target
+    if(targetHash){
+        var el=document.getElementById('card-'+targetHash);
+        if(el)setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},100);
     }
-});
-
-// Scroll to target
-if(targetHash){
-    var el=document.getElementById('card-'+targetHash);
-    if(el)setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},100);
-}
-```
-
 });
 </script>
-
 </body>
 </html>
