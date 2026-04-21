@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <title>Seed Jobs — BWD Dev Tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Courier New', monospace; background: #0f0f0f; color: #d4d4d4; padding: 32px 24px; min-height: 100vh; }
@@ -28,52 +29,59 @@
   #status-bar { margin-top: 24px; padding: 12px 16px; border-radius: 6px; font-size: 13px; display: none; }
   #status-bar.ok  { background: #0d2b0d; border: 1px solid #2a5a2a; color: #6cc06c; display: block; }
   #status-bar.err { background: #2b0d0d; border: 1px solid #5a2a2a; color: #e06c6c; display: block; }
-  .schema-row { display: grid; grid-template-columns: 140px 1fr; gap: 6px; font-size: 12px; line-height: 1.9; }
+  .schema-row { display: grid; grid-template-columns: 150px 1fr; gap: 6px; font-size: 12px; line-height: 1.9; }
   .schema-key { color: #6aacda; }
   .schema-val { color: #888; }
-  .divider { border: none; border-top: 1px solid #2a2a2a; margin: 8px 0 16px; }
-  a { color: #e05a12; }
+  .uid-bar { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 12px 18px; margin-bottom: 16px; font-size: 12px; display: flex; align-items: center; gap: 10px; }
+  .uid-label { color: #555; text-transform: uppercase; letter-spacing: 0.6px; font-size: 10px; font-weight: 700; }
+  .uid-value { color: #e05a12; }
+  #authStatus { color: #d4a84b; }
+  code { color: #e05a12; }
 </style>
 </head>
 <body>
 
 <h1>BWD — Jobs Firestore Seeder</h1>
-<p class="sub">Dev tool · Seeds sample appointment documents into the <code style="color:#e05a12">jobs</code> collection.</p>
+<p class="sub">Dev tool · Signs you in, then seeds sample jobs into <code>customers/{yourUID}/jobs/{jobId}</code></p>
+
+<!-- Auth status -->
+
+<div class="uid-bar">
+  <span class="uid-label">Signed in as</span>
+  <span class="uid-value" id="authStatus">Waiting for auth…</span>
+</div>
 
 <!-- Schema reference -->
 
 <div class="card">
-  <div class="card-title">Document Schema — jobs/{jobId}</div>
+  <div class="card-title">Document Path — customers/{uid}/jobs/{jobId}</div>
   <div class="schema-row">
-    <span class="schema-key">jobId</span><span class="schema-val">string — document ID, e.g. "JOB-0042"</span>
-    <span class="schema-key">uid</span><span class="schema-val">string — Firebase Auth UID of the customer</span>
-    <span class="schema-key">status</span><span class="schema-val">string — "Scheduled" | "Completed" | "Cancelled" | "Rescheduled"</span>
-    <span class="schema-key">date</span><span class="schema-val">Timestamp — service date</span>
-    <span class="schema-key">time</span><span class="schema-val">string — e.g. "9:00 AM – 11:00 AM"</span>
-    <span class="schema-key">address</span><span class="schema-val">string — service address</span>
-    <span class="schema-key">lineItems</span><span class="schema-val">array of { name, qty, unitPrice, lineTotal }</span>
-    <span class="schema-key">total</span><span class="schema-val">number — sum of all lineItem lineTotals</span>
-    <span class="schema-key">invoiceId</span><span class="schema-val">string — linked invoice ID, e.g. "INV-0091"</span>
-    <span class="schema-key">assignedCrew</span><span class="schema-val">string — crew member name(s)</span>
-    <span class="schema-key">customerNotes</span><span class="schema-val">string — notes left by the customer</span>
-    <span class="schema-key">crewNotes</span><span class="schema-val">string — notes left by the crew after the visit</span>
-    <span class="schema-key">rating</span><span class="schema-val">number — 1–5 star rating (0 = not yet rated)</span>
-    <span class="schema-key">feedback</span><span class="schema-val">string — written feedback from customer</span>
-    <span class="schema-key">createdAt</span><span class="schema-val">Timestamp — when the job record was created</span>
+    <span class="schema-key">jobId</span>        <span class="schema-val">string — document ID, e.g. "JOB-0001"</span>
+    <span class="schema-key">status</span>        <span class="schema-val">"Scheduled" | "Completed" | "Cancelled" | "Rescheduled"</span>
+    <span class="schema-key">date</span>          <span class="schema-val">Timestamp — scheduled service date</span>
+    <span class="schema-key">time</span>          <span class="schema-val">string — e.g. "9:00 AM – 11:00 AM"</span>
+    <span class="schema-key">address</span>       <span class="schema-val">string — service address</span>
+    <span class="schema-key">services</span>      <span class="schema-val">array of { name: string, qty: number, unitPrice: number }</span>
+    <span class="schema-key">invoiceId</span>     <span class="schema-val">string — linked invoice ID, e.g. "INV-0091" (empty if none)</span>
+    <span class="schema-key">assignedCrew</span>  <span class="schema-val">string — crew member name(s)</span>
+    <span class="schema-key">customerNotes</span> <span class="schema-val">string — notes from the customer (gate code, etc.)</span>
+    <span class="schema-key">crewNotes</span>     <span class="schema-val">string — notes added by crew after the visit</span>
+    <span class="schema-key">rating</span>        <span class="schema-val">number — 0 (unrated) or 1–5</span>
+    <span class="schema-key">feedback</span>      <span class="schema-val">string — written feedback from the customer</span>
   </div>
 </div>
 
 <!-- Sample data preview -->
 
 <div class="card">
-  <div class="card-title">Sample Documents (5 jobs across 2 fake UIDs)</div>
-  <pre id="samplePreview">Loading preview…</pre>
+  <div class="card-title">Sample Documents — will be written under your UID</div>
+  <pre id="samplePreview"></pre>
 </div>
 
 <!-- Controls -->
 
 <div>
-  <button class="btn btn-seed" id="seedBtn">⚡ Seed to Firestore</button>
+  <button class="btn btn-seed" id="seedBtn" disabled>⏳ Waiting for auth…</button>
   <button class="btn btn-clear" id="clearBtn">✕ Clear Log</button>
 </div>
 
@@ -95,205 +103,193 @@ firebase.initializeApp({
   messagingSenderId: '590001375282',
   appId:             '1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
-var db = firebase.firestore();
-var ts = firebase.firestore.Timestamp;
+var auth = firebase.auth();
+var db   = firebase.firestore();
+var ts   = firebase.firestore.Timestamp;
 
-// ─── Helper ────────────────────────────────────────────────────────────────
-function d(dateStr){ return ts.fromDate(new Date(dateStr)); }
-function li(name, qty, unitPrice){ return { name: name, qty: qty, unitPrice: unitPrice, lineTotal: qty * unitPrice }; }
-function total(items){ return items.reduce(function(s,i){ return s + i.lineTotal; }, 0); }
+// ─── Helpers ───────────────────────────────────────────────────────────────
+function d(str) { return ts.fromDate(new Date(str)); }
+function svc(name, qty, unitPrice) { return { name: name, qty: qty, unitPrice: unitPrice }; }
 
-// ─── Sample UIDs (replace with real UIDs from your Firebase Auth console) ──
-// These stand in for two different customer accounts.
-var UID_A = 'SAMPLE_UID_ALICE_001';   // pretend customer Alice
-var UID_B = 'SAMPLE_UID_BOB_002';     // pretend customer Bob
-
-// ─── Sample Job Documents ──────────────────────────────────────────────────
-var sampleJobs = [
-  {
-    jobId:         'JOB-0001',
-    uid:           UID_A,
-    status:        'Completed',
-    date:          d('2025-04-05'),
-    time:          '9:00 AM – 11:00 AM',
-    address:       '2905 Wyoming Ave, Flint, MI 48506',
-    lineItems: [
-      li('Lawn Mowing',       1, 45.00),
-      li('Edging & Trimming', 1, 20.00),
-      li('Blowing Debris',    1, 10.00),
-    ],
-    get total(){ return total(this.lineItems); },
-    invoiceId:     'INV-0091',
-    assignedCrew:  'Derek W.',
-    customerNotes: 'Gate code is 4821. Dog will be inside.',
-    crewNotes:     'Back gate was left open — secured after service.',
-    rating:        5,
-    feedback:      'Yard looks great, always on time!',
-    createdAt:     d('2025-03-28'),
-  },
-  {
-    jobId:         'JOB-0002',
-    uid:           UID_A,
-    status:        'Scheduled',
-    date:          d('2025-05-10'),
-    time:          '10:00 AM – 12:00 PM',
-    address:       '2905 Wyoming Ave, Flint, MI 48506',
-    lineItems: [
-      li('Spring Cleanup',    1, 120.00),
-      li('Mulch Refresh',     2,  35.00),
-    ],
-    get total(){ return total(this.lineItems); },
-    invoiceId:     '',
-    assignedCrew:  'Derek W.',
-    customerNotes: 'Please don\'t disturb the flower bed on the north side.',
-    crewNotes:     '',
-    rating:        0,
-    feedback:      '',
-    createdAt:     d('2025-04-20'),
-  },
-  {
-    jobId:         'JOB-0003',
-    uid:           UID_A,
-    status:        'Completed',
-    date:          d('2025-03-15'),
-    time:          '8:00 AM – 9:30 AM',
-    address:       '2905 Wyoming Ave, Flint, MI 48506',
-    lineItems: [
-      li('Lawn Mowing', 1, 45.00),
-    ],
-    get total(){ return total(this.lineItems); },
-    invoiceId:     'INV-0088',
-    assignedCrew:  'Marcus T.',
-    customerNotes: '',
-    crewNotes:     'Left side fence trim was difficult — overgrowth noted.',
-    rating:        4,
-    feedback:      'Good job overall, small patch near fence missed.',
-    createdAt:     d('2025-03-10'),
-  },
-  {
-    jobId:         'JOB-0004',
-    uid:           UID_B,
-    status:        'Completed',
-    date:          d('2025-04-12'),
-    time:          '1:00 PM – 3:30 PM',
-    address:       '4102 Davison Rd, Burton, MI 48509',
-    lineItems: [
-      li('Lawn Mowing',       1,  50.00),
-      li('Bush Trimming',     3,  25.00),
-      li('Leaf Removal',      1,  40.00),
-    ],
-    get total(){ return total(this.lineItems); },
-    invoiceId:     'INV-0093',
-    assignedCrew:  'Derek W.',
-    customerNotes: 'Park in driveway, not on the street.',
-    crewNotes:     '',
-    rating:        5,
-    feedback:      'Absolutely spotless. Best lawn service we\'ve had.',
-    createdAt:     d('2025-04-01'),
-  },
-  {
-    jobId:         'JOB-0005',
-    uid:           UID_B,
-    status:        'Cancelled',
-    date:          d('2025-04-26'),
-    time:          '9:00 AM – 10:00 AM',
-    address:       '4102 Davison Rd, Burton, MI 48509',
-    lineItems: [
-      li('Lawn Mowing', 1, 50.00),
-    ],
-    get total(){ return total(this.lineItems); },
-    invoiceId:     '',
-    assignedCrew:  '',
-    customerNotes: '',
-    crewNotes:     '',
-    rating:        0,
-    feedback:      '',
-    createdAt:     d('2025-04-18'),
-  },
-];
+// ─── Sample jobs (UID is set dynamically after auth) ──────────────────────
+function buildSampleJobs() {
+  return [
+    {
+      jobId:         'JOB-0001',
+      status:        'Completed',
+      date:          d('2025-04-05'),
+      time:          '9:00 AM – 11:00 AM',
+      address:       '2905 Wyoming Ave, Flint, MI 48506',
+      services: [
+        svc('Lawn Mowing',       1, 45.00),
+        svc('Edging & Trimming', 1, 20.00),
+        svc('Blowing Debris',    1, 10.00),
+      ],
+      invoiceId:     'INV-0091',
+      assignedCrew:  'Derek W.',
+      customerNotes: 'Gate code is 4821. Dog will be inside.',
+      crewNotes:     'Back gate was left open — secured after service.',
+      rating:        5,
+      feedback:      'Yard looks great, always on time!',
+    },
+    {
+      jobId:         'JOB-0002',
+      status:        'Scheduled',
+      date:          d('2025-05-10'),
+      time:          '10:00 AM – 12:00 PM',
+      address:       '2905 Wyoming Ave, Flint, MI 48506',
+      services: [
+        svc('Spring Cleanup', 1, 120.00),
+        svc('Mulch Refresh',  2,  35.00),
+      ],
+      invoiceId:     '',
+      assignedCrew:  'Derek W.',
+      customerNotes: 'Please don\'t disturb the flower bed on the north side.',
+      crewNotes:     '',
+      rating:        0,
+      feedback:      '',
+    },
+    {
+      jobId:         'JOB-0003',
+      status:        'Completed',
+      date:          d('2025-03-15'),
+      time:          '8:00 AM – 9:30 AM',
+      address:       '2905 Wyoming Ave, Flint, MI 48506',
+      services: [
+        svc('Lawn Mowing', 1, 45.00),
+      ],
+      invoiceId:     'INV-0088',
+      assignedCrew:  'Marcus T.',
+      customerNotes: '',
+      crewNotes:     'Left side fence trim was difficult — overgrowth noted.',
+      rating:        4,
+      feedback:      'Good job overall, small patch near fence missed.',
+    },
+    {
+      jobId:         'JOB-0004',
+      status:        'Rescheduled',
+      date:          d('2025-05-22'),
+      time:          '1:00 PM – 3:00 PM',
+      address:       '2905 Wyoming Ave, Flint, MI 48506',
+      services: [
+        svc('Lawn Mowing',  1, 45.00),
+        svc('Bush Trimming', 2, 25.00),
+      ],
+      invoiceId:     '',
+      assignedCrew:  'Derek W.',
+      customerNotes: 'Park in driveway please.',
+      crewNotes:     '',
+      rating:        0,
+      feedback:      '',
+    },
+    {
+      jobId:         'JOB-0005',
+      status:        'Cancelled',
+      date:          d('2025-04-26'),
+      time:          '9:00 AM – 10:00 AM',
+      address:       '2905 Wyoming Ave, Flint, MI 48506',
+      services: [
+        svc('Lawn Mowing', 1, 45.00),
+      ],
+      invoiceId:     '',
+      assignedCrew:  '',
+      customerNotes: '',
+      crewNotes:     '',
+      rating:        0,
+      feedback:      '',
+    },
+  ];
+}
 
 // ─── Preview ───────────────────────────────────────────────────────────────
-// Stringify in a readable way (Timestamps shown as ISO)
-function previewJob(j){
+var jobs = buildSampleJobs();
+document.getElementById('samplePreview').textContent = jobs.map(function(j) {
   var copy = Object.assign({}, j);
-  copy.total = total(j.lineItems);
   copy.date = j.date.toDate().toISOString().split('T')[0];
-  copy.createdAt = j.createdAt.toDate().toISOString().split('T')[0];
-  return JSON.stringify(copy, null, 2);
-}
-document.getElementById('samplePreview').textContent =
-  sampleJobs.map(function(j){ return '// ' + j.jobId + '\n' + previewJob(j); }).join('\n\n');
+  return '// customers/{yourUID}/jobs/' + j.jobId + '\n' + JSON.stringify(copy, null, 2);
+}).join('\n\n');
 
 // ─── Logging ───────────────────────────────────────────────────────────────
-function log(msg, type){
+function log(msg, type) {
   var el = document.createElement('div');
-  el.className = 'log-line ' + (type||'info');
+  el.className = 'log-line ' + (type || 'info');
   el.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
   document.getElementById('log').appendChild(el);
 }
 
-document.getElementById('clearBtn').addEventListener('click', function(){
+document.getElementById('clearBtn').addEventListener('click', function() {
   document.getElementById('log').innerHTML = '';
   var sb = document.getElementById('status-bar');
-  sb.className = '';
-  sb.style.display = 'none';
-  sb.textContent = '';
+  sb.className = ''; sb.style.display = 'none'; sb.textContent = '';
 });
 
-// ─── Seed ──────────────────────────────────────────────────────────────────
-document.getElementById('seedBtn').addEventListener('click', async function(){
-  var btn = this;
-  btn.disabled = true;
-  btn.textContent = '⏳ Seeding…';
-  var sb = document.getElementById('status-bar');
-  sb.className = '';
-  sb.textContent = '';
+// ─── Auth ──────────────────────────────────────────────────────────────────
+auth.onAuthStateChanged(function(user) {
+  var seedBtn    = document.getElementById('seedBtn');
+  var authStatus = document.getElementById('authStatus');
 
-  log('Starting seed — ' + sampleJobs.length + ' documents into jobs/ collection…', 'info');
+  if (!user) {
+    authStatus.textContent = 'Not signed in — redirecting to login…';
+    authStatus.style.color = '#e06c6c';
+    setTimeout(function() { window.location.href = '/account/login/'; }, 1500);
+    return;
+  }
 
-  var ok = 0, fail = 0;
+  authStatus.textContent = user.email + '  ·  uid: ' + user.uid;
+  authStatus.style.color = '#6cc06c';
+  seedBtn.textContent    = '⚡ Seed to Firestore';
+  seedBtn.disabled       = false;
 
-  for(var i = 0; i < sampleJobs.length; i++){
-    var job = sampleJobs[i];
-    // Build a plain object (no getter) for Firestore
-    var doc = {
-      uid:           job.uid,
-      status:        job.status,
-      date:          job.date,
-      time:          job.time,
-      address:       job.address,
-      lineItems:     job.lineItems,
-      total:         total(job.lineItems),
-      invoiceId:     job.invoiceId,
-      assignedCrew:  job.assignedCrew,
-      customerNotes: job.customerNotes,
-      crewNotes:     job.crewNotes,
-      rating:        job.rating,
-      feedback:      job.feedback,
-      createdAt:     job.createdAt,
-    };
-    try {
-      await db.collection('jobs').doc(job.jobId).set(doc);
-      log('✓ ' + job.jobId + ' (' + job.status + ', uid:' + job.uid.slice(-6) + '…) — total $' + doc.total.toFixed(2), 'ok');
-      ok++;
-    } catch(e) {
-      log('✗ ' + job.jobId + ' — ' + (e.message || e), 'err');
-      fail++;
+  // ─── Seed ────────────────────────────────────────────────────────────────
+  seedBtn.addEventListener('click', async function() {
+    seedBtn.disabled    = true;
+    seedBtn.textContent = '⏳ Seeding…';
+    var sb = document.getElementById('status-bar');
+    sb.className = ''; sb.textContent = '';
+
+    var jobs = buildSampleJobs();
+    var jobsRef = db.collection('customers').doc(user.uid).collection('jobs');
+
+    log('Writing ' + jobs.length + ' jobs to customers/' + user.uid + '/jobs/…', 'info');
+
+    var ok = 0, fail = 0;
+
+    for (var i = 0; i < jobs.length; i++) {
+      var job = jobs[i];
+      var doc = {
+        status:        job.status,
+        date:          job.date,
+        time:          job.time,
+        address:       job.address,
+        services:      job.services,
+        invoiceId:     job.invoiceId,
+        assignedCrew:  job.assignedCrew,
+        customerNotes: job.customerNotes,
+        crewNotes:     job.crewNotes,
+        rating:        job.rating,
+        feedback:      job.feedback,
+      };
+      try {
+        await jobsRef.doc(job.jobId).set(doc);
+        var svcNames = job.services.map(function(s) { return s.name; }).join(', ');
+        var subtotal = job.services.reduce(function(sum, s) { return sum + s.qty * s.unitPrice; }, 0);
+        log('✓ ' + job.jobId + ' — ' + job.status + ' · ' + svcNames + ' · $' + subtotal.toFixed(2), 'ok');
+        ok++;
+      } catch (e) {
+        log('✗ ' + job.jobId + ' — ' + (e.message || e), 'err');
+        fail++;
+      }
     }
-  }
 
-  log('Done. ' + ok + ' written, ' + fail + ' failed.', fail ? 'warn' : 'info');
+    log('Done. ' + ok + ' written, ' + fail + ' failed.', fail ? 'warn' : 'info');
+    sb.textContent = fail
+      ? fail + ' document(s) failed. Check the log above.'
+      : '✓ All ' + ok + ' jobs written to customers/' + user.uid + '/jobs/';
+    sb.className = fail ? 'err' : 'ok';
 
-  if(!fail){
-    sb.textContent = '✓ All ' + ok + ' documents written to jobs/ successfully.';
-    sb.className = 'ok';
-  } else {
-    sb.textContent = fail + ' document(s) failed. Check the log above — likely a Firestore rules issue.';
-    sb.className = 'err';
-  }
-
-  btn.textContent = '⚡ Seed to Firestore';
-  btn.disabled = false;
+    seedBtn.textContent = '⚡ Seed to Firestore';
+    seedBtn.disabled    = false;
+  });
 });
 </script>
 
