@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seed Services — BWD Dev Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Courier New', monospace; background: #0f0f0f; color: #d4d4d4; padding: 32px 24px; min-height: 100vh; }
+  h1 { font-size: 15px; font-weight: 700; color: #f0f0f0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .sub { font-size: 12px; color: #666; margin-bottom: 28px; }
+  .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; }
+  .card-title { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 12px; }
+  pre { font-size: 11.5px; line-height: 1.7; color: #a8c7a0; white-space: pre-wrap; word-break: break-all; }
+  .btn { display: inline-block; padding: 10px 22px; border-radius: 6px; border: none; font-family: 'Courier New', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; text-transform: uppercase; transition: background 0.15s; }
+  .btn-seed { background: #2e7d52; color: #fff; }
+  .btn-seed:hover { background: #256642; }
+  .btn-seed:disabled { background: #444; color: #777; cursor: default; }
+  .btn-clear { background: #2a2a2a; color: #aaa; margin-left: 10px; }
+  .btn-clear:hover { background: #333; color: #ddd; }
+  #log { margin-top: 20px; }
+  .log-line { font-size: 12px; line-height: 1.8; }
+  .log-line.ok   { color: #6cc06c; }
+  .log-line.err  { color: #e06c6c; }
+  .log-line.info { color: #6aacda; }
+  .log-line.warn { color: #d4a84b; }
+  #status-bar { margin-top: 24px; padding: 12px 16px; border-radius: 6px; font-size: 13px; display: none; }
+  #status-bar.ok  { background: #0d2b18; border: 1px solid #1a5a34; color: #6cc06c; display: block; }
+  #status-bar.err { background: #2b0d0d; border: 1px solid #5a2a2a; color: #e06c6c; display: block; }
+  .schema-row { display: grid; grid-template-columns: 200px 1fr; gap: 6px; font-size: 12px; line-height: 1.9; }
+  .schema-key { color: #6cc06c; }
+  .schema-val { color: #888; }
+  .uid-bar { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 12px 18px; margin-bottom: 16px; font-size: 12px; display: flex; align-items: center; gap: 10px; }
+  .uid-label { color: #555; text-transform: uppercase; letter-spacing: 0.6px; font-size: 10px; font-weight: 700; }
+  .uid-value { color: #2e7d52; }
+  #authStatus { color: #d4a84b; }
+  code { color: #2e7d52; }
+  .schema-section { margin-bottom: 10px; }
+  .schema-section-title { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700; margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid #222; }
+</style>
+</head>
+<body>
+
+<h1>BWD &mdash; Services Firestore Seeder</h1>
+<p class="sub">Dev tool &middot; Signs you in, then seeds sample services into <code>services/{yourUID}</code> as a single document with a <code>services</code> array</p>
+
+<div class="uid-bar">
+  <span class="uid-label">Signed in as</span>
+  <span class="uid-value" id="authStatus">Waiting for auth...</span>
+</div>
+
+<div class="card">
+  <div class="card-title">Document Path &mdash; services/{uid}</div>
+  <div class="schema-section">
+    <div class="schema-section-title">Root Fields</div>
+    <div class="schema-row">
+      <span class="schema-key">uid</span>               <span class="schema-val">string &mdash; document ID and UID of the customer (same value)</span>
+      <span class="schema-key">services</span>          <span class="schema-val">array &mdash; all service entries for this account (see below)</span>
+    </div>
+  </div>
+  <div class="schema-section" style="margin-top:12px">
+    <div class="schema-section-title">services[] &mdash; each entry</div>
+    <div class="schema-row">
+      <span class="schema-key">serviceId</span>                   <span class="schema-val">string &mdash; unique ID within the array, e.g. "SVC-001"</span>
+      <span class="schema-key">name</span>                        <span class="schema-val">string &mdash; service name, e.g. "Lawn Mowing"</span>
+      <span class="schema-key">frequency</span>                   <span class="schema-val">"Weekly" | "Bi-Weekly" | "Monthly" | "Seasonal" | "One-Time" | "As Needed"</span>
+      <span class="schema-key">pricePerVisit</span>               <span class="schema-val">number &mdash; standard per-visit charge in USD (0 if fully pre-paid)</span>
+      <span class="schema-key">prepay.enabled</span>              <span class="schema-val">boolean &mdash; true if customer has pre-paid for visits</span>
+      <span class="schema-key">prepay.visitsIncluded</span>       <span class="schema-val">number &mdash; total visits covered by pre-payment (0 if not prepaid)</span>
+      <span class="schema-key">prepay.visitsPending</span>        <span class="schema-val">number &mdash; visits remaining on the pre-payment balance</span>
+      <span class="schema-key">prepay.amountPaid</span>           <span class="schema-val">number &mdash; total USD paid upfront (0 if not prepaid)</span>
+      <span class="schema-key">notes</span>                       <span class="schema-val">string &mdash; crew instructions, e.g. "Mow at 3.5 in"</span>
+      <span class="schema-key">status</span>                      <span class="schema-val">"Active" | "Seasonal" | "On Hold" | "Terminated" | "Canceled"</span>
+      <span class="schema-key">startDate</span>                   <span class="schema-val">Timestamp &mdash; date this service was first started for the account</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Sample Document &mdash; will be written as services/{yourUID}</div>
+  <pre id="samplePreview"></pre>
+</div>
+
+<div>
+  <button class="btn btn-seed" id="seedBtn" disabled>Waiting for auth...</button>
+  <button class="btn btn-clear" id="clearBtn">Clear Log</button>
+</div>
+
+<div id="log"></div>
+<div id="status-bar"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:            'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',
+  authDomain:        'bwd-accounts.firebaseapp.com',
+  projectId:         'bwd-accounts',
+  storageBucket:     'bwd-accounts.firebasestorage.app',
+  messagingSenderId: '590001375282',
+  appId:             '1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+
+var auth = firebase.auth();
+var db   = firebase.firestore();
+var ts   = firebase.firestore.Timestamp;
+
+function d(str) { return ts.fromDate(new Date(str)); }
+
+function svc(serviceId, name, frequency, pricePerVisit, prepay, notes, status, startDate) {
+  return {
+    serviceId:     serviceId,
+    name:          name,
+    frequency:     frequency,
+    pricePerVisit: pricePerVisit,
+    prepay: {
+      enabled:        prepay.enabled        || false,
+      visitsIncluded: prepay.visitsIncluded || 0,
+      visitsPending:  prepay.visitsPending  || 0,
+      amountPaid:     prepay.amountPaid     || 0,
+    },
+    notes:     notes,
+    status:    status,
+    startDate: startDate,
+  };
+}
+
+function buildSampleServices() {
+  return [
+    svc('SVC-001', 'Lawn Mowing',       'Weekly',    45.00,
+        { enabled: false, visitsIncluded: 0,  visitsPending: 0,  amountPaid: 0      },
+        'Mow at 3.5 in. Bag clippings when wet.',
+        'Active', d('2024-04-01')),
+    svc('SVC-002', 'Edging & Trimming', 'Bi-Weekly',  0.00,
+        { enabled: true,  visitsIncluded: 12, visitsPending: 10, amountPaid: 180.00 },
+        'Edge driveway, sidewalk, and back patio border.',
+        'Active', d('2024-05-15')),
+    svc('SVC-003', 'Mulch Refresh',     'Monthly',   35.00,
+        { enabled: true,  visitsIncluded: 3,  visitsPending: 2,  amountPaid: 105.00 },
+        'Use dark brown hardwood mulch. 2-3 in depth.',
+        'Active', d('2025-03-10')),
+    svc('SVC-004', 'Leaf Removal',      'Seasonal',  55.00,
+        { enabled: false, visitsIncluded: 0,  visitsPending: 0,  amountPaid: 0      },
+        'Bag and haul — do not mulch leaves in place.',
+        'Seasonal', d('2023-10-01')),
+    svc('SVC-005', 'Gutter Cleaning',   'As Needed', 80.00,
+        { enabled: false, visitsIncluded: 0,  visitsPending: 0,  amountPaid: 0      },
+        'Two-story in back — use extension ladder.',
+        'On Hold', d('2024-06-01')),
+    svc('SVC-006', 'Snow Removal',      'As Needed', 65.00,
+        { enabled: false, visitsIncluded: 0,  visitsPending: 0,  amountPaid: 0      },
+        '',
+        'Terminated', d('2023-11-01')),
+  ];
+}
+
+// Preview with readable dates
+var previewServices = buildSampleServices().map(function(s) {
+  return Object.assign({}, s, {
+    startDate: s.startDate.toDate().toISOString().split('T')[0],
+  });
+});
+document.getElementById('samplePreview').textContent =
+  '// services/(yourUID)\n' +
+  JSON.stringify({ uid: '(yourUID)', services: previewServices }, null, 2);
+
+function log(msg, type) {
+  var el = document.createElement('div');
+  el.className = 'log-line ' + (type || 'info');
+  el.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+  document.getElementById('log').appendChild(el);
+}
+
+document.getElementById('clearBtn').addEventListener('click', function() {
+  document.getElementById('log').innerHTML = '';
+  var sb = document.getElementById('status-bar');
+  sb.className = ''; sb.style.display = 'none'; sb.textContent = '';
+});
+
+auth.onAuthStateChanged(function(user) {
+  var seedBtn    = document.getElementById('seedBtn');
+  var authStatus = document.getElementById('authStatus');
+
+  if (!user) {
+    authStatus.textContent = 'Not signed in — redirecting to login...';
+    authStatus.style.color = '#e06c6c';
+    setTimeout(function() { window.location.href = '/account/login/'; }, 1500);
+    return;
+  }
+
+  authStatus.textContent = user.email + '  ·  uid: ' + user.uid;
+  authStatus.style.color = '#6cc06c';
+  seedBtn.textContent    = 'Seed to Firestore';
+  seedBtn.disabled       = false;
+
+  seedBtn.addEventListener('click', async function() {
+    seedBtn.disabled    = true;
+    seedBtn.textContent = 'Seeding...';
+    var sb = document.getElementById('status-bar');
+    sb.className = ''; sb.textContent = '';
+
+    var services = buildSampleServices();
+    var docRef   = db.collection('services').doc(user.uid);
+
+    log('Writing services document to services/' + user.uid + '...', 'info');
+
+    try {
+      await docRef.set({ uid: user.uid, services: services });
+
+      services.forEach(function(s) {
+        var prepayNote = s.prepay.enabled
+          ? '· prepaid ' + s.prepay.visitsPending + '/' + s.prepay.visitsIncluded + ' visits remaining ($' + s.prepay.amountPaid.toFixed(2) + ')'
+          : '· $' + s.pricePerVisit.toFixed(2) + '/visit';
+        var start = s.startDate.toDate().toISOString().split('T')[0];
+        log(
+          '  ' + s.serviceId + ' — ' + s.name +
+          ' · ' + s.frequency +
+          ' · ' + s.status +
+          ' · started ' + start +
+          ' ' + prepayNote +
+          (s.notes ? ' · "' + s.notes + '"' : ''),
+          'ok'
+        );
+      });
+
+      log('Done. 1 document written with ' + services.length + ' services.', 'info');
+      sb.textContent = 'services/' + user.uid + ' written with ' + services.length + ' service entries.';
+      sb.className   = 'ok';
+
+    } catch(e) {
+      log('Failed — ' + (e.message || e), 'err');
+      sb.textContent = 'Write failed. Check the log above.';
+      sb.className   = 'err';
+    }
+
+    seedBtn.textContent = 'Seed to Firestore';
+    seedBtn.disabled    = false;
+  });
+});
+</script>
+
+</body>
+</html>
