@@ -496,7 +496,7 @@ auth.onAuthStateChanged(async function(user){
         console.log("User:", user.uid);
 
         // Load customers
-        var custSnap = await db.collection('customers').orderBy('name').get();
+        var custSnap = await db.collection('customers').limit(1).get();
 
         custList = [];
         custSnap.forEach(function(doc){
