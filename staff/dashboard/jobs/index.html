@@ -486,23 +486,41 @@ async function loadJobs(){
 }
 
 auth.onAuthStateChanged(async function(user){
-    if(!user){ window.location.href='/staff/login/'; return; }
-    document.getElementById('mobileAvatar').textContent = initials(user.displayName||user.email||'');
+    try {
+        if(!user){ window.location.href='/staff/login/'; return; }
 
-    // Load customers for modal dropdown + name map
-    var custSnap = await db.collection('customers').orderBy('name').get();
-    custList = [];
-    custSnap.forEach(function(doc){
-        var d = doc.data();
-        custNames[doc.id] = d.name||doc.id;
-        custList.push({uid:doc.id, name:d.name||doc.id});
-    });
+        document.getElementById('mobileAvatar').textContent =
+            initials(user.displayName||user.email||'');
 
-    // Populate customer select
-    var sel = document.getElementById('jobCustomer');
-    sel.innerHTML = custList.map(function(c){ return '<option value="'+c.uid+'">'+c.name+'</option>'; }).join('');
+        // 🔴 DEBUG LINE
+        console.log("User:", user.uid);
 
-    await loadJobs();
+        // Load customers
+        var custSnap = await db.collection('customers').orderBy('name').get();
+
+        custList = [];
+        custSnap.forEach(function(doc){
+            var d = doc.data();
+            custNames[doc.id] = d.name||doc.id;
+            custList.push({uid:doc.id, name:d.name||doc.id});
+        });
+
+        console.log("Customers loaded:", custList.length);
+
+        // Populate dropdown
+        var sel = document.getElementById('jobCustomer');
+        sel.innerHTML = custList.map(function(c){
+            return '<option value="'+c.uid+'">'+c.name+'</option>';
+        }).join('');
+
+        await loadJobs();
+
+    } catch(e){
+        console.error("MAIN ERROR:", e);
+
+        document.getElementById('jobListContainer').innerHTML =
+            '<p class="empty-state">Load failed: '+(e.message||'Unknown error')+'</p>';
+    }
 });
 </script>
 
