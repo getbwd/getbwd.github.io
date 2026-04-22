@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -32,85 +33,145 @@
 .job-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); }
 @media(max-width:600px){ .detail-grid { grid-template-columns: 1fr; } }
 
-/* ── DATE/TIME FIX — side by side with no overlap ── */
+/* ── DATE/TIME — reliable side-by-side ── */
 .datetime-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+display: flex;
+gap: 12px;
+margin-bottom: 0; /* form-row has its own margin */
 }
-@media(max-width:480px){ .datetime-row { grid-template-columns: 1fr; } }
+.datetime-row .form-row {
+flex: 1;
+min-width: 0;
+margin-bottom: 0;
+}
+.datetime-row .form-input {
+width: 100%;
+box-sizing: border-box;
+min-width: 0;
+}
+@media(max-width:480px){
+.datetime-row { flex-direction: column; gap: 0; }
+.datetime-row .form-row { margin-bottom: 12px; }
+}
 
 /* ── CUSTOMER AUTOCOMPLETE ── */
 .cust-picker-wrap { position: relative; }
 .cust-picker-input {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 13.5px;
-    font-family: 'Inter', sans-serif;
-    color: var(--text);
-    background: var(--white);
-    width: 100%;
-    transition: border-color 0.15s;
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 8px 12px;
+font-size: 13.5px;
+font-family: ‘Inter’, sans-serif;
+color: var(–text);
+background: var(–white);
+width: 100%;
+box-sizing: border-box;
+transition: border-color 0.15s;
 }
-.cust-picker-input:focus { outline: none; border-color: var(--orange); }
+.cust-picker-input:focus { outline: none; border-color: var(–orange); }
 .cust-picker-input.has-account { background: #f6fff9; border-color: #8ecfa8; }
 .cust-dropdown {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0; right: 0;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-    z-index: 400;
-    max-height: 220px;
-    overflow-y: auto;
-    display: none;
+position: absolute;
+top: calc(100% + 4px);
+left: 0; right: 0;
+background: var(–white);
+border: 1px solid var(–border);
+border-radius: 10px;
+box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+z-index: 400;
+max-height: 220px;
+overflow-y: auto;
+display: none;
 }
 .cust-dropdown.open { display: block; }
 .cust-dropdown-item {
-    padding: 9px 14px;
-    font-size: 13.5px;
-    color: var(--text-2);
-    cursor: pointer;
-    border-bottom: 1px solid var(--border-light);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+padding: 9px 14px;
+font-size: 13.5px;
+color: var(–text-2);
+cursor: pointer;
+border-bottom: 1px solid var(–border-light);
+display: flex;
+align-items: center;
+gap: 8px;
 }
 .cust-dropdown-item:last-child { border-bottom: none; }
 .cust-dropdown-item:hover { background: #fafaf8; }
 .cust-dropdown-item .cust-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #8ecfa8; flex-shrink: 0;
+width: 7px; height: 7px; border-radius: 50%;
+background: #8ecfa8; flex-shrink: 0;
 }
 .cust-dropdown-item .cust-sub {
-    font-size: 11px; color: var(--text-3); margin-top: 1px;
+font-size: 11px; color: var(–text-3); margin-top: 1px;
 }
 .cust-account-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 11px; font-weight: 600; color: #1e8a4a;
-    background: #edf7f1; border: 1px solid #b6dfc8;
-    border-radius: 100px; padding: 2px 8px; margin-top: 4px;
+display: inline-flex; align-items: center; gap: 5px;
+font-size: 11px; font-weight: 600; color: #1e8a4a;
+background: #edf7f1; border: 1px solid #b6dfc8;
+border-radius: 100px; padding: 2px 8px; margin-top: 4px;
 }
 .cust-type-hint {
-    font-size: 11px; color: var(--text-3); margin-top: 4px;
+font-size: 11px; color: var(–text-3); margin-top: 4px;
 }
 /* manual contact fields */
 .manual-contact-fields {
-    display: flex; flex-direction: column; gap: 10px;
-    margin-top: 2px;
-    padding: 12px 14px;
-    background: #fafaf8;
-    border: 1px solid var(--border-light);
-    border-radius: 8px;
+display: flex; flex-direction: column; gap: 10px;
+margin-top: 2px;
+padding: 12px 14px;
+background: #fafaf8;
+border: 1px solid var(–border-light);
+border-radius: 8px;
 }
 .manual-contact-label {
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px;
-    text-transform: uppercase; color: #bbb; margin-bottom: 2px;
+font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px;
+text-transform: uppercase; color: #bbb; margin-bottom: 2px;
 }
+
+/* ── PROPERTY PICKER ── */
+.prop-picker-wrap { display: flex; flex-direction: column; gap: 6px; }
+.prop-select {
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 8px 12px;
+font-size: 13.5px;
+font-family: ‘Inter’, sans-serif;
+color: var(–text);
+background: var(–white);
+width: 100%;
+box-sizing: border-box;
+cursor: pointer;
+transition: border-color 0.15s;
+appearance: auto;
+}
+.prop-select:focus { outline: none; border-color: var(–orange); }
+.prop-notes-preview {
+font-size: 11.5px;
+color: var(–text-3);
+background: #fafaf8;
+border: 1px solid var(–border-light);
+border-radius: 6px;
+padding: 7px 11px;
+line-height: 1.5;
+display: none;
+}
+.prop-notes-preview.visible { display: block; }
+.prop-manual-toggle {
+font-size: 11.5px;
+color: var(–orange);
+cursor: pointer;
+text-decoration: underline;
+background: none;
+border: none;
+padding: 0;
+text-align: left;
+font-family: inherit;
+}
+.prop-manual-toggle:hover { opacity: 0.8; }
+.prop-manual-input {
+display: none;
+}
+.prop-manual-input.visible { display: block; }
 </style>
+
 </head>
 <body>
 <div class="dash-shell">
@@ -168,30 +229,34 @@
             <button class="btn-primary" id="newJobBtn">+ New Job</button>
         </div>
 
-        <!-- Filter bar -->
-        <div class="filter-bar">
-            <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, address, service…">
-            <select class="filter-select" id="statusFilter">
-                <option value="">All Statuses</option>
-                <option value="scheduled">Scheduled</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="rescheduled">Rescheduled</option>
-            </select>
-            <select class="filter-select" id="timeFilter">
-                <option value="upcoming">Upcoming</option>
-                <option value="all">Past</option>
-                <option value="past">All Time</option>
-            </select>
-        </div>
-
-        <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+```
+    <!-- Filter bar -->
+    <div class="filter-bar">
+        <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, address, service…">
+        <select class="filter-select" id="statusFilter">
+            <option value="">All Statuses</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="rescheduled">Rescheduled</option>
+        </select>
+        <select class="filter-select" id="timeFilter">
+            <option value="upcoming">Upcoming</option>
+            <option value="all">Past</option>
+            <option value="past">All Time</option>
+        </select>
     </div>
+
+    <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+</div>
+```
+
 </main>
 
 </div>
 
 <!-- NEW / EDIT JOB MODAL -->
+
 <div class="modal-backdrop" id="jobModal">
     <div class="modal">
         <div class="modal-header">
@@ -201,44 +266,42 @@
         <div class="modal-body">
             <input type="hidden" id="editJobId">
 
-            <!-- ── CUSTOMER PICKER ── -->
-            <div class="form-row">
-                <label class="form-label">Customer</label>
-                <div class="cust-picker-wrap" id="custPickerWrap">
-                    <input
-                        class="cust-picker-input"
-                        type="text"
-                        id="custSearchInput"
-                        placeholder="Search by name or type a new customer…"
-                        autocomplete="off"
-                    >
-                    <div class="cust-dropdown" id="custDropdown"></div>
-                </div>
-                <!-- Shows when an account customer is selected -->
-                <div id="custAccountBadge" style="display:none;">
-                    <span class="cust-account-badge">✓ Has account</span>
-                </div>
-                <!-- Shows when typing a manual (no-account) customer -->
-                <div id="custTypeHint" class="cust-type-hint" style="display:none;">
-                    No account found — you can still add this customer manually.
-                </div>
-                <!-- Hidden: stores selected UID if account customer -->
-                <input type="hidden" id="custSelectedUid">
-                <!-- Manual contact fields — shown only for no-account customers -->
-                <div class="manual-contact-fields" id="manualContactFields" style="display:none;">
-                    <div>
-                        <div class="manual-contact-label">Email</div>
-                        <input class="form-input" type="email" id="custManualEmail" placeholder="customer@email.com">
-                    </div>
-                    <div>
-                        <div class="manual-contact-label">Phone</div>
-                        <input class="form-input" type="tel" id="custManualPhone" placeholder="+1 (555) 000-0000">
-                    </div>
-                    <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required.</p>
-                </div>
+```
+        <!-- ── CUSTOMER PICKER ── -->
+        <div class="form-row">
+            <label class="form-label">Customer</label>
+            <div class="cust-picker-wrap" id="custPickerWrap">
+                <input
+                    class="cust-picker-input"
+                    type="text"
+                    id="custSearchInput"
+                    placeholder="Search by name or type a new customer…"
+                    autocomplete="off"
+                >
+                <div class="cust-dropdown" id="custDropdown"></div>
             </div>
+            <div id="custAccountBadge" style="display:none;">
+                <span class="cust-account-badge">✓ Has account</span>
+            </div>
+            <div id="custTypeHint" class="cust-type-hint" style="display:none;">
+                No account found — you can still add this customer manually.
+            </div>
+            <input type="hidden" id="custSelectedUid">
+            <div class="manual-contact-fields" id="manualContactFields" style="display:none;">
+                <div>
+                    <div class="manual-contact-label">Email</div>
+                    <input class="form-input" type="email" id="custManualEmail" placeholder="customer@email.com">
+                </div>
+                <div>
+                    <div class="manual-contact-label">Phone</div>
+                    <input class="form-input" type="tel" id="custManualPhone" placeholder="+1 (555) 000-0000">
+                </div>
+                <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required.</p>
+            </div>
+        </div>
 
-            <!-- ── DATE & TIME (fixed: no overlap) ── -->
+        <!-- ── DATE & TIME — flex side-by-side, no overlap ── -->
+        <div class="form-row">
             <div class="datetime-row">
                 <div class="form-row">
                     <label class="form-label">Date</label>
@@ -249,59 +312,84 @@
                     <input class="form-input" type="time" id="jobTime">
                 </div>
             </div>
+        </div>
 
-            <div class="form-row">
-                <label class="form-label">Status</label>
-                <select class="form-select" id="jobStatus">
-                    <option value="Scheduled">Scheduled</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Rescheduled">Rescheduled</option>
-                    <option value="Cancelled">Cancelled</option>
+        <div class="form-row">
+            <label class="form-label">Status</label>
+            <select class="form-select" id="jobStatus">
+                <option value="Scheduled">Scheduled</option>
+                <option value="Completed">Completed</option>
+                <option value="Rescheduled">Rescheduled</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+        </div>
+
+        <!-- ── ADDRESS / PROPERTY PICKER ── -->
+        <div class="form-row">
+            <label class="form-label">Address</label>
+            <div class="prop-picker-wrap" id="propPickerWrap">
+                <!-- Shown when account customer has saved properties -->
+                <select class="prop-select" id="propSelect" style="display:none;">
+                    <!-- populated dynamically -->
                 </select>
-            </div>
-            <div class="form-row">
-                <label class="form-label">Address</label>
-                <input class="form-input" type="text" id="jobAddress" placeholder="1234 Main St, Flint, MI 48501">
-            </div>
-            <div class="form-row">
-                <label class="form-label">Assigned Crew</label>
-                <input class="form-input" type="text" id="jobCrew" placeholder="e.g. Brandon">
-            </div>
-
-            <!-- Line items -->
-            <div class="form-row">
-                <label class="form-label">Services / Line Items</label>
-                <div class="line-item-row header">
-                    <span>Service Name</span><span>Qty</span><span>Unit Price</span><span></span>
+                <!-- Notes preview for selected property -->
+                <div class="prop-notes-preview" id="propNotesPreview"></div>
+                <!-- Toggle to show manual input even when properties exist -->
+                <button type="button" class="prop-manual-toggle" id="propManualToggle" style="display:none;">
+                    Enter a different address
+                </button>
+                <!-- Manual/fallback address input -->
+                <div class="prop-manual-input" id="propManualInputWrap">
+                    <input class="form-input" type="text" id="jobAddress" placeholder="1234 Main St, Flint, MI 48501">
                 </div>
-                <div id="jobLineItems"></div>
-                <button class="btn-add-line" id="addLineBtn">+ Add service</button>
-                <p class="line-total-preview" id="jobLineTotal"></p>
-            </div>
-            <div class="form-row">
-                <label class="form-label">Customer Notes</label>
-                <textarea class="form-textarea" id="jobCustomerNotes" placeholder="Gate code, special instructions…"></textarea>
-            </div>
-            <div class="form-row">
-                <label class="form-label">Crew Notes</label>
-                <textarea class="form-textarea" id="jobCrewNotes" placeholder="Internal notes for the crew…"></textarea>
-            </div>
-            <div class="form-row">
-                <label class="form-label">Linked Invoice ID (optional)</label>
-                <input class="form-input" type="text" id="jobInvoiceId" placeholder="Invoice doc ID">
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn-primary" id="saveJobBtn">Save Job</button>
-            <button class="btn-secondary" id="cancelJobBtn">Cancel</button>
-            <span class="modal-status" id="jobModalStatus"></span>
+
+        <div class="form-row">
+            <label class="form-label">Assigned Crew</label>
+            <input class="form-input" type="text" id="jobCrew" placeholder="e.g. Brandon">
+        </div>
+
+        <!-- Line items -->
+        <div class="form-row">
+            <label class="form-label">Services / Line Items</label>
+            <div class="line-item-row header">
+                <span>Service Name</span><span>Qty</span><span>Unit Price</span><span></span>
+            </div>
+            <div id="jobLineItems"></div>
+            <button class="btn-add-line" id="addLineBtn">+ Add service</button>
+            <p class="line-total-preview" id="jobLineTotal"></p>
+        </div>
+
+        <div class="form-row">
+            <label class="form-label">Customer Notes</label>
+            <textarea class="form-textarea" id="jobCustomerNotes" placeholder="Gate code, special instructions…"></textarea>
+        </div>
+        <div class="form-row">
+            <label class="form-label">Crew Notes</label>
+            <textarea class="form-textarea" id="jobCrewNotes" placeholder="Internal notes for the crew…"></textarea>
+        </div>
+        <div class="form-row">
+            <label class="form-label">Linked Invoice ID (optional)</label>
+            <input class="form-input" type="text" id="jobInvoiceId" placeholder="Invoice doc ID">
         </div>
     </div>
+    <div class="modal-footer">
+        <button class="btn-primary" id="saveJobBtn">Save Job</button>
+        <button class="btn-secondary" id="cancelJobBtn">Cancel</button>
+        <span class="modal-status" id="jobModalStatus"></span>
+    </div>
+</div>
+```
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
@@ -326,13 +414,16 @@ function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
 
 // ── State ──
 var allJobs   = [];
-var custNames = {};   // uid → name
-var custList  = [];   // [{uid, name, phone, address}]
-var custDocs  = {};   // uid → full firestore doc data
+var custNames = {};
+var custList  = [];
+var custDocs  = {};
 
 // ── Customer picker state ──
-var pickerSelectedUid  = '';   // set when account customer chosen
-var pickerIsManual     = false; // true when free-typing a non-account name
+var pickerSelectedUid  = '';
+var pickerIsManual     = false;
+
+// ── Property picker state ──
+var propManualShown = false;
 
 var custSearchInput    = document.getElementById('custSearchInput');
 var custDropdown       = document.getElementById('custDropdown');
@@ -341,8 +432,150 @@ var custAccountBadge   = document.getElementById('custAccountBadge');
 var custTypeHint       = document.getElementById('custTypeHint');
 var manualContactFields= document.getElementById('manualContactFields');
 
-function setCustPicker(uid, name){
-    // Called when an account customer is clicked from dropdown
+var propSelect         = document.getElementById('propSelect');
+var propNotesPreview   = document.getElementById('propNotesPreview');
+var propManualToggle   = document.getElementById('propManualToggle');
+var propManualInputWrap= document.getElementById('propManualInputWrap');
+var jobAddressInput    = document.getElementById('jobAddress');
+
+// ── Property picker helpers ──
+
+/**
+ * Populate the property picker for an account customer.
+ * @param {string} uid
+ * @param {string|null} preferredAddress - pre-select this address if provided (for edit mode)
+ */
+function populatePropPicker(uid, preferredAddress) {
+    var doc = custDocs[uid];
+    var props = (doc && Array.isArray(doc.properties)) ? doc.properties : [];
+
+    propManualShown = false;
+
+    if (props.length === 0) {
+        // No saved properties — just show manual input
+        propSelect.style.display = 'none';
+        propManualToggle.style.display = 'none';
+        propNotesPreview.classList.remove('visible');
+        propManualInputWrap.classList.add('visible');
+        jobAddressInput.value = '';
+        return;
+    }
+
+    // Build select options
+    var html = '';
+    props.forEach(function(p, i) {
+        var label = p.address || ('Property ' + (i + 1));
+        if (p.primary) label += ' (primary)';
+        html += '<option value="' + i + '">' + escHtml(label) + '</option>';
+    });
+    html += '<option value="__manual__">Enter different address…</option>';
+    propSelect.innerHTML = html;
+
+    // Pre-select preferred address (edit mode) or primary
+    var selectedIdx = 0;
+    if (preferredAddress) {
+        var found = props.findIndex(function(p) {
+            return p.address && p.address.trim().toLowerCase() === preferredAddress.trim().toLowerCase();
+        });
+        if (found !== -1) selectedIdx = found;
+        else {
+            // It was a manually typed address not in the list
+            propSelect.value = '__manual__';
+            propManualShown = true;
+            propManualInputWrap.classList.add('visible');
+            jobAddressInput.value = preferredAddress;
+            propManualToggle.style.display = 'none';
+        }
+    } else {
+        // Default to primary property
+        var primaryIdx = props.findIndex(function(p) { return p.primary; });
+        if (primaryIdx !== -1) selectedIdx = primaryIdx;
+    }
+
+    if (!propManualShown) {
+        propSelect.value = String(selectedIdx);
+        propManualInputWrap.classList.remove('visible');
+        jobAddressInput.value = '';
+        updatePropNotesAndCustomerNotes(uid, selectedIdx);
+    }
+
+    propSelect.style.display = '';
+    propManualToggle.style.display = propManualShown ? 'none' : '';
+}
+
+function updatePropNotesAndCustomerNotes(uid, idx) {
+    var doc = custDocs[uid];
+    var props = (doc && Array.isArray(doc.properties)) ? doc.properties : [];
+    var prop = props[idx];
+    if (!prop) { propNotesPreview.classList.remove('visible'); return; }
+
+    // Show property notes preview
+    var notes = prop.notes || prop.propertyNotes || prop.note || '';
+    if (notes) {
+        propNotesPreview.textContent = '📋 ' + notes;
+        propNotesPreview.classList.add('visible');
+        // Autofill customer notes only if field is empty
+        var notesField = document.getElementById('jobCustomerNotes');
+        if (!notesField.value.trim()) {
+            notesField.value = notes;
+        }
+    } else {
+        propNotesPreview.classList.remove('visible');
+    }
+}
+
+function clearPropPicker() {
+    propSelect.innerHTML = '';
+    propSelect.style.display = 'none';
+    propManualToggle.style.display = 'none';
+    propNotesPreview.classList.remove('visible');
+    propManualInputWrap.classList.add('visible');
+    jobAddressInput.value = '';
+    propManualShown = false;
+}
+
+propSelect.addEventListener('change', function() {
+    if (this.value === '__manual__') {
+        propManualShown = true;
+        propManualInputWrap.classList.add('visible');
+        jobAddressInput.value = '';
+        jobAddressInput.focus();
+        propManualToggle.style.display = 'none';
+        propNotesPreview.classList.remove('visible');
+    } else {
+        var idx = parseInt(this.value, 10);
+        propManualShown = false;
+        propManualInputWrap.classList.remove('visible');
+        jobAddressInput.value = '';
+        if (pickerSelectedUid) updatePropNotesAndCustomerNotes(pickerSelectedUid, idx);
+    }
+});
+
+propManualToggle.addEventListener('click', function() {
+    propManualShown = true;
+    propManualInputWrap.classList.add('visible');
+    propManualToggle.style.display = 'none';
+    jobAddressInput.focus();
+    propNotesPreview.classList.remove('visible');
+});
+
+/** Returns the effective address string to save */
+function getEffectiveAddress() {
+    if (pickerSelectedUid && !propManualShown && propSelect.style.display !== 'none') {
+        var val = propSelect.value;
+        if (val !== '__manual__') {
+            var doc = custDocs[pickerSelectedUid];
+            var props = (doc && Array.isArray(doc.properties)) ? doc.properties : [];
+            var prop = props[parseInt(val, 10)];
+            return prop && prop.address ? prop.address : jobAddressInput.value.trim();
+        }
+    }
+    return jobAddressInput.value.trim();
+}
+
+// ── Customer picker ──
+
+function setCustPicker(uid, name) {
     pickerSelectedUid = uid;
     pickerIsManual    = false;
     custSearchInput.value = name;
@@ -352,25 +585,15 @@ function setCustPicker(uid, name){
     custTypeHint.style.display = 'none';
     manualContactFields.style.display = 'none';
     closeDropdown();
-
-    // Autofill address from primary property
-    var doc = custDocs[uid];
-    if(doc){
-        // Address: find primary property or first one
-        var props = Array.isArray(doc.properties) ? doc.properties : [];
-        var primary = props.find(function(p){ return p.primary; }) || props[0];
-        if(primary && primary.address){
-            var addrEl = document.getElementById('jobAddress');
-            if(!addrEl.value) addrEl.value = primary.address;
-        }
-    }
+    populatePropPicker(uid, null);
 }
 
-function clearCustPicker(){
+function clearCustPicker() {
     pickerSelectedUid = '';
     custSelectedUidEl.value = '';
     custSearchInput.classList.remove('has-account');
     custAccountBadge.style.display = 'none';
+    clearPropPicker();
 }
 
 function openDropdown(){ custDropdown.classList.add('open'); }
@@ -397,10 +620,9 @@ function renderDropdown(query){
 
     custDropdown.innerHTML = html;
 
-    // Attach click handlers
     custDropdown.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
         el.addEventListener('mousedown', function(e){
-            e.preventDefault(); // prevent input blur from firing first
+            e.preventDefault();
             setCustPicker(el.dataset.uid, el.dataset.name);
         });
     });
@@ -418,13 +640,10 @@ custSearchInput.addEventListener('input', function(){
     openDropdown();
 
     if(q){
-        // Check if any account matches exactly
         var exact = custList.find(function(c){ return c.name.toLowerCase() === q.toLowerCase(); });
         if(exact){
-            // exact match — treat as account
             setCustPicker(exact.uid, exact.name);
         } else {
-            // Manual entry mode
             pickerIsManual = true;
             custTypeHint.style.display = '';
             manualContactFields.style.display = '';
@@ -437,12 +656,8 @@ custSearchInput.addEventListener('input', function(){
 });
 
 custSearchInput.addEventListener('blur', function(){
-    // Small delay so dropdown clicks can fire
     setTimeout(closeDropdown, 150);
-
     var q = this.value.trim();
-    // If they blurred without choosing from dropdown and typed something
-    // and it's not an account name — keep manual mode
     if(q && !pickerSelectedUid){
         pickerIsManual = true;
         custTypeHint.style.display = '';
@@ -497,7 +712,6 @@ function openModal(job){
     document.getElementById('jobDate').value          = job && job.date ? job.date.toISOString().slice(0,10) : '';
     document.getElementById('jobTime').value          = job ? job.time : '';
     document.getElementById('jobStatus').value        = job ? job.status : 'Scheduled';
-    document.getElementById('jobAddress').value       = job ? job.address : '';
     document.getElementById('jobCrew').value          = job ? job.assignedCrew : '';
     document.getElementById('jobCustomerNotes').value = job ? (job.customerNotes||'') : '';
     document.getElementById('jobCrewNotes').value     = job ? (job.crewNotes||'') : '';
@@ -506,7 +720,7 @@ function openModal(job){
     document.getElementById('custManualPhone').value  = job ? (job.manualPhone||'') : '';
     document.getElementById('jobModalStatus').textContent = '';
 
-    // Restore customer picker
+    // Reset customer picker
     pickerSelectedUid = '';
     pickerIsManual    = false;
     custSearchInput.classList.remove('has-account');
@@ -515,16 +729,30 @@ function openModal(job){
     manualContactFields.style.display = 'none';
     custSelectedUidEl.value = '';
 
+    // Reset property picker
+    clearPropPicker();
+
     if(job){
         if(job.uid && custNames[job.uid]){
-            // Account customer
-            setCustPicker(job.uid, custNames[job.uid]);
+            // Account customer — restore picker and property
+            pickerSelectedUid = job.uid;
+            pickerIsManual    = false;
+            custSearchInput.value = custNames[job.uid];
+            custSearchInput.classList.add('has-account');
+            custSelectedUidEl.value = job.uid;
+            custAccountBadge.style.display = '';
+            // Populate property picker, pre-selecting saved address
+            populatePropPicker(job.uid, job.address || null);
+            // If the address wasn't autofilled via property picker, set it directly
+            if (propManualShown) jobAddressInput.value = job.address || '';
         } else if(job.customerName){
             // Manual customer
             custSearchInput.value = job.customerName;
             pickerIsManual = true;
             custTypeHint.style.display = '';
             manualContactFields.style.display = '';
+            // Manual address input
+            jobAddressInput.value = job.address || '';
         }
     }
 
@@ -561,7 +789,6 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         status.className='modal-status err'; return;
     }
 
-    // Validate manual contact
     if(isManual){
         var email = document.getElementById('custManualEmail').value.trim();
         var phone = document.getElementById('custManualPhone').value.trim();
@@ -579,7 +806,7 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         status:        document.getElementById('jobStatus').value,
         date:          firebase.firestore.Timestamp.fromDate(new Date(dateVal+'T12:00:00')),
         time:          document.getElementById('jobTime').value,
-        address:       document.getElementById('jobAddress').value.trim(),
+        address:       getEffectiveAddress(),
         assignedCrew:  document.getElementById('jobCrew').value.trim(),
         services:      services,
         customerNotes: document.getElementById('jobCustomerNotes').value.trim(),
@@ -652,8 +879,6 @@ function renderJobs(jobs, targetHash){
         var total    = items.reduce(function(s,i){ return s+i.lineTotal; }, 0);
         var svcNames = items.map(function(i){ return i.name; }).join(', ') || 'Service Visit';
         var dateStr  = job.date ? job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
-
-        // Determine display name: account customer OR manual name
         var displayName = (job.uid && custNames[job.uid]) ? custNames[job.uid] : (job.customerName||'');
 
         var detailItems = [];
@@ -792,9 +1017,6 @@ auth.onAuthStateChanged(async function(user){
         document.getElementById('mobileAvatar').textContent =
             initials(user.displayName||user.email||'');
 
-        console.log("User:", user.uid);
-
-        // Load customers — get full doc data for autofill
         var custSnap = await db.collection('customers').get();
         custList = [];
         custSnap.forEach(function(doc){
@@ -804,7 +1026,6 @@ auth.onAuthStateChanged(async function(user){
             custList.push({uid:doc.id, name:d.name||doc.id});
         });
         custList.sort(function(a,b){ return a.name.localeCompare(b.name); });
-        console.log("Customers loaded:", custList.length);
 
         await loadJobs();
     } catch(e){
@@ -814,5 +1035,6 @@ auth.onAuthStateChanged(async function(user){
     }
 });
 </script>
+
 </body>
 </html>
