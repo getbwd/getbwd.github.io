@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -29,39 +30,46 @@
     </header>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <main class="dash-main">
-        <div class="dash-page">
-            <div class="section-header">
-                <h1 class="section-title">Welcome, <span id="userName">there</span>.</h1>
-                <p class="section-sub">Here's a look at your account.</p>
-            </div>
-            <div class="stat-grid">
-                <div class="stat-card"><span class="stat-label">Next Appointment</span><span class="stat-value" id="statNextAppt">—</span></div>
-                <div class="stat-card"><span class="stat-label">Active Services</span><span class="stat-value" id="statServices">—</span></div>
-                <div class="stat-card"><span class="stat-label">Open Invoices</span><span class="stat-value" id="statOpenInvoices">—</span></div>
-                <div class="stat-card accent"><span class="stat-label">Amount Due</span><span class="stat-value" id="statAmountDue">—</span></div>
-            </div>
-            <div id="reviewPrompt" style="display:none;"></div>
-            <div class="overview-grid">
-                <div class="card">
-                    <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="/account/dashboard/appointments/">View all</a></div>
-                    <div class="card-body" id="overviewApptBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><span class="card-title">Latest Invoice</span><a class="card-link" href="/account/dashboard/invoices/">View all</a></div>
-                    <div class="card-body" id="overviewInvoiceBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
-                </div>
+```
+<main class="dash-main">
+    <div class="dash-page">
+        <div class="section-header">
+            <h1 class="section-title">Welcome, <span id="userName">there</span>.</h1>
+            <p class="section-sub">Here's a look at your account.</p>
+        </div>
+        <div class="stat-grid">
+            <div class="stat-card"><span class="stat-label">Next Appointment</span><span class="stat-value" id="statNextAppt">—</span></div>
+            <div class="stat-card"><span class="stat-label">Active Services</span><span class="stat-value" id="statServices">—</span></div>
+            <div class="stat-card"><span class="stat-label">Open Invoices</span><span class="stat-value" id="statOpenInvoices">—</span></div>
+            <div class="stat-card accent"><span class="stat-label">Amount Due</span><span class="stat-value" id="statAmountDue">—</span></div>
+        </div>
+        <div id="reviewPrompt" style="display:none;"></div>
+        <div class="overview-grid">
+            <div class="card">
+                <div class="card-header"><span class="card-title">Upcoming Appointment</span><a class="card-link" href="/account/dashboard/appointments/">View all</a></div>
+                <div class="card-body" id="overviewApptBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
             </div>
             <div class="card">
-                <div class="card-header"><span class="card-title">Active Services</span><a class="card-link" href="/account/dashboard/services/">View all</a></div>
-                <div class="service-chips" id="overviewServiceChips"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
+                <div class="card-header"><span class="card-title">Latest Invoice</span><a class="card-link" href="/account/dashboard/invoices/">View all</a></div>
+                <div class="card-body" id="overviewInvoiceBody"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
             </div>
         </div>
-    </main>
+        <div class="card">
+            <div class="card-header"><span class="card-title">Active Services</span><a class="card-link" href="/account/dashboard/services/">View all</a></div>
+            <div class="service-chips" id="overviewServiceChips"><span style="color:#ccc;font-size:14px;">Loading…</span></div>
+        </div>
+    </div>
+</main>
+```
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
@@ -69,148 +77,168 @@ firebase.initializeApp({
     messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
 });
 var auth = firebase.auth();
+var db   = firebase.firestore();
 
-document.getElementById('signOutBtn').addEventListener('click',function(){auth.signOut().then(function(){window.location.href='/account/login/';});});
-document.getElementById('mobileMenuBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');});
-document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');});
+document.getElementById('signOutBtn').addEventListener('click', function(){ auth.signOut().then(function(){ window.location.href='/account/login/'; }); });
+document.getElementById('mobileMenuBtn').addEventListener('click', function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); });
+document.getElementById('sidebarOverlay').addEventListener('click', function(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); });
 
-// ── Shared utilities ──
-function initials(n){return n?n.trim().split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2):'?';}
-function fmtMoney(n){return '$'+Number(n).toFixed(2);}
+function initials(n){ return n ? n.trim().split(/\s+/).map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2) : '?'; }
+function fmtMoney(n){ return '$' + Number(n).toFixed(2); }
 function badge(status){
-    var s=(status||'').toLowerCase().trim();
-    var map={
+    var s = (status||'').toLowerCase().trim();
+    var map = {
         'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed',
         'draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue',
         'active':'bdg-active','paused':'bdg-paused','on hold':'bdg-overdue','terminated':'bdg-cancelled',
     };
     return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
 }
-function empty(msg){return '<p class="empty-state">'+msg+'</p>';}
+function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
 
-function parseCSV(text){
-    var rows=[];var lines=text.trim().split('\n');
-    for(var l=0;l<lines.length;l++){var cols=[];var cur='';var inQ=false;
-        for(var i=0;i<lines[l].length;i++){var c=lines[l][i];
-            if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else{cur+=c;}}
-        cols.push(cur.trim());rows.push(cols);}return rows;}
-
-function parsePipe(str){return str?str.split('|').map(function(s){return s.trim();}).filter(Boolean):[];}
-function parseLineItems(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});var qty=parseFloat(p[1])||1;var unit=parseFloat(p[2])||0;return{name:p[0]||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit};});}
-function parsePayments(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{date:p[0]||'—',type:p[1]||'—',amount:parseFloat(p[2])||0};});}
-function parseServices(str){return parsePipe(str).map(function(seg){var p=seg.split(',').map(function(s){return s.trim();});return{name:p[0]||'—',frequency:p[1]||'—',price:parseFloat(p[2])||0,description:p[3]||''};});}
-function invoiceBalance(r){
-    var t=parseLineItems(r[5]).reduce(function(s,i){return s+i.lineTotal;},0);
-    var p=parsePayments(r[6]).reduce(function(s,p){return s+p.amount;},0);
-    return Math.max(0,Math.round((t-p)*100)/100);}
-
-var CSV_INVOICES='https://docs.google.com/spreadsheets/d/e/2PACX-1vSWX3vado-d6wVWtj4HT_rq9xLYMG-HqYC2wEOLVIefdWjflDEe6XoC3uClWCqWUXqSvYe4Z35HN3TM/pub?gid=0&single=true&output=csv';
-var CSV_SERVICES='https://docs.google.com/spreadsheets/d/e/2PACX-1vRty-4hQ_sZ8nI55zoNkbnjZwOGi5-NgKgDGlvsjP3x0aOmeYWxIZKJRpKIXGFgdkEvr4xmXThjbuRB/pub?gid=0&single=true&output=csv';
-var CSV_JOBS='https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSfVRR2EnvXGH5nZBOesVJdoTl2p3bHun-oFYYSZrg7fEvGXyIDxPkycWTtCjWstt8ccFgpa8wlkg/pub?gid=0&single=true&output=csv';
-
-// ── Cache layer — sessionStorage keyed by UID ──
-async function cachedCSV(key,url){
-    var cacheKey='bwd_csv_'+key;
-    var cached=sessionStorage.getItem(cacheKey);
-    if(cached){try{return JSON.parse(cached);}catch(e){}}
-    var res=await fetch(url);var text=await res.text();
-    var rows=parseCSV(text).slice(1);
-    try{sessionStorage.setItem(cacheKey,JSON.stringify(rows));}catch(e){}
-    return rows;}
+function invoiceBalance(inv){
+    var total   = inv.items.reduce(function(s,i){ return s + Number(i.qty||1) * Number(i.unitPrice||0); }, 0);
+    var paidAmt = inv.payments.reduce(function(s,p){ return s + Number(p.amount||0); }, 0);
+    return Math.max(0, Math.round((total - paidAmt) * 100) / 100);
+}
 
 auth.onAuthStateChanged(async function(user){
-    if(!user){window.location.href='/account/login/';return;}
-    var name=user.displayName||'there';
-    document.getElementById('userName').textContent=name.split(' ')[0];
-    document.getElementById('mobileAvatar').textContent=initials(name);
-    var uid=user.uid;
+    if(!user){ window.location.href = '/account/login/'; return; }
+    var name = user.displayName || 'there';
+    document.getElementById('userName').textContent = name.split(' ')[0];
+    document.getElementById('mobileAvatar').textContent = initials(name);
 
-    var results=await Promise.all([cachedCSV('invoices',CSV_INVOICES),cachedCSV('services',CSV_SERVICES),cachedCSV('jobs',CSV_JOBS)]);
-    var invoiceRows=results[0];var serviceRows=results[1];var jobRows=results[2];
+    // Fetch all three collections in parallel
+    var results = await Promise.all([
+        db.collection('jobs').where('uid','==',user.uid).orderBy('date','desc').get(),
+        db.collection('invoices').where('uid','==',user.uid).orderBy('dateIssued','desc').get(),
+        db.collection('services').doc(user.uid).get(),
+    ]);
 
-    var myInvoices=invoiceRows.filter(function(r){return r[1]===uid;});
-    var myServices=serviceRows.filter(function(r){return r[0]===uid;});
-    var myJobs=jobRows.filter(function(r){return r[1]===uid;});
-
-    // ── Review prompt — completed jobs within last 5 days with no local review ──
-    var fiveDaysAgo=new Date();fiveDaysAgo.setDate(fiveDaysAgo.getDate()-5);fiveDaysAgo.setHours(0,0,0,0);
-    var reviewPromptJob=null;
-    var completedRecent=myJobs.filter(function(r){
-        if((r[2]||'').toLowerCase()!=='completed')return false;
-        var d=new Date(r[3]);
-        return d>=fiveDaysAgo&&d<=new Date();
-    }).sort(function(a,b){return new Date(b[3])-new Date(a[3]);});
-    for(var ri=0;ri<completedRecent.length;ri++){
-        var jr=completedRecent[ri];
-        var jId=(jr[0]||'').trim();
-        var saved=null;try{saved=JSON.parse(localStorage.getItem('bwd_review_'+jId));}catch(e){}
-        if(!saved||(!saved.rating&&!saved.feedback)){reviewPromptJob=jr;break;}
-    }
-    var promptEl=document.getElementById('reviewPrompt');
-    if(reviewPromptJob&&promptEl){
-        var rpId=(reviewPromptJob[0]||'').trim();
-        var rpNames=(parseLineItems(reviewPromptJob[6]).map(function(i){return i.name;}).join(', '))||'your recent visit';
-        var rpDate=new Date(reviewPromptJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-        promptEl.style.display='block';
-        promptEl.innerHTML='<a href="/account/dashboard/appointments/#'+rpId+'" style="text-decoration:none;"><div style="background:var(--orange-dim);border:1px solid rgba(224,90,18,0.25);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;"><div><p style="font-size:13px;font-weight:700;color:var(--orange-dark);margin-bottom:2px;">⭐ How was your visit on '+rpDate+'?</p><p style="font-size:12px;color:var(--orange-dark);opacity:0.8;">'+rpNames+' — tap to leave a rating and feedback.</p></div><span style="font-size:20px;">→</span></div></a>';
-    }
-
-    // Next appointment
-    var now=new Date();now.setHours(0,0,0,0);
-    var upcoming=myJobs.filter(function(r){
-        var s=(r[2]||'').toLowerCase();
-        return new Date(r[3])>=now&&s!=='cancelled'&&s!=='completed';
-    }).sort(function(a,b){return new Date(a[3])-new Date(b[3]);});
-    var nextJob=upcoming[0]||null;
-    document.getElementById('statNextAppt').textContent=nextJob
-        ?new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric'})
-        :'None scheduled';
-
-    // Services count — all unique service names across all rows
-    var allSvcNames={};
-    myServices.forEach(function(row){parseServices(row[3]).forEach(function(s){allSvcNames[s.name]=true;});});
-    document.getElementById('statServices').textContent=Object.keys(allSvcNames).length;
-
-    // Open invoices & amount due — balance > 0.01 means open, exclude drafts
-    var openInv=myInvoices.filter(function(r){return invoiceBalance(r)>=0.01 && (r[3]||'').toLowerCase()!=='draft';});
-    document.getElementById('statOpenInvoices').textContent=openInv.length;
-    var totalDue=openInv.reduce(function(s,r){return s+invoiceBalance(r);},0);
-    document.getElementById('statAmountDue').textContent=fmtMoney(totalDue);
-
-    // Upcoming appointment card — clickable link to detail
-    var apptEl=document.getElementById('overviewApptBody');
-    if(nextJob){
-        var names=(parseLineItems(nextJob[6]).map(function(i){return i.name;}).join(', '))||'Service Visit';
-        var dateStr=new Date(nextJob[3]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        var time=nextJob[4]?' · '+nextJob[4]:'';
-        var jobId=nextJob[0];
-        apptEl.innerHTML='<a href="/account/dashboard/appointments/#'+jobId+'" style="text-decoration:none;display:block;"><div class="ov-row" style="cursor:pointer;"><div><p class="ov-title" style="color:var(--orange);">'+names+'</p><p class="ov-sub">'+dateStr+time+'</p></div>'+badge(nextJob[2]||'Scheduled')+'</div></a>';
-    } else {apptEl.innerHTML=empty('No upcoming appointments.');}
-
-    // Latest invoice card — clickable
-    var invEl=document.getElementById('overviewInvoiceBody');
-    var sortedInv=myInvoices.filter(function(r){return (r[3]||'').toLowerCase()!=='draft';}).slice().sort(function(a,b){return new Date(b[4])-new Date(a[4]);});
-    var latest=sortedInv[0]||null;
-    if(latest){
-        var items=parseLineItems(latest[5]);
-        var total=items.reduce(function(s,i){return s+i.lineTotal;},0);
-        var balance=invoiceBalance(latest);
-        var desc=items.map(function(i){return i.name;}).join(', ')||'Invoice';
-        var dStr=new Date(latest[4]).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        invEl.innerHTML='<a href="/account/dashboard/invoices/#'+latest[0]+'" style="text-decoration:none;display:block;"><div class="ov-row" style="cursor:pointer;"><div><p class="ov-title" style="color:var(--orange);">'+desc+'</p><p class="ov-sub">'+dStr+' · #'+latest[0]+'</p></div><div style="text-align:right"><p class="ov-title mono">'+fmtMoney(balance>0?balance:total)+'</p>'+badge(latest[3])+'</div></div></a>';
-    } else {invEl.innerHTML=empty('No invoices yet.');}
-
-    // Service chips — all rows, all services
-    var chipsEl=document.getElementById('overviewServiceChips');
-    var allChips=[];
-    myServices.forEach(function(row){
-        var isActive=(row[2]||'').toLowerCase()==='active';
-        parseServices(row[3]).forEach(function(s){
-            allChips.push('<a href="/account/dashboard/services/" style="text-decoration:none;"><span class="svc-chip '+(isActive?'active':'')+'">'+s.name+'</span></a>');
+    // ── Normalize jobs ──
+    var jobs = [];
+    results[0].forEach(function(doc){
+        var d = doc.data();
+        jobs.push({
+            jobId:    doc.id,
+            status:   d.status   || 'Scheduled',
+            date:     d.date     ? d.date.toDate()     : null,
+            time:     d.time     || '',
+            services: Array.isArray(d.services) ? d.services : [],
+            rating:   d.rating   || 0,
+            feedback: d.feedback || '',
         });
     });
-    chipsEl.innerHTML=allChips.length?allChips.join(''):empty('No active services.');
+
+    // ── Normalize invoices ──
+    var invoices = [];
+    results[1].forEach(function(doc){
+        var d = doc.data();
+        if((d.status||'').toLowerCase() === 'draft') return;
+        invoices.push({
+            invId:      doc.id,
+            status:     d.status     || 'Payment Due',
+            dateIssued: d.dateIssued ? d.dateIssued.toDate() : null,
+            items:      Array.isArray(d.items)    ? d.items    : [],
+            payments:   Array.isArray(d.payments) ? d.payments : [],
+        });
+    });
+
+    // ── Normalize services ──
+    var svcList = [];
+    if(results[2].exists && Array.isArray(results[2].data().services)){
+        svcList = results[2].data().services;
+    }
+
+    // ── Review prompt — completed jobs within last 5 days with no local review ──
+    var fiveDaysAgo = new Date(); fiveDaysAgo.setDate(fiveDaysAgo.getDate()-5); fiveDaysAgo.setHours(0,0,0,0);
+    var now = new Date(); now.setHours(0,0,0,0);
+    var reviewPromptJob = null;
+    var completedRecent = jobs.filter(function(j){
+        if(j.status.toLowerCase() !== 'completed') return false;
+        return j.date && j.date >= fiveDaysAgo && j.date <= new Date();
+    });
+    for(var ri=0; ri<completedRecent.length; ri++){
+        var jr = completedRecent[ri];
+        var saved = null; try{ saved = JSON.parse(localStorage.getItem('bwd_review_'+jr.jobId)); }catch(e){}
+        if(!saved || (!saved.rating && !saved.feedback)){ reviewPromptJob = jr; break; }
+    }
+    var promptEl = document.getElementById('reviewPrompt');
+    if(reviewPromptJob && promptEl){
+        var rpNames = reviewPromptJob.services.map(function(s){ return s.name; }).join(', ') || 'your recent visit';
+        var rpDate  = reviewPromptJob.date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        promptEl.style.display = 'block';
+        promptEl.innerHTML = '<a href="/account/dashboard/appointments/#'+reviewPromptJob.jobId+'" style="text-decoration:none;">'+
+            '<div style="background:var(--orange-dim);border:1px solid rgba(224,90,18,0.25);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;">'+
+            '<div><p style="font-size:13px;font-weight:700;color:var(--orange-dark);margin-bottom:2px;">⭐ How was your visit on '+rpDate+'?</p>'+
+            '<p style="font-size:12px;color:var(--orange-dark);opacity:0.8;">'+rpNames+' — tap to leave a rating and feedback.</p></div>'+
+            '<span style="font-size:20px;">→</span></div></a>';
+    }
+
+    // ── Next appointment stat ──
+    var upcoming = jobs.filter(function(j){
+        var s = j.status.toLowerCase();
+        return j.date && j.date >= now && s !== 'cancelled' && s !== 'completed';
+    }).sort(function(a,b){ return a.date - b.date; });
+    var nextJob = upcoming[0] || null;
+    document.getElementById('statNextAppt').textContent = nextJob
+        ? nextJob.date.toLocaleDateString('en-US',{month:'short',day:'numeric'})
+        : 'None scheduled';
+
+    // ── Active services stat ──
+    var activeCount = svcList.filter(function(s){
+        return ['active','seasonal'].indexOf((s.status||'').toLowerCase()) !== -1;
+    }).length;
+    document.getElementById('statServices').textContent = activeCount;
+
+    // ── Open invoices & amount due ──
+    var openInv = invoices.filter(function(inv){ return invoiceBalance(inv) >= 0.01; });
+    document.getElementById('statOpenInvoices').textContent = openInv.length;
+    var totalDue = openInv.reduce(function(s,inv){ return s + invoiceBalance(inv); }, 0);
+    document.getElementById('statAmountDue').textContent = fmtMoney(totalDue);
+
+    // ── Upcoming appointment card ──
+    var apptEl = document.getElementById('overviewApptBody');
+    if(nextJob){
+        var svcNames = nextJob.services.map(function(s){ return s.name; }).join(', ') || 'Service Visit';
+        var dateStr  = nextJob.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        var timeStr  = nextJob.time ? ' · ' + nextJob.time : '';
+        apptEl.innerHTML = '<a href="/account/dashboard/appointments/#'+nextJob.jobId+'" style="text-decoration:none;display:block;">'+
+            '<div class="ov-row" style="cursor:pointer;">'+
+            '<div><p class="ov-title" style="color:var(--orange);">'+svcNames+'</p>'+
+            '<p class="ov-sub">'+dateStr+timeStr+'</p></div>'+
+            badge(nextJob.status)+
+            '</div></a>';
+    } else {
+        apptEl.innerHTML = empty('No upcoming appointments.');
+    }
+
+    // ── Latest invoice card ──
+    var invEl   = document.getElementById('overviewInvoiceBody');
+    var latest  = invoices[0] || null; // already sorted by dateIssued desc
+    if(latest){
+        var invTotal   = latest.items.reduce(function(s,i){ return s + Number(i.qty||1)*Number(i.unitPrice||0); }, 0);
+        var invBalance = invoiceBalance(latest);
+        var invDesc    = latest.items.map(function(i){ return i.name; }).join(', ') || 'Invoice';
+        var invDate    = latest.dateIssued ? latest.dateIssued.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+        invEl.innerHTML = '<a href="/account/dashboard/invoices/#'+latest.invId+'" style="text-decoration:none;display:block;">'+
+            '<div class="ov-row" style="cursor:pointer;">'+
+            '<div><p class="ov-title" style="color:var(--orange);">'+invDesc+'</p>'+
+            '<p class="ov-sub">'+invDate+' · #'+latest.invId+'</p></div>'+
+            '<div style="text-align:right"><p class="ov-title mono">'+fmtMoney(invBalance>0?invBalance:invTotal)+'</p>'+badge(latest.status)+'</div>'+
+            '</div></a>';
+    } else {
+        invEl.innerHTML = empty('No invoices yet.');
+    }
+
+    // ── Service chips ──
+    var chipsEl = document.getElementById('overviewServiceChips');
+    var activeChips = svcList
+        .filter(function(s){ return ['active','seasonal'].indexOf((s.status||'').toLowerCase()) !== -1; })
+        .map(function(s){ return '<a href="/account/dashboard/services/" style="text-decoration:none;"><span class="svc-chip active">'+s.name+'</span></a>'; });
+    chipsEl.innerHTML = activeChips.length ? activeChips.join('') : empty('No active services.');
 });
 </script>
+
 </body>
 </html>
