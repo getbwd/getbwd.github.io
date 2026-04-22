@@ -278,10 +278,11 @@ async function onSignupSuccess(user, displayName) {
     try {
         await user.updateProfile({ displayName });
         await db.collection('customers').doc(user.uid).set({
-            name:      displayName,
-            email:     user.email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
- }, { merge: true });
+    name:      displayName,
+    email:     user.email,
+    isStaff:   false, // 👈 ADD THIS
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+}, { merge: true });
         await user.reload();
     } catch (err) {
         console.warn('Post-signup update failed:', err);
