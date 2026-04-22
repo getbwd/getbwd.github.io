@@ -282,7 +282,30 @@ document.getElementById('newJobBtn').addEventListener('click', function(){ openM
 document.getElementById('jobModalClose').addEventListener('click', closeModal);
 document.getElementById('cancelJobBtn').addEventListener('click', closeModal);
 document.getElementById('jobModal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+async function generateJobId(dateVal){
+    // dateVal format = "2026-04-21"
+    var d = new Date(dateVal);
+    var yy = String(d.getFullYear()).slice(2);
+    var mm = String(d.getMonth()+1).padStart(2,'0');
+    var dd = String(d.getDate()).padStart(2,'0');
+    var dayKey = yy+mm+dd; // 260421
 
+    var counterRef = db.collection('jobCounters').doc(dayKey);
+
+    return db.runTransaction(async function(tx){
+        var snap = await tx.get(counterRef);
+        var next = 1;
+
+        if(snap.exists){
+            next = snap.data().count + 1;
+            tx.update(counterRef,{count:next});
+        } else {
+            tx.set(counterRef,{count:1});
+        }
+
+        return dayKey + next; // "2604211"
+    });
+}
 document.getElementById('saveJobBtn').addEventListener('click', async function(){
     var btn    = this;
     var status = document.getElementById('jobModalStatus');
@@ -312,12 +335,19 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
 
     try {
         var editId = document.getElementById('editJobId').value;
-        if(editId){
-            await db.collection('jobs').doc(editId).update(data);
-        } else {
-            data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-            await db.collection('jobs').add(data);
-        }
+if(editId){
+    // EDIT EXISTING JOB
+    await db.collection('jobs').doc(editId).update(data);
+} else {
+    // CREATE NEW JOB WITH CUSTOM ID
+    var newJobId = await generateJobId(dateVal);
+
+    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+
+    await db.collection('jobs')
+        .doc(newJobId)
+        .set(data);
+}
         status.textContent = 'Saved!';
         status.className = 'modal-status ok';
         setTimeout(function(){ closeModal(); loadJobs(); }, 600);
