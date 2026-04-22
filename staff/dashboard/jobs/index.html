@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -32,6 +31,85 @@
 .job-card.open .toggle-chevron { transform: rotate(180deg); }
 .job-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); }
 @media(max-width:600px){ .detail-grid { grid-template-columns: 1fr; } }
+
+/* ── DATE/TIME FIX — side by side with no overlap ── */
+.datetime-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+@media(max-width:480px){ .datetime-row { grid-template-columns: 1fr; } }
+
+/* ── CUSTOMER AUTOCOMPLETE ── */
+.cust-picker-wrap { position: relative; }
+.cust-picker-input {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13.5px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    width: 100%;
+    transition: border-color 0.15s;
+}
+.cust-picker-input:focus { outline: none; border-color: var(--orange); }
+.cust-picker-input.has-account { background: #f6fff9; border-color: #8ecfa8; }
+.cust-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0; right: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    z-index: 400;
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+}
+.cust-dropdown.open { display: block; }
+.cust-dropdown-item {
+    padding: 9px 14px;
+    font-size: 13.5px;
+    color: var(--text-2);
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.cust-dropdown-item:last-child { border-bottom: none; }
+.cust-dropdown-item:hover { background: #fafaf8; }
+.cust-dropdown-item .cust-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #8ecfa8; flex-shrink: 0;
+}
+.cust-dropdown-item .cust-sub {
+    font-size: 11px; color: var(--text-3); margin-top: 1px;
+}
+.cust-account-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; color: #1e8a4a;
+    background: #edf7f1; border: 1px solid #b6dfc8;
+    border-radius: 100px; padding: 2px 8px; margin-top: 4px;
+}
+.cust-type-hint {
+    font-size: 11px; color: var(--text-3); margin-top: 4px;
+}
+/* manual contact fields */
+.manual-contact-fields {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: 2px;
+    padding: 12px 14px;
+    background: #fafaf8;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+}
+.manual-contact-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; color: #bbb; margin-bottom: 2px;
+}
 </style>
 </head>
 <body>
@@ -114,7 +192,6 @@
 </div>
 
 <!-- NEW / EDIT JOB MODAL -->
-
 <div class="modal-backdrop" id="jobModal">
     <div class="modal">
         <div class="modal-header">
@@ -123,11 +200,46 @@
         </div>
         <div class="modal-body">
             <input type="hidden" id="editJobId">
+
+            <!-- ── CUSTOMER PICKER ── -->
             <div class="form-row">
                 <label class="form-label">Customer</label>
-                <select class="form-select" id="jobCustomer"></select>
+                <div class="cust-picker-wrap" id="custPickerWrap">
+                    <input
+                        class="cust-picker-input"
+                        type="text"
+                        id="custSearchInput"
+                        placeholder="Search by name or type a new customer…"
+                        autocomplete="off"
+                    >
+                    <div class="cust-dropdown" id="custDropdown"></div>
+                </div>
+                <!-- Shows when an account customer is selected -->
+                <div id="custAccountBadge" style="display:none;">
+                    <span class="cust-account-badge">✓ Has account</span>
+                </div>
+                <!-- Shows when typing a manual (no-account) customer -->
+                <div id="custTypeHint" class="cust-type-hint" style="display:none;">
+                    No account found — you can still add this customer manually.
+                </div>
+                <!-- Hidden: stores selected UID if account customer -->
+                <input type="hidden" id="custSelectedUid">
+                <!-- Manual contact fields — shown only for no-account customers -->
+                <div class="manual-contact-fields" id="manualContactFields" style="display:none;">
+                    <div>
+                        <div class="manual-contact-label">Email</div>
+                        <input class="form-input" type="email" id="custManualEmail" placeholder="customer@email.com">
+                    </div>
+                    <div>
+                        <div class="manual-contact-label">Phone</div>
+                        <input class="form-input" type="tel" id="custManualPhone" placeholder="+1 (555) 000-0000">
+                    </div>
+                    <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required.</p>
+                </div>
             </div>
-            <div class="form-row-2">
+
+            <!-- ── DATE & TIME (fixed: no overlap) ── -->
+            <div class="datetime-row">
                 <div class="form-row">
                     <label class="form-label">Date</label>
                     <input class="form-input" type="date" id="jobDate">
@@ -137,6 +249,7 @@
                     <input class="form-input" type="time" id="jobTime">
                 </div>
             </div>
+
             <div class="form-row">
                 <label class="form-label">Status</label>
                 <select class="form-select" id="jobStatus">
@@ -154,6 +267,7 @@
                 <label class="form-label">Assigned Crew</label>
                 <input class="form-input" type="text" id="jobCrew" placeholder="e.g. Brandon">
             </div>
+
             <!-- Line items -->
             <div class="form-row">
                 <label class="form-label">Services / Line Items</label>
@@ -186,11 +300,8 @@
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
-
 <script>
 firebase.initializeApp({
     apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
@@ -214,24 +325,149 @@ function badge(status){
 function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
 
 // ── State ──
-var allJobs = [];
+var allJobs   = [];
 var custNames = {};   // uid → name
-var custList  = [];   // [{uid, name}]
+var custList  = [];   // [{uid, name, phone, address}]
+var custDocs  = {};   // uid → full firestore doc data
 
-// ── Modal helpers ──
-var jobLineItems = [];
+// ── Customer picker state ──
+var pickerSelectedUid  = '';   // set when account customer chosen
+var pickerIsManual     = false; // true when free-typing a non-account name
+
+var custSearchInput    = document.getElementById('custSearchInput');
+var custDropdown       = document.getElementById('custDropdown');
+var custSelectedUidEl  = document.getElementById('custSelectedUid');
+var custAccountBadge   = document.getElementById('custAccountBadge');
+var custTypeHint       = document.getElementById('custTypeHint');
+var manualContactFields= document.getElementById('manualContactFields');
+
+function setCustPicker(uid, name){
+    // Called when an account customer is clicked from dropdown
+    pickerSelectedUid = uid;
+    pickerIsManual    = false;
+    custSearchInput.value = name;
+    custSearchInput.classList.add('has-account');
+    custSelectedUidEl.value = uid;
+    custAccountBadge.style.display = '';
+    custTypeHint.style.display = 'none';
+    manualContactFields.style.display = 'none';
+    closeDropdown();
+
+    // Autofill address from primary property
+    var doc = custDocs[uid];
+    if(doc){
+        // Address: find primary property or first one
+        var props = Array.isArray(doc.properties) ? doc.properties : [];
+        var primary = props.find(function(p){ return p.primary; }) || props[0];
+        if(primary && primary.address){
+            var addrEl = document.getElementById('jobAddress');
+            if(!addrEl.value) addrEl.value = primary.address;
+        }
+    }
+}
+
+function clearCustPicker(){
+    pickerSelectedUid = '';
+    custSelectedUidEl.value = '';
+    custSearchInput.classList.remove('has-account');
+    custAccountBadge.style.display = 'none';
+}
+
+function openDropdown(){ custDropdown.classList.add('open'); }
+function closeDropdown(){ custDropdown.classList.remove('open'); }
+
+function renderDropdown(query){
+    var q = (query||'').toLowerCase().trim();
+    var matches = q
+        ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q) !== -1; })
+        : custList.slice(0, 8);
+
+    var html = '';
+    matches.forEach(function(c){
+        var sub = custDocs[c.uid] && custDocs[c.uid].phone ? custDocs[c.uid].phone : '';
+        html += '<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'">' +
+            '<span class="cust-dot"></span>' +
+            '<span><div style="font-weight:600;">'+escHtml(c.name)+'</div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span>' +
+            '</div>';
+    });
+
+    if(!html && q){
+        html = '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No accounts match — enter manually below</div>';
+    }
+
+    custDropdown.innerHTML = html;
+
+    // Attach click handlers
+    custDropdown.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
+        el.addEventListener('mousedown', function(e){
+            e.preventDefault(); // prevent input blur from firing first
+            setCustPicker(el.dataset.uid, el.dataset.name);
+        });
+    });
+}
+
+custSearchInput.addEventListener('focus', function(){
+    renderDropdown(this.value);
+    openDropdown();
+});
+
+custSearchInput.addEventListener('input', function(){
+    var q = this.value.trim();
+    clearCustPicker();
+    renderDropdown(q);
+    openDropdown();
+
+    if(q){
+        // Check if any account matches exactly
+        var exact = custList.find(function(c){ return c.name.toLowerCase() === q.toLowerCase(); });
+        if(exact){
+            // exact match — treat as account
+            setCustPicker(exact.uid, exact.name);
+        } else {
+            // Manual entry mode
+            pickerIsManual = true;
+            custTypeHint.style.display = '';
+            manualContactFields.style.display = '';
+        }
+    } else {
+        pickerIsManual = false;
+        custTypeHint.style.display = 'none';
+        manualContactFields.style.display = 'none';
+    }
+});
+
+custSearchInput.addEventListener('blur', function(){
+    // Small delay so dropdown clicks can fire
+    setTimeout(closeDropdown, 150);
+
+    var q = this.value.trim();
+    // If they blurred without choosing from dropdown and typed something
+    // and it's not an account name — keep manual mode
+    if(q && !pickerSelectedUid){
+        pickerIsManual = true;
+        custTypeHint.style.display = '';
+        manualContactFields.style.display = '';
+    }
+});
+
+function escHtml(s){
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Line items ──
+var jobLineItemsArr = [];
 
 function lineTotal(){
-    return jobLineItems.reduce(function(s,li){ return s + Number(li.qty||0)*Number(li.price||0); }, 0);
+    return jobLineItemsArr.reduce(function(s,li){ return s + Number(li.qty||0)*Number(li.price||0); }, 0);
 }
 
 function renderLineItems(){
     var wrap = document.getElementById('jobLineItems');
-    wrap.innerHTML = jobLineItems.map(function(li,i){
+    wrap.innerHTML = jobLineItemsArr.map(function(li,i){
         return '<div class="line-item-row" style="margin-bottom:6px;">'+
-            '<input class="form-input" type="text" placeholder="Service name" value="'+li.name+'" oninput="jobLineItems['+i+'].name=this.value">'+
-            '<input class="form-input" type="number" min="1" value="'+li.qty+'" oninput="jobLineItems['+i+'].qty=this.value;updateLineTotal()">'+
-            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+li.price+'" oninput="jobLineItems['+i+'].price=this.value;updateLineTotal()">'+
+            '<input class="form-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" oninput="jobLineItemsArr['+i+'].name=this.value">'+
+            '<input class="form-input" type="number" min="1" value="'+li.qty+'" oninput="jobLineItemsArr['+i+'].qty=this.value;updateLineTotal()">'+
+            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+li.price+'" oninput="jobLineItemsArr['+i+'].price=this.value;updateLineTotal()">'+
             '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>'+
             '</div>';
     }).join('');
@@ -243,39 +479,62 @@ function updateLineTotal(){
     document.getElementById('jobLineTotal').textContent = t > 0 ? 'Total: ' + fmtMoney(t) : '';
 }
 
-function removeLine(i){
-    jobLineItems.splice(i,1);
-    renderLineItems();
-}
+function removeLine(i){ jobLineItemsArr.splice(i,1); renderLineItems(); }
 
 document.getElementById('addLineBtn').addEventListener('click', function(){
-    jobLineItems.push({name:'',qty:1,price:''});
+    jobLineItemsArr.push({name:'',qty:1,price:''});
     renderLineItems();
 });
 
+// ── Modal open/close ──
 function openModal(job){
-    jobLineItems = job
+    jobLineItemsArr = job
         ? job.services.map(function(s){ return {name:s.name||'',qty:Number(s.qty)||1,price:Number(s.unitPrice)||0}; })
         : [{name:'',qty:1,price:''}];
 
-    document.getElementById('editJobId').value       = job ? job.jobId : '';
+    document.getElementById('editJobId').value        = job ? job.jobId : '';
     document.getElementById('jobModalTitle').textContent = job ? 'Edit Job' : 'New Job';
-    document.getElementById('jobCustomer').value     = job ? job.uid : (custList[0]?custList[0].uid:'');
-    document.getElementById('jobDate').value         = job && job.date ? job.date.toISOString().slice(0,10) : '';
-    document.getElementById('jobTime').value         = job ? job.time : '';
-    document.getElementById('jobStatus').value       = job ? job.status : 'Scheduled';
-    document.getElementById('jobAddress').value      = job ? job.address : '';
-    document.getElementById('jobCrew').value         = job ? job.assignedCrew : '';
-    document.getElementById('jobCustomerNotes').value= job ? (job.customerNotes||'') : '';
-    document.getElementById('jobCrewNotes').value    = job ? (job.crewNotes||'') : '';
-    document.getElementById('jobInvoiceId').value    = job ? job.invoiceId : '';
+    document.getElementById('jobDate').value          = job && job.date ? job.date.toISOString().slice(0,10) : '';
+    document.getElementById('jobTime').value          = job ? job.time : '';
+    document.getElementById('jobStatus').value        = job ? job.status : 'Scheduled';
+    document.getElementById('jobAddress').value       = job ? job.address : '';
+    document.getElementById('jobCrew').value          = job ? job.assignedCrew : '';
+    document.getElementById('jobCustomerNotes').value = job ? (job.customerNotes||'') : '';
+    document.getElementById('jobCrewNotes').value     = job ? (job.crewNotes||'') : '';
+    document.getElementById('jobInvoiceId').value     = job ? job.invoiceId : '';
+    document.getElementById('custManualEmail').value  = job ? (job.manualEmail||'') : '';
+    document.getElementById('custManualPhone').value  = job ? (job.manualPhone||'') : '';
     document.getElementById('jobModalStatus').textContent = '';
+
+    // Restore customer picker
+    pickerSelectedUid = '';
+    pickerIsManual    = false;
+    custSearchInput.classList.remove('has-account');
+    custAccountBadge.style.display  = 'none';
+    custTypeHint.style.display      = 'none';
+    manualContactFields.style.display = 'none';
+    custSelectedUidEl.value = '';
+
+    if(job){
+        if(job.uid && custNames[job.uid]){
+            // Account customer
+            setCustPicker(job.uid, custNames[job.uid]);
+        } else if(job.customerName){
+            // Manual customer
+            custSearchInput.value = job.customerName;
+            pickerIsManual = true;
+            custTypeHint.style.display = '';
+            manualContactFields.style.display = '';
+        }
+    }
+
     renderLineItems();
     document.getElementById('jobModal').classList.add('open');
 }
 
 function closeModal(){
     document.getElementById('jobModal').classList.remove('open');
+    closeDropdown();
 }
 
 document.getElementById('newJobBtn').addEventListener('click', function(){ openModal(null); });
@@ -283,17 +542,40 @@ document.getElementById('jobModalClose').addEventListener('click', closeModal);
 document.getElementById('cancelJobBtn').addEventListener('click', closeModal);
 document.getElementById('jobModal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
 
+// ── Save ──
 document.getElementById('saveJobBtn').addEventListener('click', async function(){
     var btn    = this;
     var status = document.getElementById('jobModalStatus');
-    var uid    = document.getElementById('jobCustomer').value;
-    var dateVal= document.getElementById('jobDate').value;
-    if(!uid){ status.textContent='Select a customer.'; status.className='modal-status err'; return; }
-    if(!dateVal){ status.textContent='Pick a date.'; status.className='modal-status err'; return; }
 
-    var services = jobLineItems.map(function(li){ return { name:li.name||'—', qty:Number(li.qty)||1, unitPrice:Number(li.price)||0 }; });
+    var custName  = custSearchInput.value.trim();
+    var uid       = custSelectedUidEl.value;
+    var isManual  = !uid && custName;
+    var dateVal   = document.getElementById('jobDate').value;
+
+    if(!custName){
+        status.textContent='Enter or select a customer.';
+        status.className='modal-status err'; return;
+    }
+    if(!dateVal){
+        status.textContent='Pick a date.';
+        status.className='modal-status err'; return;
+    }
+
+    // Validate manual contact
+    if(isManual){
+        var email = document.getElementById('custManualEmail').value.trim();
+        var phone = document.getElementById('custManualPhone').value.trim();
+        if(!email && !phone){
+            status.textContent='Provide an email or phone for this customer.';
+            status.className='modal-status err'; return;
+        }
+    }
+
+    var services = jobLineItemsArr.map(function(li){ return { name:li.name||'—', qty:Number(li.qty)||1, unitPrice:Number(li.price)||0 }; });
+
     var data = {
-        uid:           uid,
+        uid:           uid || '',
+        customerName:  uid ? (custNames[uid]||custName) : custName,
         status:        document.getElementById('jobStatus').value,
         date:          firebase.firestore.Timestamp.fromDate(new Date(dateVal+'T12:00:00')),
         time:          document.getElementById('jobTime').value,
@@ -305,6 +587,11 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         invoiceId:     document.getElementById('jobInvoiceId').value.trim(),
         updatedAt:     firebase.firestore.FieldValue.serverTimestamp(),
     };
+
+    if(isManual){
+        data.manualEmail = document.getElementById('custManualEmail').value.trim();
+        data.manualPhone = document.getElementById('custManualPhone').value.trim();
+    }
 
     btn.disabled = true;
     status.textContent = 'Saving…';
@@ -341,7 +628,7 @@ function toggleCard(jobId){
     else if(window.location.hash==='#'+jobId){ history.replaceState(null,null,' '); }
 }
 
-// ── Delete job ──
+// ── Delete ──
 async function deleteJob(jobId){
     if(!confirm('Delete this job permanently?')) return;
     try {
@@ -366,30 +653,40 @@ function renderJobs(jobs, targetHash){
         var svcNames = items.map(function(i){ return i.name; }).join(', ') || 'Service Visit';
         var dateStr  = job.date ? job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
 
+        // Determine display name: account customer OR manual name
+        var displayName = (job.uid && custNames[job.uid]) ? custNames[job.uid] : (job.customerName||'');
+
         var detailItems = [];
-        if(custNames[job.uid]) detailItems.push('<div class="detail-item"><div class="detail-item-label">Customer</div><div class="detail-item-value"><a href="/staff/dashboard/customers/#'+job.uid+'" style="color:var(--orange);">'+custNames[job.uid]+'</a></div></div>');
-        if(job.address)        detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+job.address+'</div></div>');
-        if(job.assignedCrew)   detailItems.push('<div class="detail-item"><div class="detail-item-label">Crew</div><div class="detail-item-value">'+job.assignedCrew+'</div></div>');
+        if(displayName){
+            var custLink = job.uid
+                ? '<a href="/staff/dashboard/customers/#'+job.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
+                : escHtml(displayName);
+            detailItems.push('<div class="detail-item"><div class="detail-item-label">Customer</div><div class="detail-item-value">'+custLink+(job.uid?'':' <span style="font-size:10px;color:#bbb;">(no account)</span>')+'</div></div>');
+        }
+        if(job.address)        detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+escHtml(job.address)+'</div></div>');
+        if(job.assignedCrew)   detailItems.push('<div class="detail-item"><div class="detail-item-label">Crew</div><div class="detail-item-value">'+escHtml(job.assignedCrew)+'</div></div>');
         if(job.invoiceId)      detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/staff/dashboard/invoices/#'+job.invoiceId+'" style="color:var(--orange);">#'+job.invoiceId+'</a></div></div>');
+        if(job.manualEmail)    detailItems.push('<div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value">'+escHtml(job.manualEmail)+'</div></div>');
+        if(job.manualPhone)    detailItems.push('<div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value">'+escHtml(job.manualPhone)+'</div></div>');
 
         var lineHTML = items.length ? '<div><table class="line-items">'+
             '<tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
-            items.map(function(i){ return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>'; }).join('')+
+            items.map(function(i){ return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>'; }).join('')+
             '<tr class="total-row"><td colspan="3">Job Total</td><td>'+fmtMoney(total)+'</td></tr>'+
             '</table></div>' : '';
 
         var notesHTML = '';
-        if(job.customerNotes) notesHTML += '<div><div class="detail-section-label">Customer Notes</div><div class="note-block">'+job.customerNotes+'</div></div>';
-        if(job.crewNotes)     notesHTML += '<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+job.crewNotes+'</div></div>';
+        if(job.customerNotes) notesHTML += '<div><div class="detail-section-label">Customer Notes</div><div class="note-block">'+escHtml(job.customerNotes)+'</div></div>';
+        if(job.crewNotes)     notesHTML += '<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+escHtml(job.crewNotes)+'</div></div>';
 
         html += '<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
         html += '<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
         html += '<div style="min-width:0;flex:1;">'+
-            '<div class="job-card-title">'+svcNames+' <span style="font-size:11px;font-weight:400;color:var(--text-3);">· #'+jobId+'</span></div>'+
+            '<div class="job-card-title">'+escHtml(svcNames)+' <span style="font-size:11px;font-weight:400;color:var(--text-3);">· #'+jobId+'</span></div>'+
             '<div class="job-card-meta">'+
             '<span>📅 '+dateStr+(job.time?' · '+job.time:'')+'</span>'+
-            (custNames[job.uid]?'<span>👤 '+custNames[job.uid]+'</span>':'')+
-            (job.assignedCrew?'<span>🔧 '+job.assignedCrew+'</span>':'')+
+            (displayName?'<span>👤 '+escHtml(displayName)+'</span>':'')+
+            (job.assignedCrew?'<span>🔧 '+escHtml(job.assignedCrew)+'</span>':'')+
             '</div></div>';
         html += '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(job.status)+'<span class="toggle-chevron">▾</span></div>';
         html += '</div>';
@@ -431,8 +728,9 @@ function applyFilters(){
         if(time === 'upcoming' && j.date && j.date < now) return false;
         if(time === 'past'     && j.date && j.date >= now) return false;
         if(search){
+            var displayName = (j.uid && custNames[j.uid]) ? custNames[j.uid] : (j.customerName||'');
             var haystack = [
-                custNames[j.uid]||'',
+                displayName,
                 j.address,
                 j.services.map(function(s){ return s.name; }).join(' '),
                 j.assignedCrew,
@@ -449,7 +747,7 @@ function applyFilters(){
     document.getElementById(id).addEventListener('change', applyFilters);
 });
 
-// ── Load ──
+// ── Load jobs ──
 async function loadJobs(){
     try {
         var snapshot = await db.collection('jobs')
@@ -458,26 +756,27 @@ async function loadJobs(){
             .get();
 
         allJobs = [];
-
         snapshot.forEach(function(doc){
             var d = doc.data();
             allJobs.push({
-                jobId: doc.id,
-                uid: d.uid||'',
-                status: d.status||'Scheduled',
-                date: d.date ? d.date.toDate() : null,
-                time: d.time||'',
-                address: d.address||'',
-                services: Array.isArray(d.services) ? d.services : [],
-                assignedCrew: d.assignedCrew||'',
+                jobId:         doc.id,
+                uid:           d.uid||'',
+                customerName:  d.customerName||'',
+                status:        d.status||'Scheduled',
+                date:          d.date ? d.date.toDate() : null,
+                time:          d.time||'',
+                address:       d.address||'',
+                services:      Array.isArray(d.services) ? d.services : [],
+                assignedCrew:  d.assignedCrew||'',
                 customerNotes: d.customerNotes||'',
-                crewNotes: d.crewNotes||'',
-                invoiceId: d.invoiceId||'',
+                crewNotes:     d.crewNotes||'',
+                invoiceId:     d.invoiceId||'',
+                manualEmail:   d.manualEmail||'',
+                manualPhone:   d.manualPhone||'',
             });
         });
 
         applyFilters();
-
     } catch(e){
         console.error(e);
         document.getElementById('jobListContainer').innerHTML =
@@ -485,6 +784,7 @@ async function loadJobs(){
     }
 }
 
+// ── Auth & init ──
 auth.onAuthStateChanged(async function(user){
     try {
         if(!user){ window.location.href='/staff/login/'; return; }
@@ -492,37 +792,27 @@ auth.onAuthStateChanged(async function(user){
         document.getElementById('mobileAvatar').textContent =
             initials(user.displayName||user.email||'');
 
-        // 🔴 DEBUG LINE
         console.log("User:", user.uid);
 
-        // Load customers
+        // Load customers — get full doc data for autofill
         var custSnap = await db.collection('customers').get();
-
         custList = [];
         custSnap.forEach(function(doc){
             var d = doc.data();
             custNames[doc.id] = d.name||doc.id;
+            custDocs[doc.id]  = d;
             custList.push({uid:doc.id, name:d.name||doc.id});
         });
-
+        custList.sort(function(a,b){ return a.name.localeCompare(b.name); });
         console.log("Customers loaded:", custList.length);
 
-        // Populate dropdown
-        var sel = document.getElementById('jobCustomer');
-        sel.innerHTML = custList.map(function(c){
-            return '<option value="'+c.uid+'">'+c.name+'</option>';
-        }).join('');
-
         await loadJobs();
-
     } catch(e){
         console.error("MAIN ERROR:", e);
-
         document.getElementById('jobListContainer').innerHTML =
             '<p class="empty-state">Load failed: '+(e.message||'Unknown error')+'</p>';
     }
 });
 </script>
-
 </body>
 </html>
