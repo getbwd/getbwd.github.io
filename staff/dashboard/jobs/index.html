@@ -451,25 +451,38 @@ function applyFilters(){
 
 // ── Load ──
 async function loadJobs(){
-    var snapshot = await db.collection('jobs').orderBy('date','desc').limit(300).get();
-    allJobs = [];
-    snapshot.forEach(function(doc){
-        var d = doc.data();
-        allJobs.push({
-            jobId:         doc.id,
-            uid:           d.uid||'',
-            status:        d.status||'Scheduled',
-            date:          d.date ? d.date.toDate() : null,
-            time:          d.time||'',
-            address:       d.address||'',
-            services:      Array.isArray(d.services) ? d.services : [],
-            assignedCrew:  d.assignedCrew||'',
-            customerNotes: d.customerNotes||'',
-            crewNotes:     d.crewNotes||'',
-            invoiceId:     d.invoiceId||'',
+    try {
+        var snapshot = await db.collection('jobs')
+            .orderBy('date','desc')
+            .limit(300)
+            .get();
+
+        allJobs = [];
+
+        snapshot.forEach(function(doc){
+            var d = doc.data();
+            allJobs.push({
+                jobId: doc.id,
+                uid: d.uid||'',
+                status: d.status||'Scheduled',
+                date: d.date ? d.date.toDate() : null,
+                time: d.time||'',
+                address: d.address||'',
+                services: Array.isArray(d.services) ? d.services : [],
+                assignedCrew: d.assignedCrew||'',
+                customerNotes: d.customerNotes||'',
+                crewNotes: d.crewNotes||'',
+                invoiceId: d.invoiceId||'',
+            });
         });
-    });
-    applyFilters();
+
+        applyFilters();
+
+    } catch(e){
+        console.error(e);
+        document.getElementById('jobListContainer').innerHTML =
+            '<p class="empty-state">Load failed: '+(e.message||'Permission denied')+'</p>';
+    }
 }
 
 auth.onAuthStateChanged(async function(user){
