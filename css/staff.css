@@ -1,0 +1,323 @@
+/* =============================================================
+   BWD Services — staff.css
+   Location: /css/staff.css
+   Extends dashboard.css — must be loaded after it.
+   ============================================================= */
+
+/* ── STAFF ROLE INDICATOR ── */
+.staff-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: rgba(224,90,18,0.12);
+    border: 1px solid rgba(224,90,18,0.2);
+    border-radius: 100px;
+    padding: 3px 9px;
+    margin-top: 6px;
+}
+.sidebar-top .brand {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.2;
+}
+.sidebar-top .brand-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 2px;
+}
+
+/* ── SEARCH / FILTER BAR ── */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.filter-input {
+    flex: 1;
+    min-width: 180px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.15s;
+}
+.filter-input:focus { outline: none; border-color: var(--orange); }
+.filter-select {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+.filter-select:focus { outline: none; border-color: var(--orange); }
+
+/* ── PRIMARY BUTTON ── */
+.btn-primary {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-primary:hover { background: var(--orange-dark); }
+.btn-primary:disabled { background: #ccc; cursor: default; }
+
+.btn-secondary {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-secondary:hover { background: var(--bg); border-color: #bbb; }
+
+.btn-ghost {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    background: none;
+    color: var(--orange);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btn-ghost:hover { background: var(--orange-dim); }
+.btn-ghost.danger { color: #d93025; }
+.btn-ghost.danger:hover { background: #fef0ef; }
+
+/* ── MODAL ── */
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+    background: var(--white);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    animation: modalIn 0.2s ease;
+}
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--border-light);
+}
+.modal-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.modal-close {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 20px; line-height: 1; padding: 2px 4px;
+    border-radius: 4px; transition: color 0.15s, background 0.15s;
+}
+.modal-close:hover { color: var(--text); background: var(--bg); }
+.modal-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.modal-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px 18px;
+    border-top: 1px solid var(--border-light);
+}
+.modal-status { font-size: 12px; font-weight: 500; }
+.modal-status.ok  { color: #1e8a4a; }
+.modal-status.err { color: #d93025; }
+
+/* ── FORM ELEMENTS ── */
+.form-row { display: flex; flex-direction: column; gap: 5px; }
+.form-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #bbb;
+}
+.form-input, .form-select, .form-textarea {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13.5px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    width: 100%;
+    transition: border-color 0.15s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+}
+.form-textarea { resize: vertical; min-height: 72px; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-hint { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+/* ── CUSTOMER TABLE ── */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #bbb;
+    padding: 0 12px 10px;
+    white-space: nowrap;
+}
+.data-table th:first-child { padding-left: 0; }
+.data-table td {
+    padding: 11px 12px;
+    font-size: 13.5px;
+    color: var(--text-2);
+    border-top: 1px solid #faf9f6;
+    vertical-align: middle;
+}
+.data-table td:first-child { padding-left: 0; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #fdfcfb; }
+
+/* ── LINE ITEM BUILDER ── */
+.line-item-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 90px 28px;
+    gap: 8px;
+    align-items: center;
+}
+.line-item-row.header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #bbb;
+    margin-bottom: 4px;
+}
+.btn-remove-line {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 16px;
+    line-height: 1;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-remove-line:hover { color: #d93025; background: #fef0ef; }
+.btn-add-line {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--orange);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.btn-add-line:hover { text-decoration: underline; }
+.line-total-preview {
+    font-size: 12px;
+    color: var(--text-3);
+    text-align: right;
+    margin-top: 6px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── PAYMENT ROW BUILDER ── */
+.payment-row-item {
+    display: grid;
+    grid-template-columns: 130px 1fr 90px 28px;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ── CUSTOMER DETAIL CARD ── */
+.cust-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+.cust-detail-grid .card { margin-bottom: 0; }
+
+/* ── QUICK STATS (staff) ── */
+.stat-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+/* ── INLINE EDITABLE ── */
+.inline-edit-wrap { display: flex; align-items: center; gap: 8px; }
+.inline-edit-wrap .form-input { padding: 5px 8px; font-size: 13px; }
+
+/* ── RESPONSIVE STAFF ── */
+@media (max-width: 1100px) {
+    .stat-grid-5 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 860px) {
+    .stat-grid-5 { grid-template-columns: repeat(2, 1fr); }
+    .form-row-2  { grid-template-columns: 1fr; }
+    .cust-detail-grid { grid-template-columns: 1fr; }
+    .payment-row-item { grid-template-columns: 110px 1fr 80px 28px; }
+}
+@media (max-width: 600px) {
+    .stat-grid-5 { grid-template-columns: 1fr 1fr; }
+    .line-item-row { grid-template-columns: 1fr 50px 80px 28px; }
+    .data-table .hide-mobile { display: none; }
+}

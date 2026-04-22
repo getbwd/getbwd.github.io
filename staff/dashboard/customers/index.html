@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Customers | BWD Staff</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../../../css/dashboard.css">
+<link rel="stylesheet" href="../../../css/staff.css">
+<style>
+/* Customer detail panel */
+.cust-panel { display: none; }
+.cust-panel.open { display: block; }
+.cust-back { font-size: 13px; font-weight: 600; color: var(--orange); background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 6px; }
+.cust-back:hover { text-decoration: underline; }
+.cust-hero { background: var(--dark); border-radius: 12px; padding: 22px 24px; margin-bottom: 18px; display: flex; align-items: center; gap: 18px; }
+.cust-hero-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--orange-dim); color: var(--orange); font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cust-hero-name { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 3px; }
+.cust-hero-sub { font-size: 12px; color: rgba(255,255,255,0.4); }
+.cust-section { margin-bottom: 18px; }
+.cust-section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: #bbb; margin-bottom: 10px; }
+/* Services editor */
+.svc-edit-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+.svc-edit-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.svc-edit-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.svc-edit-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width:600px){ .svc-edit-fields { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="dash-shell">
+
+```
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+        <p class="brand">BWD Services</p>
+        <p class="brand-sub">Staff Portal</p>
+        <span class="staff-badge">⚡ Staff</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a class="nav-item" href="/staff/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
+        <a class="nav-item" href="/staff/dashboard/jobs/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Jobs</a>
+        <a class="nav-item" href="/staff/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
+        <a class="nav-item active" href="/staff/dashboard/customers/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Customers</a>
+        <a class="nav-item" href="/staff/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Services</a>
+    </nav>
+    <div class="sidebar-footer">
+        <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
+    </div>
+</aside>
+
+<header class="mobile-header">
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <span class="mobile-brand">BWD Staff</span>
+    <div class="mobile-avatar" id="mobileAvatar">?</div>
+</header>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<main class="dash-main">
+    <div class="dash-page">
+
+        <!-- LIST VIEW -->
+        <div id="listView">
+            <div class="section-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                <div>
+                    <h1 class="section-title">Customers</h1>
+                    <p class="section-sub">All customer accounts and their details.</p>
+                </div>
+            </div>
+            <div class="filter-bar">
+                <input class="filter-input" id="searchInput" type="text" placeholder="Search name, email, phone…">
+            </div>
+            <div class="card">
+                <div id="custTableBody" style="padding:8px 0;"><span class="loading-text" style="padding:16px 20px;display:block;">Loading…</span></div>
+            </div>
+        </div>
+
+        <!-- DETAIL VIEW -->
+        <div id="detailView" class="cust-panel">
+            <button class="cust-back" id="backBtn">← All Customers</button>
+            <div id="detailContent"></div>
+        </div>
+
+    </div>
+</main>
+```
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+<script>
+firebase.initializeApp({
+    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
+    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
+    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+var auth = firebase.auth();
+var db   = firebase.firestore();
+
+document.getElementById('signOutBtn').addEventListener('click', function(){ auth.signOut().then(function(){ window.location.href='/staff/login/'; }); });
+document.getElementById('mobileMenuBtn').addEventListener('click', function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); });
+document.getElementById('sidebarOverlay').addEventListener('click', function(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); });
+document.getElementById('backBtn').addEventListener('click', function(){ showList(); history.replaceState(null,null,' '); });
+
+function initials(n){ return n ? n.trim().split(/\s+/).map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2) : '?'; }
+function fmtMoney(n){ return '$' + Number(n).toFixed(2); }
+function badge(status){
+    var s=(status||'').toLowerCase().trim();
+    var map={'active':'bdg-active','paused':'bdg-paused','seasonal':'bdg-paused','terminated':'bdg-cancelled','on hold':'bdg-overdue'};
+    return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
+}
+function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
+
+var allCustomers = [];
+var custJobMap   = {};   // uid → jobs[]
+var custInvMap   = {};   // uid → invoices[]
+
+function showList(){ document.getElementById('listView').style.display=''; document.getElementById('detailView').classList.remove('open'); }
+function showDetail(){ document.getElementById('listView').style.display='none'; document.getElementById('detailView').classList.add('open'); }
+
+// ── Render customer table ──
+function renderTable(customers){
+    var body = document.getElementById('custTableBody');
+    if(!customers.length){ body.innerHTML='<p class="empty-state" style="margin:16px 20px;">No customers found.</p>'; return; }
+    body.innerHTML = '<table class="data-table" style="margin:0 0 0 0;"><thead><tr>'+
+        '<th style="padding-left:20px;">Name</th><th>Email</th><th class="hide-mobile">Phone</th><th class="hide-mobile">Properties</th><th></th>'+
+        '</tr></thead><tbody>'+
+        customers.map(function(c){
+            var propCount = (c.properties||[]).length;
+            return '<tr>'+
+                '<td style="padding-left:20px;"><strong>'+c.name+'</strong></td>'+
+                '<td style="color:var(--text-3);">'+c.email+'</td>'+
+                '<td class="hide-mobile" style="color:var(--text-3);">'+(c.phone||'—')+'</td>'+
+                '<td class="hide-mobile" style="color:var(--text-3);">'+propCount+' propert'+(propCount===1?'y':'ies')+'</td>'+
+                '<td><button class="btn-ghost" onclick=\'openCustomer("'+c.uid+'")\'>View</button></td>'+
+                '</tr>';
+        }).join('')+
+        '</tbody></table>';
+}
+
+// ── Open customer detail ──
+async function openCustomer(uid){
+    history.replaceState(null,null,'#'+uid);
+    showDetail();
+    var content = document.getElementById('detailContent');
+    content.innerHTML = '<p class="loading-text">Loading…</p>';
+
+    var cust = allCustomers.find(function(c){ return c.uid===uid; });
+    if(!cust){ content.innerHTML='<p class="empty-state">Customer not found.</p>'; return; }
+
+    // Load jobs and invoices for this customer if not cached
+    if(!custJobMap[uid]){
+        var jobSnap = await db.collection('jobs').where('uid','==',uid).orderBy('date','desc').limit(50).get();
+        custJobMap[uid] = [];
+        jobSnap.forEach(function(doc){ var d=doc.data(); custJobMap[uid].push({jobId:doc.id,status:d.status||'',date:d.date?d.date.toDate():null,services:d.services||[],invoiceId:d.invoiceId||''}); });
+    }
+    if(!custInvMap[uid]){
+        var invSnap = await db.collection('invoices').where('uid','==',uid).orderBy('dateIssued','desc').limit(50).get();
+        custInvMap[uid] = [];
+        invSnap.forEach(function(doc){
+            var d=doc.data();
+            if((d.status||'').toLowerCase()==='draft') return;
+            var items=d.items||[], payments=d.payments||[];
+            var total=items.reduce(function(s,i){ return s+Number(i.qty||1)*Number(i.unitPrice||0); },0);
+            var paid=payments.reduce(function(s,p){ return s+Number(p.amount||0); },0);
+            custInvMap[uid].push({invId:doc.id,status:d.status||'',dateIssued:d.dateIssued?d.dateIssued.toDate():null,total:total,balance:Math.max(0,total-paid)});
+        });
+    }
+
+    var jobs = custJobMap[uid];
+    var invs = custInvMap[uid];
+
+    // Load services doc
+    var svcSnap = await db.collection('services').doc(uid).get();
+    var svcList = (svcSnap.exists && Array.isArray(svcSnap.data().services)) ? svcSnap.data().services : [];
+
+    // Properties list
+    var propsHTML = (cust.properties||[]).length
+        ? (cust.properties||[]).map(function(p){ return '<div class="svc-edit-card"><strong>'+(p.primary?'★ ':'')+'</strong>'+p.address+(p.notes?'<br><span style="font-size:12px;color:var(--text-3);">'+p.notes+'</span>':'')+'</div>'; }).join('')
+        : '<p style="font-size:13px;color:#ccc;">No properties.</p>';
+
+    var recentJobsHTML = jobs.length
+        ? '<table class="data-table" style="margin:0;"><thead><tr><th>Service(s)</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody>'+
+            jobs.slice(0,8).map(function(j){
+                var svcNames=j.services.map(function(s){ return s.name; }).join(', ')||'Visit';
+                var ds=j.date?j.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+                return '<tr><td>'+svcNames+'</td><td style="color:var(--text-3);">'+ds+'</td><td><span class="bdg '+(j.status.toLowerCase()==='completed'?'bdg-completed':j.status.toLowerCase()==='scheduled'?'bdg-scheduled':'bdg-default')+'">'+j.status+'</span></td>'+
+                    '<td><a class="btn-ghost" href="/staff/dashboard/jobs/#'+j.jobId+'">View</a></td></tr>';
+            }).join('')+
+            '</tbody></table>'
+        : empty('No jobs.');
+
+    var recentInvHTML = invs.length
+        ? '<table class="data-table" style="margin:0;"><thead><tr><th>Date</th><th>Total</th><th>Balance</th><th>Status</th><th></th></tr></thead><tbody>'+
+            invs.slice(0,8).map(function(inv){
+                var ds=inv.dateIssued?inv.dateIssued.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+                return '<tr><td style="color:var(--text-3);">'+ds+'</td><td>'+fmtMoney(inv.total)+'</td><td class="'+(inv.balance>0?'balance-due':'balance-clear')+'">'+fmtMoney(inv.balance)+'</td><td><span class="bdg '+(inv.status.toLowerCase()==='paid'?'bdg-paid':inv.status.toLowerCase()==='overdue'?'bdg-overdue':'bdg-unpaid')+'">'+inv.status+'</span></td>'+
+                    '<td><a class="btn-ghost" href="/staff/dashboard/invoices/#'+inv.invId+'">View</a></td></tr>';
+            }).join('')+
+            '</tbody></table>'
+        : empty('No invoices.');
+
+    // Services rendered with editable fields
+    var svcsHTML = svcList.length
+        ? svcList.map(function(s,i){
+            return '<div class="svc-edit-card" id="svc-card-'+uid+'-'+i+'">'+
+                '<div class="svc-edit-header"><span class="svc-edit-name">'+s.name+'</span>'+badge(s.status)+'</div>'+
+                '<div class="svc-edit-fields">'+
+                    '<div class="form-row"><label class="form-label">Frequency</label><input class="form-input" type="text" value="'+(s.frequency||'')+'" id="svcFreq-'+i+'"></div>'+
+                    '<div class="form-row"><label class="form-label">Price/Visit</label><input class="form-input" type="number" step="0.01" value="'+(s.pricePerVisit||'')+'" id="svcPrice-'+i+'"></div>'+
+                    '<div class="form-row"><label class="form-label">Status</label><select class="form-select" id="svcStatus-'+i+'">'+
+                        ['Active','Paused','Seasonal','On Hold','Terminated'].map(function(st){ return '<option value="'+st+'"'+(s.status===st?' selected':'')+'>'+st+'</option>'; }).join('')+
+                    '</select></div>'+
+                    '<div class="form-row"><label class="form-label">Notes</label><input class="form-input" type="text" value="'+(s.notes||'')+'" id="svcNotes-'+i+'"></div>'+
+                '</div>'+
+                '<div style="margin-top:10px;display:flex;gap:8px;align-items:center;">'+
+                    '<button class="btn-primary" style="padding:6px 14px;font-size:12px;" onclick=\'saveSvcEdit("'+uid+'",'+i+')\'>Save</button>'+
+                    '<span id="svcSave-'+i+'" style="font-size:12px;color:var(--text-3);"></span>'+
+                '</div>'+
+                '</div>';
+          }).join('')
+        : '<p style="font-size:13px;color:#ccc;">No services.</p>';
+
+    // Store svcList so saveSvcEdit can access it
+    window['_svcList_'+uid] = svcList;
+
+    content.innerHTML =
+        '<div class="cust-hero">'+
+            '<div class="cust-hero-avatar">'+initials(cust.name)+'</div>'+
+            '<div>'+
+                '<p class="cust-hero-name">'+cust.name+'</p>'+
+                '<p class="cust-hero-sub">'+(cust.email||'')+(cust.phone?' · '+cust.phone:'')+'</p>'+
+            '</div>'+
+            '<div style="margin-left:auto;display:flex;gap:8px;">'+
+                '<a class="btn-primary" style="font-size:12px;padding:6px 14px;" href="/staff/dashboard/jobs/?newFor='+uid+'">+ Job</a>'+
+                '<a class="btn-secondary" style="font-size:12px;padding:6px 14px;" href="/staff/dashboard/invoices/?newFor='+uid+'">+ Invoice</a>'+
+            '</div>'+
+        '</div>'+
+
+        '<div class="cust-section"><p class="cust-section-title">Properties</p>'+propsHTML+'</div>'+
+
+        '<div class="cust-section"><p class="cust-section-title">Services</p>'+
+            '<div id="svcEditorWrap-'+uid+'">'+svcsHTML+'</div>'+
+            '<button class="btn-secondary" style="margin-top:8px;font-size:12px;" onclick=\'addNewService("'+uid+'")\'>+ Add Service</button>'+
+        '</div>'+
+
+        '<div class="cust-section"><p class="cust-section-title">Recent Jobs</p><div class="card" style="margin:0;overflow:auto;">'+recentJobsHTML+'</div></div>'+
+        '<div class="cust-section"><p class="cust-section-title">Invoices</p><div class="card" style="margin:0;overflow:auto;">'+recentInvHTML+'</div></div>';
+}
+
+async function saveSvcEdit(uid, i){
+    var svcList = window['_svcList_'+uid] || [];
+    var updated = JSON.parse(JSON.stringify(svcList));
+    updated[i].frequency    = (document.getElementById('svcFreq-'+i)||{}).value||'';
+    updated[i].pricePerVisit= Number((document.getElementById('svcPrice-'+i)||{}).value)||0;
+    updated[i].status       = (document.getElementById('svcStatus-'+i)||{}).value||'Active';
+    updated[i].notes        = (document.getElementById('svcNotes-'+i)||{}).value||'';
+
+    var statusEl = document.getElementById('svcSave-'+i);
+    statusEl.textContent='Saving…';
+    try {
+        await db.collection('services').doc(uid).set({services:updated},{merge:true});
+        window['_svcList_'+uid] = updated;
+        statusEl.textContent='Saved!'; statusEl.style.color='#1e8a4a';
+        setTimeout(function(){ statusEl.textContent=''; }, 2500);
+    } catch(e){
+        statusEl.textContent='Error: '+(e.message||''); statusEl.style.color='#d93025';
+    }
+}
+
+async function addNewService(uid){
+    var svcList = window['_svcList_'+uid] || [];
+    var name = prompt('Service name (e.g. Weekly Mowing):');
+    if(!name||!name.trim()) return;
+    svcList.push({name:name.trim(), frequency:'Weekly', pricePerVisit:0, status:'Active', notes:''});
+    try {
+        await db.collection('services').doc(uid).set({services:svcList},{merge:true});
+        window['_svcList_'+uid] = svcList;
+        // Re-open to refresh
+        openCustomer(uid);
+    } catch(e){ alert('Error: '+(e.message||'')); }
+}
+
+// ── Filters ──
+function applyFilters(){
+    var search = document.getElementById('searchInput').value.toLowerCase();
+    var filtered = allCustomers.filter(function(c){
+        if(!search) return true;
+        return [c.name,c.email,c.phone].join(' ').toLowerCase().indexOf(search)!==-1;
+    });
+    renderTable(filtered);
+}
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+auth.onAuthStateChanged(async function(user){
+    if(!user){ window.location.href='/staff/login/'; return; }
+    document.getElementById('mobileAvatar').textContent=initials(user.displayName||user.email||'');
+
+    var snap = await db.collection('customers').orderBy('name').get();
+    allCustomers = [];
+    snap.forEach(function(doc){
+        var d=doc.data();
+        allCustomers.push({uid:doc.id, name:d.name||doc.id, email:d.email||'', phone:d.phone||'', properties:d.properties||[]});
+    });
+    renderTable(allCustomers);
+
+    // Deep-link
+    var hash = window.location.hash.replace('#','');
+    if(hash){ openCustomer(hash); }
+});
+</script>
+
+</body>
+</html>

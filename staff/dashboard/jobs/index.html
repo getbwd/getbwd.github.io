@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Jobs | BWD Staff</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../../../css/dashboard.css">
+<link rel="stylesheet" href="../../../css/staff.css">
+<style>
+.job-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; scroll-margin-top: 24px; margin-bottom: 14px; }
+.job-card.highlight { border-color: var(--orange); box-shadow: 0 0 0 3px var(--orange-dim); }
+.job-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 20px 14px; cursor: pointer; user-select: none; }
+.job-card-header:hover { background: #fafaf8; }
+.job-card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.job-card-meta { font-size: 12px; color: var(--text-3); display: flex; flex-wrap: wrap; gap: 8px; }
+.job-card-body { padding: 18px 20px; border-top: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 16px; }
+.job-card-body.collapsed { display: none; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.detail-item { background: #fafaf8; border: 1px solid var(--border-light); border-radius: 8px; padding: 10px 14px; }
+.detail-item-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; margin-bottom: 3px; }
+.detail-item-value { font-size: 13px; color: var(--text-2); line-height: 1.4; }
+.note-block { background: #fafaf8; border: 1px solid var(--border-light); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--text-3); line-height: 1.6; }
+.detail-section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: #bbb; margin-bottom: 6px; }
+.line-items { width: 100%; border-collapse: collapse; font-size: 13px; }
+.line-items th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; padding: 0 8px 6px 0; }
+.line-items th:last-child, .line-items td:last-child { text-align: right; }
+.line-items td { padding: 6px 8px 6px 0; color: var(--text-2); border-top: 1px solid var(--border-light); }
+.line-items .total-row td { font-weight: 700; color: var(--text); border-top: 2px solid var(--border); padding-top: 8px; }
+.toggle-chevron { font-size: 18px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; line-height: 1; }
+.job-card.open .toggle-chevron { transform: rotate(180deg); }
+.job-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); }
+@media(max-width:600px){ .detail-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="dash-shell">
+
+```
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+        <p class="brand">BWD Services</p>
+        <p class="brand-sub">Staff Portal</p>
+        <span class="staff-badge">⚡ Staff</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a class="nav-item" href="/staff/dashboard/">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Overview
+        </a>
+        <a class="nav-item active" href="/staff/dashboard/jobs/">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Jobs
+        </a>
+        <a class="nav-item" href="/staff/dashboard/invoices/">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Invoices
+        </a>
+        <a class="nav-item" href="/staff/dashboard/customers/">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Customers
+        </a>
+        <a class="nav-item" href="/staff/dashboard/services/">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Services
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <button class="nav-item signout-btn" id="signOutBtn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out
+        </button>
+    </div>
+</aside>
+
+<header class="mobile-header">
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <span class="mobile-brand">BWD Staff</span>
+    <div class="mobile-avatar" id="mobileAvatar">?</div>
+</header>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<main class="dash-main">
+    <div class="dash-page">
+        <div class="section-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <div>
+                <h1 class="section-title">Jobs</h1>
+                <p class="section-sub">All scheduled and completed service visits.</p>
+            </div>
+            <button class="btn-primary" id="newJobBtn">+ New Job</button>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, address, service…">
+            <select class="filter-select" id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="rescheduled">Rescheduled</option>
+            </select>
+            <select class="filter-select" id="timeFilter">
+                <option value="upcoming">Upcoming</option>
+                <option value="all">All Time</option>
+                <option value="past">Past</option>
+            </select>
+        </div>
+
+        <div id="jobListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
+    </div>
+</main>
+```
+
+</div>
+
+<!-- NEW / EDIT JOB MODAL -->
+
+<div class="modal-backdrop" id="jobModal">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title" id="jobModalTitle">New Job</span>
+            <button class="modal-close" id="jobModalClose">✕</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="editJobId">
+            <div class="form-row">
+                <label class="form-label">Customer</label>
+                <select class="form-select" id="jobCustomer"></select>
+            </div>
+            <div class="form-row-2">
+                <div class="form-row">
+                    <label class="form-label">Date</label>
+                    <input class="form-input" type="date" id="jobDate">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Time</label>
+                    <input class="form-input" type="time" id="jobTime">
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="form-label">Status</label>
+                <select class="form-select" id="jobStatus">
+                    <option value="Scheduled">Scheduled</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Rescheduled">Rescheduled</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label class="form-label">Address</label>
+                <input class="form-input" type="text" id="jobAddress" placeholder="1234 Main St, Flint, MI 48501">
+            </div>
+            <div class="form-row">
+                <label class="form-label">Assigned Crew</label>
+                <input class="form-input" type="text" id="jobCrew" placeholder="e.g. Brandon">
+            </div>
+            <!-- Line items -->
+            <div class="form-row">
+                <label class="form-label">Services / Line Items</label>
+                <div class="line-item-row header">
+                    <span>Service Name</span><span>Qty</span><span>Unit Price</span><span></span>
+                </div>
+                <div id="jobLineItems"></div>
+                <button class="btn-add-line" id="addLineBtn">+ Add service</button>
+                <p class="line-total-preview" id="jobLineTotal"></p>
+            </div>
+            <div class="form-row">
+                <label class="form-label">Customer Notes</label>
+                <textarea class="form-textarea" id="jobCustomerNotes" placeholder="Gate code, special instructions…"></textarea>
+            </div>
+            <div class="form-row">
+                <label class="form-label">Crew Notes</label>
+                <textarea class="form-textarea" id="jobCrewNotes" placeholder="Internal notes for the crew…"></textarea>
+            </div>
+            <div class="form-row">
+                <label class="form-label">Linked Invoice ID (optional)</label>
+                <input class="form-input" type="text" id="jobInvoiceId" placeholder="Invoice doc ID">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary" id="saveJobBtn">Save Job</button>
+            <button class="btn-secondary" id="cancelJobBtn">Cancel</button>
+            <span class="modal-status" id="jobModalStatus"></span>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+<script>
+firebase.initializeApp({
+    apiKey:'AIzaSyBKm_3OhZkF4IshAy50xuzm0Q1uloDdgpA',authDomain:'bwd-accounts.firebaseapp.com',
+    projectId:'bwd-accounts',storageBucket:'bwd-accounts.firebasestorage.app',
+    messagingSenderId:'590001375282',appId:'1:590001375282:web:bd1725d5a5be3f9d28542b'
+});
+var auth = firebase.auth();
+var db   = firebase.firestore();
+
+document.getElementById('signOutBtn').addEventListener('click', function(){ auth.signOut().then(function(){ window.location.href='/staff/login/'; }); });
+document.getElementById('mobileMenuBtn').addEventListener('click', function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); });
+document.getElementById('sidebarOverlay').addEventListener('click', function(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); });
+
+function initials(n){ return n ? n.trim().split(/\s+/).map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2) : '?'; }
+function fmtMoney(n){ return '$' + Number(n).toFixed(2); }
+function badge(status){
+    var s = (status||'').toLowerCase().trim();
+    var map = { 'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed','draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue' };
+    return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
+}
+function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
+
+// ── State ──
+var allJobs = [];
+var custNames = {};   // uid → name
+var custList  = [];   // [{uid, name}]
+
+// ── Modal helpers ──
+var jobLineItems = [];
+
+function lineTotal(){
+    return jobLineItems.reduce(function(s,li){ return s + Number(li.qty||0)*Number(li.price||0); }, 0);
+}
+
+function renderLineItems(){
+    var wrap = document.getElementById('jobLineItems');
+    wrap.innerHTML = jobLineItems.map(function(li,i){
+        return '<div class="line-item-row" style="margin-bottom:6px;">'+
+            '<input class="form-input" type="text" placeholder="Service name" value="'+li.name+'" oninput="jobLineItems['+i+'].name=this.value">'+
+            '<input class="form-input" type="number" min="1" value="'+li.qty+'" oninput="jobLineItems['+i+'].qty=this.value;updateLineTotal()">'+
+            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+li.price+'" oninput="jobLineItems['+i+'].price=this.value;updateLineTotal()">'+
+            '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>'+
+            '</div>';
+    }).join('');
+    updateLineTotal();
+}
+
+function updateLineTotal(){
+    var t = lineTotal();
+    document.getElementById('jobLineTotal').textContent = t > 0 ? 'Total: ' + fmtMoney(t) : '';
+}
+
+function removeLine(i){
+    jobLineItems.splice(i,1);
+    renderLineItems();
+}
+
+document.getElementById('addLineBtn').addEventListener('click', function(){
+    jobLineItems.push({name:'',qty:1,price:''});
+    renderLineItems();
+});
+
+function openModal(job){
+    jobLineItems = job
+        ? job.services.map(function(s){ return {name:s.name||'',qty:Number(s.qty)||1,price:Number(s.unitPrice)||0}; })
+        : [{name:'',qty:1,price:''}];
+
+    document.getElementById('editJobId').value       = job ? job.jobId : '';
+    document.getElementById('jobModalTitle').textContent = job ? 'Edit Job' : 'New Job';
+    document.getElementById('jobCustomer').value     = job ? job.uid : (custList[0]?custList[0].uid:'');
+    document.getElementById('jobDate').value         = job && job.date ? job.date.toISOString().slice(0,10) : '';
+    document.getElementById('jobTime').value         = job ? job.time : '';
+    document.getElementById('jobStatus').value       = job ? job.status : 'Scheduled';
+    document.getElementById('jobAddress').value      = job ? job.address : '';
+    document.getElementById('jobCrew').value         = job ? job.assignedCrew : '';
+    document.getElementById('jobCustomerNotes').value= job ? (job.customerNotes||'') : '';
+    document.getElementById('jobCrewNotes').value    = job ? (job.crewNotes||'') : '';
+    document.getElementById('jobInvoiceId').value    = job ? job.invoiceId : '';
+    document.getElementById('jobModalStatus').textContent = '';
+    renderLineItems();
+    document.getElementById('jobModal').classList.add('open');
+}
+
+function closeModal(){
+    document.getElementById('jobModal').classList.remove('open');
+}
+
+document.getElementById('newJobBtn').addEventListener('click', function(){ openModal(null); });
+document.getElementById('jobModalClose').addEventListener('click', closeModal);
+document.getElementById('cancelJobBtn').addEventListener('click', closeModal);
+document.getElementById('jobModal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+
+document.getElementById('saveJobBtn').addEventListener('click', async function(){
+    var btn    = this;
+    var status = document.getElementById('jobModalStatus');
+    var uid    = document.getElementById('jobCustomer').value;
+    var dateVal= document.getElementById('jobDate').value;
+    if(!uid){ status.textContent='Select a customer.'; status.className='modal-status err'; return; }
+    if(!dateVal){ status.textContent='Pick a date.'; status.className='modal-status err'; return; }
+
+    var services = jobLineItems.map(function(li){ return { name:li.name||'—', qty:Number(li.qty)||1, unitPrice:Number(li.price)||0 }; });
+    var data = {
+        uid:           uid,
+        status:        document.getElementById('jobStatus').value,
+        date:          firebase.firestore.Timestamp.fromDate(new Date(dateVal+'T12:00:00')),
+        time:          document.getElementById('jobTime').value,
+        address:       document.getElementById('jobAddress').value.trim(),
+        assignedCrew:  document.getElementById('jobCrew').value.trim(),
+        services:      services,
+        customerNotes: document.getElementById('jobCustomerNotes').value.trim(),
+        crewNotes:     document.getElementById('jobCrewNotes').value.trim(),
+        invoiceId:     document.getElementById('jobInvoiceId').value.trim(),
+        updatedAt:     firebase.firestore.FieldValue.serverTimestamp(),
+    };
+
+    btn.disabled = true;
+    status.textContent = 'Saving…';
+    status.className = 'modal-status';
+
+    try {
+        var editId = document.getElementById('editJobId').value;
+        if(editId){
+            await db.collection('jobs').doc(editId).update(data);
+        } else {
+            data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            await db.collection('jobs').add(data);
+        }
+        status.textContent = 'Saved!';
+        status.className = 'modal-status ok';
+        setTimeout(function(){ closeModal(); loadJobs(); }, 600);
+    } catch(e){
+        console.error(e);
+        status.textContent = 'Error: ' + (e.message||'Permission denied');
+        status.className = 'modal-status err';
+        btn.disabled = false;
+    }
+});
+
+// ── Toggle card ──
+function toggleCard(jobId){
+    var body = document.getElementById('body-'+jobId);
+    var card = document.getElementById('card-'+jobId);
+    if(!body) return;
+    var wasOpen = !body.classList.contains('collapsed');
+    body.classList.toggle('collapsed');
+    card.classList.toggle('open', wasOpen);
+    if(!wasOpen){ history.replaceState(null,null,'#'+jobId); }
+    else if(window.location.hash==='#'+jobId){ history.replaceState(null,null,' '); }
+}
+
+// ── Delete job ──
+async function deleteJob(jobId){
+    if(!confirm('Delete this job permanently?')) return;
+    try {
+        await db.collection('jobs').doc(jobId).delete();
+        loadJobs();
+    } catch(e){
+        alert('Error: '+(e.message||'Permission denied'));
+    }
+}
+
+// ── Render jobs ──
+function renderJobs(jobs, targetHash){
+    var container = document.getElementById('jobListContainer');
+    if(!jobs.length){ container.innerHTML = empty('No jobs match your filters.'); return; }
+
+    var html = '';
+    jobs.forEach(function(job){
+        var jobId    = job.jobId;
+        var isTarget = jobId === targetHash;
+        var items    = job.services.map(function(s){ var qty=Number(s.qty)||1; var unit=Number(s.unitPrice)||0; return {name:s.name||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit}; });
+        var total    = items.reduce(function(s,i){ return s+i.lineTotal; }, 0);
+        var svcNames = items.map(function(i){ return i.name; }).join(', ') || 'Service Visit';
+        var dateStr  = job.date ? job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
+
+        var detailItems = [];
+        if(custNames[job.uid]) detailItems.push('<div class="detail-item"><div class="detail-item-label">Customer</div><div class="detail-item-value"><a href="/staff/dashboard/customers/#'+job.uid+'" style="color:var(--orange);">'+custNames[job.uid]+'</a></div></div>');
+        if(job.address)        detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+job.address+'</div></div>');
+        if(job.assignedCrew)   detailItems.push('<div class="detail-item"><div class="detail-item-label">Crew</div><div class="detail-item-value">'+job.assignedCrew+'</div></div>');
+        if(job.invoiceId)      detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/staff/dashboard/invoices/#'+job.invoiceId+'" style="color:var(--orange);">#'+job.invoiceId+'</a></div></div>');
+
+        var lineHTML = items.length ? '<div><table class="line-items">'+
+            '<tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
+            items.map(function(i){ return '<tr><td>'+i.name+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>'; }).join('')+
+            '<tr class="total-row"><td colspan="3">Job Total</td><td>'+fmtMoney(total)+'</td></tr>'+
+            '</table></div>' : '';
+
+        var notesHTML = '';
+        if(job.customerNotes) notesHTML += '<div><div class="detail-section-label">Customer Notes</div><div class="note-block">'+job.customerNotes+'</div></div>';
+        if(job.crewNotes)     notesHTML += '<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+job.crewNotes+'</div></div>';
+
+        html += '<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
+        html += '<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
+        html += '<div style="min-width:0;flex:1;">'+
+            '<div class="job-card-title">'+svcNames+' <span style="font-size:11px;font-weight:400;color:var(--text-3);">· #'+jobId+'</span></div>'+
+            '<div class="job-card-meta">'+
+            '<span>📅 '+dateStr+(job.time?' · '+job.time:'')+'</span>'+
+            (custNames[job.uid]?'<span>👤 '+custNames[job.uid]+'</span>':'')+
+            (job.assignedCrew?'<span>🔧 '+job.assignedCrew+'</span>':'')+
+            '</div></div>';
+        html += '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(job.status)+'<span class="toggle-chevron">▾</span></div>';
+        html += '</div>';
+        html += '<div class="job-card-body'+(isTarget?'':' collapsed')+'" id="body-'+jobId+'">';
+        if(detailItems.length) html += '<div class="detail-grid">'+detailItems.join('')+'</div>';
+        html += lineHTML + notesHTML;
+        html += '<div class="job-actions">'+
+            '<button class="btn-ghost" onclick=\'editJob("'+jobId+'")\'>Edit</button>'+
+            '<button class="btn-ghost danger" onclick=\'deleteJob("'+jobId+'")\'>Delete</button>'+
+            (job.invoiceId
+                ? '<a class="btn-ghost" href="/staff/dashboard/invoices/#'+job.invoiceId+'">View Invoice</a>'
+                : '<a class="btn-ghost" href="/staff/dashboard/invoices/?newFor='+jobId+'">Create Invoice</a>')+
+            '</div>';
+        html += '</div></div>';
+    });
+
+    container.innerHTML = html;
+
+    if(targetHash){
+        var el = document.getElementById('card-'+targetHash);
+        if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+    }
+}
+
+function editJob(jobId){
+    var job = allJobs.find(function(j){ return j.jobId===jobId; });
+    if(job) openModal(job);
+}
+
+// ── Filter & search ──
+function applyFilters(){
+    var search = document.getElementById('searchInput').value.toLowerCase();
+    var status = document.getElementById('statusFilter').value.toLowerCase();
+    var time   = document.getElementById('timeFilter').value;
+    var now    = new Date(); now.setHours(0,0,0,0);
+
+    var filtered = allJobs.filter(function(j){
+        if(status && j.status.toLowerCase().indexOf(status) === -1) return false;
+        if(time === 'upcoming' && j.date && j.date < now) return false;
+        if(time === 'past'     && j.date && j.date >= now) return false;
+        if(search){
+            var haystack = [
+                custNames[j.uid]||'',
+                j.address,
+                j.services.map(function(s){ return s.name; }).join(' '),
+                j.assignedCrew,
+            ].join(' ').toLowerCase();
+            if(haystack.indexOf(search) === -1) return false;
+        }
+        return true;
+    });
+    renderJobs(filtered, window.location.hash.replace('#',''));
+}
+
+['searchInput','statusFilter','timeFilter'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', applyFilters);
+    document.getElementById(id).addEventListener('change', applyFilters);
+});
+
+// ── Load ──
+async function loadJobs(){
+    var snapshot = await db.collection('jobs').orderBy('date','desc').limit(300).get();
+    allJobs = [];
+    snapshot.forEach(function(doc){
+        var d = doc.data();
+        allJobs.push({
+            jobId:         doc.id,
+            uid:           d.uid||'',
+            status:        d.status||'Scheduled',
+            date:          d.date ? d.date.toDate() : null,
+            time:          d.time||'',
+            address:       d.address||'',
+            services:      Array.isArray(d.services) ? d.services : [],
+            assignedCrew:  d.assignedCrew||'',
+            customerNotes: d.customerNotes||'',
+            crewNotes:     d.crewNotes||'',
+            invoiceId:     d.invoiceId||'',
+        });
+    });
+    applyFilters();
+}
+
+auth.onAuthStateChanged(async function(user){
+    if(!user){ window.location.href='/staff/login/'; return; }
+    document.getElementById('mobileAvatar').textContent = initials(user.displayName||user.email||'');
+
+    // Load customers for modal dropdown + name map
+    var custSnap = await db.collection('customers').orderBy('name').get();
+    custList = [];
+    custSnap.forEach(function(doc){
+        var d = doc.data();
+        custNames[doc.id] = d.name||doc.id;
+        custList.push({uid:doc.id, name:d.name||doc.id});
+    });
+
+    // Populate customer select
+    var sel = document.getElementById('jobCustomer');
+    sel.innerHTML = custList.map(function(c){ return '<option value="'+c.uid+'">'+c.name+'</option>'; }).join('');
+
+    await loadJobs();
+});
+</script>
+
+</body>
+</html>
