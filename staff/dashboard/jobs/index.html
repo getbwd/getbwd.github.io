@@ -32,13 +32,64 @@
 .job-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); }
 @media(max-width:600px){ .detail-grid { grid-template-columns: 1fr; } }
 
-/* ── DATE/TIME FIX — side by side with no overlap ── */
+/* ── FIX: DATE/TIME — true side-by-side, no overlap ── */
 .datetime-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     gap: 12px;
+    width: 100%;
 }
-@media(max-width:480px){ .datetime-row { grid-template-columns: 1fr; } }
+.datetime-row .form-row {
+    flex: 1;
+    min-width: 0;
+}
+.datetime-row .form-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ── FIX: MODAL SCROLL on iPad/touch ── */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    /* iOS Safari: allow the backdrop itself to scroll-capture */
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+    background: var(--white);
+    border-radius: 16px;
+    width: min(680px, calc(100vw - 32px));
+    max-height: calc(100dvh - 48px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+    position: relative;
+    /* Prevent modal from touching edges on iPad landscape */
+    margin: auto;
+}
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+/* Prevent background body scroll when modal open */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
 
 /* ── CUSTOMER AUTOCOMPLETE ── */
 .cust-picker-wrap { position: relative; }
@@ -51,6 +102,7 @@
     color: var(--text);
     background: var(--white);
     width: 100%;
+    box-sizing: border-box;
     transition: border-color 0.15s;
 }
 .cust-picker-input:focus { outline: none; border-color: var(--orange); }
@@ -97,7 +149,6 @@
 .cust-type-hint {
     font-size: 11px; color: var(--text-3); margin-top: 4px;
 }
-/* manual contact fields */
 .manual-contact-fields {
     display: flex; flex-direction: column; gap: 10px;
     margin-top: 2px;
@@ -110,6 +161,59 @@
     font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px;
     text-transform: uppercase; color: #bbb; margin-bottom: 2px;
 }
+
+/* ── ADDRESS PROPERTY PICKER ── */
+.addr-wrap { position: relative; }
+.addr-property-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+.addr-prop-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.12s;
+    white-space: nowrap;
+}
+.addr-prop-pill:hover { border-color: var(--orange); color: var(--orange); }
+.addr-prop-pill.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+.addr-prop-pill.manual-pill { border-style: dashed; }
+
+/* ── SERVICE NAME AUTOCOMPLETE ── */
+.svc-name-wrap { position: relative; flex: 1; min-width: 0; }
+.svc-dropdown {
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 0;
+    min-width: 220px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+    z-index: 500;
+    max-height: 180px;
+    overflow-y: auto;
+    display: none;
+}
+.svc-dropdown.open { display: block; }
+.svc-dropdown-item {
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--text-2);
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-light);
+}
+.svc-dropdown-item:last-child { border-bottom: none; }
+.svc-dropdown-item:hover, .svc-dropdown-item.focused { background: #fafaf8; }
+.svc-dropdown-item strong { color: var(--text); }
 </style>
 </head>
 <body>
@@ -168,7 +272,6 @@
             <button class="btn-primary" id="newJobBtn">+ New Job</button>
         </div>
 
-        <!-- Filter bar -->
         <div class="filter-bar">
             <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, address, service…">
             <select class="filter-select" id="statusFilter">
@@ -198,33 +301,24 @@
             <span class="modal-title" id="jobModalTitle">New Job</span>
             <button class="modal-close" id="jobModalClose">✕</button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="jobModalBody">
             <input type="hidden" id="editJobId">
 
             <!-- ── CUSTOMER PICKER ── -->
             <div class="form-row">
                 <label class="form-label">Customer</label>
                 <div class="cust-picker-wrap" id="custPickerWrap">
-                    <input
-                        class="cust-picker-input"
-                        type="text"
-                        id="custSearchInput"
-                        placeholder="Search by name or type a new customer…"
-                        autocomplete="off"
-                    >
+                    <input class="cust-picker-input" type="text" id="custSearchInput"
+                        placeholder="Search by name or type a new customer…" autocomplete="off">
                     <div class="cust-dropdown" id="custDropdown"></div>
                 </div>
-                <!-- Shows when an account customer is selected -->
                 <div id="custAccountBadge" style="display:none;">
                     <span class="cust-account-badge">✓ Has account</span>
                 </div>
-                <!-- Shows when typing a manual (no-account) customer -->
                 <div id="custTypeHint" class="cust-type-hint" style="display:none;">
                     No account found — you can still add this customer manually.
                 </div>
-                <!-- Hidden: stores selected UID if account customer -->
                 <input type="hidden" id="custSelectedUid">
-                <!-- Manual contact fields — shown only for no-account customers -->
                 <div class="manual-contact-fields" id="manualContactFields" style="display:none;">
                     <div>
                         <div class="manual-contact-label">Email</div>
@@ -238,7 +332,7 @@
                 </div>
             </div>
 
-            <!-- ── DATE & TIME (fixed: no overlap) ── -->
+            <!-- ── FIX: DATE & TIME — flex side-by-side, no overlap ── -->
             <div class="datetime-row">
                 <div class="form-row">
                     <label class="form-label">Date</label>
@@ -259,16 +353,23 @@
                     <option value="Cancelled">Cancelled</option>
                 </select>
             </div>
+
+            <!-- ── ADDRESS with property picker ── -->
             <div class="form-row">
                 <label class="form-label">Address</label>
-                <input class="form-input" type="text" id="jobAddress" placeholder="1234 Main St, Flint, MI 48501">
+                <div class="addr-wrap">
+                    <!-- Property pills — shown when account customer has properties -->
+                    <div class="addr-property-bar" id="addrPropertyBar" style="display:none;"></div>
+                    <input class="form-input" type="text" id="jobAddress" placeholder="1234 Main St, Flint, MI 48501">
+                </div>
             </div>
+
             <div class="form-row">
                 <label class="form-label">Assigned Crew</label>
                 <input class="form-input" type="text" id="jobCrew" placeholder="e.g. Brandon">
             </div>
 
-            <!-- Line items -->
+            <!-- ── Line items with service autocomplete ── -->
             <div class="form-row">
                 <label class="form-label">Services / Line Items</label>
                 <div class="line-item-row header">
@@ -278,6 +379,7 @@
                 <button class="btn-add-line" id="addLineBtn">+ Add service</button>
                 <p class="line-total-preview" id="jobLineTotal"></p>
             </div>
+
             <div class="form-row">
                 <label class="form-label">Customer Notes</label>
                 <textarea class="form-textarea" id="jobCustomerNotes" placeholder="Gate code, special instructions…"></textarea>
@@ -323,16 +425,18 @@ function badge(status){
     return '<span class="bdg '+(map[s]||'bdg-default')+'">'+(status||'—')+'</span>';
 }
 function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
+function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ── State ──
 var allJobs   = [];
-var custNames = {};   // uid → name
-var custList  = [];   // [{uid, name, phone, address}]
-var custDocs  = {};   // uid → full firestore doc data
+var custNames = {};
+var custList  = [];
+var custDocs  = {};
+var serviceNames = []; // loaded from Firestore services collection
 
 // ── Customer picker state ──
-var pickerSelectedUid  = '';   // set when account customer chosen
-var pickerIsManual     = false; // true when free-typing a non-account name
+var pickerSelectedUid  = '';
+var pickerIsManual     = false;
 
 var custSearchInput    = document.getElementById('custSearchInput');
 var custDropdown       = document.getElementById('custDropdown');
@@ -341,8 +445,80 @@ var custAccountBadge   = document.getElementById('custAccountBadge');
 var custTypeHint       = document.getElementById('custTypeHint');
 var manualContactFields= document.getElementById('manualContactFields');
 
+// ── Address / property picker ──
+var currentProperties = []; // array of {address, notes, primary} for selected customer
+
+function renderPropertyPills(uid){
+    var bar = document.getElementById('addrPropertyBar');
+    var doc = custDocs[uid];
+    if(!doc){ bar.style.display='none'; bar.innerHTML=''; currentProperties=[]; return; }
+
+    var props = Array.isArray(doc.properties) ? doc.properties : [];
+    if(!props.length){ bar.style.display='none'; bar.innerHTML=''; currentProperties=[]; return; }
+
+    currentProperties = props;
+    var html = '';
+    props.forEach(function(p, i){
+        var label = p.label || (p.primary ? 'Primary' : 'Property '+(i+1));
+        html += '<button type="button" class="addr-prop-pill'+(i===0?' active':'')+'" data-idx="'+i+'">'+escHtml(label)+'</button>';
+    });
+    // Always add a "Manual" option
+    html += '<button type="button" class="addr-prop-pill manual-pill" data-idx="-1">✎ Other</button>';
+
+    bar.innerHTML = html;
+    bar.style.display = 'flex';
+
+    // Select primary (or first) by default
+    var primaryIdx = props.findIndex(function(p){ return p.primary; });
+    if(primaryIdx < 0) primaryIdx = 0;
+    selectProperty(primaryIdx);
+
+    bar.querySelectorAll('.addr-prop-pill').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            var idx = parseInt(this.dataset.idx);
+            bar.querySelectorAll('.addr-prop-pill').forEach(function(b){ b.classList.remove('active'); });
+            this.classList.add('active');
+            selectProperty(idx);
+        });
+    });
+}
+
+function selectProperty(idx){
+    var addrEl = document.getElementById('jobAddress');
+    var notesEl = document.getElementById('jobCustomerNotes');
+    if(idx === -1){
+        // Manual — clear address so they can type freely
+        addrEl.value = '';
+        addrEl.focus();
+        return;
+    }
+    var prop = currentProperties[idx];
+    if(!prop) return;
+    if(prop.address) addrEl.value = prop.address;
+    // Autofill customer notes from property notes only if notes field is empty
+    if(prop.notes && !notesEl.value){
+        notesEl.value = prop.notes;
+    } else if(prop.notes) {
+        // Notes already have content — replace if it was from a previous property autofill
+        // We track the last autofilled note to know if it's safe to replace
+        if(notesEl.dataset.autofilled === 'true'){
+            notesEl.value = prop.notes;
+        }
+    }
+    if(prop.notes){
+        notesEl.dataset.autofilled = 'true';
+    }
+}
+
+function clearPropertyPills(){
+    var bar = document.getElementById('addrPropertyBar');
+    bar.style.display = 'none';
+    bar.innerHTML = '';
+    currentProperties = [];
+}
+
+// ── Customer picker ──
 function setCustPicker(uid, name){
-    // Called when an account customer is clicked from dropdown
     pickerSelectedUid = uid;
     pickerIsManual    = false;
     custSearchInput.value = name;
@@ -352,18 +528,8 @@ function setCustPicker(uid, name){
     custTypeHint.style.display = 'none';
     manualContactFields.style.display = 'none';
     closeDropdown();
-
-    // Autofill address from primary property
-    var doc = custDocs[uid];
-    if(doc){
-        // Address: find primary property or first one
-        var props = Array.isArray(doc.properties) ? doc.properties : [];
-        var primary = props.find(function(p){ return p.primary; }) || props[0];
-        if(primary && primary.address){
-            var addrEl = document.getElementById('jobAddress');
-            if(!addrEl.value) addrEl.value = primary.address;
-        }
-    }
+    // Render property pills for this customer
+    renderPropertyPills(uid);
 }
 
 function clearCustPicker(){
@@ -371,6 +537,7 @@ function clearCustPicker(){
     custSelectedUidEl.value = '';
     custSearchInput.classList.remove('has-account');
     custAccountBadge.style.display = 'none';
+    clearPropertyPills();
 }
 
 function openDropdown(){ custDropdown.classList.add('open'); }
@@ -397,10 +564,9 @@ function renderDropdown(query){
 
     custDropdown.innerHTML = html;
 
-    // Attach click handlers
     custDropdown.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
         el.addEventListener('mousedown', function(e){
-            e.preventDefault(); // prevent input blur from firing first
+            e.preventDefault();
             setCustPicker(el.dataset.uid, el.dataset.name);
         });
     });
@@ -418,13 +584,10 @@ custSearchInput.addEventListener('input', function(){
     openDropdown();
 
     if(q){
-        // Check if any account matches exactly
         var exact = custList.find(function(c){ return c.name.toLowerCase() === q.toLowerCase(); });
         if(exact){
-            // exact match — treat as account
             setCustPicker(exact.uid, exact.name);
         } else {
-            // Manual entry mode
             pickerIsManual = true;
             custTypeHint.style.display = '';
             manualContactFields.style.display = '';
@@ -437,12 +600,8 @@ custSearchInput.addEventListener('input', function(){
 });
 
 custSearchInput.addEventListener('blur', function(){
-    // Small delay so dropdown clicks can fire
     setTimeout(closeDropdown, 150);
-
     var q = this.value.trim();
-    // If they blurred without choosing from dropdown and typed something
-    // and it's not an account name — keep manual mode
     if(q && !pickerSelectedUid){
         pickerIsManual = true;
         custTypeHint.style.display = '';
@@ -450,27 +609,103 @@ custSearchInput.addEventListener('blur', function(){
     }
 });
 
-function escHtml(s){
-    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── Line items ──
+// ── Line items with service autocomplete ──
 var jobLineItemsArr = [];
 
 function lineTotal(){
     return jobLineItemsArr.reduce(function(s,li){ return s + Number(li.qty||0)*Number(li.price||0); }, 0);
 }
 
+function highlightMatch(text, query){
+    if(!query) return escHtml(text);
+    var idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if(idx === -1) return escHtml(text);
+    return escHtml(text.slice(0, idx)) +
+        '<strong>' + escHtml(text.slice(idx, idx + query.length)) + '</strong>' +
+        escHtml(text.slice(idx + query.length));
+}
+
+function buildSvcDropdownFor(inputEl, dropdownEl, lineIdx){
+    var q = inputEl.value.trim();
+    var matches = q
+        ? serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase()) !== -1 && n.toLowerCase() !== q.toLowerCase(); })
+        : [];
+
+    if(!matches.length){ dropdownEl.classList.remove('open'); return; }
+
+    dropdownEl.innerHTML = matches.slice(0,8).map(function(n){
+        return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n, q)+'</div>';
+    }).join('');
+
+    dropdownEl.querySelectorAll('.svc-dropdown-item').forEach(function(item){
+        item.addEventListener('mousedown', function(e){
+            e.preventDefault();
+            jobLineItemsArr[lineIdx].name = item.dataset.name;
+            inputEl.value = item.dataset.name;
+            dropdownEl.classList.remove('open');
+            updateLineTotal();
+        });
+    });
+
+    dropdownEl.classList.add('open');
+}
+
 function renderLineItems(){
     var wrap = document.getElementById('jobLineItems');
-    wrap.innerHTML = jobLineItemsArr.map(function(li,i){
-        return '<div class="line-item-row" style="margin-bottom:6px;">'+
-            '<input class="form-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" oninput="jobLineItemsArr['+i+'].name=this.value">'+
-            '<input class="form-input" type="number" min="1" value="'+li.qty+'" oninput="jobLineItemsArr['+i+'].qty=this.value;updateLineTotal()">'+
-            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+li.price+'" oninput="jobLineItemsArr['+i+'].price=this.value;updateLineTotal()">'+
-            '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>'+
+    wrap.innerHTML = jobLineItemsArr.map(function(li, i){
+        return '<div class="line-item-row" style="margin-bottom:6px;">' +
+            '<div class="svc-name-wrap">' +
+            '<input class="form-input svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off">' +
+            '<div class="svc-dropdown" id="svcDrop'+i+'"></div>' +
+            '</div>' +
+            '<input class="form-input" type="number" min="1" value="'+li.qty+'" oninput="jobLineItemsArr['+i+'].qty=this.value;updateLineTotal()">' +
+            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+li.price+'" oninput="jobLineItemsArr['+i+'].price=this.value;updateLineTotal()">' +
+            '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>' +
             '</div>';
     }).join('');
+
+    // Attach service autocomplete to each name input
+    wrap.querySelectorAll('.svc-name-input').forEach(function(input){
+        var idx = parseInt(input.dataset.idx);
+        var drop = document.getElementById('svcDrop'+idx);
+
+        input.addEventListener('input', function(){
+            jobLineItemsArr[idx].name = this.value;
+            buildSvcDropdownFor(this, drop, idx);
+            updateLineTotal();
+        });
+        input.addEventListener('focus', function(){
+            if(this.value) buildSvcDropdownFor(this, drop, idx);
+        });
+        input.addEventListener('blur', function(){
+            setTimeout(function(){ drop.classList.remove('open'); }, 150);
+        });
+        // Keyboard nav
+        input.addEventListener('keydown', function(e){
+            var items = drop.querySelectorAll('.svc-dropdown-item');
+            var focused = drop.querySelector('.focused');
+            var focusedIdx = focused ? Array.from(items).indexOf(focused) : -1;
+            if(e.key === 'ArrowDown'){
+                e.preventDefault();
+                var next = focusedIdx + 1 < items.length ? focusedIdx + 1 : 0;
+                items.forEach(function(it){ it.classList.remove('focused'); });
+                if(items[next]) items[next].classList.add('focused');
+            } else if(e.key === 'ArrowUp'){
+                e.preventDefault();
+                var prev = focusedIdx - 1 >= 0 ? focusedIdx - 1 : items.length - 1;
+                items.forEach(function(it){ it.classList.remove('focused'); });
+                if(items[prev]) items[prev].classList.add('focused');
+            } else if(e.key === 'Enter' && focused){
+                e.preventDefault();
+                jobLineItemsArr[idx].name = focused.dataset.name;
+                input.value = focused.dataset.name;
+                drop.classList.remove('open');
+            } else if(e.key === 'Escape'){
+                drop.classList.remove('open');
+            }
+        });
+    });
+
     updateLineTotal();
 }
 
@@ -486,7 +721,7 @@ document.getElementById('addLineBtn').addEventListener('click', function(){
     renderLineItems();
 });
 
-// ── Modal open/close ──
+// ── Modal open/close (with body scroll lock) ──
 function openModal(job){
     jobLineItemsArr = job
         ? job.services.map(function(s){ return {name:s.name||'',qty:Number(s.qty)||1,price:Number(s.unitPrice)||0}; })
@@ -505,8 +740,9 @@ function openModal(job){
     document.getElementById('custManualEmail').value  = job ? (job.manualEmail||'') : '';
     document.getElementById('custManualPhone').value  = job ? (job.manualPhone||'') : '';
     document.getElementById('jobModalStatus').textContent = '';
+    document.getElementById('jobCustomerNotes').dataset.autofilled = 'false';
 
-    // Restore customer picker
+    // Reset customer picker
     pickerSelectedUid = '';
     pickerIsManual    = false;
     custSearchInput.classList.remove('has-account');
@@ -514,13 +750,16 @@ function openModal(job){
     custTypeHint.style.display      = 'none';
     manualContactFields.style.display = 'none';
     custSelectedUidEl.value = '';
+    clearPropertyPills();
 
     if(job){
         if(job.uid && custNames[job.uid]){
-            // Account customer
             setCustPicker(job.uid, custNames[job.uid]);
+            // If editing, don't overwrite existing address/notes with property autofill
+            // Re-set them after setCustPicker
+            document.getElementById('jobAddress').value = job.address;
+            document.getElementById('jobCustomerNotes').value = job.customerNotes||'';
         } else if(job.customerName){
-            // Manual customer
             custSearchInput.value = job.customerName;
             pickerIsManual = true;
             custTypeHint.style.display = '';
@@ -529,18 +768,34 @@ function openModal(job){
     }
 
     renderLineItems();
+
+    // Lock body scroll (iPad fix)
+    document.body.classList.add('modal-open');
     document.getElementById('jobModal').classList.add('open');
+
+    // Reset modal body scroll to top
+    document.getElementById('jobModalBody').scrollTop = 0;
 }
 
 function closeModal(){
     document.getElementById('jobModal').classList.remove('open');
+    document.body.classList.remove('modal-open');
     closeDropdown();
 }
 
 document.getElementById('newJobBtn').addEventListener('click', function(){ openModal(null); });
 document.getElementById('jobModalClose').addEventListener('click', closeModal);
 document.getElementById('cancelJobBtn').addEventListener('click', closeModal);
-document.getElementById('jobModal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+
+// Close on backdrop click but NOT when clicking inside modal
+document.getElementById('jobModal').addEventListener('click', function(e){
+    if(e.target === this) closeModal();
+});
+
+// Prevent backdrop touchmove from scrolling page (iPad)
+document.getElementById('jobModal').addEventListener('touchmove', function(e){
+    if(e.target === this) e.preventDefault();
+}, { passive: false });
 
 // ── Save ──
 document.getElementById('saveJobBtn').addEventListener('click', async function(){
@@ -561,7 +816,6 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         status.className='modal-status err'; return;
     }
 
-    // Validate manual contact
     if(isManual){
         var email = document.getElementById('custManualEmail').value.trim();
         var phone = document.getElementById('custManualPhone').value.trim();
@@ -653,7 +907,6 @@ function renderJobs(jobs, targetHash){
         var svcNames = items.map(function(i){ return i.name; }).join(', ') || 'Service Visit';
         var dateStr  = job.date ? job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
 
-        // Determine display name: account customer OR manual name
         var displayName = (job.uid && custNames[job.uid]) ? custNames[job.uid] : (job.customerName||'');
 
         var detailItems = [];
@@ -794,7 +1047,7 @@ auth.onAuthStateChanged(async function(user){
 
         console.log("User:", user.uid);
 
-        // Load customers — get full doc data for autofill
+        // Load customers
         var custSnap = await db.collection('customers').get();
         custList = [];
         custSnap.forEach(function(doc){
@@ -805,6 +1058,21 @@ auth.onAuthStateChanged(async function(user){
         });
         custList.sort(function(a,b){ return a.name.localeCompare(b.name); });
         console.log("Customers loaded:", custList.length);
+
+        // Load service names for autocomplete
+        try {
+            var svcSnap = await db.collection('services').get();
+            serviceNames = [];
+            svcSnap.forEach(function(doc){
+                var d = doc.data();
+                if(d.name) serviceNames.push(d.name);
+            });
+            serviceNames.sort();
+            console.log("Services loaded:", serviceNames.length);
+        } catch(e){
+            console.warn("Could not load services:", e.message);
+            // Non-fatal — autocomplete just won't have suggestions
+        }
 
         await loadJobs();
     } catch(e){
