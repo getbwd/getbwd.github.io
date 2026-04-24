@@ -26,194 +26,185 @@
 .line-items th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; padding: 0 8px 6px 0; }
 .line-items th:last-child, .line-items td:last-child { text-align: right; }
 .line-items td { padding: 6px 8px 6px 0; color: var(--text-2); border-top: 1px solid var(--border-light); }
-.line-items .total-row td { font-weight: 700; color: var(--text); border-top: 2px solid var(--border); padding-top: 8px; }
 .toggle-chevron { font-size: 18px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; line-height: 1; }
 .job-card.open .toggle-chevron { transform: rotate(180deg); }
 .job-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); }
-@media(max-width:600px){ .detail-grid { grid-template-columns: 1fr; } }
 
-/* ── FIX: DATE/TIME — true side-by-side, no overlap ── */
-.datetime-row {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-}
-.datetime-row .form-row {
-    flex: 1;
-    min-width: 0;
-}
-.datetime-row .form-input {
-    width: 100%;
-    box-sizing: border-box;
-}
+/* ── DATE/TIME — true side-by-side ── */
+.datetime-row { display: flex; gap: 12px; width: 100%; }
+.datetime-row .form-row { flex: 1; min-width: 0; }
+.datetime-row .form-input { width: 100%; box-sizing: border-box; }
 
-/* ── FIX: MODAL SCROLL on iPad/touch ── */
+/* ── MODAL SCROLL ── */
 .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 900;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    /* iOS Safari: allow the backdrop itself to scroll-capture */
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 900;
+    display: none; align-items: center; justify-content: center;
+    overflow: hidden; -webkit-overflow-scrolling: touch;
 }
 .modal-backdrop.open { display: flex; }
 .modal {
-    background: var(--white);
-    border-radius: 16px;
-    width: min(680px, calc(100vw - 32px));
-    max-height: calc(100dvh - 48px);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.2);
-    position: relative;
-    /* Prevent modal from touching edges on iPad landscape */
-    margin: auto;
+    background: var(--white); border-radius: 16px;
+    width: min(680px, calc(100vw - 32px)); max-height: calc(100dvh - 48px);
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.2); position: relative; margin: auto;
 }
 .modal-body {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    padding: 20px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; padding: 20px 24px;
+    display: flex; flex-direction: column; gap: 14px;
 }
-/* Prevent background body scroll when modal open */
-body.modal-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-}
+body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 
 /* ── CUSTOMER AUTOCOMPLETE ── */
 .cust-picker-wrap { position: relative; }
 .cust-picker-input {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 13.5px;
-    font-family: 'Inter', sans-serif;
-    color: var(--text);
-    background: var(--white);
-    width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.15s;
+    border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px;
+    font-size: 13.5px; font-family: 'Inter', sans-serif; color: var(--text);
+    background: var(--white); width: 100%; box-sizing: border-box; transition: border-color 0.15s;
 }
 .cust-picker-input:focus { outline: none; border-color: var(--orange); }
 .cust-picker-input.has-account { background: #f6fff9; border-color: #8ecfa8; }
 .cust-dropdown {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0; right: 0;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-    z-index: 400;
-    max-height: 220px;
-    overflow-y: auto;
-    display: none;
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12); z-index: 400;
+    max-height: 220px; overflow-y: auto; display: none;
 }
 .cust-dropdown.open { display: block; }
 .cust-dropdown-item {
-    padding: 9px 14px;
-    font-size: 13.5px;
-    color: var(--text-2);
-    cursor: pointer;
-    border-bottom: 1px solid var(--border-light);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    padding: 9px 14px; font-size: 13.5px; color: var(--text-2); cursor: pointer;
+    border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: 8px;
 }
 .cust-dropdown-item:last-child { border-bottom: none; }
 .cust-dropdown-item:hover { background: #fafaf8; }
-.cust-dropdown-item .cust-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #8ecfa8; flex-shrink: 0;
-}
-.cust-dropdown-item .cust-sub {
-    font-size: 11px; color: var(--text-3); margin-top: 1px;
-}
+.cust-dropdown-item .cust-dot { width: 7px; height: 7px; border-radius: 50%; background: #8ecfa8; flex-shrink: 0; }
+.cust-dropdown-item .cust-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
 .cust-account-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 11px; font-weight: 600; color: #1e8a4a;
-    background: #edf7f1; border: 1px solid #b6dfc8;
-    border-radius: 100px; padding: 2px 8px; margin-top: 4px;
+    display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+    color: #1e8a4a; background: #edf7f1; border: 1px solid #b6dfc8; border-radius: 100px; padding: 2px 8px; margin-top: 4px;
 }
-.cust-type-hint {
-    font-size: 11px; color: var(--text-3); margin-top: 4px;
-}
+.cust-type-hint { font-size: 11px; color: var(--text-3); margin-top: 4px; }
 .manual-contact-fields {
-    display: flex; flex-direction: column; gap: 10px;
-    margin-top: 2px;
-    padding: 12px 14px;
-    background: #fafaf8;
-    border: 1px solid var(--border-light);
-    border-radius: 8px;
+    display: flex; flex-direction: column; gap: 10px; margin-top: 2px;
+    padding: 12px 14px; background: #fafaf8; border: 1px solid var(--border-light); border-radius: 8px;
 }
-.manual-contact-label {
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px;
-    text-transform: uppercase; color: #bbb; margin-bottom: 2px;
-}
+.manual-contact-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; margin-bottom: 2px; }
 
 /* ── ADDRESS PROPERTY PICKER ── */
 .addr-wrap { position: relative; }
-.addr-property-bar {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 6px;
-}
+.addr-property-bar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
 .addr-prop-pill {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: var(--white);
-    color: var(--text-2);
-    cursor: pointer;
-    transition: all 0.12s;
-    white-space: nowrap;
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px;
+    border: 1px solid var(--border); background: var(--white); color: var(--text-2);
+    cursor: pointer; transition: all 0.12s; white-space: nowrap;
 }
 .addr-prop-pill:hover { border-color: var(--orange); color: var(--orange); }
 .addr-prop-pill.active { background: var(--orange); border-color: var(--orange); color: #fff; }
 .addr-prop-pill.manual-pill { border-style: dashed; }
 
-/* ── SERVICE NAME AUTOCOMPLETE ── */
+/* ── SERVICE AUTOCOMPLETE ── */
 .svc-name-wrap { position: relative; flex: 1; min-width: 0; }
 .svc-dropdown {
-    position: absolute;
-    top: calc(100% + 3px);
-    left: 0;
-    min-width: 220px;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
-    z-index: 500;
-    max-height: 180px;
-    overflow-y: auto;
-    display: none;
+    position: absolute; top: calc(100% + 3px); left: 0; min-width: 220px;
+    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 500; max-height: 180px; overflow-y: auto; display: none;
 }
 .svc-dropdown.open { display: block; }
 .svc-dropdown-item {
-    padding: 8px 14px;
-    font-size: 13px;
-    color: var(--text-2);
-    cursor: pointer;
-    border-bottom: 1px solid var(--border-light);
+    padding: 8px 14px; font-size: 13px; color: var(--text-2);
+    cursor: pointer; border-bottom: 1px solid var(--border-light);
 }
 .svc-dropdown-item:last-child { border-bottom: none; }
 .svc-dropdown-item:hover, .svc-dropdown-item.focused { background: #fafaf8; }
 .svc-dropdown-item strong { color: var(--text); }
+
+/* ── SERVICE LINE ITEMS (name only) ── */
+.svc-line-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.svc-line-row .svc-name-wrap { flex: 1; }
+.btn-remove-line {
+    background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px;
+    padding: 0 4px; line-height: 1; flex-shrink: 0;
+}
+.btn-remove-line:hover { color: #e55; }
+
+/* ── CONFIRM EXIT MODAL ── */
+.confirm-modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
+    display: none; align-items: center; justify-content: center;
+}
+.confirm-modal-backdrop.open { display: flex; }
+.confirm-modal {
+    background: var(--white); border-radius: 14px; padding: 28px 28px 22px;
+    width: min(400px, calc(100vw - 40px)); box-shadow: 0 16px 48px rgba(0,0,0,0.22);
+    text-align: center;
+}
+.confirm-modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.confirm-modal-sub { font-size: 13px; color: var(--text-3); margin-bottom: 22px; line-height: 1.5; }
+.confirm-modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* ── TIME PICKER CUSTOM ── */
+.time-picker-wrap { position: relative; }
+.time-picker-display {
+    border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px;
+    font-size: 13.5px; font-family: 'Inter', sans-serif; color: var(--text);
+    background: var(--white); width: 100%; box-sizing: border-box;
+    cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+    user-select: none; transition: border-color 0.15s;
+}
+.time-picker-display:focus { outline: none; border-color: var(--orange); }
+.time-picker-display .time-placeholder { color: #bbb; }
+.time-picker-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.13); z-index: 600; padding: 12px;
+    display: none;
+}
+.time-picker-dropdown.open { display: block; }
+.time-picker-inner { display: flex; gap: 0; }
+.time-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; }
+.time-col-label { font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #bbb; margin-bottom: 6px; }
+.time-col-scroll { max-height: 180px; overflow-y: auto; width: 100%; scrollbar-width: thin; }
+.time-col-scroll::-webkit-scrollbar { width: 4px; }
+.time-col-scroll::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+.time-opt {
+    padding: 7px 10px; font-size: 13px; color: var(--text-2); border-radius: 7px;
+    cursor: pointer; text-align: center; transition: background 0.1s;
+}
+.time-opt:hover { background: #fafaf8; }
+.time-opt.selected { background: var(--orange); color: #fff; font-weight: 700; }
+.time-divider { display: flex; align-items: center; padding: 0 6px; font-size: 18px; color: #bbb; padding-top: 28px; }
+.time-ampm-wrap { display: flex; flex-direction: column; gap: 6px; padding-top: 28px; padding-left: 8px; }
+.time-ampm-btn {
+    padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--white); color: var(--text-2);
+    cursor: pointer; transition: all 0.12s;
+}
+.time-ampm-btn.selected { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+/* ── CREATE INVOICE btn (right side, no underline) ── */
+.btn-ghost.create-invoice {
+    margin-left: auto;
+    text-decoration: none;
+}
+.btn-ghost { text-decoration: none !important; }
+
+/* ── PHONE FLAG PREFIX ── */
+.phone-wrap { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--white); }
+.phone-prefix {
+    padding: 8px 10px; font-size: 13.5px; color: var(--text-2);
+    background: #f5f5f3; border-right: 1px solid var(--border); white-space: nowrap;
+    font-family: 'Inter', sans-serif; user-select: none;
+}
+.phone-wrap input {
+    flex: 1; border: none !important; border-radius: 0 !important;
+    padding: 8px 10px; font-size: 13.5px; font-family: 'Inter', sans-serif;
+    color: var(--text); background: transparent; outline: none;
+}
+.phone-wrap:focus-within { border-color: var(--orange); }
+
+@media(max-width:600px){ .detail-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -273,7 +264,7 @@ body.modal-open {
         </div>
 
         <div class="filter-bar">
-            <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, address, service…">
+            <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, address, job #, invoice #, crew…">
             <select class="filter-select" id="statusFilter">
                 <option value="">All Statuses</option>
                 <option value="scheduled">Scheduled</option>
@@ -304,7 +295,7 @@ body.modal-open {
         <div class="modal-body" id="jobModalBody">
             <input type="hidden" id="editJobId">
 
-            <!-- ── CUSTOMER PICKER ── -->
+            <!-- CUSTOMER PICKER -->
             <div class="form-row">
                 <label class="form-label">Customer</label>
                 <div class="cust-picker-wrap" id="custPickerWrap">
@@ -326,13 +317,17 @@ body.modal-open {
                     </div>
                     <div>
                         <div class="manual-contact-label">Phone</div>
-                        <input class="form-input" type="tel" id="custManualPhone" placeholder="+1 (555) 000-0000">
+                        <!-- Phone with +1 prefix and auto-format -->
+                        <div class="phone-wrap">
+                            <span class="phone-prefix">🇺🇸 +1</span>
+                            <input type="tel" id="custManualPhone" placeholder="(555) 000-0000" maxlength="14" autocomplete="tel">
+                        </div>
                     </div>
                     <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required.</p>
                 </div>
             </div>
 
-            <!-- ── FIX: DATE & TIME — flex side-by-side, no overlap ── -->
+            <!-- DATE & TIME -->
             <div class="datetime-row">
                 <div class="form-row">
                     <label class="form-label">Date</label>
@@ -340,7 +335,30 @@ body.modal-open {
                 </div>
                 <div class="form-row">
                     <label class="form-label">Time</label>
-                    <input class="form-input" type="time" id="jobTime">
+                    <div class="time-picker-wrap" id="timePickerWrap">
+                        <div class="time-picker-display" id="timePickerDisplay" tabindex="0">
+                            <span id="timePickerText" class="time-placeholder">Select time…</span>
+                            <span style="color:#bbb;font-size:12px;">▾</span>
+                        </div>
+                        <div class="time-picker-dropdown" id="timePickerDropdown">
+                            <div class="time-picker-inner">
+                                <div class="time-col">
+                                    <div class="time-col-label">Hour</div>
+                                    <div class="time-col-scroll" id="timeHourScroll"></div>
+                                </div>
+                                <div class="time-divider">:</div>
+                                <div class="time-col">
+                                    <div class="time-col-label">Min</div>
+                                    <div class="time-col-scroll" id="timeMinScroll"></div>
+                                </div>
+                                <div class="time-ampm-wrap">
+                                    <button type="button" class="time-ampm-btn selected" id="timeAmAm" data-v="AM">AM</button>
+                                    <button type="button" class="time-ampm-btn" id="timePmBtn" data-v="PM">PM</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="jobTime">
                 </div>
             </div>
 
@@ -354,11 +372,10 @@ body.modal-open {
                 </select>
             </div>
 
-            <!-- ── ADDRESS with property picker ── -->
+            <!-- ADDRESS with property picker -->
             <div class="form-row">
                 <label class="form-label">Address</label>
                 <div class="addr-wrap">
-                    <!-- Property pills — shown when account customer has properties -->
                     <div class="addr-property-bar" id="addrPropertyBar" style="display:none;"></div>
                     <input class="form-input" type="text" id="jobAddress" placeholder="1234 Main St, Flint, MI 48501">
                 </div>
@@ -369,15 +386,11 @@ body.modal-open {
                 <input class="form-input" type="text" id="jobCrew" placeholder="e.g. Brandon">
             </div>
 
-            <!-- ── Line items with service autocomplete ── -->
+            <!-- Services — name only, no qty/price -->
             <div class="form-row">
-                <label class="form-label">Services / Line Items</label>
-                <div class="line-item-row header">
-                    <span>Service Name</span><span>Qty</span><span>Unit Price</span><span></span>
-                </div>
+                <label class="form-label">Services</label>
                 <div id="jobLineItems"></div>
                 <button class="btn-add-line" id="addLineBtn">+ Add service</button>
-                <p class="line-total-preview" id="jobLineTotal"></p>
             </div>
 
             <div class="form-row">
@@ -397,6 +410,18 @@ body.modal-open {
             <button class="btn-primary" id="saveJobBtn">Save Job</button>
             <button class="btn-secondary" id="cancelJobBtn">Cancel</button>
             <span class="modal-status" id="jobModalStatus"></span>
+        </div>
+    </div>
+</div>
+
+<!-- CONFIRM EXIT MODAL -->
+<div class="confirm-modal-backdrop" id="confirmExitModal">
+    <div class="confirm-modal">
+        <div class="confirm-modal-title">Discard changes?</div>
+        <div class="confirm-modal-sub">You have unsaved changes in this job. Are you sure you want to close without saving?</div>
+        <div class="confirm-modal-actions">
+            <button class="btn-secondary" id="confirmExitCancel">Keep Editing</button>
+            <button class="btn-primary" id="confirmExitOk" style="background:#e55;">Discard</button>
         </div>
     </div>
 </div>
@@ -432,11 +457,11 @@ var allJobs   = [];
 var custNames = {};
 var custList  = [];
 var custDocs  = {};
-var serviceNames = []; // loaded from Firestore services collection
+var serviceNames = [];
 
 // ── Customer picker state ──
-var pickerSelectedUid  = '';
-var pickerIsManual     = false;
+var pickerSelectedUid = '';
+var pickerIsManual    = false;
 
 var custSearchInput    = document.getElementById('custSearchInput');
 var custDropdown       = document.getElementById('custDropdown');
@@ -445,34 +470,161 @@ var custAccountBadge   = document.getElementById('custAccountBadge');
 var custTypeHint       = document.getElementById('custTypeHint');
 var manualContactFields= document.getElementById('manualContactFields');
 
+// ── Phone auto-format ──
+document.getElementById('custManualPhone').addEventListener('input', function(){
+    var digits = this.value.replace(/\D/g,'').slice(0,10);
+    var out = '';
+    if(digits.length === 0){ out = ''; }
+    else if(digits.length <= 3){ out = '(' + digits; }
+    else if(digits.length <= 6){ out = '(' + digits.slice(0,3) + ') ' + digits.slice(3); }
+    else { out = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6); }
+    this.value = out;
+});
+
+// ── Time Picker ──
+var timePicker = {
+    hour: null,
+    min: null,
+    ampm: 'AM',
+    open: false
+};
+
+function buildTimePicker(){
+    var hourScroll = document.getElementById('timeHourScroll');
+    var minScroll  = document.getElementById('timeMinScroll');
+    // Hours 1–12
+    var hHtml = '';
+    for(var h=1; h<=12; h++){
+        hHtml += '<div class="time-opt" data-h="'+h+'">' + (h < 10 ? '0'+h : h) + '</div>';
+    }
+    hourScroll.innerHTML = hHtml;
+    // Minutes 0, 10, 20, 30, 40, 50
+    var mHtml = '';
+    for(var m=0; m<60; m+=10){
+        mHtml += '<div class="time-opt" data-m="'+m+'">' + (m < 10 ? '0'+m : m) + '</div>';
+    }
+    minScroll.innerHTML = mHtml;
+
+    // Hour click
+    hourScroll.querySelectorAll('.time-opt').forEach(function(el){
+        el.addEventListener('click', function(){
+            hourScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); });
+            this.classList.add('selected');
+            timePicker.hour = parseInt(this.dataset.h);
+            updateTimeDisplay();
+        });
+    });
+    // Min click
+    minScroll.querySelectorAll('.time-opt').forEach(function(el){
+        el.addEventListener('click', function(){
+            minScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); });
+            this.classList.add('selected');
+            timePicker.min = parseInt(this.dataset.m);
+            updateTimeDisplay();
+        });
+    });
+    // AM/PM
+    document.getElementById('timeAmAm').addEventListener('click', function(){
+        timePicker.ampm = 'AM';
+        document.getElementById('timeAmAm').classList.add('selected');
+        document.getElementById('timePmBtn').classList.remove('selected');
+        updateTimeDisplay();
+    });
+    document.getElementById('timePmBtn').addEventListener('click', function(){
+        timePicker.ampm = 'PM';
+        document.getElementById('timePmBtn').classList.add('selected');
+        document.getElementById('timeAmAm').classList.remove('selected');
+        updateTimeDisplay();
+    });
+}
+
+function updateTimeDisplay(){
+    var textEl = document.getElementById('timePickerText');
+    var hiddenEl = document.getElementById('jobTime');
+    if(timePicker.hour === null || timePicker.min === null){
+        textEl.textContent = 'Select time…';
+        textEl.classList.add('time-placeholder');
+        hiddenEl.value = '';
+        return;
+    }
+    var hDisp = timePicker.hour < 10 ? '0'+timePicker.hour : ''+timePicker.hour;
+    var mDisp = timePicker.min < 10 ? '0'+timePicker.min : ''+timePicker.min;
+    textEl.textContent = hDisp + ':' + mDisp + ' ' + timePicker.ampm;
+    textEl.classList.remove('time-placeholder');
+    // Convert to 24h for storage
+    var h24 = timePicker.hour;
+    if(timePicker.ampm === 'AM' && timePicker.hour === 12) h24 = 0;
+    if(timePicker.ampm === 'PM' && timePicker.hour !== 12) h24 = timePicker.hour + 12;
+    var h24s = h24 < 10 ? '0'+h24 : ''+h24;
+    hiddenEl.value = h24s + ':' + mDisp;
+}
+
+function setTimePickerValue(val24){
+    // val24 like "14:30"
+    timePicker.hour = null; timePicker.min = null; timePicker.ampm = 'AM';
+    if(!val24){ updateTimeDisplay(); return; }
+    var parts = val24.split(':');
+    var h24 = parseInt(parts[0]||0);
+    var m   = parseInt(parts[1]||0);
+    var ampm = h24 >= 12 ? 'PM' : 'AM';
+    var h12 = h24 % 12; if(h12 === 0) h12 = 12;
+    timePicker.hour = h12; timePicker.min = m; timePicker.ampm = ampm;
+
+    // Select correct opts
+    document.getElementById('timeHourScroll').querySelectorAll('.time-opt').forEach(function(el){
+        el.classList.toggle('selected', parseInt(el.dataset.h) === h12);
+    });
+    document.getElementById('timeMinScroll').querySelectorAll('.time-opt').forEach(function(el){
+        el.classList.toggle('selected', parseInt(el.dataset.m) === m);
+    });
+    document.getElementById('timeAmAm').classList.toggle('selected', ampm==='AM');
+    document.getElementById('timePmBtn').classList.toggle('selected', ampm==='PM');
+    updateTimeDisplay();
+}
+
+function openTimePicker(){
+    document.getElementById('timePickerDropdown').classList.add('open');
+    timePicker.open = true;
+}
+function closeTimePicker(){
+    document.getElementById('timePickerDropdown').classList.remove('open');
+    timePicker.open = false;
+}
+
+document.getElementById('timePickerDisplay').addEventListener('click', function(e){
+    e.stopPropagation();
+    if(timePicker.open) closeTimePicker(); else openTimePicker();
+});
+document.getElementById('timePickerDisplay').addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if(timePicker.open) closeTimePicker(); else openTimePicker(); }
+    if(e.key === 'Escape') closeTimePicker();
+});
+document.addEventListener('click', function(e){
+    var wrap = document.getElementById('timePickerWrap');
+    if(wrap && !wrap.contains(e.target)) closeTimePicker();
+});
+
 // ── Address / property picker ──
-var currentProperties = []; // array of {address, notes, primary} for selected customer
+var currentProperties = [];
 
 function renderPropertyPills(uid){
     var bar = document.getElementById('addrPropertyBar');
     var doc = custDocs[uid];
     if(!doc){ bar.style.display='none'; bar.innerHTML=''; currentProperties=[]; return; }
-
     var props = Array.isArray(doc.properties) ? doc.properties : [];
     if(!props.length){ bar.style.display='none'; bar.innerHTML=''; currentProperties=[]; return; }
-
     currentProperties = props;
     var html = '';
     props.forEach(function(p, i){
         var label = p.label || (p.primary ? 'Primary' : 'Property '+(i+1));
         html += '<button type="button" class="addr-prop-pill'+(i===0?' active':'')+'" data-idx="'+i+'">'+escHtml(label)+'</button>';
     });
-    // Always add a "Manual" option
     html += '<button type="button" class="addr-prop-pill manual-pill" data-idx="-1">✎ Other</button>';
-
     bar.innerHTML = html;
     bar.style.display = 'flex';
-
-    // Select primary (or first) by default
     var primaryIdx = props.findIndex(function(p){ return p.primary; });
     if(primaryIdx < 0) primaryIdx = 0;
     selectProperty(primaryIdx);
-
     bar.querySelectorAll('.addr-prop-pill').forEach(function(btn){
         btn.addEventListener('click', function(){
             var idx = parseInt(this.dataset.idx);
@@ -486,69 +638,39 @@ function renderPropertyPills(uid){
 function selectProperty(idx){
     var addrEl = document.getElementById('jobAddress');
     var notesEl = document.getElementById('jobCustomerNotes');
-    if(idx === -1){
-        // Manual — clear address so they can type freely
-        addrEl.value = '';
-        addrEl.focus();
-        return;
-    }
+    if(idx === -1){ addrEl.value = ''; addrEl.focus(); return; }
     var prop = currentProperties[idx];
     if(!prop) return;
     if(prop.address) addrEl.value = prop.address;
-    // Autofill customer notes from property notes only if notes field is empty
-    if(prop.notes && !notesEl.value){
-        notesEl.value = prop.notes;
-    } else if(prop.notes) {
-        // Notes already have content — replace if it was from a previous property autofill
-        // We track the last autofilled note to know if it's safe to replace
-        if(notesEl.dataset.autofilled === 'true'){
-            notesEl.value = prop.notes;
-        }
-    }
-    if(prop.notes){
-        notesEl.dataset.autofilled = 'true';
-    }
+    if(prop.notes && !notesEl.value){ notesEl.value = prop.notes; }
+    else if(prop.notes && notesEl.dataset.autofilled === 'true'){ notesEl.value = prop.notes; }
+    if(prop.notes){ notesEl.dataset.autofilled = 'true'; }
 }
 
 function clearPropertyPills(){
     var bar = document.getElementById('addrPropertyBar');
-    bar.style.display = 'none';
-    bar.innerHTML = '';
-    currentProperties = [];
+    bar.style.display = 'none'; bar.innerHTML = ''; currentProperties = [];
 }
 
 // ── Customer picker ──
 function setCustPicker(uid, name){
-    pickerSelectedUid = uid;
-    pickerIsManual    = false;
-    custSearchInput.value = name;
-    custSearchInput.classList.add('has-account');
-    custSelectedUidEl.value = uid;
-    custAccountBadge.style.display = '';
-    custTypeHint.style.display = 'none';
-    manualContactFields.style.display = 'none';
-    closeDropdown();
-    // Render property pills for this customer
-    renderPropertyPills(uid);
+    pickerSelectedUid = uid; pickerIsManual = false;
+    custSearchInput.value = name; custSearchInput.classList.add('has-account');
+    custSelectedUidEl.value = uid; custAccountBadge.style.display = '';
+    custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none';
+    closeDropdown(); renderPropertyPills(uid);
 }
-
 function clearCustPicker(){
-    pickerSelectedUid = '';
-    custSelectedUidEl.value = '';
-    custSearchInput.classList.remove('has-account');
-    custAccountBadge.style.display = 'none';
+    pickerSelectedUid = ''; custSelectedUidEl.value = '';
+    custSearchInput.classList.remove('has-account'); custAccountBadge.style.display = 'none';
     clearPropertyPills();
 }
-
 function openDropdown(){ custDropdown.classList.add('open'); }
 function closeDropdown(){ custDropdown.classList.remove('open'); }
 
 function renderDropdown(query){
     var q = (query||'').toLowerCase().trim();
-    var matches = q
-        ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q) !== -1; })
-        : custList.slice(0, 8);
-
+    var matches = q ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q) !== -1; }) : custList.slice(0, 8);
     var html = '';
     matches.forEach(function(c){
         var sub = custDocs[c.uid] && custDocs[c.uid].phone ? custDocs[c.uid].phone : '';
@@ -557,130 +679,84 @@ function renderDropdown(query){
             '<span><div style="font-weight:600;">'+escHtml(c.name)+'</div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span>' +
             '</div>';
     });
-
-    if(!html && q){
-        html = '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No accounts match — enter manually below</div>';
-    }
-
+    if(!html && q){ html = '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No accounts match — enter manually below</div>'; }
     custDropdown.innerHTML = html;
-
     custDropdown.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
-        el.addEventListener('mousedown', function(e){
-            e.preventDefault();
-            setCustPicker(el.dataset.uid, el.dataset.name);
-        });
+        el.addEventListener('mousedown', function(e){ e.preventDefault(); setCustPicker(el.dataset.uid, el.dataset.name); });
     });
 }
 
-custSearchInput.addEventListener('focus', function(){
-    renderDropdown(this.value);
-    openDropdown();
-});
-
+custSearchInput.addEventListener('focus', function(){ renderDropdown(this.value); openDropdown(); });
 custSearchInput.addEventListener('input', function(){
     var q = this.value.trim();
-    clearCustPicker();
-    renderDropdown(q);
-    openDropdown();
-
+    clearCustPicker(); renderDropdown(q); openDropdown();
     if(q){
         var exact = custList.find(function(c){ return c.name.toLowerCase() === q.toLowerCase(); });
-        if(exact){
-            setCustPicker(exact.uid, exact.name);
-        } else {
-            pickerIsManual = true;
-            custTypeHint.style.display = '';
-            manualContactFields.style.display = '';
-        }
-    } else {
-        pickerIsManual = false;
-        custTypeHint.style.display = 'none';
-        manualContactFields.style.display = 'none';
-    }
+        if(exact){ setCustPicker(exact.uid, exact.name); }
+        else { pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
+    } else { pickerIsManual = false; custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none'; }
 });
-
 custSearchInput.addEventListener('blur', function(){
     setTimeout(closeDropdown, 150);
     var q = this.value.trim();
-    if(q && !pickerSelectedUid){
-        pickerIsManual = true;
-        custTypeHint.style.display = '';
-        manualContactFields.style.display = '';
-    }
+    if(q && !pickerSelectedUid){ pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
 });
 
-// ── Line items with service autocomplete ──
+// ── Line items — service name only ──
 var jobLineItemsArr = [];
-
-function lineTotal(){
-    return jobLineItemsArr.reduce(function(s,li){ return s + Number(li.qty||0)*Number(li.price||0); }, 0);
-}
 
 function highlightMatch(text, query){
     if(!query) return escHtml(text);
     var idx = text.toLowerCase().indexOf(query.toLowerCase());
     if(idx === -1) return escHtml(text);
-    return escHtml(text.slice(0, idx)) +
-        '<strong>' + escHtml(text.slice(idx, idx + query.length)) + '</strong>' +
-        escHtml(text.slice(idx + query.length));
+    return escHtml(text.slice(0, idx)) + '<strong>' + escHtml(text.slice(idx, idx + query.length)) + '</strong>' + escHtml(text.slice(idx + query.length));
 }
 
 function buildSvcDropdownFor(inputEl, dropdownEl, lineIdx){
     var q = inputEl.value.trim();
     var matches = q
         ? serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase()) !== -1 && n.toLowerCase() !== q.toLowerCase(); })
-        : [];
-
+        : serviceNames.slice(0, 8);
     if(!matches.length){ dropdownEl.classList.remove('open'); return; }
-
     dropdownEl.innerHTML = matches.slice(0,8).map(function(n){
         return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n, q)+'</div>';
     }).join('');
-
     dropdownEl.querySelectorAll('.svc-dropdown-item').forEach(function(item){
         item.addEventListener('mousedown', function(e){
             e.preventDefault();
             jobLineItemsArr[lineIdx].name = item.dataset.name;
             inputEl.value = item.dataset.name;
             dropdownEl.classList.remove('open');
-            updateLineTotal();
         });
     });
-
     dropdownEl.classList.add('open');
 }
 
 function renderLineItems(){
     var wrap = document.getElementById('jobLineItems');
     wrap.innerHTML = jobLineItemsArr.map(function(li, i){
-        return '<div class="line-item-row" style="margin-bottom:6px;">' +
+        return '<div class="svc-line-row">' +
             '<div class="svc-name-wrap">' +
             '<input class="form-input svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off">' +
             '<div class="svc-dropdown" id="svcDrop'+i+'"></div>' +
             '</div>' +
-            '<input class="form-input" type="number" min="1" value="'+li.qty+'" oninput="jobLineItemsArr['+i+'].qty=this.value;updateLineTotal()">' +
-            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+li.price+'" oninput="jobLineItemsArr['+i+'].price=this.value;updateLineTotal()">' +
             '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>' +
             '</div>';
     }).join('');
 
-    // Attach service autocomplete to each name input
     wrap.querySelectorAll('.svc-name-input').forEach(function(input){
         var idx = parseInt(input.dataset.idx);
         var drop = document.getElementById('svcDrop'+idx);
-
         input.addEventListener('input', function(){
             jobLineItemsArr[idx].name = this.value;
             buildSvcDropdownFor(this, drop, idx);
-            updateLineTotal();
         });
         input.addEventListener('focus', function(){
-            if(this.value) buildSvcDropdownFor(this, drop, idx);
+            buildSvcDropdownFor(this, drop, idx);
         });
         input.addEventListener('blur', function(){
             setTimeout(function(){ drop.classList.remove('open'); }, 150);
         });
-        // Keyboard nav
         input.addEventListener('keydown', function(e){
             var items = drop.querySelectorAll('.svc-dropdown-item');
             var focused = drop.querySelector('.focused');
@@ -705,32 +781,49 @@ function renderLineItems(){
             }
         });
     });
-
-    updateLineTotal();
-}
-
-function updateLineTotal(){
-    var t = lineTotal();
-    document.getElementById('jobLineTotal').textContent = t > 0 ? 'Total: ' + fmtMoney(t) : '';
 }
 
 function removeLine(i){ jobLineItemsArr.splice(i,1); renderLineItems(); }
 
 document.getElementById('addLineBtn').addEventListener('click', function(){
-    jobLineItemsArr.push({name:'',qty:1,price:''});
+    jobLineItemsArr.push({name:''});
     renderLineItems();
 });
 
-// ── Modal open/close (with body scroll lock) ──
+// ── Confirm-exit modal ──
+var pendingCloseCallback = null;
+
+function maybeClose(callback){
+    var custVal   = custSearchInput.value.trim();
+    var dateVal   = document.getElementById('jobDate').value;
+    var addrVal   = document.getElementById('jobAddress').value.trim();
+    var hasData   = custVal || dateVal || addrVal || jobLineItemsArr.some(function(li){ return li.name.trim(); });
+    if(hasData){
+        pendingCloseCallback = callback;
+        document.getElementById('confirmExitModal').classList.add('open');
+    } else {
+        callback();
+    }
+}
+
+document.getElementById('confirmExitCancel').addEventListener('click', function(){
+    document.getElementById('confirmExitModal').classList.remove('open');
+    pendingCloseCallback = null;
+});
+document.getElementById('confirmExitOk').addEventListener('click', function(){
+    document.getElementById('confirmExitModal').classList.remove('open');
+    if(pendingCloseCallback){ pendingCloseCallback(); pendingCloseCallback = null; }
+});
+
+// ── Modal open/close ──
 function openModal(job){
     jobLineItemsArr = job
-        ? job.services.map(function(s){ return {name:s.name||'',qty:Number(s.qty)||1,price:Number(s.unitPrice)||0}; })
-        : [{name:'',qty:1,price:''}];
+        ? (Array.isArray(job.services) ? job.services.map(function(s){ return {name:s.name||''}; }) : [{name:''}])
+        : [{name:''}];
 
     document.getElementById('editJobId').value        = job ? job.jobId : '';
     document.getElementById('jobModalTitle').textContent = job ? 'Edit Job' : 'New Job';
     document.getElementById('jobDate').value          = job && job.date ? job.date.toISOString().slice(0,10) : '';
-    document.getElementById('jobTime').value          = job ? job.time : '';
     document.getElementById('jobStatus').value        = job ? job.status : 'Scheduled';
     document.getElementById('jobAddress').value       = job ? job.address : '';
     document.getElementById('jobCrew').value          = job ? job.assignedCrew : '';
@@ -738,94 +831,115 @@ function openModal(job){
     document.getElementById('jobCrewNotes').value     = job ? (job.crewNotes||'') : '';
     document.getElementById('jobInvoiceId').value     = job ? job.invoiceId : '';
     document.getElementById('custManualEmail').value  = job ? (job.manualEmail||'') : '';
-    document.getElementById('custManualPhone').value  = job ? (job.manualPhone||'') : '';
+    document.getElementById('custManualPhone').value  = job ? (job.manualPhone||'').replace(/^\+1\s*/,'') : '';
     document.getElementById('jobModalStatus').textContent = '';
     document.getElementById('jobCustomerNotes').dataset.autofilled = 'false';
 
+    // Time picker
+    setTimePickerValue(job ? job.time : '');
+
     // Reset customer picker
-    pickerSelectedUid = '';
-    pickerIsManual    = false;
+    pickerSelectedUid = ''; pickerIsManual = false;
     custSearchInput.classList.remove('has-account');
-    custAccountBadge.style.display  = 'none';
-    custTypeHint.style.display      = 'none';
-    manualContactFields.style.display = 'none';
-    custSelectedUidEl.value = '';
+    custAccountBadge.style.display = 'none'; custTypeHint.style.display = 'none';
+    manualContactFields.style.display = 'none'; custSelectedUidEl.value = '';
     clearPropertyPills();
 
     if(job){
         if(job.uid && custNames[job.uid]){
             setCustPicker(job.uid, custNames[job.uid]);
-            // If editing, don't overwrite existing address/notes with property autofill
-            // Re-set them after setCustPicker
             document.getElementById('jobAddress').value = job.address;
             document.getElementById('jobCustomerNotes').value = job.customerNotes||'';
         } else if(job.customerName){
             custSearchInput.value = job.customerName;
-            pickerIsManual = true;
-            custTypeHint.style.display = '';
-            manualContactFields.style.display = '';
+            pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = '';
         }
     }
 
     renderLineItems();
-
-    // Lock body scroll (iPad fix)
     document.body.classList.add('modal-open');
     document.getElementById('jobModal').classList.add('open');
-
-    // Reset modal body scroll to top
     document.getElementById('jobModalBody').scrollTop = 0;
 }
 
 function closeModal(){
     document.getElementById('jobModal').classList.remove('open');
     document.body.classList.remove('modal-open');
-    closeDropdown();
+    closeDropdown(); closeTimePicker();
 }
 
 document.getElementById('newJobBtn').addEventListener('click', function(){ openModal(null); });
-document.getElementById('jobModalClose').addEventListener('click', closeModal);
-document.getElementById('cancelJobBtn').addEventListener('click', closeModal);
+
+document.getElementById('jobModalClose').addEventListener('click', function(){
+    maybeClose(closeModal);
+});
+document.getElementById('cancelJobBtn').addEventListener('click', function(){
+    maybeClose(closeModal);
+});
 
 // Close on backdrop click but NOT when clicking inside modal
 document.getElementById('jobModal').addEventListener('click', function(e){
-    if(e.target === this) closeModal();
+    if(e.target === this) maybeClose(closeModal);
 });
-
-// Prevent backdrop touchmove from scrolling page (iPad)
 document.getElementById('jobModal').addEventListener('touchmove', function(e){
     if(e.target === this) e.preventDefault();
 }, { passive: false });
+
+// ── Generate Job ID from jobCounters ──
+async function generateJobId(dateObj){
+    // Format: YYMMDD from the date
+    var yy = String(dateObj.getFullYear()).slice(2);
+    var mm = String(dateObj.getMonth()+1).padStart(2,'0');
+    var dd = String(dateObj.getDate()).padStart(2,'0');
+    var counterDocId = yy + mm + dd; // e.g. "260424"
+
+    var counterRef = db.collection('jobCounters').doc(counterDocId);
+    var newCount;
+    await db.runTransaction(async function(t){
+        var doc = await t.get(counterRef);
+        if(doc.exists){
+            newCount = (parseInt(doc.data().count)||0) + 1;
+        } else {
+            newCount = 1;
+        }
+        t.set(counterRef, { count: String(newCount) });
+    });
+    // Job ID: YYMMDD + count (e.g. 2604243 for 3rd job on 2026-04-24)
+    return counterDocId + newCount;
+}
 
 // ── Save ──
 document.getElementById('saveJobBtn').addEventListener('click', async function(){
     var btn    = this;
     var status = document.getElementById('jobModalStatus');
 
-    var custName  = custSearchInput.value.trim();
-    var uid       = custSelectedUidEl.value;
-    var isManual  = !uid && custName;
-    var dateVal   = document.getElementById('jobDate').value;
+    var custName = custSearchInput.value.trim();
+    var uid      = custSelectedUidEl.value;
+    var isManual = !uid && custName;
+    var dateVal  = document.getElementById('jobDate').value;
+    var addrVal  = document.getElementById('jobAddress').value.trim();
+    var services = jobLineItemsArr.map(function(li){ return {name:(li.name||'').trim()}; }).filter(function(s){ return s.name; });
+    var editId   = document.getElementById('editJobId').value;
 
     if(!custName){
-        status.textContent='Enter or select a customer.';
-        status.className='modal-status err'; return;
+        status.textContent='Enter or select a customer.'; status.className='modal-status err'; return;
     }
     if(!dateVal){
-        status.textContent='Pick a date.';
-        status.className='modal-status err'; return;
+        status.textContent='Pick a date.'; status.className='modal-status err'; return;
     }
-
+    if(!addrVal){
+        status.textContent='An address is required.'; status.className='modal-status err'; return;
+    }
+    if(!services.length){
+        status.textContent='Add at least one service.'; status.className='modal-status err'; return;
+    }
     if(isManual){
         var email = document.getElementById('custManualEmail').value.trim();
         var phone = document.getElementById('custManualPhone').value.trim();
         if(!email && !phone){
-            status.textContent='Provide an email or phone for this customer.';
-            status.className='modal-status err'; return;
+            status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return;
         }
     }
-
-    var services = jobLineItemsArr.map(function(li){ return { name:li.name||'—', qty:Number(li.qty)||1, unitPrice:Number(li.price)||0 }; });
 
     var data = {
         uid:           uid || '',
@@ -833,7 +947,7 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         status:        document.getElementById('jobStatus').value,
         date:          firebase.firestore.Timestamp.fromDate(new Date(dateVal+'T12:00:00')),
         time:          document.getElementById('jobTime').value,
-        address:       document.getElementById('jobAddress').value.trim(),
+        address:       addrVal,
         assignedCrew:  document.getElementById('jobCrew').value.trim(),
         services:      services,
         customerNotes: document.getElementById('jobCustomerNotes').value.trim(),
@@ -841,32 +955,30 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         invoiceId:     document.getElementById('jobInvoiceId').value.trim(),
         updatedAt:     firebase.firestore.FieldValue.serverTimestamp(),
     };
-
     if(isManual){
         data.manualEmail = document.getElementById('custManualEmail').value.trim();
-        data.manualPhone = document.getElementById('custManualPhone').value.trim();
+        var rawPhone = document.getElementById('custManualPhone').value.trim();
+        data.manualPhone = rawPhone ? '+1 ' + rawPhone : '';
     }
 
-    btn.disabled = true;
-    status.textContent = 'Saving…';
-    status.className = 'modal-status';
+    btn.disabled = true; status.textContent = 'Saving…'; status.className = 'modal-status';
 
     try {
-        var editId = document.getElementById('editJobId').value;
         if(editId){
             await db.collection('jobs').doc(editId).update(data);
         } else {
             data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-            await db.collection('jobs').add(data);
+            // Generate job ID from counter
+            var dateObj = new Date(dateVal+'T12:00:00');
+            var jobId = await generateJobId(dateObj);
+            await db.collection('jobs').doc(String(jobId)).set(data);
         }
-        status.textContent = 'Saved!';
-        status.className = 'modal-status ok';
+        status.textContent = 'Saved!'; status.className = 'modal-status ok';
         setTimeout(function(){ closeModal(); loadJobs(); }, 600);
     } catch(e){
         console.error(e);
         status.textContent = 'Error: ' + (e.message||'Permission denied');
-        status.className = 'modal-status err';
-        btn.disabled = false;
+        status.className = 'modal-status err'; btn.disabled = false;
     }
 });
 
@@ -876,8 +988,7 @@ function toggleCard(jobId){
     var card = document.getElementById('card-'+jobId);
     if(!body) return;
     var wasOpen = !body.classList.contains('collapsed');
-    body.classList.toggle('collapsed');
-    card.classList.toggle('open', wasOpen);
+    body.classList.toggle('collapsed'); card.classList.toggle('open', wasOpen);
     if(!wasOpen){ history.replaceState(null,null,'#'+jobId); }
     else if(window.location.hash==='#'+jobId){ history.replaceState(null,null,' '); }
 }
@@ -885,12 +996,8 @@ function toggleCard(jobId){
 // ── Delete ──
 async function deleteJob(jobId){
     if(!confirm('Delete this job permanently?')) return;
-    try {
-        await db.collection('jobs').doc(jobId).delete();
-        loadJobs();
-    } catch(e){
-        alert('Error: '+(e.message||'Permission denied'));
-    }
+    try { await db.collection('jobs').doc(jobId).delete(); loadJobs(); }
+    catch(e){ alert('Error: '+(e.message||'Permission denied')); }
 }
 
 // ── Render jobs ──
@@ -902,11 +1009,8 @@ function renderJobs(jobs, targetHash){
     jobs.forEach(function(job){
         var jobId    = job.jobId;
         var isTarget = jobId === targetHash;
-        var items    = job.services.map(function(s){ var qty=Number(s.qty)||1; var unit=Number(s.unitPrice)||0; return {name:s.name||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit}; });
-        var total    = items.reduce(function(s,i){ return s+i.lineTotal; }, 0);
-        var svcNames = items.map(function(i){ return i.name; }).join(', ') || 'Service Visit';
+        var svcNames = (job.services||[]).map(function(s){ return s.name||'—'; }).join(', ') || 'Service Visit';
         var dateStr  = job.date ? job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
-
         var displayName = (job.uid && custNames[job.uid]) ? custNames[job.uid] : (job.customerName||'');
 
         var detailItems = [];
@@ -916,21 +1020,30 @@ function renderJobs(jobs, targetHash){
                 : escHtml(displayName);
             detailItems.push('<div class="detail-item"><div class="detail-item-label">Customer</div><div class="detail-item-value">'+custLink+(job.uid?'':' <span style="font-size:10px;color:#bbb;">(no account)</span>')+'</div></div>');
         }
-        if(job.address)        detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+escHtml(job.address)+'</div></div>');
-        if(job.assignedCrew)   detailItems.push('<div class="detail-item"><div class="detail-item-label">Crew</div><div class="detail-item-value">'+escHtml(job.assignedCrew)+'</div></div>');
-        if(job.invoiceId)      detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/staff/dashboard/invoices/#'+job.invoiceId+'" style="color:var(--orange);">#'+job.invoiceId+'</a></div></div>');
-        if(job.manualEmail)    detailItems.push('<div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value">'+escHtml(job.manualEmail)+'</div></div>');
-        if(job.manualPhone)    detailItems.push('<div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value">'+escHtml(job.manualPhone)+'</div></div>');
+        if(job.address)      detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+escHtml(job.address)+'</div></div>');
+        if(job.assignedCrew) detailItems.push('<div class="detail-item"><div class="detail-item-label">Crew</div><div class="detail-item-value">'+escHtml(job.assignedCrew)+'</div></div>');
+        if(job.invoiceId)    detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/staff/dashboard/invoices/#'+job.invoiceId+'" style="color:var(--orange);">#'+job.invoiceId+'</a></div></div>');
+        if(job.manualEmail)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value">'+escHtml(job.manualEmail)+'</div></div>');
+        if(job.manualPhone)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value">'+escHtml(job.manualPhone)+'</div></div>');
 
-        var lineHTML = items.length ? '<div><table class="line-items">'+
-            '<tr><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
-            items.map(function(i){ return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>'; }).join('')+
-            '<tr class="total-row"><td colspan="3">Job Total</td><td>'+fmtMoney(total)+'</td></tr>'+
-            '</table></div>' : '';
+        var svcListHTML = '';
+        if(job.services && job.services.length){
+            svcListHTML = '<div><div class="detail-section-label">Services</div>' +
+                '<div class="note-block">' + job.services.map(function(s){ return escHtml(s.name||'—'); }).join('<br>') + '</div></div>';
+        }
 
         var notesHTML = '';
         if(job.customerNotes) notesHTML += '<div><div class="detail-section-label">Customer Notes</div><div class="note-block">'+escHtml(job.customerNotes)+'</div></div>';
         if(job.crewNotes)     notesHTML += '<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+escHtml(job.crewNotes)+'</div></div>';
+
+        // Create Invoice button aligned right
+        var actionButtons = '<button class="btn-ghost" onclick=\'editJob("'+jobId+'")\'>Edit</button>' +
+            '<button class="btn-ghost danger" onclick=\'deleteJob("'+jobId+'")\'>Delete</button>';
+        if(job.invoiceId){
+            actionButtons += '<a class="btn-ghost create-invoice" href="/staff/dashboard/invoices/#'+job.invoiceId+'">View Invoice</a>';
+        } else {
+            actionButtons += '<a class="btn-ghost create-invoice" href="/staff/dashboard/invoices/?newFor='+jobId+'">Create Invoice</a>';
+        }
 
         html += '<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
         html += '<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
@@ -945,19 +1058,12 @@ function renderJobs(jobs, targetHash){
         html += '</div>';
         html += '<div class="job-card-body'+(isTarget?'':' collapsed')+'" id="body-'+jobId+'">';
         if(detailItems.length) html += '<div class="detail-grid">'+detailItems.join('')+'</div>';
-        html += lineHTML + notesHTML;
-        html += '<div class="job-actions">'+
-            '<button class="btn-ghost" onclick=\'editJob("'+jobId+'")\'>Edit</button>'+
-            '<button class="btn-ghost danger" onclick=\'deleteJob("'+jobId+'")\'>Delete</button>'+
-            (job.invoiceId
-                ? '<a class="btn-ghost" href="/staff/dashboard/invoices/#'+job.invoiceId+'">View Invoice</a>'
-                : '<a class="btn-ghost" href="/staff/dashboard/invoices/?newFor='+jobId+'">Create Invoice</a>')+
-            '</div>';
+        html += svcListHTML + notesHTML;
+        html += '<div class="job-actions">'+actionButtons+'</div>';
         html += '</div></div>';
     });
 
     container.innerHTML = html;
-
     if(targetHash){
         var el = document.getElementById('card-'+targetHash);
         if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
@@ -969,9 +1075,9 @@ function editJob(jobId){
     if(job) openModal(job);
 }
 
-// ── Filter & search ──
+// ── Filter & search (customer, address, job #, invoice #, crew only) ──
 function applyFilters(){
-    var search = document.getElementById('searchInput').value.toLowerCase();
+    var search = document.getElementById('searchInput').value.toLowerCase().trim();
     var status = document.getElementById('statusFilter').value.toLowerCase();
     var time   = document.getElementById('timeFilter').value;
     var now    = new Date(); now.setHours(0,0,0,0);
@@ -982,10 +1088,12 @@ function applyFilters(){
         if(time === 'past'     && j.date && j.date >= now) return false;
         if(search){
             var displayName = (j.uid && custNames[j.uid]) ? custNames[j.uid] : (j.customerName||'');
+            // Only: customer name, address, job ID, invoice ID, crew
             var haystack = [
                 displayName,
                 j.address,
-                j.services.map(function(s){ return s.name; }).join(' '),
+                j.jobId,
+                j.invoiceId,
                 j.assignedCrew,
             ].join(' ').toLowerCase();
             if(haystack.indexOf(search) === -1) return false;
@@ -1003,11 +1111,7 @@ function applyFilters(){
 // ── Load jobs ──
 async function loadJobs(){
     try {
-        var snapshot = await db.collection('jobs')
-            .orderBy('date','desc')
-            .limit(300)
-            .get();
-
+        var snapshot = await db.collection('jobs').orderBy('date','desc').limit(300).get();
         allJobs = [];
         snapshot.forEach(function(doc){
             var d = doc.data();
@@ -1028,7 +1132,6 @@ async function loadJobs(){
                 manualPhone:   d.manualPhone||'',
             });
         });
-
         applyFilters();
     } catch(e){
         console.error(e);
@@ -1041,13 +1144,8 @@ async function loadJobs(){
 auth.onAuthStateChanged(async function(user){
     try {
         if(!user){ window.location.href='/staff/login/'; return; }
+        document.getElementById('mobileAvatar').textContent = initials(user.displayName||user.email||'');
 
-        document.getElementById('mobileAvatar').textContent =
-            initials(user.displayName||user.email||'');
-
-        console.log("User:", user.uid);
-
-        // Load customers
         var custSnap = await db.collection('customers').get();
         custList = [];
         custSnap.forEach(function(doc){
@@ -1057,9 +1155,7 @@ auth.onAuthStateChanged(async function(user){
             custList.push({uid:doc.id, name:d.name||doc.id});
         });
         custList.sort(function(a,b){ return a.name.localeCompare(b.name); });
-        console.log("Customers loaded:", custList.length);
 
-        // Load service names for autocomplete
         try {
             var svcSnap = await db.collection('services').get();
             serviceNames = [];
@@ -1068,11 +1164,10 @@ auth.onAuthStateChanged(async function(user){
                 if(d.name) serviceNames.push(d.name);
             });
             serviceNames.sort();
-            console.log("Services loaded:", serviceNames.length);
-        } catch(e){
-            console.warn("Could not load services:", e.message);
-            // Non-fatal — autocomplete just won't have suggestions
-        }
+        } catch(e){ console.warn("Could not load services:", e.message); }
+
+        // Build time picker UI
+        buildTimePicker();
 
         await loadJobs();
     } catch(e){
