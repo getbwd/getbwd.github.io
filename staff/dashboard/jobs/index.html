@@ -104,14 +104,17 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 
 /* ── SERVICE AUTOCOMPLETE ── */
 .svc-name-wrap { position: relative; flex: 1; min-width: 0; }
+/* Dropdown uses fixed positioning so modal overflow:hidden/auto doesn't clip it */
 .svc-dropdown {
-    position: absolute; top: calc(100% + 3px); left: 0; min-width: 220px;
+    position: fixed;
     background: var(--white); border: 1px solid var(--border); border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 500; max-height: 180px; overflow-y: auto; display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.14); z-index: 1100;
+    max-height: 200px; overflow-y: auto; display: none;
+    min-width: 220px;
 }
 .svc-dropdown.open { display: block; }
 .svc-dropdown-item {
-    padding: 8px 14px; font-size: 13px; color: var(--text-2);
+    padding: 9px 14px; font-size: 13px; color: var(--text-2);
     cursor: pointer; border-bottom: 1px solid var(--border-light);
 }
 .svc-dropdown-item:last-child { border-bottom: none; }
@@ -712,6 +715,13 @@ function highlightMatch(text, query){
     return escHtml(text.slice(0, idx)) + '<strong>' + escHtml(text.slice(idx, idx + query.length)) + '</strong>' + escHtml(text.slice(idx + query.length));
 }
 
+function positionSvcDropdown(inputEl, dropdownEl){
+    var rect = inputEl.getBoundingClientRect();
+    dropdownEl.style.top   = (rect.bottom + 4) + 'px';
+    dropdownEl.style.left  = rect.left + 'px';
+    dropdownEl.style.width = rect.width + 'px';
+}
+
 function buildSvcDropdownFor(inputEl, dropdownEl, lineIdx){
     var q = inputEl.value.trim();
     var matches = q
@@ -729,20 +739,32 @@ function buildSvcDropdownFor(inputEl, dropdownEl, lineIdx){
             dropdownEl.classList.remove('open');
         });
     });
+    positionSvcDropdown(inputEl, dropdownEl);
     dropdownEl.classList.add('open');
 }
 
 function renderLineItems(){
+    // Remove any previously appended svc dropdowns from body
+    document.querySelectorAll('.svc-dropdown[data-body-drop]').forEach(function(el){ el.remove(); });
+
     var wrap = document.getElementById('jobLineItems');
     wrap.innerHTML = jobLineItemsArr.map(function(li, i){
         return '<div class="svc-line-row">' +
             '<div class="svc-name-wrap">' +
             '<input class="form-input svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off">' +
-            '<div class="svc-dropdown" id="svcDrop'+i+'"></div>' +
             '</div>' +
             '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>' +
             '</div>';
     }).join('');
+
+    // Create dropdowns as direct children of body so modal overflow never clips them
+    jobLineItemsArr.forEach(function(li, i){
+        var drop = document.createElement('div');
+        drop.className = 'svc-dropdown';
+        drop.id = 'svcDrop'+i;
+        drop.setAttribute('data-body-drop', '1');
+        document.body.appendChild(drop);
+    });
 
     wrap.querySelectorAll('.svc-name-input').forEach(function(input){
         var idx = parseInt(input.dataset.idx);
@@ -788,7 +810,19 @@ function removeLine(i){ jobLineItemsArr.splice(i,1); renderLineItems(); }
 document.getElementById('addLineBtn').addEventListener('click', function(){
     jobLineItemsArr.push({name:''});
     renderLineItems();
+    // Auto-focus last input so dropdown appears immediately
+    var inputs = document.querySelectorAll('.svc-name-input');
+    if(inputs.length) inputs[inputs.length - 1].focus();
 });
+
+// Reposition open svc dropdowns when modal body scrolls
+document.getElementById('jobModalBody').addEventListener('scroll', function(){
+    document.querySelectorAll('.svc-dropdown.open').forEach(function(drop){
+        var idx = drop.id.replace('svcDrop','');
+        var input = document.querySelector('.svc-name-input[data-idx="'+idx+'"]');
+        if(input) positionSvcDropdown(input, drop);
+    });
+}, { passive: true });
 
 // ── Confirm-exit modal ──
 var pendingCloseCallback = null;
@@ -866,6 +900,8 @@ function closeModal(){
     document.getElementById('jobModal').classList.remove('open');
     document.body.classList.remove('modal-open');
     closeDropdown(); closeTimePicker();
+    // Remove body-level svc dropdowns
+    document.querySelectorAll('.svc-dropdown[data-body-drop]').forEach(function(el){ el.remove(); });
 }
 
 document.getElementById('newJobBtn').addEventListener('click', function(){ openModal(null); });
