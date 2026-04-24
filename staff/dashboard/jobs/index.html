@@ -1192,15 +1192,28 @@ auth.onAuthStateChanged(async function(user){
         });
         custList.sort(function(a,b){ return a.name.localeCompare(b.name); });
 
-        try {
-            var svcSnap = await db.collection('services').get();
-            serviceNames = [];
-            svcSnap.forEach(function(doc){
-                var d = doc.data();
-                if(d.name) serviceNames.push(d.name);
-            });
-            serviceNames.sort();
-        } catch(e){ console.warn("Could not load services:", e.message); }
+        serviceNames = [
+            "Aeration",
+            "Debris Removal",
+            "Edging & Trimming",
+            "Fall Cleanup",
+            "Fertilization",
+            "Garden Bed Maintenance",
+            "Gutter Cleaning",
+            "Hedge & Shrub Trimming",
+            "Ice Melt Application",
+            "Lawn Mowing",
+            "Leaf Removal",
+            "Mulching",
+            "Overseeding",
+            "Pet Waste Removal",
+            "Power Washing",
+            "Snow Removal",
+            "Soil Testing",
+            "Spring Cleanup",
+            "Tree Pruning",
+            "Weed Control"
+        ];
 
         // Build time picker UI
         buildTimePicker();
