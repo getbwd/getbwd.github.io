@@ -39,6 +39,13 @@
 .inv-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); margin-left: auto; }
 .btn-ghost { text-decoration: none !important; }
 
+/* ── CONTRACT BADGE ── */
+.contract-badge {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+    color: #5b3fa6; background: #f0ebff; border: 1px solid #c9b8f5;
+    border-radius: 100px; padding: 2px 8px; vertical-align: middle;
+}
+
 /* ── MODAL ── */
 .modal-backdrop {
     position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 900;
@@ -58,6 +65,34 @@
     display: flex; flex-direction: column; gap: 14px;
 }
 body.modal-open { overflow: hidden; position: fixed; width: 100%; }
+
+/* ── CONTRACT MODAL ── */
+.contract-modal { width: min(760px, calc(100vw - 32px)); }
+.contract-section {
+    background: #fdf8f3; border: 1px solid #f0d9bc; border-radius: 10px;
+    padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.contract-section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+    color: #c07a30; margin-bottom: 2px;
+}
+.contract-preview-box {
+    background: #f6fff9; border: 1px solid #b6dfc8; border-radius: 10px;
+    padding: 14px 16px; display: none; flex-direction: column; gap: 8px;
+}
+.contract-preview-box.visible { display: flex; }
+.contract-preview-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #1e8a4a; margin-bottom: 2px;
+}
+.contract-preview-dates {
+    display: flex; flex-wrap: wrap; gap: 6px; max-height: 120px; overflow-y: auto;
+}
+.contract-date-chip {
+    font-size: 11px; padding: 3px 9px; background: var(--white);
+    border: 1px solid #b6dfc8; border-radius: 20px; color: var(--text-2); white-space: nowrap;
+}
+.freq-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.freq-row .form-row { flex: 1; min-width: 120px; margin: 0; }
 
 /* ── DATE side-by-side ── */
 .date-row { display: flex; gap: 12px; width: 100%; }
@@ -190,10 +225,240 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .confirm-modal-sub { font-size: 13px; color: var(--text-3); margin-bottom: 22px; line-height: 1.5; }
 .confirm-modal-actions { display: flex; gap: 10px; justify-content: center; }
 
+/* ── TOGGLE SWITCH ── */
+.toggle-switch {
+    position: relative; width: 36px; height: 20px; flex-shrink: 0;
+}
+.toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-slider {
+    position: absolute; inset: 0; background: #ddd; border-radius: 20px;
+    transition: background 0.2s; cursor: pointer;
+}
+.toggle-slider::before {
+    content: ''; position: absolute; width: 14px; height: 14px;
+    left: 3px; top: 3px; background: #fff; border-radius: 50%;
+    transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle-switch input:checked + .toggle-slider { background: var(--orange); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
+.toggle-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; background: #fdf8f3; border: 1px solid #f0d9bc;
+    border-radius: 10px; cursor: pointer; user-select: none;
+}
+.toggle-label { font-size: 13px; font-weight: 600; color: var(--text-2); }
+.toggle-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+/* ═══════════════════════════════════════════════
+   PRINT INVOICE STYLES
+   ═══════════════════════════════════════════════ */
+#printFrame {
+    display: none;
+}
+
+@media print {
+    body * { display: none !important; }
+    #printFrame { display: block !important; position: fixed; inset: 0; background: white; z-index: 9999; }
+}
+
+/* Print preview modal */
+.print-modal-backdrop {
+    position: fixed; inset: 0; background: rgba(10,10,10,0.75); z-index: 1200;
+    display: none; align-items: center; justify-content: center;
+    overflow-y: auto; padding: 24px;
+}
+.print-modal-backdrop.open { display: flex; }
+.print-preview-shell {
+    background: #2a2a2a; border-radius: 16px;
+    width: min(860px, calc(100vw - 32px));
+    display: flex; flex-direction: column; gap: 0;
+    overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+    max-height: calc(100dvh - 48px);
+}
+.print-preview-toolbar {
+    background: #1e1e1e; padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    flex-shrink: 0;
+}
+.print-preview-title { font-size: 13px; font-weight: 600; color: #aaa; }
+.print-preview-actions { display: flex; gap: 8px; align-items: center; }
+.btn-print { background: var(--orange); color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; }
+.btn-print:hover { filter: brightness(1.1); }
+.btn-close-print { background: #3a3a3a; color: #ccc; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+.btn-close-print:hover { background: #444; }
+.print-preview-scroll { flex: 1; overflow-y: auto; padding: 24px; background: #3a3a3a; }
+.print-paper {
+    background: #fff; margin: 0 auto;
+    width: 100%; max-width: 780px;
+    border-radius: 4px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+/* ── INVOICE PRINT DOCUMENT STYLES ── */
+.inv-doc {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1a1a;
+    padding: 0;
+}
+.inv-doc-header {
+    background: #0f0f0f;
+    padding: 40px 48px 36px;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;
+}
+.inv-doc-brand { flex: 1; }
+.inv-doc-logo-name {
+    font-family: 'Georgia', serif;
+    font-size: 26px; font-weight: 700; color: #fff;
+    letter-spacing: -0.5px; margin-bottom: 4px;
+}
+.inv-doc-logo-sub {
+    font-size: 11px; color: #888; letter-spacing: 2px; text-transform: uppercase;
+}
+.inv-doc-header-right { text-align: right; }
+.inv-doc-inv-label {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: #e8703a; margin-bottom: 6px;
+}
+.inv-doc-inv-num {
+    font-size: 28px; font-weight: 700; color: #fff; font-family: 'Georgia', serif;
+    letter-spacing: -1px;
+}
+.inv-doc-status-chip {
+    display: inline-block; margin-top: 8px;
+    padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase; font-family: 'Inter', Arial, sans-serif;
+}
+.inv-doc-status-chip.paid { background: #1e8a4a; color: #fff; }
+.inv-doc-status-chip.due { background: #e8703a; color: #fff; }
+.inv-doc-status-chip.overdue { background: #d93025; color: #fff; }
+.inv-doc-status-chip.draft { background: #666; color: #fff; }
+
+.inv-doc-meta-strip {
+    background: #f5f4f1;
+    padding: 20px 48px;
+    display: flex; gap: 0; border-bottom: 2px solid #e0ddd8;
+}
+.inv-doc-meta-block { flex: 1; padding-right: 24px; }
+.inv-doc-meta-block:last-child { padding-right: 0; }
+.inv-doc-meta-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: #999; margin-bottom: 5px; font-family: 'Inter', Arial, sans-serif;
+}
+.inv-doc-meta-value {
+    font-size: 13px; color: #1a1a1a; font-weight: 600; line-height: 1.4;
+}
+
+.inv-doc-body { padding: 36px 48px; }
+
+.inv-doc-bill-row {
+    display: flex; gap: 40px; margin-bottom: 32px;
+}
+.inv-doc-bill-block { flex: 1; }
+.inv-doc-bill-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: #e8703a; margin-bottom: 8px; font-family: 'Inter', Arial, sans-serif;
+    font-weight: 700;
+}
+.inv-doc-bill-name { font-size: 16px; font-weight: 700; color: #0f0f0f; margin-bottom: 3px; }
+.inv-doc-bill-addr { font-size: 12px; color: #555; line-height: 1.6; }
+
+.inv-doc-from-name { font-size: 15px; font-weight: 700; color: #0f0f0f; margin-bottom: 3px; }
+.inv-doc-from-detail { font-size: 12px; color: #555; line-height: 1.6; }
+
+/* Line items table */
+.inv-doc-table-wrap { margin-bottom: 24px; }
+.inv-doc-table {
+    width: 100%; border-collapse: collapse;
+}
+.inv-doc-table thead tr {
+    background: #0f0f0f;
+}
+.inv-doc-table thead th {
+    padding: 11px 16px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: #e8703a; text-align: left; font-family: 'Inter', Arial, sans-serif; font-weight: 700;
+}
+.inv-doc-table thead th:last-child { text-align: right; }
+.inv-doc-table tbody tr { border-bottom: 1px solid #e8e6e2; }
+.inv-doc-table tbody tr:last-child { border-bottom: none; }
+.inv-doc-table tbody td {
+    padding: 13px 16px; font-size: 13px; color: #333; vertical-align: top;
+}
+.inv-doc-table tbody td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.inv-doc-table tbody td.td-num { text-align: right; font-variant-numeric: tabular-nums; color: #555; }
+.inv-doc-table tfoot tr.subtotal-row td {
+    padding: 10px 16px; font-size: 12px; color: #666; border-top: 1px solid #e8e6e2;
+}
+.inv-doc-table tfoot tr.total-row td {
+    padding: 14px 16px; font-size: 16px; font-weight: 700; color: #0f0f0f;
+    border-top: 3px solid #0f0f0f; background: #faf9f7;
+}
+.inv-doc-table tfoot tr td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.inv-doc-table tfoot tr.paid-row td { color: #1e8a4a; font-size: 13px; padding: 8px 16px; }
+.inv-doc-table tfoot tr.balance-row td {
+    font-size: 18px; font-weight: 800; color: #d93025; padding: 14px 16px;
+    border-top: 2px solid #d93025;
+}
+.inv-doc-table tfoot tr.balance-row.clear td { color: #1e8a4a; border-color: #1e8a4a; }
+
+/* Payment history */
+.inv-doc-payments { margin-bottom: 24px; }
+.inv-doc-pay-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: #999; margin-bottom: 10px; font-family: 'Inter', Arial, sans-serif;
+}
+.inv-doc-pay-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 14px; background: #f5f4f1; border-radius: 6px;
+    margin-bottom: 5px; font-size: 12px; color: #555;
+}
+.inv-doc-pay-amt { font-weight: 700; color: #1e8a4a; }
+
+/* Jobs linked */
+.inv-doc-jobs { margin-bottom: 24px; }
+.inv-doc-jobs-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: #999; margin-bottom: 8px; font-family: 'Inter', Arial, sans-serif;
+}
+.inv-doc-jobs-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.inv-doc-job-chip {
+    font-size: 11px; padding: 4px 10px; background: #f0ede8;
+    border: 1px solid #d8d3cc; border-radius: 6px; color: #333; font-family: 'Inter', Arial, sans-serif;
+}
+
+/* Notes */
+.inv-doc-notes {
+    background: #f5f4f1; border-left: 3px solid #e8703a;
+    padding: 12px 16px; border-radius: 0 6px 6px 0;
+    font-size: 12px; color: #555; line-height: 1.6; margin-bottom: 24px;
+}
+
+/* Footer */
+.inv-doc-footer {
+    background: #0f0f0f; padding: 20px 48px;
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    flex-wrap: wrap;
+}
+.inv-doc-footer-left { font-size: 11px; color: #666; }
+.inv-doc-footer-right { font-size: 11px; color: #e8703a; font-style: italic; }
+
+/* Contract section */
+.inv-doc-contract {
+    background: #f0ebff; border: 1px solid #c9b8f5;
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 24px;
+    font-size: 12px; color: #5b3fa6;
+}
+.inv-doc-contract strong { display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; color: #7c5cbf; font-family: 'Inter', Arial, sans-serif; }
+
 @media(max-width:600px){
     .li-header { grid-template-columns: 1fr 48px 76px 28px; }
     .line-item-build-row { grid-template-columns: 1fr 48px 76px 28px; }
     .pay-build-row { grid-template-columns: 100px 1fr 76px 28px; }
+    .inv-doc-header { padding: 28px 24px; flex-direction: column; }
+    .inv-doc-meta-strip { padding: 16px 24px; flex-direction: column; gap: 12px; }
+    .inv-doc-body { padding: 24px; }
+    .inv-doc-bill-row { flex-direction: column; gap: 20px; }
+    .inv-doc-footer { padding: 16px 24px; }
 }
 </style>
 </head>
@@ -250,7 +515,13 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 <h1 class="section-title">Invoices</h1>
                 <p class="section-sub">All customer invoices and payment history.</p>
             </div>
-            <button class="btn-primary" id="newInvBtn">+ New Invoice</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn-secondary" id="newContractBtn" style="display:flex;align-items:center;gap:6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+                    New Contract
+                </button>
+                <button class="btn-primary" id="newInvBtn">+ New Invoice</button>
+            </div>
         </div>
 
         <div class="filter-bar">
@@ -270,7 +541,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 
 </div>
 
-<!-- NEW / EDIT INVOICE MODAL -->
+<!-- ═══════════════════════════════════════════════════════
+     NEW / EDIT INVOICE MODAL
+═══════════════════════════════════════════════════════ -->
 <div class="modal-backdrop" id="invModal">
     <div class="modal">
         <div class="modal-header">
@@ -288,25 +561,12 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                         placeholder="Search by name or type a new customer…" autocomplete="off">
                     <div class="cust-dropdown" id="custDropdown"></div>
                 </div>
-                <div id="custAccountBadge" style="display:none;">
-                    <span class="cust-account-badge">✓ Has account</span>
-                </div>
-                <div id="custTypeHint" class="cust-type-hint" style="display:none;">
-                    No account found — you can still add this customer manually.
-                </div>
+                <div id="custAccountBadge" style="display:none;"><span class="cust-account-badge">✓ Has account</span></div>
+                <div id="custTypeHint" class="cust-type-hint" style="display:none;">No account found — you can still add this customer manually.</div>
                 <input type="hidden" id="custSelectedUid">
                 <div class="manual-contact-fields" id="manualContactFields" style="display:none;">
-                    <div>
-                        <div class="manual-contact-label">Email</div>
-                        <input class="form-input" type="email" id="custManualEmail" placeholder="customer@email.com">
-                    </div>
-                    <div>
-                        <div class="manual-contact-label">Phone</div>
-                        <div class="phone-wrap">
-                            <span class="phone-prefix">🇺🇸 +1</span>
-                            <input type="tel" id="custManualPhone" placeholder="(555) 000-0000" maxlength="14" autocomplete="tel">
-                        </div>
-                    </div>
+                    <div><div class="manual-contact-label">Email</div><input class="form-input" type="email" id="custManualEmail" placeholder="customer@email.com"></div>
+                    <div><div class="manual-contact-label">Phone</div><div class="phone-wrap"><span class="phone-prefix">🇺🇸 +1</span><input type="tel" id="custManualPhone" placeholder="(555) 000-0000" maxlength="14" autocomplete="tel"></div></div>
                     <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required.</p>
                 </div>
             </div>
@@ -318,9 +578,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                     <div class="billing-addr-prefill-bar" id="billingAddrPrefillBar" style="display:none;"></div>
                     <input class="form-input" type="text" id="invBillingAddress" placeholder="1234 Main St, Flint, MI 48501">
                 </div>
-                <div class="billing-addr-hint" id="billingAddrHint" style="display:none;">
-                    Prefilled from customer's primary property. You can edit this.
-                </div>
+                <div class="billing-addr-hint" id="billingAddrHint" style="display:none;">Prefilled from customer's primary property. You can edit this.</div>
             </div>
 
             <!-- DATES -->
@@ -330,8 +588,8 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                     <input class="form-input" type="date" id="invDate">
                 </div>
                 <div class="form-row">
-                    <label class="form-label">Due Date (optional)</label>
-                    <input class="form-input" type="date" id="invDueDate">
+                    <label class="form-label">Due Date <span style="font-weight:400;color:#bbb;">(default: 3 days)</span></label>
+                    <input class="form-input" type="date" id="invDueDate" placeholder="Auto: 3 days from issue">
                 </div>
             </div>
 
@@ -354,15 +612,13 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                     </div>
                     <div class="job-autocomplete-dropdown" id="jobAutoDropdown"></div>
                 </div>
-                <div class="job-id-hint">Link one or more jobs to this invoice (e.g. a seasonal contract).</div>
+                <div class="job-id-hint">Link one or more jobs to this invoice.</div>
             </div>
 
             <!-- LINE ITEMS -->
             <div class="form-row">
                 <label class="form-label">Line Items</label>
-                <div class="li-header">
-                    <span>Description</span><span>Qty</span><span>Unit Price</span><span></span>
-                </div>
+                <div class="li-header"><span>Description</span><span>Qty</span><span>Unit Price</span><span></span></div>
                 <div id="invLineItems"></div>
                 <button class="btn-add-line" id="addLineBtn">+ Add line item</button>
                 <p class="line-total-preview" id="invLineTotal"></p>
@@ -389,17 +645,197 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════
+     CONTRACT MODAL
+═══════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="contractModal">
+    <div class="modal contract-modal">
+        <div class="modal-header">
+            <span class="modal-title">📋 New Recurring Contract</span>
+            <button class="modal-close" id="contractModalClose">✕</button>
+        </div>
+        <div class="modal-body" id="contractModalBody">
+
+            <!-- CUSTOMER -->
+            <div class="form-row">
+                <label class="form-label">Customer</label>
+                <div class="cust-picker-wrap">
+                    <input class="cust-picker-input" type="text" id="ctrCustSearch" placeholder="Search customer…" autocomplete="off">
+                    <div class="cust-dropdown" id="ctrCustDropdown"></div>
+                </div>
+                <div id="ctrCustBadge" style="display:none;"><span class="cust-account-badge">✓ Has account</span></div>
+                <input type="hidden" id="ctrCustUid">
+                <input type="hidden" id="ctrCustName">
+            </div>
+
+            <!-- ADDRESS -->
+            <div class="form-row">
+                <label class="form-label">Service Address</label>
+                <div class="billing-addr-wrap">
+                    <div class="billing-addr-prefill-bar" id="ctrAddrBar" style="display:none;"></div>
+                    <input class="form-input" type="text" id="ctrAddress" placeholder="1234 Main St, Flint, MI 48501">
+                </div>
+            </div>
+
+            <!-- SERVICE NAME -->
+            <div class="form-row">
+                <label class="form-label">Service Name</label>
+                <div class="svc-name-wrap">
+                    <input class="form-input" type="text" id="ctrServiceName" placeholder="e.g. Lawn Mowing" autocomplete="off">
+                    <div class="svc-dropdown" id="ctrSvcDropdown"></div>
+                </div>
+            </div>
+
+            <!-- CONTRACT DATES + FREQUENCY -->
+            <div class="contract-section">
+                <div class="contract-section-label">Schedule</div>
+                <div class="date-row">
+                    <div class="form-row" style="margin:0;">
+                        <label class="form-label">Start Date</label>
+                        <input class="form-input" type="date" id="ctrStartDate">
+                    </div>
+                    <div class="form-row" style="margin:0;">
+                        <label class="form-label">End Date</label>
+                        <input class="form-input" type="date" id="ctrEndDate">
+                    </div>
+                </div>
+                <div class="form-row" style="margin:0;">
+                    <label class="form-label">Frequency</label>
+                    <div class="freq-row">
+                        <div class="form-row" style="margin:0;min-width:80px;max-width:100px;">
+                            <label class="form-label" style="font-size:10px;">Every</label>
+                            <input class="form-input" type="number" id="ctrFreqNum" value="1" min="1" style="text-align:center;">
+                        </div>
+                        <div class="form-row" style="margin:0;">
+                            <label class="form-label" style="font-size:10px;">Unit</label>
+                            <select class="form-select" id="ctrFreqUnit">
+                                <option value="days">Days</option>
+                                <option value="weeks" selected>Weeks</option>
+                            </select>
+                        </div>
+                        <div class="form-row" style="margin:0;">
+                            <label class="form-label" style="font-size:10px;">Assigned Crew</label>
+                            <input class="form-input" type="text" id="ctrCrew" placeholder="e.g. Brandon">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PREVIEW -->
+                <div class="contract-preview-box" id="ctrPreviewBox">
+                    <div class="contract-preview-label">📅 Scheduled Visits Preview</div>
+                    <div id="ctrPreviewCount" style="font-size:13px;color:#1e8a4a;font-weight:600;margin-bottom:6px;"></div>
+                    <div class="contract-preview-dates" id="ctrPreviewDates"></div>
+                </div>
+            </div>
+
+            <!-- PRICING + INVOICE -->
+            <div class="contract-section">
+                <div class="contract-section-label">Invoice &amp; Pricing</div>
+                <div class="date-row">
+                    <div class="form-row" style="margin:0;">
+                        <label class="form-label">Price Per Visit ($)</label>
+                        <input class="form-input" type="number" id="ctrPricePerVisit" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-row" style="margin:0;">
+                        <label class="form-label">Invoice Status</label>
+                        <select class="form-select" id="ctrInvStatus">
+                            <option value="Payment Due">Payment Due</option>
+                            <option value="Draft">Draft</option>
+                            <option value="Paid">Paid</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row" style="margin:0;">
+                    <label class="form-label">Invoice Due Date <span style="font-weight:400;color:#bbb;">(default: 3 days from issue)</span></label>
+                    <input class="form-input" type="date" id="ctrDueDate">
+                </div>
+                <div id="ctrInvPreview" style="font-size:13px;color:var(--text-3);margin-top:2px;"></div>
+            </div>
+
+            <!-- PREPAYMENT -->
+            <label class="toggle-row" for="ctrPrepayCheck" style="margin:0;">
+                <div class="toggle-switch">
+                    <input type="checkbox" id="ctrPrepayCheck">
+                    <span class="toggle-slider"></span>
+                </div>
+                <div>
+                    <div class="toggle-label">Customer is prepaying</div>
+                    <div class="toggle-sub">Record a prepayment and link it to the service record</div>
+                </div>
+            </label>
+            <div id="ctrPrepayPanel" style="display:none;">
+                <div class="contract-section">
+                    <div class="contract-section-label">Prepayment Details</div>
+                    <div class="date-row">
+                        <div class="form-row" style="margin:0;">
+                            <label class="form-label">Amount Paid ($)</label>
+                            <input class="form-input" type="number" id="ctrPrepayAmount" min="0" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-row" style="margin:0;">
+                            <label class="form-label">Payment Method</label>
+                            <select class="form-select" id="ctrPrepayType">
+                                <option>Cash</option><option>Check</option><option>Venmo</option><option>Zelle</option><option>Card</option><option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin:0;">
+                        <label class="form-label">Payment Date</label>
+                        <input class="form-input" type="date" id="ctrPrepayDate">
+                    </div>
+                    <div id="ctrPrepayVisitsInfo" style="font-size:12px;color:#5b3fa6;background:#f0ebff;border:1px solid #c9b8f5;border-radius:8px;padding:10px 14px;display:none;line-height:1.6;"></div>
+                </div>
+            </div>
+
+            <!-- NOTES -->
+            <div class="form-row">
+                <label class="form-label">Customer Notes (applied to all jobs)</label>
+                <textarea class="form-textarea" id="ctrCustomerNotes" placeholder="Gate code, access instructions…"></textarea>
+            </div>
+            <div class="form-row">
+                <label class="form-label">Contract / Invoice Notes</label>
+                <textarea class="form-textarea" id="ctrInvNotes" placeholder="Internal notes about this contract…"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary" id="saveContractBtn">Create Contract</button>
+            <button class="btn-secondary" id="cancelContractBtn">Cancel</button>
+            <span class="modal-status" id="contractModalStatus"></span>
+        </div>
+    </div>
+</div>
+
 <!-- CONFIRM EXIT MODAL -->
 <div class="confirm-modal-backdrop" id="confirmExitModal">
     <div class="confirm-modal">
         <div class="confirm-modal-title">Discard changes?</div>
-        <div class="confirm-modal-sub">You have unsaved changes in this invoice. Are you sure you want to close without saving?</div>
+        <div class="confirm-modal-sub">You have unsaved changes. Are you sure you want to close without saving?</div>
         <div class="confirm-modal-actions">
             <button class="btn-secondary" id="confirmExitCancel">Keep Editing</button>
             <button class="btn-primary" id="confirmExitOk" style="background:#e55;">Discard</button>
         </div>
     </div>
 </div>
+
+<!-- PRINT PREVIEW MODAL -->
+<div class="print-modal-backdrop" id="printModal">
+    <div class="print-preview-shell">
+        <div class="print-preview-toolbar">
+            <span class="print-preview-title" id="printPreviewTitle">Invoice Preview</span>
+            <div class="print-preview-actions">
+                <button class="btn-print" id="doPrintBtn">🖨 Print / Save PDF</button>
+                <button class="btn-close-print" id="closePrintBtn">✕ Close</button>
+            </div>
+        </div>
+        <div class="print-preview-scroll">
+            <div class="print-paper">
+                <div id="printDocContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden print frame -->
+<div id="printFrame"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
@@ -427,22 +863,29 @@ function badge(status){
 }
 function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
 
+// Default due date: 3 days from issue
+function defaultDueDate(issueDateVal) {
+    if (!issueDateVal) return '';
+    var d = new Date(issueDateVal + 'T12:00:00');
+    d.setDate(d.getDate() + 3);
+    return d.toISOString().slice(0, 10);
+}
+
 // ── State ──
 var allInvoices  = [];
-var allJobsCache = [];  // for job autocomplete
+var allJobsCache = [];
 var custNames    = {};
 var custList     = [];
 var custDocs     = {};
 var serviceNames = [];
 var invLineItemsArr = [];
 var invPaymentsArr  = [];
-var linkedJobIds    = [];   // array of job ID strings
+var linkedJobIds    = [];
 var PAYMENT_TYPES   = ['Cash','Check','Venmo','Zelle','Card','Other'];
 
-// ── Customer picker state ──
+// ── Customer picker (invoice modal) ──
 var pickerSelectedUid = '';
 var pickerIsManual    = false;
-
 var custSearchInput     = document.getElementById('custSearchInput');
 var custDropdown        = document.getElementById('custDropdown');
 var custSelectedUidEl   = document.getElementById('custSelectedUid');
@@ -450,7 +893,6 @@ var custAccountBadge    = document.getElementById('custAccountBadge');
 var custTypeHint        = document.getElementById('custTypeHint');
 var manualContactFields = document.getElementById('manualContactFields');
 
-// ── Phone auto-format ──
 document.getElementById('custManualPhone').addEventListener('input', function(){
     var digits = this.value.replace(/\D/g,'').slice(0,10);
     var out = '';
@@ -461,14 +903,12 @@ document.getElementById('custManualPhone').addEventListener('input', function(){
     this.value = out;
 });
 
-// ── Customer picker ──
 function setCustPicker(uid, name){
     pickerSelectedUid = uid; pickerIsManual = false;
     custSearchInput.value = name; custSearchInput.classList.add('has-account');
     custSelectedUidEl.value = uid; custAccountBadge.style.display = '';
     custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none';
     closeDropdown();
-    // Prefill billing address from primary property
     prefillBillingFromCustomer(uid);
 }
 function clearCustPicker(){
@@ -513,8 +953,20 @@ custSearchInput.addEventListener('blur', function(){
     if(q && !pickerSelectedUid){ pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
 });
 
+// Auto-set due date when issue date changes
+document.getElementById('invDate').addEventListener('change', function(){
+    var due = document.getElementById('invDueDate');
+    if (!due.value || due.dataset.autoset === 'true') {
+        due.value = defaultDueDate(this.value);
+        due.dataset.autoset = 'true';
+    }
+});
+document.getElementById('invDueDate').addEventListener('change', function(){
+    this.dataset.autoset = 'false'; // user manually set it
+});
+
 // ── Billing address prefill ──
-var billingPrefillOptions = []; // { label, address }
+var billingPrefillOptions = [];
 
 function prefillBillingFromCustomer(uid){
     var doc = custDocs[uid];
@@ -522,16 +974,9 @@ function prefillBillingFromCustomer(uid){
     var props = Array.isArray(doc.properties) ? doc.properties : [];
     billingPrefillOptions = [];
     props.forEach(function(p, i){
-        if(p.address){
-            billingPrefillOptions.push({
-                label: p.label || (p.primary ? 'Primary' : 'Property '+(i+1)),
-                address: p.address
-            });
-        }
+        if(p.address) billingPrefillOptions.push({ label: p.label || (p.primary ? 'Primary' : 'Property '+(i+1)), address: p.address });
     });
-    // Always offer current billing address field as "Other" if something is there
     renderBillingPrefillPills();
-    // Auto-select primary
     var primaryIdx = props.findIndex(function(p){ return p.primary && p.address; });
     if(primaryIdx >= 0 && billingPrefillOptions[primaryIdx]){
         var billingEl = document.getElementById('invBillingAddress');
@@ -551,8 +996,7 @@ function renderBillingPrefillPills(){
         html += '<button type="button" class="billing-addr-pill'+(i===0?' active':'')+'" data-idx="'+i+'">'+escHtml(opt.label)+'</button>';
     });
     html += '<button type="button" class="billing-addr-pill" data-idx="-1" style="border-style:dashed;">✎ Other</button>';
-    bar.innerHTML = html;
-    bar.style.display = 'flex';
+    bar.innerHTML = html; bar.style.display = 'flex';
     bar.querySelectorAll('.billing-addr-pill').forEach(function(btn){
         btn.addEventListener('click', function(){
             bar.querySelectorAll('.billing-addr-pill').forEach(function(b){ b.classList.remove('active'); });
@@ -578,7 +1022,6 @@ function clearBillingPrefillPills(){
     document.getElementById('billingAddrHint').style.display='none';
 }
 
-// Auto-clear "autofilled" flag if user manually edits
 document.getElementById('invBillingAddress').addEventListener('input', function(){
     this.dataset.autofilled = 'false';
     document.getElementById('billingAddrHint').style.display = 'none';
@@ -590,7 +1033,6 @@ var jobTagsWrap = document.getElementById('jobTagsWrap');
 var jobAutoDropdown = document.getElementById('jobAutoDropdown');
 
 function renderJobTags(){
-    // Remove existing tags (keep the input)
     jobTagsWrap.querySelectorAll('.job-tag').forEach(function(el){ el.remove(); });
     linkedJobIds.forEach(function(jid, i){
         var tag = document.createElement('span');
@@ -603,7 +1045,6 @@ function renderJobTags(){
             e.stopPropagation();
             linkedJobIds.splice(parseInt(this.dataset.idx), 1);
             renderJobTags();
-            // If we removed a job, maybe update billing addr from remaining job addresses
             tryPrefillBillingFromJobs();
         });
     });
@@ -612,19 +1053,18 @@ function renderJobTags(){
 function addJobId(jid){
     jid = jid.trim();
     if(!jid) return;
-    if(linkedJobIds.indexOf(jid) !== -1) return; // no dupes
+    if(linkedJobIds.indexOf(jid) !== -1) return;
     linkedJobIds.push(jid);
     renderJobTags();
     jobIdInput.value = '';
     closeJobDropdown();
-    // Prefill billing from first linked job if billing is empty
     tryPrefillBillingFromJobs();
 }
 
 function tryPrefillBillingFromJobs(){
     var billingEl = document.getElementById('invBillingAddress');
-    if(billingEl.value && billingEl.dataset.autofilled !== 'job') return; // don't overwrite manual entry
-    if(!linkedJobIds.length){ return; }
+    if(billingEl.value && billingEl.dataset.autofilled !== 'job') return;
+    if(!linkedJobIds.length) return;
     var firstJob = allJobsCache.find(function(j){ return j.jobId === linkedJobIds[0]; });
     if(firstJob && firstJob.address){
         billingEl.value = firstJob.address;
@@ -651,8 +1091,7 @@ function renderJobDropdown(q){
         var dateStr = j.date ? j.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
         return '<div class="job-auto-item" data-jid="'+escHtml(j.jobId)+'">'+
             '<strong>#'+escHtml(j.jobId)+'</strong> — '+escHtml(j.customerName||'')+'<br>'+
-            '<div class="job-auto-sub">'+escHtml(desc)+(dateStr?' · '+dateStr:'')+'</div>'+
-            '</div>';
+            '<div class="job-auto-sub">'+escHtml(desc)+(dateStr?' · '+dateStr:'')+'</div></div>';
     }).join('');
     jobAutoDropdown.querySelectorAll('.job-auto-item').forEach(function(item){
         item.addEventListener('mousedown', function(e){ e.preventDefault(); addJobId(item.dataset.jid); });
@@ -677,9 +1116,7 @@ jobIdInput.addEventListener('keydown', function(e){
 });
 
 // ── Totals ──
-function calcLineTotal(){
-    return invLineItemsArr.reduce(function(s,li){ return s + (Number(li.qty)||0)*(Number(li.price)||0); }, 0);
-}
+function calcLineTotal(){ return invLineItemsArr.reduce(function(s,li){ return s + (Number(li.qty)||0)*(Number(li.price)||0); }, 0); }
 function updateTotals(){
     var lt = calcLineTotal();
     document.getElementById('invLineTotal').textContent = lt > 0 ? 'Subtotal: '+fmtMoney(lt) : '';
@@ -691,7 +1128,7 @@ function updateTotals(){
     }
 }
 
-// ── Service name autocomplete ──
+// ── Service autocomplete helpers ──
 function highlightMatch(text, query){
     if(!query) return escHtml(text);
     var idx = text.toLowerCase().indexOf(query.toLowerCase());
@@ -732,9 +1169,7 @@ function renderLineItems(){
     var wrap = document.getElementById('invLineItems');
     wrap.innerHTML = invLineItemsArr.map(function(li,i){
         return '<div class="line-item-build-row">'+
-            '<div class="svc-name-wrap">'+
-                '<input class="form-input svc-name-input" type="text" placeholder="Description" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off">'+
-            '</div>'+
+            '<div class="svc-name-wrap"><input class="form-input svc-name-input" type="text" placeholder="Description" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off"></div>'+
             '<input class="form-input" type="number" min="1" step="1" placeholder="1" value="'+escHtml(String(li.qty||''))+'" data-qty-idx="'+i+'" style="text-align:right;">'+
             '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price!==''?li.price:''))+'" data-price-idx="'+i+'" style="text-align:right;">'+
             '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>'+
@@ -750,8 +1185,7 @@ function renderLineItems(){
 
     invLineItemsArr.forEach(function(li,i){
         var drop = document.createElement('div');
-        drop.className = 'svc-dropdown';
-        drop.id = 'svcDrop'+i;
+        drop.className = 'svc-dropdown'; drop.id = 'svcDrop'+i;
         drop.setAttribute('data-body-drop','1');
         document.body.appendChild(drop);
     });
@@ -772,7 +1206,6 @@ function renderLineItems(){
             else if(e.key==='Escape'){ drop.classList.remove('open'); }
         });
     });
-
     updateTotals();
 }
 
@@ -798,23 +1231,14 @@ function renderPayments(){
     wrap.innerHTML = invPaymentsArr.map(function(p,i){
         return '<div class="pay-build-row">'+
             '<input class="form-input" type="date" value="'+escHtml(p.date||'')+'" data-pay-date="'+i+'">'+
-            '<select class="form-select" data-pay-type="'+i+'">'+
-                PAYMENT_TYPES.map(function(t){ return '<option value="'+t+'"'+(p.type===t?' selected':'')+'>'+t+'</option>'; }).join('')+
-            '</select>'+
+            '<select class="form-select" data-pay-type="'+i+'">'+PAYMENT_TYPES.map(function(t){ return '<option value="'+t+'"'+(p.type===t?' selected':'')+'>'+t+'</option>'; }).join('')+'</select>'+
             '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(p.amount!==''&&p.amount!==0?p.amount:''))+'" data-pay-amount="'+i+'">'+
             '<button class="btn-remove-line" onclick="removePayment('+i+')">✕</button>'+
             '</div>';
     }).join('');
-
-    wrap.querySelectorAll('[data-pay-date]').forEach(function(input){
-        input.addEventListener('input', function(){ invPaymentsArr[parseInt(this.dataset.payDate)].date=this.value; updateTotals(); });
-    });
-    wrap.querySelectorAll('[data-pay-type]').forEach(function(sel){
-        sel.addEventListener('change', function(){ invPaymentsArr[parseInt(this.dataset.payType)].type=this.value; });
-    });
-    wrap.querySelectorAll('[data-pay-amount]').forEach(function(input){
-        input.addEventListener('input', function(){ invPaymentsArr[parseInt(this.dataset.payAmount)].amount=this.value; updateTotals(); });
-    });
+    wrap.querySelectorAll('[data-pay-date]').forEach(function(input){ input.addEventListener('input', function(){ invPaymentsArr[parseInt(this.dataset.payDate)].date=this.value; updateTotals(); }); });
+    wrap.querySelectorAll('[data-pay-type]').forEach(function(sel){ sel.addEventListener('change', function(){ invPaymentsArr[parseInt(this.dataset.payType)].type=this.value; }); });
+    wrap.querySelectorAll('[data-pay-amount]').forEach(function(input){ input.addEventListener('input', function(){ invPaymentsArr[parseInt(this.dataset.payAmount)].amount=this.value; updateTotals(); }); });
     updateTotals();
 }
 
@@ -841,41 +1265,35 @@ function openModal(inv, prefillJobId){
     invLineItemsArr = inv
         ? (Array.isArray(inv.items) ? inv.items.map(function(it){ return {name:it.name||'',qty:Number(it.qty)||1,price:Number(it.unitPrice)||0}; }) : [])
         : [{name:'',qty:1,price:''}];
-
     invPaymentsArr = inv && Array.isArray(inv.payments)
-        ? inv.payments.map(function(p){
-            var d=''; try{d=p.date.toDate().toISOString().slice(0,10);}catch(e){}
-            return {date:d,type:p.type||'Cash',amount:Number(p.amount)||0};
-          })
+        ? inv.payments.map(function(p){ var d=''; try{d=p.date.toDate().toISOString().slice(0,10);}catch(e){} return {date:d,type:p.type||'Cash',amount:Number(p.amount)||0}; })
         : [];
-
-    // Linked jobs — support both jobIds (array) and legacy jobId (string)
     linkedJobIds = [];
     if(inv){
         if(Array.isArray(inv.jobIds) && inv.jobIds.length){ linkedJobIds = inv.jobIds.slice(); }
         else if(inv.jobId){ linkedJobIds = [inv.jobId]; }
-    } else if(prefillJobId){
-        linkedJobIds = [prefillJobId];
-    }
+    } else if(prefillJobId){ linkedJobIds = [prefillJobId]; }
 
-    document.getElementById('editInvId').value          = inv ? inv.invId : '';
-    document.getElementById('invModalTitle').textContent = inv ? 'Edit Invoice' : 'New Invoice';
-    document.getElementById('invDate').value            = inv && inv.dateIssued ? inv.dateIssued.toISOString().slice(0,10) : new Date().toISOString().slice(0,10);
-    document.getElementById('invDueDate').value         = inv && inv.dueDate ? inv.dueDate.toISOString().slice(0,10) : '';
-    document.getElementById('invStatus').value          = inv ? inv.status : 'Payment Due';
-    document.getElementById('invNotes').value           = inv ? (inv.notes||'') : '';
-    document.getElementById('invModalStatus').textContent = '';
-    document.getElementById('custManualEmail').value    = '';
-    document.getElementById('custManualPhone').value    = '';
+    document.getElementById('editInvId').value            = inv ? inv.invId : '';
+    document.getElementById('invModalTitle').textContent   = inv ? 'Edit Invoice' : 'New Invoice';
+    var today = new Date().toISOString().slice(0,10);
+    document.getElementById('invDate').value               = inv && inv.dateIssued ? inv.dateIssued.toISOString().slice(0,10) : today;
+    // Due date: stored value, or default 3 days
+    var dueDateEl = document.getElementById('invDueDate');
+    if(inv && inv.dueDate){ dueDateEl.value = inv.dueDate.toISOString().slice(0,10); dueDateEl.dataset.autoset = 'false'; }
+    else { dueDateEl.value = defaultDueDate(document.getElementById('invDate').value); dueDateEl.dataset.autoset = 'true'; }
+    document.getElementById('invStatus').value             = inv ? inv.status : 'Payment Due';
+    document.getElementById('invNotes').value              = inv ? (inv.notes||'') : '';
+    document.getElementById('invModalStatus').textContent  = '';
+    document.getElementById('custManualEmail').value       = '';
+    document.getElementById('custManualPhone').value       = '';
 
-    // Billing address
     var billingEl = document.getElementById('invBillingAddress');
     billingEl.value = inv ? (inv.billingAddress||'') : '';
     billingEl.dataset.autofilled = 'false';
     document.getElementById('billingAddrHint').style.display = 'none';
     clearBillingPrefillPills();
 
-    // Reset customer picker
     pickerSelectedUid=''; pickerIsManual=false;
     custSearchInput.classList.remove('has-account'); custSearchInput.value='';
     custAccountBadge.style.display='none'; custTypeHint.style.display='none';
@@ -891,15 +1309,8 @@ function openModal(inv, prefillJobId){
         }
     }
 
-    renderJobTags();
-    renderLineItems();
-    renderPayments();
-
-    // If billing still empty and we have linked jobs, try to prefill from job address
-    if(!billingEl.value){
-        tryPrefillBillingFromJobs();
-    }
-
+    renderJobTags(); renderLineItems(); renderPayments();
+    if(!billingEl.value) tryPrefillBillingFromJobs();
     document.body.classList.add('modal-open');
     document.getElementById('invModal').classList.add('open');
     document.getElementById('invModalBody').scrollTop=0;
@@ -922,13 +1333,13 @@ document.getElementById('cancelInvBtn').addEventListener('click', function(){ ma
 document.getElementById('invModal').addEventListener('click', function(e){ if(e.target===this) maybeClose(closeModal); });
 document.getElementById('invModal').addEventListener('touchmove', function(e){ if(e.target===this) e.preventDefault(); },{passive:false});
 
-// ── Generate invoice ID ──
-async function generateInvId(dateObj){
+// ── Generate IDs ──
+async function generateId(collection, dateObj){
     var yy=String(dateObj.getFullYear()).slice(2);
     var mm=String(dateObj.getMonth()+1).padStart(2,'0');
     var dd=String(dateObj.getDate()).padStart(2,'0');
     var counterDocId=yy+mm+dd;
-    var counterRef=db.collection('invoiceCounters').doc(counterDocId);
+    var counterRef=db.collection(collection).doc(counterDocId);
     var newCount;
     await db.runTransaction(async function(t){
         var doc=await t.get(counterRef);
@@ -938,7 +1349,7 @@ async function generateInvId(dateObj){
     return counterDocId+newCount;
 }
 
-// ── Save ──
+// ── Save invoice ──
 document.getElementById('saveInvBtn').addEventListener('click', async function(){
     var btn=this, status=document.getElementById('invModalStatus');
     var custName=custSearchInput.value.trim();
@@ -959,26 +1370,18 @@ document.getElementById('saveInvBtn').addEventListener('click', async function()
         if(!email&&!phone){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; }
     }
 
-    var payments=invPaymentsArr
-        .filter(function(p){ return p.date&&(Number(p.amount)>0); })
-        .map(function(p){ return {date:firebase.firestore.Timestamp.fromDate(new Date(p.date+'T12:00:00')),type:p.type||'Cash',amount:Number(p.amount)||0}; });
-
-    var dueDateVal=document.getElementById('invDueDate').value;
-
-    // Normalise linked job IDs
+    var payments=invPaymentsArr.filter(function(p){ return p.date&&(Number(p.amount)>0); }).map(function(p){ return {date:firebase.firestore.Timestamp.fromDate(new Date(p.date+'T12:00:00')),type:p.type||'Cash',amount:Number(p.amount)||0}; });
+    var dueDateVal=document.getElementById('invDueDate').value || defaultDueDate(dateVal);
     var jobIdsToSave = linkedJobIds.filter(function(id){ return id.trim(); });
 
     var data={
-        uid:uid||'',
-        customerName:uid?(custNames[uid]||custName):custName,
+        uid:uid||'', customerName:uid?(custNames[uid]||custName):custName,
         status:document.getElementById('invStatus').value,
         dateIssued:firebase.firestore.Timestamp.fromDate(new Date(dateVal+'T12:00:00')),
         dueDate:dueDateVal?firebase.firestore.Timestamp.fromDate(new Date(dueDateVal+'T12:00:00')):null,
-        jobIds:jobIdsToSave,
-        jobId:jobIdsToSave[0]||'',   // legacy: first job
+        jobIds:jobIdsToSave, jobId:jobIdsToSave[0]||'',
         billingAddress:billingAddr,
-        items:items,
-        payments:payments,
+        items:items, payments:payments,
         notes:document.getElementById('invNotes').value.trim(),
         updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
     };
@@ -994,7 +1397,7 @@ document.getElementById('saveInvBtn').addEventListener('click', async function()
             await db.collection('invoices').doc(editId).update(data);
         } else {
             data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-            var invId=await generateInvId(new Date(dateVal+'T12:00:00'));
+            var invId=await generateId('invoiceCounters', new Date(dateVal+'T12:00:00'));
             await db.collection('invoices').doc(String(invId)).set(data);
         }
         status.textContent='Saved!'; status.className='modal-status ok';
@@ -1005,6 +1408,607 @@ document.getElementById('saveInvBtn').addEventListener('click', async function()
         status.className='modal-status err'; btn.disabled=false;
     }
 });
+
+// ═══════════════════════════════════════════════════════════════
+// CONTRACT SYSTEM
+// ═══════════════════════════════════════════════════════════════
+
+// Contract customer picker
+var ctrCustSelectedUid = '';
+var ctrCustSelectedName = '';
+
+function setupCtrCustPicker(){
+    var inp = document.getElementById('ctrCustSearch');
+    var drop = document.getElementById('ctrCustDropdown');
+
+    function renderCtrDrop(q){
+        q = (q||'').toLowerCase().trim();
+        var matches = q ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q)!==-1; }) : custList.slice(0,8);
+        drop.innerHTML = matches.map(function(c){
+            return '<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'"><span class="cust-dot"></span><span style="font-weight:600;">'+escHtml(c.name)+'</span></div>';
+        }).join('') || '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No matches</div>';
+        drop.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
+            el.addEventListener('mousedown', function(e){
+                e.preventDefault();
+                ctrCustSelectedUid = el.dataset.uid;
+                ctrCustSelectedName = el.dataset.name;
+                inp.value = el.dataset.name;
+                inp.classList.add('has-account');
+                document.getElementById('ctrCustBadge').style.display='';
+                document.getElementById('ctrCustUid').value = el.dataset.uid;
+                document.getElementById('ctrCustName').value = el.dataset.name;
+                drop.classList.remove('open');
+                // Prefill address from primary property
+                ctrPrefillAddress(el.dataset.uid);
+                ctrUpdateInvPreview();
+            });
+        });
+        drop.classList.add('open');
+    }
+
+    inp.addEventListener('focus', function(){ renderCtrDrop(this.value); });
+    inp.addEventListener('input', function(){
+        ctrCustSelectedUid=''; ctrCustSelectedName='';
+        inp.classList.remove('has-account');
+        document.getElementById('ctrCustBadge').style.display='none';
+        renderCtrDrop(this.value);
+    });
+    inp.addEventListener('blur', function(){ setTimeout(function(){ drop.classList.remove('open'); }, 150); });
+}
+
+function ctrPrefillAddress(uid){
+    var doc = custDocs[uid];
+    if(!doc) return;
+    var props = Array.isArray(doc.properties) ? doc.properties : [];
+    var bar = document.getElementById('ctrAddrBar');
+    if(!props.length){ bar.style.display='none'; return; }
+    var html='';
+    props.forEach(function(p,i){
+        if(p.address) html+='<button type="button" class="billing-addr-pill'+(i===0?' active':'')+'" data-addr="'+escHtml(p.address)+'">'+(p.label||(p.primary?'Primary':'Prop '+(i+1)))+'</button>';
+    });
+    bar.innerHTML=html; bar.style.display='flex';
+    // Auto-select primary
+    var primary = props.find(function(p){ return p.primary && p.address; }) || props.find(function(p){ return p.address; });
+    if(primary) document.getElementById('ctrAddress').value = primary.address;
+    bar.querySelectorAll('.billing-addr-pill').forEach(function(btn){
+        btn.addEventListener('click',function(){
+            bar.querySelectorAll('.billing-addr-pill').forEach(function(b){b.classList.remove('active');});
+            this.classList.add('active');
+            document.getElementById('ctrAddress').value = this.dataset.addr;
+        });
+    });
+}
+
+// Contract service name autocomplete
+function setupCtrSvcDropdown(){
+    var inp = document.getElementById('ctrServiceName');
+    var drop = document.getElementById('ctrSvcDropdown');
+
+    function renderDrop(q){
+        q = (q||'').trim();
+        var matches = q
+            ? serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase())!==-1 && n.toLowerCase()!==q.toLowerCase(); })
+            : serviceNames.slice(0,8);
+        if(!matches.length){ drop.classList.remove('open'); return; }
+        drop.innerHTML = matches.slice(0,8).map(function(n){ return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n,q)+'</div>'; }).join('');
+        drop.querySelectorAll('.svc-dropdown-item').forEach(function(item){
+            item.addEventListener('mousedown', function(e){ e.preventDefault(); inp.value=item.dataset.name; drop.classList.remove('open'); });
+        });
+        positionSvcDropdown(inp, drop);
+        drop.classList.add('open');
+    }
+
+    inp.addEventListener('input', function(){ renderDrop(this.value); });
+    inp.addEventListener('focus', function(){ renderDrop(this.value); });
+    inp.addEventListener('blur', function(){ setTimeout(function(){ drop.classList.remove('open'); },150); });
+}
+
+// Generate dates for contract
+function generateContractDates(startStr, endStr, freqNum, freqUnit){
+    if(!startStr || !endStr || !freqNum) return [];
+    var start = new Date(startStr+'T12:00:00');
+    var end   = new Date(endStr+'T12:00:00');
+    if(end < start) return [];
+    var dates = [];
+    var cur = new Date(start);
+    var stepDays = freqUnit === 'weeks' ? freqNum * 7 : freqNum;
+    while(cur <= end){
+        dates.push(new Date(cur));
+        cur.setDate(cur.getDate() + stepDays);
+    }
+    return dates;
+}
+
+function ctrUpdatePreview(){
+    var startStr = document.getElementById('ctrStartDate').value;
+    var endStr   = document.getElementById('ctrEndDate').value;
+    var freqNum  = parseInt(document.getElementById('ctrFreqNum').value) || 1;
+    var freqUnit = document.getElementById('ctrFreqUnit').value;
+    var box = document.getElementById('ctrPreviewBox');
+
+    if(!startStr || !endStr){ box.classList.remove('visible'); ctrUpdateInvPreview(); return; }
+    var dates = generateContractDates(startStr, endStr, freqNum, freqUnit);
+    if(!dates.length){ box.classList.remove('visible'); ctrUpdateInvPreview(); return; }
+
+    document.getElementById('ctrPreviewCount').textContent = dates.length + ' visit' + (dates.length===1?'':'s') + ' scheduled';
+    document.getElementById('ctrPreviewDates').innerHTML = dates.map(function(d){
+        return '<span class="contract-date-chip">'+d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+'</span>';
+    }).join('');
+    box.classList.add('visible');
+    ctrUpdateInvPreview();
+    ctrUpdatePrepayInfo();
+}
+
+function ctrUpdateInvPreview(){
+    var startStr = document.getElementById('ctrStartDate').value;
+    var endStr   = document.getElementById('ctrEndDate').value;
+    var freqNum  = parseInt(document.getElementById('ctrFreqNum').value) || 1;
+    var freqUnit = document.getElementById('ctrFreqUnit').value;
+    var price = parseFloat(document.getElementById('ctrPricePerVisit').value)||0;
+    var el = document.getElementById('ctrInvPreview');
+    if(!startStr||!endStr||!price){ el.textContent=''; return; }
+    var dates = generateContractDates(startStr, endStr, freqNum, freqUnit);
+    if(!dates.length){ el.textContent=''; return; }
+    var total = dates.length * price;
+    el.textContent = dates.length + ' visits × ' + fmtMoney(price) + ' = ' + fmtMoney(total) + ' total invoice';
+}
+
+function ctrUpdatePrepayInfo(){
+    var startStr = document.getElementById('ctrStartDate').value;
+    var endStr   = document.getElementById('ctrEndDate').value;
+    var freqNum  = parseInt(document.getElementById('ctrFreqNum').value) || 1;
+    var freqUnit = document.getElementById('ctrFreqUnit').value;
+    var price = parseFloat(document.getElementById('ctrPricePerVisit').value)||0;
+    var prepayAmt = parseFloat(document.getElementById('ctrPrepayAmount').value)||0;
+    var infoEl = document.getElementById('ctrPrepayVisitsInfo');
+    if(!startStr||!endStr){ infoEl.style.display='none'; return; }
+    var dates = generateContractDates(startStr, endStr, freqNum, freqUnit);
+    if(!dates.length){ infoEl.style.display='none'; return; }
+    var visitsIncluded = price > 0 ? Math.floor(prepayAmt / price) : dates.length;
+    var freqLabel = freqUnit === 'weeks' ? 'every ' + freqNum + ' week' + (freqNum>1?'s':'') : 'every ' + freqNum + ' day' + (freqNum>1?'s':'');
+    infoEl.style.display='';
+    infoEl.innerHTML =
+        '<strong>Service record will show:</strong><br>' +
+        '📋 ' + (document.getElementById('ctrServiceName').value || 'Service') + ' — ' + freqLabel + '<br>' +
+        '💰 Prepaid: ' + (price>0 ? visitsIncluded + ' of ' + dates.length + ' visits' : dates.length + ' visits') + (prepayAmt>0?' ('+fmtMoney(prepayAmt)+' paid)':'') + '<br>' +
+        '📍 ' + dates.length + ' total visits scheduled';
+}
+
+// Wire contract preview updates
+['ctrStartDate','ctrEndDate','ctrFreqNum','ctrFreqUnit'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', ctrUpdatePreview);
+    document.getElementById(id).addEventListener('input', ctrUpdatePreview);
+});
+document.getElementById('ctrPricePerVisit').addEventListener('input', function(){ ctrUpdateInvPreview(); ctrUpdatePrepayInfo(); });
+document.getElementById('ctrServiceName').addEventListener('input', ctrUpdatePrepayInfo);
+document.getElementById('ctrPrepayAmount').addEventListener('input', ctrUpdatePrepayInfo);
+
+// Prepay toggle
+document.getElementById('ctrPrepayCheck').addEventListener('change', function(){
+    document.getElementById('ctrPrepayPanel').style.display = this.checked ? '' : 'none';
+    if(this.checked){
+        var today = new Date().toISOString().slice(0,10);
+        document.getElementById('ctrPrepayDate').value = today;
+        ctrUpdatePrepayInfo();
+    }
+});
+
+// Open / close contract modal
+document.getElementById('newContractBtn').addEventListener('click', function(){
+    // Reset all fields
+    document.getElementById('ctrCustSearch').value='';
+    document.getElementById('ctrCustSearch').classList.remove('has-account');
+    document.getElementById('ctrCustBadge').style.display='none';
+    document.getElementById('ctrCustUid').value='';
+    document.getElementById('ctrCustName').value='';
+    ctrCustSelectedUid=''; ctrCustSelectedName='';
+    document.getElementById('ctrAddress').value='';
+    document.getElementById('ctrAddrBar').style.display='none';
+    document.getElementById('ctrServiceName').value='';
+    document.getElementById('ctrStartDate').value='';
+    document.getElementById('ctrEndDate').value='';
+    document.getElementById('ctrFreqNum').value='1';
+    document.getElementById('ctrFreqUnit').value='weeks';
+    document.getElementById('ctrCrew').value='';
+    document.getElementById('ctrPricePerVisit').value='';
+    document.getElementById('ctrInvStatus').value='Payment Due';
+    document.getElementById('ctrDueDate').value='';
+    document.getElementById('ctrCustomerNotes').value='';
+    document.getElementById('ctrInvNotes').value='';
+    document.getElementById('ctrPrepayCheck').checked=false;
+    document.getElementById('ctrPrepayPanel').style.display='none';
+    document.getElementById('ctrPrepayAmount').value='';
+    document.getElementById('ctrPrepayDate').value='';
+    document.getElementById('ctrPreviewBox').classList.remove('visible');
+    document.getElementById('ctrInvPreview').textContent='';
+    document.getElementById('contractModalStatus').textContent='';
+    document.body.classList.add('modal-open');
+    document.getElementById('contractModal').classList.add('open');
+    document.getElementById('contractModalBody').scrollTop=0;
+});
+
+function closeContractModal(){
+    document.getElementById('contractModal').classList.remove('open');
+    document.body.classList.remove('modal-open');
+}
+
+document.getElementById('contractModalClose').addEventListener('click', closeContractModal);
+document.getElementById('cancelContractBtn').addEventListener('click', closeContractModal);
+document.getElementById('contractModal').addEventListener('click', function(e){ if(e.target===this) closeContractModal(); });
+
+// ── Save contract (batch create jobs + invoice + update service) ──
+document.getElementById('saveContractBtn').addEventListener('click', async function(){
+    var btn = this;
+    var status = document.getElementById('contractModalStatus');
+
+    var uid        = document.getElementById('ctrCustUid').value;
+    var custName   = document.getElementById('ctrCustSearch').value.trim();
+    var address    = document.getElementById('ctrAddress').value.trim();
+    var svcName    = document.getElementById('ctrServiceName').value.trim();
+    var startStr   = document.getElementById('ctrStartDate').value;
+    var endStr     = document.getElementById('ctrEndDate').value;
+    var freqNum    = parseInt(document.getElementById('ctrFreqNum').value)||1;
+    var freqUnit   = document.getElementById('ctrFreqUnit').value;
+    var price      = parseFloat(document.getElementById('ctrPricePerVisit').value)||0;
+    var crew       = document.getElementById('ctrCrew').value.trim();
+    var custNotes  = document.getElementById('ctrCustomerNotes').value.trim();
+    var invNotes   = document.getElementById('ctrInvNotes').value.trim();
+    var invStatus  = document.getElementById('ctrInvStatus').value;
+    var dueDateStr = document.getElementById('ctrDueDate').value;
+    var doPrepay   = document.getElementById('ctrPrepayCheck').checked;
+    var prepayAmt  = parseFloat(document.getElementById('ctrPrepayAmount').value)||0;
+    var prepayType = document.getElementById('ctrPrepayType').value;
+    var prepayDate = document.getElementById('ctrPrepayDate').value;
+
+    if(!custName){ status.textContent='Select a customer.'; status.className='modal-status err'; return; }
+    if(!address){ status.textContent='Enter a service address.'; status.className='modal-status err'; return; }
+    if(!svcName){ status.textContent='Enter a service name.'; status.className='modal-status err'; return; }
+    if(!startStr||!endStr){ status.textContent='Set a start and end date.'; status.className='modal-status err'; return; }
+    if(!price){ status.textContent='Enter a price per visit.'; status.className='modal-status err'; return; }
+
+    var dates = generateContractDates(startStr, endStr, freqNum, freqUnit);
+    if(!dates.length){ status.textContent='No visits generated — check your dates and frequency.'; status.className='modal-status err'; return; }
+    if(dates.length > 60){ status.textContent='Too many visits ('+dates.length+'). Shorten the date range.'; status.className='modal-status err'; return; }
+
+    if(doPrepay && (!prepayAmt || !prepayDate)){
+        status.textContent='Enter prepayment amount and date.'; status.className='modal-status err'; return;
+    }
+
+    btn.disabled=true; status.textContent='Creating '+dates.length+' jobs…'; status.className='modal-status';
+
+    try {
+        var issueDate = new Date(startStr+'T12:00:00');
+        var effectiveDueDate = dueDateStr ? new Date(dueDateStr+'T12:00:00') : new Date(startStr+'T12:00:00');
+        if(!dueDateStr) effectiveDueDate.setDate(effectiveDueDate.getDate()+3);
+
+        // 1. Generate all job IDs
+        var jobIds = [];
+        for(var i=0; i<dates.length; i++){
+            status.textContent = 'Generating job IDs ('+(i+1)+'/'+dates.length+')…';
+            var jid = await generateId('jobCounters', dates[i]);
+            jobIds.push(String(jid));
+        }
+
+        // 2. Generate invoice ID
+        var invId = await generateId('invoiceCounters', issueDate);
+        invId = String(invId);
+
+        // 3. Build invoice items
+        var invItems = [{ name: svcName, qty: dates.length, unitPrice: price }];
+
+        // 4. Build payments array if prepay
+        var payments = [];
+        if(doPrepay && prepayAmt > 0 && prepayDate){
+            payments.push({
+                date: firebase.firestore.Timestamp.fromDate(new Date(prepayDate+'T12:00:00')),
+                type: prepayType,
+                amount: prepayAmt,
+            });
+        }
+
+        var freqLabel = freqUnit === 'weeks' ? 'Every ' + freqNum + ' week' + (freqNum>1?'s':'') : 'Every ' + freqNum + ' day' + (freqNum>1?'s':'');
+
+        // 5. Batch write — Firestore has 500-op limit; chunk if needed
+        var CHUNK = 400;
+        for(var chunk=0; chunk<dates.length; chunk+=CHUNK){
+            var batch = db.batch();
+            var sliceDates = dates.slice(chunk, chunk+CHUNK);
+            var sliceJobIds = jobIds.slice(chunk, chunk+CHUNK);
+
+            sliceDates.forEach(function(d, idx){
+                var jid = sliceJobIds[idx];
+                var jobData = {
+                    uid: uid||'',
+                    customerName: uid ? (custNames[uid]||custName) : custName,
+                    status: 'Scheduled',
+                    date: firebase.firestore.Timestamp.fromDate(d),
+                    time: '',
+                    address: address,
+                    assignedCrew: crew,
+                    services: [{ name: svcName, qty: 1, unitPrice: price }],
+                    customerNotes: custNotes,
+                    crewNotes: '',
+                    invoiceId: invId,
+                    contractId: invId, // link back to the "contract" invoice
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+                batch.set(db.collection('jobs').doc(jid), jobData);
+            });
+
+            // Write invoice once in first chunk
+            if(chunk === 0){
+                var invData = {
+                    uid: uid||'',
+                    customerName: uid ? (custNames[uid]||custName) : custName,
+                    status: invStatus,
+                    dateIssued: firebase.firestore.Timestamp.fromDate(issueDate),
+                    dueDate: firebase.firestore.Timestamp.fromDate(effectiveDueDate),
+                    jobIds: jobIds,
+                    jobId: jobIds[0]||'',
+                    billingAddress: address,
+                    items: invItems,
+                    payments: payments,
+                    notes: invNotes,
+                    isContract: true,
+                    contractFrequency: freqLabel,
+                    contractStart: startStr,
+                    contractEnd: endStr,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+                batch.set(db.collection('invoices').doc(invId), invData);
+            }
+
+            await batch.commit();
+            status.textContent = 'Saved jobs '+(chunk+1)+'–'+Math.min(chunk+CHUNK, dates.length)+' of '+dates.length+'…';
+        }
+
+        // 6. Update services doc (upsert the service entry for this customer)
+        if(uid){
+            status.textContent = 'Updating service record…';
+            var svcDocRef = db.collection('services').doc(uid);
+            var svcSnap = await svcDocRef.get();
+            var visitsIncluded = price > 0 ? Math.floor(prepayAmt / price) : 0;
+
+            var newService = {
+                name: svcName,
+                frequency: freqLabel,
+                pricePerVisit: price,
+                status: 'Active',
+                startDate: firebase.firestore.Timestamp.fromDate(issueDate),
+                contractId: invId,
+                contractStart: startStr,
+                contractEnd: endStr,
+                notes: custNotes,
+            };
+            if(doPrepay && prepayAmt > 0){
+                newService.prepay = {
+                    enabled: true,
+                    amountPaid: prepayAmt,
+                    visitsIncluded: visitsIncluded,
+                    visitsPending: visitsIncluded,
+                    paymentDate: prepayDate,
+                    paymentType: prepayType,
+                };
+            }
+
+            if(svcSnap.exists){
+                var existingSvcs = svcSnap.data().services || [];
+                // Check if a service with the same contractId already exists; replace if so, else add
+                var found = existingSvcs.findIndex(function(s){ return s.contractId === invId; });
+                if(found >= 0){ existingSvcs[found] = newService; }
+                else { existingSvcs.push(newService); }
+                await svcDocRef.update({ services: existingSvcs, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+            } else {
+                await svcDocRef.set({ services: [newService], updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+            }
+        }
+
+        status.textContent = '✓ Contract created! '+dates.length+' jobs + Invoice #'+invId;
+        status.className = 'modal-status ok';
+        setTimeout(function(){ closeContractModal(); loadInvoices(); }, 1200);
+
+    } catch(e){
+        console.error(e);
+        status.textContent = 'Error: '+(e.message||'Something went wrong');
+        status.className = 'modal-status err'; btn.disabled=false;
+    }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// PRINT INVOICE
+// ═══════════════════════════════════════════════════════════════
+
+function openPrintModal(inv){
+    var html = buildPrintHTML(inv);
+    document.getElementById('printDocContent').innerHTML = html;
+    document.getElementById('printPreviewTitle').textContent = 'Invoice #' + inv.invId;
+    document.getElementById('printModal').classList.add('open');
+}
+
+document.getElementById('closePrintBtn').addEventListener('click', function(){
+    document.getElementById('printModal').classList.remove('open');
+});
+document.getElementById('printModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+
+document.getElementById('doPrintBtn').addEventListener('click', function(){
+    var content = document.getElementById('printDocContent').innerHTML;
+    var printWin = window.open('', '_blank', 'width=900,height=700');
+    printWin.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Invoice</title>'+getPrintStyles()+'</head><body>'+content+'</body></html>');
+    printWin.document.close();
+    printWin.focus();
+    setTimeout(function(){ printWin.print(); }, 400);
+});
+
+function getPrintStyles(){
+    return '<style>'+
+        '*{margin:0;padding:0;box-sizing:border-box;}'+
+        'body{font-family:Georgia,"Times New Roman",serif;color:#1a1a1a;background:#fff;}'+
+        '.inv-doc-header{background:#0f0f0f;padding:40px 48px 36px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}'+
+        '.inv-doc-brand{flex:1;}'+
+        '.inv-doc-logo-name{font-family:Georgia,serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:4px;}'+
+        '.inv-doc-logo-sub{font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;}'+
+        '.inv-doc-header-right{text-align:right;}'+
+        '.inv-doc-inv-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#e8703a;margin-bottom:6px;}'+
+        '.inv-doc-inv-num{font-size:28px;font-weight:700;color:#fff;font-family:Georgia,serif;letter-spacing:-1px;}'+
+        '.inv-doc-status-chip{display:inline-block;margin-top:8px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;font-family:Arial,sans-serif;}'+
+        '.inv-doc-status-chip.paid{background:#1e8a4a;color:#fff;}'+
+        '.inv-doc-status-chip.due{background:#e8703a;color:#fff;}'+
+        '.inv-doc-status-chip.overdue{background:#d93025;color:#fff;}'+
+        '.inv-doc-status-chip.draft{background:#666;color:#fff;}'+
+        '.inv-doc-meta-strip{background:#f5f4f1;padding:20px 48px;display:flex;gap:0;border-bottom:2px solid #e0ddd8;}'+
+        '.inv-doc-meta-block{flex:1;padding-right:24px;}'+
+        '.inv-doc-meta-block:last-child{padding-right:0;}'+
+        '.inv-doc-meta-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:5px;font-family:Arial,sans-serif;}'+
+        '.inv-doc-meta-value{font-size:13px;color:#1a1a1a;font-weight:600;line-height:1.4;}'+
+        '.inv-doc-body{padding:36px 48px;}'+
+        '.inv-doc-bill-row{display:flex;gap:40px;margin-bottom:32px;}'+
+        '.inv-doc-bill-block{flex:1;}'+
+        '.inv-doc-bill-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8703a;margin-bottom:8px;font-family:Arial,sans-serif;font-weight:700;}'+
+        '.inv-doc-bill-name{font-size:16px;font-weight:700;color:#0f0f0f;margin-bottom:3px;}'+
+        '.inv-doc-bill-addr{font-size:12px;color:#555;line-height:1.6;}'+
+        '.inv-doc-from-name{font-size:15px;font-weight:700;color:#0f0f0f;margin-bottom:3px;}'+
+        '.inv-doc-from-detail{font-size:12px;color:#555;line-height:1.6;}'+
+        '.inv-doc-table-wrap{margin-bottom:24px;}'+
+        '.inv-doc-table{width:100%;border-collapse:collapse;}'+
+        '.inv-doc-table thead tr{background:#0f0f0f;}'+
+        '.inv-doc-table thead th{padding:11px 16px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8703a;text-align:left;font-family:Arial,sans-serif;font-weight:700;}'+
+        '.inv-doc-table thead th:last-child{text-align:right;}'+
+        '.inv-doc-table tbody tr{border-bottom:1px solid #e8e6e2;}'+
+        '.inv-doc-table tbody td{padding:13px 16px;font-size:13px;color:#333;vertical-align:top;}'+
+        '.inv-doc-table tbody td:last-child{text-align:right;font-variant-numeric:tabular-nums;}'+
+        '.inv-doc-table tbody td.td-num{text-align:right;font-variant-numeric:tabular-nums;color:#555;}'+
+        '.inv-doc-table tfoot tr.subtotal-row td{padding:10px 16px;font-size:12px;color:#666;border-top:1px solid #e8e6e2;}'+
+        '.inv-doc-table tfoot tr.total-row td{padding:14px 16px;font-size:16px;font-weight:700;color:#0f0f0f;border-top:3px solid #0f0f0f;background:#faf9f7;}'+
+        '.inv-doc-table tfoot tr td:last-child{text-align:right;font-variant-numeric:tabular-nums;}'+
+        '.inv-doc-table tfoot tr.paid-row td{color:#1e8a4a;font-size:13px;padding:8px 16px;}'+
+        '.inv-doc-table tfoot tr.balance-row td{font-size:18px;font-weight:800;color:#d93025;padding:14px 16px;border-top:2px solid #d93025;}'+
+        '.inv-doc-table tfoot tr.balance-row.clear td{color:#1e8a4a;border-color:#1e8a4a;}'+
+        '.inv-doc-payments{margin-bottom:24px;}'+
+        '.inv-doc-pay-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:10px;font-family:Arial,sans-serif;}'+
+        '.inv-doc-pay-row{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#f5f4f1;border-radius:6px;margin-bottom:5px;font-size:12px;color:#555;}'+
+        '.inv-doc-pay-amt{font-weight:700;color:#1e8a4a;}'+
+        '.inv-doc-jobs{margin-bottom:24px;}'+
+        '.inv-doc-jobs-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:8px;font-family:Arial,sans-serif;}'+
+        '.inv-doc-jobs-list{display:flex;flex-wrap:wrap;gap:6px;}'+
+        '.inv-doc-job-chip{font-size:11px;padding:4px 10px;background:#f0ede8;border:1px solid #d8d3cc;border-radius:6px;color:#333;font-family:Arial,sans-serif;}'+
+        '.inv-doc-notes{background:#f5f4f1;border-left:3px solid #e8703a;padding:12px 16px;border-radius:0 6px 6px 0;font-size:12px;color:#555;line-height:1.6;margin-bottom:24px;}'+
+        '.inv-doc-footer{background:#0f0f0f;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}'+
+        '.inv-doc-footer-left{font-size:11px;color:#666;}'+
+        '.inv-doc-footer-right{font-size:11px;color:#e8703a;font-style:italic;}'+
+        '.inv-doc-contract{background:#f0ebff;border:1px solid #c9b8f5;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#5b3fa6;}'+
+        '.inv-doc-contract strong{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;color:#7c5cbf;font-family:Arial,sans-serif;}'+
+        '@media print{@page{margin:0;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}'+
+        '</style>';
+}
+
+function buildPrintHTML(inv){
+    var items = (inv.items||[]).map(function(it){ var qty=Number(it.qty)||1,unit=Number(it.unitPrice)||0; return {name:it.name||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit}; });
+    var total = items.reduce(function(s,i){return s+i.lineTotal;},0);
+    var payments = inv.payments||[];
+    var paidAmt = payments.reduce(function(s,p){return s+Number(p.amount||0);},0);
+    var balance = Math.max(0, Math.round((total-paidAmt)*100)/100);
+    var displayName = (inv.uid&&custNames[inv.uid])?custNames[inv.uid]:(inv.customerName||'Customer');
+    var jobIds = Array.isArray(inv.jobIds)&&inv.jobIds.length ? inv.jobIds : (inv.jobId?[inv.jobId]:[]);
+
+    var issuedStr = '—';
+    if(inv.dateIssued){ try{ issuedStr = inv.dateIssued.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); }catch(e){} }
+    var dueStr = '—';
+    if(inv.dueDate){ try{ dueStr = inv.dueDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); }catch(e){} }
+
+    var statusKey = (inv.status||'').toLowerCase();
+    var statusClass = statusKey==='paid'?'paid':statusKey==='overdue'?'overdue':statusKey==='draft'?'draft':'due';
+    var statusLabel = inv.status||'—';
+
+    var html = '<div class="inv-doc">';
+
+    // Header
+    html += '<div class="inv-doc-header">';
+    html += '<div class="inv-doc-brand"><div class="inv-doc-logo-name">BWD Services</div><div class="inv-doc-logo-sub">Genesee County, Michigan</div></div>';
+    html += '<div class="inv-doc-header-right">';
+    html += '<div class="inv-doc-inv-label">Invoice</div>';
+    html += '<div class="inv-doc-inv-num">#'+escHtml(inv.invId)+'</div>';
+    html += '<div><span class="inv-doc-status-chip '+statusClass+'">'+escHtml(statusLabel)+'</span></div>';
+    html += '</div></div>';
+
+    // Meta strip
+    html += '<div class="inv-doc-meta-strip">';
+    html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Date Issued</div><div class="inv-doc-meta-value">'+escHtml(issuedStr)+'</div></div>';
+    html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Due Date</div><div class="inv-doc-meta-value">'+escHtml(dueStr)+'</div></div>';
+    html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Invoice Total</div><div class="inv-doc-meta-value">'+fmtMoney(total)+'</div></div>';
+    if(balance > 0.01) html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Balance Due</div><div class="inv-doc-meta-value" style="color:#d93025;">'+fmtMoney(balance)+'</div></div>';
+    html += '</div>';
+
+    // Body
+    html += '<div class="inv-doc-body">';
+
+    // Bill to / From
+    html += '<div class="inv-doc-bill-row">';
+    html += '<div class="inv-doc-bill-block"><div class="inv-doc-bill-label">Bill To</div>';
+    html += '<div class="inv-doc-bill-name">'+escHtml(displayName)+'</div>';
+    if(inv.billingAddress) html += '<div class="inv-doc-bill-addr">'+escHtml(inv.billingAddress).replace(/\n/g,'<br>')+'</div>';
+    html += '</div>';
+    html += '<div class="inv-doc-bill-block"><div class="inv-doc-bill-label">From</div>';
+    html += '<div class="inv-doc-from-name">BWD Services</div>';
+    html += '<div class="inv-doc-from-detail">Genesee County, Michigan<br>bwdservices.com</div>';
+    html += '</div></div>';
+
+    // Contract info
+    if(inv.isContract){
+        html += '<div class="inv-doc-contract"><strong>Recurring Contract</strong>';
+        html += escHtml(inv.contractFrequency||'') + ' from ' + escHtml(inv.contractStart||'') + ' to ' + escHtml(inv.contractEnd||'');
+        html += ' · ' + jobIds.length + ' scheduled visits</div>';
+    }
+
+    // Line items table
+    html += '<div class="inv-doc-table-wrap"><table class="inv-doc-table">';
+    html += '<thead><tr><th>Description</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Amount</th></tr></thead>';
+    html += '<tbody>';
+    items.forEach(function(it){
+        html += '<tr><td>'+escHtml(it.name)+'</td><td class="td-num">'+it.qty+'</td><td class="td-num">'+fmtMoney(it.unitPrice)+'</td><td>'+fmtMoney(it.lineTotal)+'</td></tr>';
+    });
+    html += '</tbody><tfoot>';
+    html += '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr>';
+    if(paidAmt > 0){
+        html += '<tr class="paid-row"><td colspan="3">Amount Paid</td><td>− '+fmtMoney(paidAmt)+'</td></tr>';
+        html += '<tr class="balance-row'+(balance<0.01?' clear':'')+'" ><td colspan="3">'+(balance<0.01?'Paid in Full':'Balance Remaining')+'</td><td>'+fmtMoney(balance)+'</td></tr>';
+    }
+    html += '</tfoot></table></div>';
+
+    // Payment history
+    if(payments.length){
+        html += '<div class="inv-doc-payments"><div class="inv-doc-pay-label">Payment History</div>';
+        payments.forEach(function(p){
+            var pd='—'; try{ pd=p.date.toDate().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }catch(e){}
+            html += '<div class="inv-doc-pay-row"><span>'+escHtml(pd)+' — '+escHtml(p.type||'—')+'</span><span class="inv-doc-pay-amt">+'+fmtMoney(p.amount)+'</span></div>';
+        });
+        html += '</div>';
+    }
+
+    // Linked jobs
+    if(jobIds.length){
+        html += '<div class="inv-doc-jobs"><div class="inv-doc-jobs-label">Linked Jobs ('+jobIds.length+')</div><div class="inv-doc-jobs-list">';
+        jobIds.forEach(function(jid){ html += '<span class="inv-doc-job-chip">#'+escHtml(jid)+'</span>'; });
+        html += '</div></div>';
+    }
+
+    // Notes
+    if(inv.notes){
+        html += '<div class="inv-doc-notes">'+escHtml(inv.notes).replace(/\n/g,'<br>')+'</div>';
+    }
+
+    html += '</div>'; // end body
+
+    // Footer
+    html += '<div class="inv-doc-footer">';
+    html += '<div class="inv-doc-footer-left">BWD Services · Genesee County, Michigan · bwdservices.com</div>';
+    html += '<div class="inv-doc-footer-right">Thank you for your business!</div>';
+    html += '</div>';
+
+    html += '</div>'; // end inv-doc
+    return html;
+}
 
 // ── Toggle card ──
 function toggleInv(invId){
@@ -1043,17 +2047,30 @@ function renderInvoices(invoices, targetHash){
             ?'<a href="/staff/dashboard/customers/#'+inv.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
             :escHtml(displayName)+(displayName&&!inv.uid?' <span style="font-size:10px;color:#bbb;">(no account)</span>':'');
 
-        // Job links — support both jobIds array and legacy jobId
         var jobIds = Array.isArray(inv.jobIds) && inv.jobIds.length ? inv.jobIds : (inv.jobId ? [inv.jobId] : []);
-        var jobLinksHtml = jobIds.map(function(jid){ return '<a href="/staff/dashboard/jobs/#'+jid+'" style="color:var(--orange);">Job #'+jid+'</a>'; }).join(', ');
+        var jobLinksHtml = jobIds.length <= 3
+            ? jobIds.map(function(jid){ return '<a href="/staff/dashboard/jobs/#'+jid+'" style="color:var(--orange);">Job #'+jid+'</a>'; }).join(', ')
+            : '<a href="/staff/dashboard/jobs/" style="color:var(--orange);">'+jobIds.length+' jobs</a>';
+
+        var contractBadge = inv.isContract ? ' <span class="contract-badge">📋 Contract</span>' : '';
 
         var metaParts=dateStr+' · #'+invId+
             (jobLinksHtml?' · '+jobLinksHtml:'')+
-            (displayName?' · '+custLink:'');
+            (displayName?' · '+custLink:'')+
+            contractBadge;
 
         var lineHTML=items.length?'<div><div class="inv-section-label">Line Items</div><table class="line-items"><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
             items.map(function(i){return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+
             '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>':'';
+
+        // Contract schedule info
+        var contractHTML = '';
+        if(inv.isContract){
+            contractHTML = '<div><div class="inv-section-label">Contract Schedule</div>'+
+                '<div style="background:#f0ebff;border:1px solid #c9b8f5;border-radius:8px;padding:10px 14px;font-size:13px;color:#5b3fa6;">'+
+                escHtml(inv.contractFrequency||'') + ' · ' + escHtml(inv.contractStart||'') + ' → ' + escHtml(inv.contractEnd||'') +
+                ' · <strong>' + jobIds.length + ' visits</strong></div></div>';
+        }
 
         var billingHTML = inv.billingAddress
             ? '<div><div class="inv-section-label">Billing Address</div><div style="background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);">'+escHtml(inv.billingAddress)+'</div></div>'
@@ -1073,22 +2090,24 @@ function renderInvoices(invoices, targetHash){
         }
         var notesHTML=inv.notes?'<div><div class="inv-section-label">Notes</div><div style="background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);line-height:1.6;">'+escHtml(inv.notes)+'</div></div>':'';
 
-        // Build job action buttons for each linked job
-        var viewJobButtons = jobIds.map(function(jid){ return '<a class="btn-ghost" href="/staff/dashboard/jobs/#'+jid+'">View Job #'+jid+'</a>'; }).join('');
+        var viewJobButtons = jobIds.length <= 4
+            ? jobIds.map(function(jid){ return '<a class="btn-ghost" href="/staff/dashboard/jobs/#'+jid+'">Job #'+jid+'</a>'; }).join('')
+            : '<a class="btn-ghost" href="/staff/dashboard/jobs/">View '+jobIds.length+' Jobs</a>';
 
         var actionButtons='<button class="btn-ghost" onclick=\'editInv("'+invId+'")\'>Edit</button>'+
+            '<button class="btn-ghost" onclick=\'printInv("'+invId+'")\' style="display:flex;align-items:center;gap:4px;">🖨 Print</button>'+
             '<button class="btn-ghost danger" onclick=\'deleteInv("'+invId+'")\'>Delete</button>'+
             viewJobButtons;
 
         html+='<div class="inv-card'+(isTarget?' highlight':'')+'" id="inv-card-'+invId+'">';
         html+='<div class="inv-card-header" onclick="toggleInv(\''+invId+'\')">';
-        html+='<div class="inv-header-left"><div class="inv-card-title">'+escHtml(desc)+'</div><div class="inv-card-meta">'+metaParts+'</div>'+badge(inv.status)+'</div>';
+        html+='<div class="inv-header-left"><div class="inv-card-title">'+escHtml(desc)+contractBadge+'</div><div class="inv-card-meta">'+metaParts+'</div>'+badge(inv.status)+'</div>';
         html+='<div class="inv-header-right"><div class="inv-total-amt">'+fmtMoney(total)+'</div>'+
             (balance>=0.01&&balance<total?'<div class="inv-remaining">'+fmtMoney(balance)+' remaining</div>':'')+
             '<span class="toggle-chevron">▾</span></div>';
         html+='</div>';
         html+='<div class="inv-card-body'+(isTarget ? '' : ' collapsed')+'" id="inv-body-'+invId+'">';
-        html+=lineHTML+billingHTML+payHTML+notesHTML;
+        html+=contractHTML+lineHTML+billingHTML+payHTML+notesHTML;
         html+='<div class="inv-actions">'+actionButtons+'</div>';
         html+='</div></div>';
     });
@@ -1102,6 +2121,11 @@ function renderInvoices(invoices, targetHash){
 function editInv(invId){
     var inv=allInvoices.find(function(i){return i.invId===invId;});
     if(inv) openModal(inv, null);
+}
+
+function printInv(invId){
+    var inv=allInvoices.find(function(i){return i.invId===invId;});
+    if(inv) openPrintModal(inv);
 }
 
 // ── Filters ──
@@ -1130,19 +2154,21 @@ async function loadInvoices(){
         allInvoices=[];
         snapshot.forEach(function(doc){
             var d=doc.data();
-            // Normalise jobIds: support both array and legacy single string
             var jobIds = Array.isArray(d.jobIds) ? d.jobIds : (d.jobId ? [d.jobId] : []);
             allInvoices.push({
                 invId:doc.id, uid:d.uid||'', customerName:d.customerName||'',
                 status:d.status||'Payment Due',
                 dateIssued:d.dateIssued?d.dateIssued.toDate():null,
                 dueDate:d.dueDate?d.dueDate.toDate():null,
-                jobId:d.jobId||'',
-                jobIds:jobIds,
+                jobId:d.jobId||'', jobIds:jobIds,
                 billingAddress:d.billingAddress||'',
                 items:Array.isArray(d.items)?d.items:[],
                 payments:Array.isArray(d.payments)?d.payments:[],
                 notes:d.notes||'', manualEmail:d.manualEmail||'', manualPhone:d.manualPhone||'',
+                isContract:!!d.isContract,
+                contractFrequency:d.contractFrequency||'',
+                contractStart:d.contractStart||'',
+                contractEnd:d.contractEnd||'',
             });
         });
         applyFilters();
@@ -1174,24 +2200,22 @@ auth.onAuthStateChanged(async function(user){
             "Power Washing","Snow Removal","Soil Testing","Spring Cleanup","Tree Pruning","Weed Control"
         ];
 
-        // Load jobs for autocomplete & billing prefill
+        setupCtrCustPicker();
+        setupCtrSvcDropdown();
+
         var jobSnap=await db.collection('jobs').orderBy('date','desc').limit(500).get();
         allJobsCache=[];
         jobSnap.forEach(function(doc){
             var d=doc.data();
             allJobsCache.push({
-                jobId:doc.id,
-                uid:d.uid||'',
-                customerName:d.customerName||'',
-                address:d.address||'',
-                date:d.date?d.date.toDate():null,
+                jobId:doc.id, uid:d.uid||'', customerName:d.customerName||'',
+                address:d.address||'', date:d.date?d.date.toDate():null,
                 services:Array.isArray(d.services)?d.services:[],
-            }); 
+            });
         });
 
         await loadInvoices();
 
-        // Handle ?newFor=jobId on page load
         var params=new URLSearchParams(window.location.search);
         var jobFor=params.get('newFor');
         if(jobFor){ openModal(null, jobFor); }
