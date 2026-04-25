@@ -311,9 +311,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 </div>
             </div>
 
-            <!-- BILLING ADDRESS (required) -->
+            <!-- BILLING ADDRESS -->
             <div class="form-row">
-                <label class="form-label">Billing Address <span style="color:#d93025;font-size:11px;">required</span></label>
+                <label class="form-label">Billing Address</label>
                 <div class="billing-addr-wrap" id="billingAddrWrap">
                     <div class="billing-addr-prefill-bar" id="billingAddrPrefillBar" style="display:none;"></div>
                     <input class="form-input" type="text" id="invBillingAddress" placeholder="1234 Main St, Flint, MI 48501">
@@ -1186,7 +1186,7 @@ auth.onAuthStateChanged(async function(user){
                 address:d.address||'',
                 date:d.date?d.date.toDate():null,
                 services:Array.isArray(d.services)?d.services:[],
-            });
+            }); 
         });
 
         await loadInvoices();
