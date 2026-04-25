@@ -811,7 +811,7 @@ function renderInvoices(invoices, targetHash){
             (balance>=0.01&&balance<total?'<div class="inv-remaining">'+fmtMoney(balance)+' remaining</div>':'')+
             '<span class="toggle-chevron">▾</span></div>';
         html+='</div>';
-        html+='<div class="inv-card-body'+(isTarget?'',' collapsed')+'" id="inv-body-'+invId+'">';
+        html+='<div class="inv-card-body'+(isTarget ? '' : ' collapsed')+'" id="inv-body-'+invId+'">';
         html+=lineHTML+payHTML+notesHTML;
         html+='<div class="inv-actions">'+actionButtons+'</div>';
         html+='</div></div>';
