@@ -105,6 +105,53 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .phone-wrap input { flex: 1; border: none !important; border-radius: 0 !important; padding: 8px 10px; font-size: 13.5px; font-family: 'Inter', sans-serif; color: var(--text); background: transparent; outline: none; }
 .phone-wrap:focus-within { border-color: var(--orange); }
 
+/* ── MULTI-JOB LINK ── */
+.job-tags-wrap {
+    display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 10px;
+    border: 1px solid var(--border); border-radius: 8px; min-height: 38px;
+    background: var(--white); cursor: text; align-items: center;
+}
+.job-tags-wrap:focus-within { border-color: var(--orange); }
+.job-tag {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600;
+    color: var(--text); background: #f0ede8; border: 1px solid var(--border); border-radius: 6px;
+    padding: 3px 8px; white-space: nowrap;
+}
+.job-tag a { color: var(--orange); text-decoration: none; }
+.job-tag-remove { background: none; border: none; color: #aaa; cursor: pointer; font-size: 13px; padding: 0 0 0 2px; line-height: 1; }
+.job-tag-remove:hover { color: #e55; }
+.job-id-input {
+    border: none; outline: none; font-size: 13.5px; font-family: 'Inter', sans-serif;
+    color: var(--text); background: transparent; min-width: 120px; flex: 1;
+}
+.job-id-hint { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+.job-autocomplete-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 500;
+    max-height: 200px; overflow-y: auto; display: none;
+}
+.job-autocomplete-dropdown.open { display: block; }
+.job-auto-item {
+    padding: 9px 14px; font-size: 13px; color: var(--text-2); cursor: pointer;
+    border-bottom: 1px solid var(--border-light);
+}
+.job-auto-item:last-child { border-bottom: none; }
+.job-auto-item:hover { background: #fafaf8; }
+.job-auto-item .job-auto-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+/* ── BILLING ADDRESS ── */
+.billing-addr-wrap { position: relative; }
+.billing-addr-prefill-bar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.billing-addr-pill {
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px;
+    border: 1px solid var(--border); background: var(--white); color: var(--text-2);
+    cursor: pointer; transition: all 0.12s; white-space: nowrap;
+}
+.billing-addr-pill:hover { border-color: var(--orange); color: var(--orange); }
+.billing-addr-pill.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+.billing-addr-hint { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+
 /* ── LINE ITEM BUILDER ── */
 .li-header { display: grid; grid-template-columns: 1fr 60px 90px 28px; gap: 8px; margin-bottom: 4px; }
 .li-header span { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; }
@@ -114,7 +161,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .btn-remove-line { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; padding: 0 4px; line-height: 1; flex-shrink: 0; }
 .btn-remove-line:hover { color: #e55; }
 
-/* ── SERVICE AUTOCOMPLETE (body-appended) ── */
+/* ── SERVICE AUTOCOMPLETE ── */
 .svc-dropdown {
     position: fixed; background: var(--white); border: 1px solid var(--border); border-radius: 10px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.14); z-index: 1100;
@@ -264,6 +311,18 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 </div>
             </div>
 
+            <!-- BILLING ADDRESS (required) -->
+            <div class="form-row">
+                <label class="form-label">Billing Address <span style="color:#d93025;font-size:11px;">required</span></label>
+                <div class="billing-addr-wrap" id="billingAddrWrap">
+                    <div class="billing-addr-prefill-bar" id="billingAddrPrefillBar" style="display:none;"></div>
+                    <input class="form-input" type="text" id="invBillingAddress" placeholder="1234 Main St, Flint, MI 48501">
+                </div>
+                <div class="billing-addr-hint" id="billingAddrHint" style="display:none;">
+                    Prefilled from customer's primary property. You can edit this.
+                </div>
+            </div>
+
             <!-- DATES -->
             <div class="date-row">
                 <div class="form-row">
@@ -286,9 +345,16 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 </select>
             </div>
 
+            <!-- LINKED JOBS (multi) -->
             <div class="form-row">
-                <label class="form-label">Linked Job ID (optional)</label>
-                <input class="form-input" type="text" id="invJobId" placeholder="Job doc ID">
+                <label class="form-label">Linked Jobs (optional)</label>
+                <div style="position:relative;" id="jobTagsOuter">
+                    <div class="job-tags-wrap" id="jobTagsWrap" onclick="document.getElementById('jobIdInput').focus()">
+                        <input class="job-id-input" type="text" id="jobIdInput" placeholder="Type a Job # and press Enter…" autocomplete="off">
+                    </div>
+                    <div class="job-autocomplete-dropdown" id="jobAutoDropdown"></div>
+                </div>
+                <div class="job-id-hint">Link one or more jobs to this invoice (e.g. a seasonal contract).</div>
             </div>
 
             <!-- LINE ITEMS -->
@@ -363,12 +429,14 @@ function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
 
 // ── State ──
 var allInvoices  = [];
+var allJobsCache = [];  // for job autocomplete
 var custNames    = {};
 var custList     = [];
 var custDocs     = {};
 var serviceNames = [];
 var invLineItemsArr = [];
 var invPaymentsArr  = [];
+var linkedJobIds    = [];   // array of job ID strings
 var PAYMENT_TYPES   = ['Cash','Check','Venmo','Zelle','Card','Other'];
 
 // ── Customer picker state ──
@@ -400,10 +468,13 @@ function setCustPicker(uid, name){
     custSelectedUidEl.value = uid; custAccountBadge.style.display = '';
     custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none';
     closeDropdown();
+    // Prefill billing address from primary property
+    prefillBillingFromCustomer(uid);
 }
 function clearCustPicker(){
     pickerSelectedUid = ''; custSelectedUidEl.value = '';
     custSearchInput.classList.remove('has-account'); custAccountBadge.style.display = 'none';
+    clearBillingPrefillPills();
 }
 function openDropdown(){ custDropdown.classList.add('open'); }
 function closeDropdown(){ custDropdown.classList.remove('open'); }
@@ -440,6 +511,169 @@ custSearchInput.addEventListener('blur', function(){
     setTimeout(closeDropdown, 150);
     var q = this.value.trim();
     if(q && !pickerSelectedUid){ pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
+});
+
+// ── Billing address prefill ──
+var billingPrefillOptions = []; // { label, address }
+
+function prefillBillingFromCustomer(uid){
+    var doc = custDocs[uid];
+    if(!doc){ clearBillingPrefillPills(); return; }
+    var props = Array.isArray(doc.properties) ? doc.properties : [];
+    billingPrefillOptions = [];
+    props.forEach(function(p, i){
+        if(p.address){
+            billingPrefillOptions.push({
+                label: p.label || (p.primary ? 'Primary' : 'Property '+(i+1)),
+                address: p.address
+            });
+        }
+    });
+    // Always offer current billing address field as "Other" if something is there
+    renderBillingPrefillPills();
+    // Auto-select primary
+    var primaryIdx = props.findIndex(function(p){ return p.primary && p.address; });
+    if(primaryIdx >= 0 && billingPrefillOptions[primaryIdx]){
+        var billingEl = document.getElementById('invBillingAddress');
+        if(!billingEl.value || billingEl.dataset.autofilled === 'true'){
+            billingEl.value = billingPrefillOptions[primaryIdx].address;
+            billingEl.dataset.autofilled = 'true';
+            document.getElementById('billingAddrHint').style.display = '';
+        }
+    }
+}
+
+function renderBillingPrefillPills(){
+    var bar = document.getElementById('billingAddrPrefillBar');
+    if(!billingPrefillOptions.length){ bar.style.display='none'; bar.innerHTML=''; return; }
+    var html = '';
+    billingPrefillOptions.forEach(function(opt, i){
+        html += '<button type="button" class="billing-addr-pill'+(i===0?' active':'')+'" data-idx="'+i+'">'+escHtml(opt.label)+'</button>';
+    });
+    html += '<button type="button" class="billing-addr-pill" data-idx="-1" style="border-style:dashed;">✎ Other</button>';
+    bar.innerHTML = html;
+    bar.style.display = 'flex';
+    bar.querySelectorAll('.billing-addr-pill').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            bar.querySelectorAll('.billing-addr-pill').forEach(function(b){ b.classList.remove('active'); });
+            this.classList.add('active');
+            var idx = parseInt(this.dataset.idx);
+            if(idx === -1){
+                document.getElementById('invBillingAddress').value = '';
+                document.getElementById('invBillingAddress').focus();
+                document.getElementById('billingAddrHint').style.display = 'none';
+            } else if(billingPrefillOptions[idx]){
+                document.getElementById('invBillingAddress').value = billingPrefillOptions[idx].address;
+                document.getElementById('invBillingAddress').dataset.autofilled = 'true';
+                document.getElementById('billingAddrHint').style.display = '';
+            }
+        });
+    });
+}
+
+function clearBillingPrefillPills(){
+    billingPrefillOptions = [];
+    document.getElementById('billingAddrPrefillBar').style.display='none';
+    document.getElementById('billingAddrPrefillBar').innerHTML='';
+    document.getElementById('billingAddrHint').style.display='none';
+}
+
+// Auto-clear "autofilled" flag if user manually edits
+document.getElementById('invBillingAddress').addEventListener('input', function(){
+    this.dataset.autofilled = 'false';
+    document.getElementById('billingAddrHint').style.display = 'none';
+});
+
+// ── Linked Jobs (multi-tag) ──
+var jobIdInput = document.getElementById('jobIdInput');
+var jobTagsWrap = document.getElementById('jobTagsWrap');
+var jobAutoDropdown = document.getElementById('jobAutoDropdown');
+
+function renderJobTags(){
+    // Remove existing tags (keep the input)
+    jobTagsWrap.querySelectorAll('.job-tag').forEach(function(el){ el.remove(); });
+    linkedJobIds.forEach(function(jid, i){
+        var tag = document.createElement('span');
+        tag.className = 'job-tag';
+        var jobEntry = allJobsCache.find(function(j){ return j.jobId === jid; });
+        var label = jobEntry ? '#'+jid+' — '+(jobEntry.customerName||jid) : '#'+jid;
+        tag.innerHTML = escHtml(label)+'<button class="job-tag-remove" data-idx="'+i+'" title="Remove">✕</button>';
+        jobTagsWrap.insertBefore(tag, jobIdInput);
+        tag.querySelector('.job-tag-remove').addEventListener('click', function(e){
+            e.stopPropagation();
+            linkedJobIds.splice(parseInt(this.dataset.idx), 1);
+            renderJobTags();
+            // If we removed a job, maybe update billing addr from remaining job addresses
+            tryPrefillBillingFromJobs();
+        });
+    });
+}
+
+function addJobId(jid){
+    jid = jid.trim();
+    if(!jid) return;
+    if(linkedJobIds.indexOf(jid) !== -1) return; // no dupes
+    linkedJobIds.push(jid);
+    renderJobTags();
+    jobIdInput.value = '';
+    closeJobDropdown();
+    // Prefill billing from first linked job if billing is empty
+    tryPrefillBillingFromJobs();
+}
+
+function tryPrefillBillingFromJobs(){
+    var billingEl = document.getElementById('invBillingAddress');
+    if(billingEl.value && billingEl.dataset.autofilled !== 'job') return; // don't overwrite manual entry
+    if(!linkedJobIds.length){ return; }
+    var firstJob = allJobsCache.find(function(j){ return j.jobId === linkedJobIds[0]; });
+    if(firstJob && firstJob.address){
+        billingEl.value = firstJob.address;
+        billingEl.dataset.autofilled = 'job';
+        document.getElementById('billingAddrHint').textContent = 'Prefilled from linked job address. You can edit this.';
+        document.getElementById('billingAddrHint').style.display = '';
+    }
+}
+
+function openJobDropdown(){ jobAutoDropdown.classList.add('open'); }
+function closeJobDropdown(){ jobAutoDropdown.classList.remove('open'); }
+
+function renderJobDropdown(q){
+    q = (q||'').toLowerCase().trim();
+    var already = linkedJobIds;
+    var matches = allJobsCache.filter(function(j){
+        if(already.indexOf(j.jobId) !== -1) return false;
+        var hay = (j.jobId+' '+(j.customerName||'')+' '+(j.address||'')).toLowerCase();
+        return !q || hay.indexOf(q) !== -1;
+    }).slice(0, 8);
+    if(!matches.length){ closeJobDropdown(); return; }
+    jobAutoDropdown.innerHTML = matches.map(function(j){
+        var desc = (j.services||[]).map(function(s){return s.name;}).filter(Boolean).slice(0,2).join(', ') || 'Service Visit';
+        var dateStr = j.date ? j.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+        return '<div class="job-auto-item" data-jid="'+escHtml(j.jobId)+'">'+
+            '<strong>#'+escHtml(j.jobId)+'</strong> — '+escHtml(j.customerName||'')+'<br>'+
+            '<div class="job-auto-sub">'+escHtml(desc)+(dateStr?' · '+dateStr:'')+'</div>'+
+            '</div>';
+    }).join('');
+    jobAutoDropdown.querySelectorAll('.job-auto-item').forEach(function(item){
+        item.addEventListener('mousedown', function(e){ e.preventDefault(); addJobId(item.dataset.jid); });
+    });
+    openJobDropdown();
+}
+
+jobIdInput.addEventListener('input', function(){ renderJobDropdown(this.value); });
+jobIdInput.addEventListener('focus', function(){ renderJobDropdown(this.value); });
+jobIdInput.addEventListener('blur', function(){ setTimeout(closeJobDropdown, 150); });
+jobIdInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+        e.preventDefault();
+        var focused = jobAutoDropdown.querySelector('.job-auto-item:hover');
+        if(focused){ addJobId(focused.dataset.jid); }
+        else if(this.value.trim()){ addJobId(this.value); }
+    } else if(e.key === 'Backspace' && !this.value && linkedJobIds.length){
+        linkedJobIds.splice(linkedJobIds.length-1, 1);
+        renderJobTags();
+        tryPrefillBillingFromJobs();
+    } else if(e.key === 'Escape'){ closeJobDropdown(); }
 });
 
 // ── Totals ──
@@ -501,8 +735,8 @@ function renderLineItems(){
             '<div class="svc-name-wrap">'+
                 '<input class="form-input svc-name-input" type="text" placeholder="Description" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off">'+
             '</div>'+
-            '<input class="form-input" type="number" min="1" step="1" placeholder="1" value="'+escHtml(String(li.qty||''))+'" data-qty-idx="'+i+'">'+
-            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price!==''?li.price:''))+'" data-price-idx="'+i+'">'+
+            '<input class="form-input" type="number" min="1" step="1" placeholder="1" value="'+escHtml(String(li.qty||''))+'" data-qty-idx="'+i+'" style="text-align:right;">'+
+            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price!==''?li.price:''))+'" data-price-idx="'+i+'" style="text-align:right;">'+
             '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>'+
             '</div>';
     }).join('');
@@ -514,7 +748,6 @@ function renderLineItems(){
         input.addEventListener('input', function(){ invLineItemsArr[parseInt(this.dataset.priceIdx)].price = this.value; updateTotals(); });
     });
 
-    // Body-level svc dropdowns
     invLineItemsArr.forEach(function(li,i){
         var drop = document.createElement('div');
         drop.className = 'svc-dropdown';
@@ -551,7 +784,6 @@ document.getElementById('addLineBtn').addEventListener('click', function(){
     if(inputs.length) inputs[inputs.length-1].focus();
 });
 
-// Reposition on modal scroll
 document.getElementById('invModalBody').addEventListener('scroll', function(){
     document.querySelectorAll('.svc-dropdown.open').forEach(function(drop){
         var idx = drop.id.replace('svcDrop','');
@@ -605,7 +837,7 @@ document.getElementById('confirmExitCancel').addEventListener('click', function(
 document.getElementById('confirmExitOk').addEventListener('click', function(){ document.getElementById('confirmExitModal').classList.remove('open'); if(pendingCloseCallback){pendingCloseCallback();pendingCloseCallback=null;} });
 
 // ── Modal open/close ──
-function openModal(inv){
+function openModal(inv, prefillJobId){
     invLineItemsArr = inv
         ? (Array.isArray(inv.items) ? inv.items.map(function(it){ return {name:it.name||'',qty:Number(it.qty)||1,price:Number(it.unitPrice)||0}; }) : [])
         : [{name:'',qty:1,price:''}];
@@ -617,16 +849,31 @@ function openModal(inv){
           })
         : [];
 
+    // Linked jobs — support both jobIds (array) and legacy jobId (string)
+    linkedJobIds = [];
+    if(inv){
+        if(Array.isArray(inv.jobIds) && inv.jobIds.length){ linkedJobIds = inv.jobIds.slice(); }
+        else if(inv.jobId){ linkedJobIds = [inv.jobId]; }
+    } else if(prefillJobId){
+        linkedJobIds = [prefillJobId];
+    }
+
     document.getElementById('editInvId').value          = inv ? inv.invId : '';
     document.getElementById('invModalTitle').textContent = inv ? 'Edit Invoice' : 'New Invoice';
     document.getElementById('invDate').value            = inv && inv.dateIssued ? inv.dateIssued.toISOString().slice(0,10) : new Date().toISOString().slice(0,10);
     document.getElementById('invDueDate').value         = inv && inv.dueDate ? inv.dueDate.toISOString().slice(0,10) : '';
     document.getElementById('invStatus').value          = inv ? inv.status : 'Payment Due';
-    document.getElementById('invJobId').value           = inv ? (inv.jobId||'') : '';
     document.getElementById('invNotes').value           = inv ? (inv.notes||'') : '';
     document.getElementById('invModalStatus').textContent = '';
     document.getElementById('custManualEmail').value    = '';
     document.getElementById('custManualPhone').value    = '';
+
+    // Billing address
+    var billingEl = document.getElementById('invBillingAddress');
+    billingEl.value = inv ? (inv.billingAddress||'') : '';
+    billingEl.dataset.autofilled = 'false';
+    document.getElementById('billingAddrHint').style.display = 'none';
+    clearBillingPrefillPills();
 
     // Reset customer picker
     pickerSelectedUid=''; pickerIsManual=false;
@@ -644,8 +891,15 @@ function openModal(inv){
         }
     }
 
+    renderJobTags();
     renderLineItems();
     renderPayments();
+
+    // If billing still empty and we have linked jobs, try to prefill from job address
+    if(!billingEl.value){
+        tryPrefillBillingFromJobs();
+    }
+
     document.body.classList.add('modal-open');
     document.getElementById('invModal').classList.add('open');
     document.getElementById('invModalBody').scrollTop=0;
@@ -654,15 +908,14 @@ function openModal(inv){
 function closeModal(){
     document.getElementById('invModal').classList.remove('open');
     document.body.classList.remove('modal-open');
-    closeDropdown();
+    closeDropdown(); closeJobDropdown();
     document.querySelectorAll('.svc-dropdown[data-body-drop]').forEach(function(el){ el.remove(); });
 }
 
 document.getElementById('newInvBtn').addEventListener('click', function(){
     var params = new URLSearchParams(window.location.search);
     var jobFor = params.get('newFor');
-    openModal(null);
-    if(jobFor){ document.getElementById('invJobId').value=jobFor; }
+    openModal(null, jobFor||null);
 });
 document.getElementById('invModalClose').addEventListener('click', function(){ maybeClose(closeModal); });
 document.getElementById('cancelInvBtn').addEventListener('click', function(){ maybeClose(closeModal); });
@@ -692,11 +945,13 @@ document.getElementById('saveInvBtn').addEventListener('click', async function()
     var uid=custSelectedUidEl.value;
     var isManual=!uid&&custName;
     var dateVal=document.getElementById('invDate').value;
+    var billingAddr=document.getElementById('invBillingAddress').value.trim();
     var editId=document.getElementById('editInvId').value;
     var items=invLineItemsArr.map(function(li){ return {name:(li.name||'').trim(),qty:Number(li.qty)||1,unitPrice:Number(li.price)||0}; }).filter(function(it){return it.name;});
 
     if(!custName){ status.textContent='Enter or select a customer.'; status.className='modal-status err'; return; }
     if(!dateVal){ status.textContent='Pick a date.'; status.className='modal-status err'; return; }
+    if(!billingAddr){ status.textContent='A billing address is required.'; status.className='modal-status err'; return; }
     if(!items.length){ status.textContent='Add at least one line item.'; status.className='modal-status err'; return; }
     if(isManual){
         var email=document.getElementById('custManualEmail').value.trim();
@@ -709,13 +964,19 @@ document.getElementById('saveInvBtn').addEventListener('click', async function()
         .map(function(p){ return {date:firebase.firestore.Timestamp.fromDate(new Date(p.date+'T12:00:00')),type:p.type||'Cash',amount:Number(p.amount)||0}; });
 
     var dueDateVal=document.getElementById('invDueDate').value;
+
+    // Normalise linked job IDs
+    var jobIdsToSave = linkedJobIds.filter(function(id){ return id.trim(); });
+
     var data={
         uid:uid||'',
         customerName:uid?(custNames[uid]||custName):custName,
         status:document.getElementById('invStatus').value,
         dateIssued:firebase.firestore.Timestamp.fromDate(new Date(dateVal+'T12:00:00')),
         dueDate:dueDateVal?firebase.firestore.Timestamp.fromDate(new Date(dueDateVal+'T12:00:00')):null,
-        jobId:document.getElementById('invJobId').value.trim(),
+        jobIds:jobIdsToSave,
+        jobId:jobIdsToSave[0]||'',   // legacy: first job
+        billingAddress:billingAddr,
         items:items,
         payments:payments,
         notes:document.getElementById('invNotes').value.trim(),
@@ -781,12 +1042,23 @@ function renderInvoices(invoices, targetHash){
         var custLink=inv.uid
             ?'<a href="/staff/dashboard/customers/#'+inv.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
             :escHtml(displayName)+(displayName&&!inv.uid?' <span style="font-size:10px;color:#bbb;">(no account)</span>':'');
+
+        // Job links — support both jobIds array and legacy jobId
+        var jobIds = Array.isArray(inv.jobIds) && inv.jobIds.length ? inv.jobIds : (inv.jobId ? [inv.jobId] : []);
+        var jobLinksHtml = jobIds.map(function(jid){ return '<a href="/staff/dashboard/jobs/#'+jid+'" style="color:var(--orange);">Job #'+jid+'</a>'; }).join(', ');
+
         var metaParts=dateStr+' · #'+invId+
-            (inv.jobId?' · <a href="/staff/dashboard/jobs/#'+inv.jobId+'" style="color:var(--orange);">Job #'+inv.jobId+'</a>':'')+
+            (jobLinksHtml?' · '+jobLinksHtml:'')+
             (displayName?' · '+custLink:'');
+
         var lineHTML=items.length?'<div><div class="inv-section-label">Line Items</div><table class="line-items"><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
             items.map(function(i){return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+
             '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>':'';
+
+        var billingHTML = inv.billingAddress
+            ? '<div><div class="inv-section-label">Billing Address</div><div style="background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);">'+escHtml(inv.billingAddress)+'</div></div>'
+            : '';
+
         var payHTML='';
         if(inv.payments&&inv.payments.length){
             payHTML='<div><div class="inv-section-label">Payment History</div><div class="pay-history">'+
@@ -800,9 +1072,13 @@ function renderInvoices(invoices, targetHash){
             payHTML='<div class="balance-summary"><span>Balance Due</span><span class="balance-due">'+fmtMoney(total)+'</span></div>';
         }
         var notesHTML=inv.notes?'<div><div class="inv-section-label">Notes</div><div style="background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);line-height:1.6;">'+escHtml(inv.notes)+'</div></div>':'';
+
+        // Build job action buttons for each linked job
+        var viewJobButtons = jobIds.map(function(jid){ return '<a class="btn-ghost" href="/staff/dashboard/jobs/#'+jid+'">View Job #'+jid+'</a>'; }).join('');
+
         var actionButtons='<button class="btn-ghost" onclick=\'editInv("'+invId+'")\'>Edit</button>'+
             '<button class="btn-ghost danger" onclick=\'deleteInv("'+invId+'")\'>Delete</button>'+
-            (inv.jobId?'<a class="btn-ghost" href="/staff/dashboard/jobs/#'+inv.jobId+'">View Job</a>':'');
+            viewJobButtons;
 
         html+='<div class="inv-card'+(isTarget?' highlight':'')+'" id="inv-card-'+invId+'">';
         html+='<div class="inv-card-header" onclick="toggleInv(\''+invId+'\')">';
@@ -812,7 +1088,7 @@ function renderInvoices(invoices, targetHash){
             '<span class="toggle-chevron">▾</span></div>';
         html+='</div>';
         html+='<div class="inv-card-body'+(isTarget ? '' : ' collapsed')+'" id="inv-body-'+invId+'">';
-        html+=lineHTML+payHTML+notesHTML;
+        html+=lineHTML+billingHTML+payHTML+notesHTML;
         html+='<div class="inv-actions">'+actionButtons+'</div>';
         html+='</div></div>';
     });
@@ -825,7 +1101,7 @@ function renderInvoices(invoices, targetHash){
 
 function editInv(invId){
     var inv=allInvoices.find(function(i){return i.invId===invId;});
-    if(inv) openModal(inv);
+    if(inv) openModal(inv, null);
 }
 
 // ── Filters ──
@@ -836,7 +1112,8 @@ function applyFilters(){
         if(status&&inv.status.toLowerCase()!==status) return false;
         if(search){
             var displayName=(inv.uid&&custNames[inv.uid])?custNames[inv.uid]:(inv.customerName||'');
-            var hay=[displayName,inv.invId,inv.jobId,(inv.items||[]).map(function(i){return i.name;}).join(' ')].join(' ').toLowerCase();
+            var jobIdsStr = (Array.isArray(inv.jobIds)?inv.jobIds:[inv.jobId||'']).join(' ');
+            var hay=[displayName,inv.invId,jobIdsStr,(inv.items||[]).map(function(i){return i.name;}).join(' ')].join(' ').toLowerCase();
             if(hay.indexOf(search)===-1) return false;
         }
         return true;
@@ -853,12 +1130,17 @@ async function loadInvoices(){
         allInvoices=[];
         snapshot.forEach(function(doc){
             var d=doc.data();
+            // Normalise jobIds: support both array and legacy single string
+            var jobIds = Array.isArray(d.jobIds) ? d.jobIds : (d.jobId ? [d.jobId] : []);
             allInvoices.push({
                 invId:doc.id, uid:d.uid||'', customerName:d.customerName||'',
                 status:d.status||'Payment Due',
                 dateIssued:d.dateIssued?d.dateIssued.toDate():null,
                 dueDate:d.dueDate?d.dueDate.toDate():null,
-                jobId:d.jobId||'', items:Array.isArray(d.items)?d.items:[],
+                jobId:d.jobId||'',
+                jobIds:jobIds,
+                billingAddress:d.billingAddress||'',
+                items:Array.isArray(d.items)?d.items:[],
                 payments:Array.isArray(d.payments)?d.payments:[],
                 notes:d.notes||'', manualEmail:d.manualEmail||'', manualPhone:d.manualPhone||'',
             });
@@ -892,12 +1174,27 @@ auth.onAuthStateChanged(async function(user){
             "Power Washing","Snow Removal","Soil Testing","Spring Cleanup","Tree Pruning","Weed Control"
         ];
 
+        // Load jobs for autocomplete & billing prefill
+        var jobSnap=await db.collection('jobs').orderBy('date','desc').limit(500).get();
+        allJobsCache=[];
+        jobSnap.forEach(function(doc){
+            var d=doc.data();
+            allJobsCache.push({
+                jobId:doc.id,
+                uid:d.uid||'',
+                customerName:d.customerName||'',
+                address:d.address||'',
+                date:d.date?d.date.toDate():null,
+                services:Array.isArray(d.services)?d.services:[],
+            });
+        });
+
         await loadInvoices();
 
         // Handle ?newFor=jobId on page load
         var params=new URLSearchParams(window.location.search);
         var jobFor=params.get('newFor');
-        if(jobFor){ openModal(null); document.getElementById('invJobId').value=jobFor; }
+        if(jobFor){ openModal(null, jobFor); }
 
     } catch(e){
         console.error('MAIN ERROR:',e);
