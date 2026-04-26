@@ -39,10 +39,10 @@
 .inv-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); margin-left: auto; }
 .btn-ghost { text-decoration: none !important; }
 
-/* ── CONTRACT BADGE — refined slate/indigo ── */
+/* ── CONTRACT BADGE ── */
 .contract-badge {
     display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
-    color: #3d4f7c; background: #eef1fb; border: 1px solid #c5cef0;
+    color: #8a4a10; background: #fdf0e3; border: 1px solid #f0c898;
     border-radius: 100px; padding: 2px 8px; vertical-align: middle;
 }
 
@@ -69,12 +69,12 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 /* ── CONTRACT MODAL ── */
 .contract-modal { width: min(760px, calc(100vw - 32px)); }
 .contract-section {
-    background: #f4f6fc; border: 1px solid #d0d8f0; border-radius: 10px;
+    background: #fdf8f3; border: 1px solid #f0d9bc; border-radius: 10px;
     padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
 }
 .contract-section-label {
     font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
-    color: #5165a8; margin-bottom: 2px;
+    color: #c07a30; margin-bottom: 2px;
 }
 .contract-preview-box {
     background: #f6fff9; border: 1px solid #b6dfc8; border-radius: 10px;
@@ -243,20 +243,11 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
 .toggle-row {
     display: flex; align-items: center; gap: 10px;
-    padding: 12px 14px; background: #f4f6fc; border: 1px solid #d0d8f0;
+    padding: 12px 14px; background: #fdf8f3; border: 1px solid #f0d9bc;
     border-radius: 10px; cursor: pointer; user-select: none;
 }
 .toggle-label { font-size: 13px; font-weight: 600; color: var(--text-2); }
 .toggle-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
-
-/* ── CONTRACT FILTER CHIP ── */
-.filter-contract-btn {
-    padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border);
-    background: var(--white); font-size: 13px; font-weight: 600; color: var(--text-2);
-    cursor: pointer; transition: all 0.12s; white-space: nowrap; font-family: 'Inter', sans-serif;
-}
-.filter-contract-btn:hover { border-color: #5165a8; color: #5165a8; }
-.filter-contract-btn.active { background: #eef1fb; border-color: #5165a8; color: #3d4f7c; }
 
 /* ═══════════════════════════════════════════════
    PRINT INVOICE STYLES
@@ -451,13 +442,13 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .inv-doc-footer-left { font-size: 11px; color: #666; }
 .inv-doc-footer-right { font-size: 11px; color: #e8703a; font-style: italic; }
 
-/* Contract section — slate/indigo on the print doc too */
+/* Contract section */
 .inv-doc-contract {
-    background: #eef1fb; border: 1px solid #c5cef0;
+    background: #fdf0e3; border: 1px solid #f0c898;
     border-radius: 8px; padding: 12px 16px; margin-bottom: 24px;
-    font-size: 12px; color: #2e3d6e;
+    font-size: 12px; color: #7a4010;
 }
-.inv-doc-contract strong { display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; color: #5165a8; font-family: Arial, sans-serif; }
+.inv-doc-contract strong { display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; color: #c07a30; font-family: Arial, sans-serif; }
 
 @media(max-width:600px){
     .li-header { grid-template-columns: 1fr 48px 76px 28px; }
@@ -530,17 +521,15 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
             </div>
         </div>
 
-        <!-- FILTER BAR — now includes contract toggle -->
-        <div class="filter-bar" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-            <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, description, invoice #, job #…" style="flex:1;min-width:180px;">
-            <select class="filter-select" id="statusFilter" style="min-width:140px;">
+        <div class="filter-bar">
+            <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, description, invoice #, job #…">
+            <select class="filter-select" id="statusFilter">
                 <option value="">All Statuses</option>
                 <option value="payment due">Payment Due</option>
                 <option value="paid">Paid</option>
                 <option value="overdue">Overdue</option>
                 <option value="draft">Draft</option>
             </select>
-            <button class="filter-contract-btn" id="contractFilterBtn" title="Show recurring contracts only">📋 Contracts Only</button>
         </div>
 
         <div id="invListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
@@ -702,7 +691,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 <p class="line-total-preview" id="ctrServiceTotal" style="margin-top:4px;"></p>
             </div>
 
-            <!-- CONTRACT DATES + FREQUENCY + TIME -->
+            <!-- CONTRACT DATES + FREQUENCY -->
             <div class="contract-section">
                 <div class="contract-section-label">Schedule</div>
                 <div class="date-row">
@@ -715,14 +704,6 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                         <input class="form-input" type="date" id="ctrEndDate">
                     </div>
                 </div>
-
-                <!-- JOB TIME -->
-                <div class="form-row" style="margin:0;">
-                    <label class="form-label">Job Time <span style="font-weight:400;color:#bbb;">(applied to all visits)</span></label>
-                    <input class="form-input" type="time" id="ctrJobTime" placeholder="e.g. 08:00" style="max-width:160px;">
-                    <div style="font-size:11px;color:var(--text-3);margin-top:4px;">Leave blank if time is flexible or unknown.</div>
-                </div>
-
                 <div class="form-row" style="margin:0;">
                     <label class="form-label">Frequency</label>
                     <div class="freq-row">
@@ -913,14 +894,6 @@ var invPaymentsArr  = [];
 var linkedJobIds    = [];
 var PAYMENT_TYPES   = ['Cash','Check','Venmo','Zelle','Card','Other'];
 
-// ── Contract filter state ──
-var contractFilterActive = false;
-document.getElementById('contractFilterBtn').addEventListener('click', function(){
-    contractFilterActive = !contractFilterActive;
-    this.classList.toggle('active', contractFilterActive);
-    applyFilters();
-});
-
 // ── Customer picker (invoice modal) ──
 var pickerSelectedUid = '';
 var pickerIsManual    = false;
@@ -1000,7 +973,7 @@ document.getElementById('invDate').addEventListener('change', function(){
     }
 });
 document.getElementById('invDueDate').addEventListener('change', function(){
-    this.dataset.autoset = 'false';
+    this.dataset.autoset = 'false'; // user manually set it
 });
 
 // ── Billing address prefill ──
@@ -1316,6 +1289,7 @@ function openModal(inv, prefillJobId){
     document.getElementById('invModalTitle').textContent   = inv ? 'Edit Invoice' : 'New Invoice';
     var today = new Date().toISOString().slice(0,10);
     document.getElementById('invDate').value               = inv && inv.dateIssued ? inv.dateIssued.toISOString().slice(0,10) : today;
+    // Due date: stored value, or default 3 days
     var dueDateEl = document.getElementById('invDueDate');
     if(inv && inv.dueDate){ dueDateEl.value = inv.dueDate.toISOString().slice(0,10); dueDateEl.dataset.autoset = 'false'; }
     else { dueDateEl.value = defaultDueDate(document.getElementById('invDate').value); dueDateEl.dataset.autoset = 'true'; }
@@ -1450,9 +1424,12 @@ document.getElementById('saveInvBtn').addEventListener('click', async function()
 // CONTRACT SYSTEM
 // ═══════════════════════════════════════════════════════════════
 
+// Contract customer picker state
 var ctrCustSelectedUid = '';
 var ctrCustIsManual = false;
-var ctrServiceLinesArr = [];
+
+// Multi-service lines for contract
+var ctrServiceLinesArr = []; // [{name, price}]
 
 function ctrRenderServiceLines(){
     document.querySelectorAll('.svc-dropdown[data-ctr-drop]').forEach(function(el){ el.remove(); });
@@ -1473,6 +1450,7 @@ function ctrRenderServiceLines(){
         });
     });
 
+    // Create body-level svc dropdowns
     ctrServiceLinesArr.forEach(function(li, i){
         var drop = document.createElement('div');
         drop.className = 'svc-dropdown'; drop.id = 'ctrSvcDrop'+i;
@@ -1592,6 +1570,7 @@ function setupCtrCustPicker(){
         if(q && !ctrCustSelectedUid){ ctrCustIsManual=true; document.getElementById('ctrCustTypeHint').style.display=''; document.getElementById('ctrManualContactFields').style.display=''; }
     });
 
+    // Phone format
     document.getElementById('ctrManualPhone').addEventListener('input', function(){
         var digits = this.value.replace(/\D/g,'').slice(0,10);
         var out='';
@@ -1625,6 +1604,7 @@ function ctrPrefillAddress(uid){
     });
 }
 
+// Generate dates for contract
 function generateContractDates(startStr, endStr, freqNum, freqUnit){
     if(!startStr || !endStr || !freqNum) return [];
     var start = new Date(startStr+'T12:00:00');
@@ -1697,12 +1677,14 @@ function ctrUpdatePrepayInfo(){
         dates.length + ' total visits scheduled';
 }
 
+// Wire contract preview updates
 ['ctrStartDate','ctrEndDate','ctrFreqNum','ctrFreqUnit'].forEach(function(id){
     document.getElementById(id).addEventListener('change', ctrUpdatePreview);
     document.getElementById(id).addEventListener('input', ctrUpdatePreview);
 });
 document.getElementById('ctrPrepayAmount').addEventListener('input', ctrUpdatePrepayInfo);
 
+// Prepay toggle
 document.getElementById('ctrPrepayCheck').addEventListener('change', function(){
     document.getElementById('ctrPrepayPanel').style.display = this.checked ? '' : 'none';
     if(this.checked){
@@ -1729,6 +1711,7 @@ document.getElementById('confirmContractExitOk').addEventListener('click', funct
     if(pendingContractCloseCallback){ pendingContractCloseCallback(); pendingContractCloseCallback=null; }
 });
 
+// Open / close contract modal
 document.getElementById('newContractBtn').addEventListener('click', function(){
     ctrCustSelectedUid=''; ctrCustIsManual=false;
     ctrServiceLinesArr = [{name:'', price:''}];
@@ -1745,7 +1728,6 @@ document.getElementById('newContractBtn').addEventListener('click', function(){
     document.getElementById('ctrAddrBar').style.display='none';
     document.getElementById('ctrStartDate').value='';
     document.getElementById('ctrEndDate').value='';
-    document.getElementById('ctrJobTime').value='';       // reset time
     document.getElementById('ctrFreqNum').value='1';
     document.getElementById('ctrFreqUnit').value='weeks';
     document.getElementById('ctrCrew').value='';
@@ -1777,7 +1759,7 @@ document.getElementById('contractModalClose').addEventListener('click', function
 document.getElementById('cancelContractBtn').addEventListener('click', function(){ maybeCloseContract(closeContractModal); });
 document.getElementById('contractModal').addEventListener('click', function(e){ if(e.target===this) maybeCloseContract(closeContractModal); });
 
-// ── Save contract ──
+// ── Save contract (batch create jobs + invoice + update services) ──
 document.getElementById('saveContractBtn').addEventListener('click', async function(){
     var btn = this;
     var status = document.getElementById('contractModalStatus');
@@ -1790,7 +1772,6 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
     var endStr     = document.getElementById('ctrEndDate').value;
     var freqNum    = parseInt(document.getElementById('ctrFreqNum').value)||1;
     var freqUnit   = document.getElementById('ctrFreqUnit').value;
-    var jobTime    = document.getElementById('ctrJobTime').value || '';   // NEW: job time
     var crew       = document.getElementById('ctrCrew').value.trim();
     var custNotes  = document.getElementById('ctrCustomerNotes').value.trim();
     var invNotes   = document.getElementById('ctrInvNotes').value.trim();
@@ -1801,6 +1782,7 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
     var prepayType = document.getElementById('ctrPrepayType').value;
     var prepayDate = document.getElementById('ctrPrepayDate').value;
 
+    // Validate services
     var services = ctrServiceLinesArr.map(function(li){ return {name:(li.name||'').trim(), price:parseFloat(li.price)||0}; }).filter(function(s){ return s.name; });
 
     if(!custName){ status.textContent='Select a customer.'; status.className='modal-status err'; return; }
@@ -1834,6 +1816,7 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
         var effectiveDueDate = dueDateStr ? new Date(dueDateStr+'T12:00:00') : new Date(startStr+'T12:00:00');
         if(!dueDateStr) effectiveDueDate.setDate(effectiveDueDate.getDate()+3);
 
+        // 1. Generate all job IDs
         var jobIds = [];
         for(var i=0; i<dates.length; i++){
             status.textContent = 'Generating IDs ('+(i+1)+'/'+dates.length+')…';
@@ -1841,11 +1824,14 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
             jobIds.push(String(jid));
         }
 
+        // 2. Generate invoice ID
         var invId = await generateId('invoiceCounters', issueDate);
         invId = String(invId);
 
+        // 3. Build invoice line items (one row per service × visits)
         var invItems = services.map(function(s){ return { name: s.name, qty: dates.length, unitPrice: s.price }; });
 
+        // 4. Payments
         var payments = [];
         if(doPrepay && prepayAmt > 0 && prepayDate){
             payments.push({
@@ -1855,6 +1841,7 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
             });
         }
 
+        // 5. Batch write jobs + invoice
         var CHUNK = 400;
         for(var chunk=0; chunk<dates.length; chunk+=CHUNK){
             var batch = db.batch();
@@ -1868,7 +1855,7 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
                     customerName: resolvedCustName,
                     status: 'Scheduled',
                     date: firebase.firestore.Timestamp.fromDate(d),
-                    time: jobTime,        // NEW: save time to each job
+                    time: '',
                     address: address,
                     assignedCrew: crew,
                     services: services.map(function(s){ return { name: s.name, qty: 1, unitPrice: s.price }; }),
@@ -1904,7 +1891,6 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
                     contractFrequency: freqLabel,
                     contractStart: startStr,
                     contractEnd: endStr,
-                    contractTime: jobTime,   // NEW: store time on contract invoice too
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 };
@@ -1920,12 +1906,14 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
             status.textContent = 'Saved jobs '+(chunk+1)+'–'+Math.min(chunk+CHUNK, dates.length)+' of '+dates.length+'…';
         }
 
+        // 6. Update services doc (one entry per service line, only for customers with accounts)
         if(uid){
             status.textContent = 'Updating service record…';
             var svcDocRef = db.collection('services').doc(uid);
             var svcSnap = await svcDocRef.get();
             var existingSvcs = svcSnap.exists ? (svcSnap.data().services || []) : [];
 
+            // For each service in the contract, upsert
             services.forEach(function(sv){
                 var visitsIncluded = sv.price > 0 ? Math.floor(prepayAmt / sv.price / services.length) : 0;
                 var newSvc = {
@@ -2053,20 +2041,10 @@ function getPrintStyles(){
         '.inv-doc-footer{background:#0f0f0f;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}'+
         '.inv-doc-footer-left{font-size:11px;color:#666;}'+
         '.inv-doc-footer-right{font-size:11px;color:#e8703a;font-style:italic;}'+
-        '.inv-doc-contract{background:#eef1fb;border:1px solid #c5cef0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#2e3d6e;}'+
-        '.inv-doc-contract strong{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;color:#5165a8;font-family:Arial,sans-serif;}'+
+        '.inv-doc-contract{background:#fdf0e3;border:1px solid #f0c898;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#7a4010;}'+
+        '.inv-doc-contract strong{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;color:#c07a30;font-family:Arial,sans-serif;}'+
         '@media print{@page{margin:0;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}'+
         '</style>';
-}
-
-function fmtTime12(t){
-    // Converts "14:30" → "2:30 PM"
-    if(!t) return '';
-    var parts = t.split(':');
-    var h = parseInt(parts[0]), m = parseInt(parts[1]||0);
-    var ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
-    return h + ':' + String(m).padStart(2,'0') + ' ' + ampm;
 }
 
 function buildPrintHTML(inv){
@@ -2089,6 +2067,7 @@ function buildPrintHTML(inv){
 
     var html = '<div class="inv-doc">';
 
+    // Header
     html += '<div class="inv-doc-header">';
     html += '<div class="inv-doc-brand"><div class="inv-doc-logo-name">BWD Services</div><div class="inv-doc-logo-sub">Genesee County, Michigan</div></div>';
     html += '<div class="inv-doc-header-right">';
@@ -2097,6 +2076,7 @@ function buildPrintHTML(inv){
     html += '<div><span class="inv-doc-status-chip '+statusClass+'">'+escHtml(statusLabel)+'</span></div>';
     html += '</div></div>';
 
+    // Meta strip
     html += '<div class="inv-doc-meta-strip">';
     html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Date Issued</div><div class="inv-doc-meta-value">'+escHtml(issuedStr)+'</div></div>';
     html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Due Date</div><div class="inv-doc-meta-value">'+escHtml(dueStr)+'</div></div>';
@@ -2104,8 +2084,10 @@ function buildPrintHTML(inv){
     if(balance > 0.01) html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Balance Due</div><div class="inv-doc-meta-value" style="color:#d93025;">'+fmtMoney(balance)+'</div></div>';
     html += '</div>';
 
+    // Body
     html += '<div class="inv-doc-body">';
 
+    // Bill to / From
     html += '<div class="inv-doc-bill-row">';
     html += '<div class="inv-doc-bill-block"><div class="inv-doc-bill-label">Bill To</div>';
     html += '<div class="inv-doc-bill-name">'+escHtml(displayName)+'</div>';
@@ -2116,13 +2098,14 @@ function buildPrintHTML(inv){
     html += '<div class="inv-doc-from-detail">Genesee County, Michigan<br>bwdservices.com</div>';
     html += '</div></div>';
 
+    // Contract info
     if(inv.isContract){
-        var timeStr = inv.contractTime ? ' · ' + fmtTime12(inv.contractTime) + ' each visit' : '';
         html += '<div class="inv-doc-contract"><strong>Recurring Contract</strong>';
         html += escHtml(inv.contractFrequency||'') + ' from ' + escHtml(inv.contractStart||'') + ' to ' + escHtml(inv.contractEnd||'');
-        html += ' · ' + jobIds.length + ' scheduled visits' + escHtml(timeStr) + '</div>';
+        html += ' · ' + jobIds.length + ' scheduled visits</div>';
     }
 
+    // Line items table
     html += '<div class="inv-doc-table-wrap"><table class="inv-doc-table">';
     html += '<thead><tr><th>Description</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Amount</th></tr></thead>';
     html += '<tbody>';
@@ -2137,6 +2120,7 @@ function buildPrintHTML(inv){
     }
     html += '</tfoot></table></div>';
 
+    // Payment history
     if(payments.length){
         html += '<div class="inv-doc-payments"><div class="inv-doc-pay-label">Payment History</div>';
         payments.forEach(function(p){
@@ -2146,24 +2130,27 @@ function buildPrintHTML(inv){
         html += '</div>';
     }
 
+    // Linked jobs
     if(jobIds.length){
         html += '<div class="inv-doc-jobs"><div class="inv-doc-jobs-label">Linked Jobs ('+jobIds.length+')</div><div class="inv-doc-jobs-list">';
         jobIds.forEach(function(jid){ html += '<span class="inv-doc-job-chip">#'+escHtml(jid)+'</span>'; });
         html += '</div></div>';
     }
 
+    // Notes
     if(inv.notes){
         html += '<div class="inv-doc-notes">'+escHtml(inv.notes).replace(/\n/g,'<br>')+'</div>';
     }
 
-    html += '</div>';
+    html += '</div>'; // end body
 
+    // Footer
     html += '<div class="inv-doc-footer">';
     html += '<div class="inv-doc-footer-left">BWD Services · Genesee County, Michigan · bwdservices.com</div>';
     html += '<div class="inv-doc-footer-right">Thank you for your business!</div>';
     html += '</div>';
 
-    html += '</div>';
+    html += '</div>'; // end inv-doc
     return html;
 }
 
@@ -2206,6 +2193,7 @@ function renderInvoices(invoices, targetHash){
 
         var jobIds = Array.isArray(inv.jobIds) && inv.jobIds.length ? inv.jobIds : (inv.jobId ? [inv.jobId] : []);
 
+        // In the card header meta, show up to 3 job links, then "+N more" indicator (no link, they're in the body)
         var jobMetaHtml = '';
         if(jobIds.length === 1){
             jobMetaHtml = '<a href="/staff/dashboard/jobs/#'+jobIds[0]+'" style="color:var(--orange);">Job #'+jobIds[0]+'</a>';
@@ -2213,7 +2201,7 @@ function renderInvoices(invoices, targetHash){
             jobMetaHtml = jobIds.length + ' jobs linked';
         }
 
-        var contractBadge = inv.isContract ? ' <span class="contract-badge">📋 Recurring Contract</span>' : '';
+        var contractBadge = inv.isContract ? ' <span class="contract-badge">Recurring Contract</span>' : '';
 
         var metaParts=dateStr+' · #'+invId+
             (jobMetaHtml?' · '+jobMetaHtml:'')+
@@ -2224,17 +2212,16 @@ function renderInvoices(invoices, targetHash){
             items.map(function(i){return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+
             '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>':'';
 
-        // Contract schedule — slate/indigo colors
+        // Contract schedule info
         var contractHTML = '';
         if(inv.isContract){
-            var timeDisp = inv.contractTime ? ' · ' + fmtTime12(inv.contractTime) : '';
             contractHTML = '<div><div class="inv-section-label">Contract Schedule</div>'+
-                '<div style="background:#eef1fb;border:1px solid #c5cef0;border-radius:8px;padding:10px 14px;font-size:13px;color:#2e3d6e;">'+
+                '<div style="background:#fdf0e3;border:1px solid #f0c898;border-radius:8px;padding:10px 14px;font-size:13px;color:#7a4010;">'+
                 escHtml(inv.contractFrequency||'') + ' · ' + escHtml(inv.contractStart||'') + ' → ' + escHtml(inv.contractEnd||'') +
-                escHtml(timeDisp) +
                 ' · <strong>' + jobIds.length + ' visits</strong></div></div>';
         }
 
+        // Linked jobs section — show all as individual links
         var linkedJobsHTML = '';
         if(jobIds.length){
             linkedJobsHTML = '<div><div class="inv-section-label">Linked Jobs ('+jobIds.length+')</div>'+
@@ -2302,7 +2289,6 @@ function applyFilters(){
     var status=document.getElementById('statusFilter').value.toLowerCase();
     var filtered=allInvoices.filter(function(inv){
         if(status&&inv.status.toLowerCase()!==status) return false;
-        if(contractFilterActive && !inv.isContract) return false;   // NEW: contract filter
         if(search){
             var displayName=(inv.uid&&custNames[inv.uid])?custNames[inv.uid]:(inv.customerName||'');
             var jobIdsStr = (Array.isArray(inv.jobIds)?inv.jobIds:[inv.jobId||'']).join(' ');
@@ -2338,7 +2324,6 @@ async function loadInvoices(){
                 contractFrequency:d.contractFrequency||'',
                 contractStart:d.contractStart||'',
                 contractEnd:d.contractEnd||'',
-                contractTime:d.contractTime||'',
             });
         });
         applyFilters();
