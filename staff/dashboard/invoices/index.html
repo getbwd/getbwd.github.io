@@ -42,7 +42,7 @@
 /* ── CONTRACT BADGE ── */
 .contract-badge {
     display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
-    color: var(--text-2); background: #f0ede8; border: 1px solid var(--border);
+    color: var(--orange); background: #f0ede8; border: 1px solid var(--border);
     border-radius: 6px; padding: 2px 8px; vertical-align: middle;
 }
 
@@ -715,6 +715,10 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                                 <option value="days">Days</option>
                                 <option value="weeks" selected>Weeks</option>
                             </select>
+                        </div>
+                        <div class="form-row" style="margin:0;">
+                            <label class="form-label" style="font-size:10px;">Job Time (optional)</label>
+                            <input class="form-input" type="time" id="ctrJobTime" placeholder="e.g. 08:00">
                         </div>
                         <div class="form-row" style="margin:0;">
                             <label class="form-label" style="font-size:10px;">Assigned Crew</label>
@@ -1728,6 +1732,7 @@ document.getElementById('newContractBtn').addEventListener('click', function(){
     document.getElementById('ctrEndDate').value='';
     document.getElementById('ctrFreqNum').value='1';
     document.getElementById('ctrFreqUnit').value='weeks';
+    document.getElementById('ctrJobTime').value='';
     document.getElementById('ctrCrew').value='';
     document.getElementById('ctrInvStatus').value='Payment Due';
     document.getElementById('ctrDueDate').value='';
@@ -1771,6 +1776,7 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
     var freqNum    = parseInt(document.getElementById('ctrFreqNum').value)||1;
     var freqUnit   = document.getElementById('ctrFreqUnit').value;
     var crew       = document.getElementById('ctrCrew').value.trim();
+    var jobTime    = document.getElementById('ctrJobTime').value || '';
     var custNotes  = document.getElementById('ctrCustomerNotes').value.trim();
     var invNotes   = document.getElementById('ctrInvNotes').value.trim();
     var invStatus  = document.getElementById('ctrInvStatus').value;
@@ -1853,7 +1859,7 @@ document.getElementById('saveContractBtn').addEventListener('click', async funct
                     customerName: resolvedCustName,
                     status: 'Scheduled',
                     date: firebase.firestore.Timestamp.fromDate(d),
-                    time: '',
+                    time: jobTime,
                     address: address,
                     assignedCrew: crew,
                     services: services.map(function(s){ return { name: s.name, qty: 1, unitPrice: s.price }; }),
@@ -2206,12 +2212,17 @@ function renderInvoices(invoices, targetHash){
 
         var metaParts=dateStr+' · #'+invId+
             (jobMetaHtml?' · '+jobMetaHtml:'')+
-            (displayName?' · '+custLink:'')+
-            contractBadge;
+            (displayName?' · '+custLink:'');
 
-        var lineHTML=items.length?'<div><div class="inv-section-label">Line Items</div><table class="line-items"><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
-            items.map(function(i){return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';}).join('')+
-            '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>':'';
+        var lineHTML = '';
+        if(items.length){
+            lineHTML = '<div><div class="inv-section-label">Line Items</div><table class="line-items"><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
+                items.map(function(i,idx){
+                    var badge = (inv.isContract && idx===0) ? ' <span class="contract-badge">Recurring Contract</span>' : '';
+                    return '<tr><td>'+escHtml(i.name)+badge+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';
+                }).join('')+
+                '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>';
+        }
 
         // Contract schedule info
         var contractHTML = '';
@@ -2259,7 +2270,7 @@ function renderInvoices(invoices, targetHash){
 
         html+='<div class="inv-card'+(isTarget?' highlight':'')+'" id="inv-card-'+invId+'">';
         html+='<div class="inv-card-header" onclick="toggleInv(\''+invId+'\')">';
-        html+='<div class="inv-header-left"><div class="inv-card-title">'+escHtml(desc)+contractBadge+'</div><div class="inv-card-meta">'+metaParts+'</div>'+badge(inv.status)+'</div>';
+        html+='<div class="inv-header-left"><div class="inv-card-title">'+escHtml(desc)+'</div><div class="inv-card-meta">'+metaParts+'</div>'+badge(inv.status)+'</div>';
         html+='<div class="inv-header-right"><div class="inv-total-amt">'+fmtMoney(total)+'</div>'+
             (balance>=0.01&&balance<total?'<div class="inv-remaining">'+fmtMoney(balance)+' remaining</div>':'')+
             '<span class="toggle-chevron">▾</span></div>';
