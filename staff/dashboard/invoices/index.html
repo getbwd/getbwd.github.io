@@ -718,7 +718,30 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                         </div>
                         <div class="form-row" style="margin:0;">
                             <label class="form-label" style="font-size:10px;">Job Time (optional)</label>
-                            <input class="form-input" type="time" id="ctrJobTime" placeholder="e.g. 08:00">
+                            <div class="time-picker-wrap" id="ctrTimePickerWrap">
+                                <div class="time-picker-display" id="ctrTimePickerDisplay" tabindex="0">
+                                    <span id="ctrTimePickerText" class="time-placeholder">Select time…</span>
+                                    <span style="color:#bbb;font-size:12px;">▾</span>
+                                </div>
+                                <div class="time-picker-dropdown" id="ctrTimePickerDropdown">
+                                    <div class="time-picker-inner">
+                                        <div class="time-col">
+                                            <div class="time-col-label">Hour</div>
+                                            <div class="time-col-scroll" id="ctrTimeHourScroll"></div>
+                                        </div>
+                                        <div class="time-divider">:</div>
+                                        <div class="time-col">
+                                            <div class="time-col-label">Min</div>
+                                            <div class="time-col-scroll" id="ctrTimeMinScroll"></div>
+                                        </div>
+                                        <div class="time-ampm-wrap">
+                                            <button type="button" class="time-ampm-btn selected" id="ctrTimeAmBtn" data-v="AM">AM</button>
+                                            <button type="button" class="time-ampm-btn" id="ctrTimePmBtn" data-v="PM">PM</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="ctrJobTime">
                         </div>
                         <div class="form-row" style="margin:0;">
                             <label class="form-label" style="font-size:10px;">Assigned Crew</label>
@@ -1426,6 +1449,100 @@ document.getElementById('saveInvBtn').addEventListener('click', async function()
 // CONTRACT SYSTEM
 // ═══════════════════════════════════════════════════════════════
 
+// ── Contract Time Picker ──
+var ctrTimePicker = { hour: null, min: null, ampm: 'AM', open: false };
+
+function buildCtrTimePicker(){
+    var hourScroll = document.getElementById('ctrTimeHourScroll');
+    var minScroll  = document.getElementById('ctrTimeMinScroll');
+    var hHtml = '';
+    for(var h=1; h<=12; h++){ hHtml += '<div class="time-opt" data-h="'+h+'">'+(h<10?'0'+h:h)+'</div>'; }
+    hourScroll.innerHTML = hHtml;
+    var mHtml = '';
+    for(var m=0; m<60; m+=5){ mHtml += '<div class="time-opt" data-m="'+m+'">'+(m<10?'0'+m:m)+'</div>'; }
+    minScroll.innerHTML = mHtml;
+
+    hourScroll.querySelectorAll('.time-opt').forEach(function(el){
+        el.addEventListener('click', function(){
+            hourScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); });
+            this.classList.add('selected');
+            ctrTimePicker.hour = parseInt(this.dataset.h);
+            updateCtrTimeDisplay();
+        });
+    });
+    minScroll.querySelectorAll('.time-opt').forEach(function(el){
+        el.addEventListener('click', function(){
+            minScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); });
+            this.classList.add('selected');
+            ctrTimePicker.min = parseInt(this.dataset.m);
+            updateCtrTimeDisplay();
+        });
+    });
+    document.getElementById('ctrTimeAmBtn').addEventListener('click', function(){
+        ctrTimePicker.ampm = 'AM';
+        document.getElementById('ctrTimeAmBtn').classList.add('selected');
+        document.getElementById('ctrTimePmBtn').classList.remove('selected');
+        updateCtrTimeDisplay();
+    });
+    document.getElementById('ctrTimePmBtn').addEventListener('click', function(){
+        ctrTimePicker.ampm = 'PM';
+        document.getElementById('ctrTimePmBtn').classList.add('selected');
+        document.getElementById('ctrTimeAmBtn').classList.remove('selected');
+        updateCtrTimeDisplay();
+    });
+
+    document.getElementById('ctrTimePickerDisplay').addEventListener('click', function(e){
+        e.stopPropagation();
+        if(ctrTimePicker.open) closeCtrTimePicker(); else openCtrTimePicker();
+    });
+    document.getElementById('ctrTimePickerDisplay').addEventListener('keydown', function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); if(ctrTimePicker.open) closeCtrTimePicker(); else openCtrTimePicker(); }
+        if(e.key==='Escape') closeCtrTimePicker();
+    });
+    document.addEventListener('click', function(e){
+        var wrap = document.getElementById('ctrTimePickerWrap');
+        if(wrap && !wrap.contains(e.target)) closeCtrTimePicker();
+    });
+}
+
+function updateCtrTimeDisplay(){
+    var textEl   = document.getElementById('ctrTimePickerText');
+    var hiddenEl = document.getElementById('ctrJobTime');
+    if(ctrTimePicker.hour===null||ctrTimePicker.min===null){
+        textEl.textContent='Select time…'; textEl.classList.add('time-placeholder'); hiddenEl.value=''; return;
+    }
+    var hDisp = ctrTimePicker.hour<10?'0'+ctrTimePicker.hour:''+ctrTimePicker.hour;
+    var mDisp = ctrTimePicker.min<10?'0'+ctrTimePicker.min:''+ctrTimePicker.min;
+    textEl.textContent = hDisp+':'+mDisp+' '+ctrTimePicker.ampm;
+    textEl.classList.remove('time-placeholder');
+    var h24 = ctrTimePicker.hour;
+    if(ctrTimePicker.ampm==='AM'&&ctrTimePicker.hour===12) h24=0;
+    if(ctrTimePicker.ampm==='PM'&&ctrTimePicker.hour!==12) h24=ctrTimePicker.hour+12;
+    hiddenEl.value = (h24<10?'0'+h24:''+h24)+':'+mDisp;
+}
+
+function setCtrTimePickerValue(val24){
+    ctrTimePicker.hour=null; ctrTimePicker.min=null; ctrTimePicker.ampm='AM';
+    if(!val24){ updateCtrTimeDisplay(); return; }
+    var parts=val24.split(':');
+    var h24=parseInt(parts[0]||0), m=parseInt(parts[1]||0);
+    var ampm=h24>=12?'PM':'AM';
+    var h12=h24%12; if(h12===0)h12=12;
+    ctrTimePicker.hour=h12; ctrTimePicker.min=m; ctrTimePicker.ampm=ampm;
+    document.getElementById('ctrTimeHourScroll').querySelectorAll('.time-opt').forEach(function(el){
+        el.classList.toggle('selected', parseInt(el.dataset.h)===h12);
+    });
+    document.getElementById('ctrTimeMinScroll').querySelectorAll('.time-opt').forEach(function(el){
+        el.classList.toggle('selected', parseInt(el.dataset.m)===m);
+    });
+    document.getElementById('ctrTimeAmBtn').classList.toggle('selected', ampm==='AM');
+    document.getElementById('ctrTimePmBtn').classList.toggle('selected', ampm==='PM');
+    updateCtrTimeDisplay();
+}
+
+function openCtrTimePicker(){ document.getElementById('ctrTimePickerDropdown').classList.add('open'); ctrTimePicker.open=true; }
+function closeCtrTimePicker(){ document.getElementById('ctrTimePickerDropdown').classList.remove('open'); ctrTimePicker.open=false; }
+
 // Contract customer picker state
 var ctrCustSelectedUid = '';
 var ctrCustIsManual = false;
@@ -1732,7 +1849,7 @@ document.getElementById('newContractBtn').addEventListener('click', function(){
     document.getElementById('ctrEndDate').value='';
     document.getElementById('ctrFreqNum').value='1';
     document.getElementById('ctrFreqUnit').value='weeks';
-    document.getElementById('ctrJobTime').value='';
+    setCtrTimePickerValue('');
     document.getElementById('ctrCrew').value='';
     document.getElementById('ctrInvStatus').value='Payment Due';
     document.getElementById('ctrDueDate').value='';
@@ -1755,6 +1872,7 @@ document.getElementById('newContractBtn').addEventListener('click', function(){
 function closeContractModal(){
     document.getElementById('contractModal').classList.remove('open');
     document.body.classList.remove('modal-open');
+    closeCtrTimePicker();
     document.querySelectorAll('.svc-dropdown[data-ctr-drop]').forEach(function(el){ el.remove(); });
 }
 
@@ -2217,9 +2335,8 @@ function renderInvoices(invoices, targetHash){
         var lineHTML = '';
         if(items.length){
             lineHTML = '<div><div class="inv-section-label">Line Items</div><table class="line-items"><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
-                items.map(function(i,idx){
-                    var badge = (inv.isContract && idx===0) ? ' <span class="contract-badge">Recurring Contract</span>' : '';
-                    return '<tr><td>'+escHtml(i.name)+badge+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';
+                items.map(function(i){
+                    return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';
                 }).join('')+
                 '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>';
         }
@@ -2270,7 +2387,7 @@ function renderInvoices(invoices, targetHash){
 
         html+='<div class="inv-card'+(isTarget?' highlight':'')+'" id="inv-card-'+invId+'">';
         html+='<div class="inv-card-header" onclick="toggleInv(\''+invId+'\')">';
-        html+='<div class="inv-header-left"><div class="inv-card-title">'+escHtml(desc)+'</div><div class="inv-card-meta">'+metaParts+'</div>'+badge(inv.status)+'</div>';
+        html+='<div class="inv-header-left"><div class="inv-card-title">'+escHtml(desc)+contractBadge+'</div><div class="inv-card-meta">'+metaParts+'</div>'+badge(inv.status)+'</div>';
         html+='<div class="inv-header-right"><div class="inv-total-amt">'+fmtMoney(total)+'</div>'+
             (balance>=0.01&&balance<total?'<div class="inv-remaining">'+fmtMoney(balance)+' remaining</div>':'')+
             '<span class="toggle-chevron">▾</span></div>';
@@ -2370,6 +2487,7 @@ auth.onAuthStateChanged(async function(user){
         ];
 
         setupCtrCustPicker();
+        buildCtrTimePicker();
 
         var jobSnap=await db.collection('jobs').orderBy('date','desc').limit(500).get();
         allJobsCache=[];
