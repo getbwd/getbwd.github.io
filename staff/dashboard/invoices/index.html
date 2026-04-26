@@ -42,8 +42,8 @@
 /* ── CONTRACT BADGE ── */
 .contract-badge {
     display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
-    color: #8a4a10; background: #fdf0e3; border: 1px solid #f0c898;
-    border-radius: 100px; padding: 2px 8px; vertical-align: middle;
+    color: var(--text-2); background: #f0ede8; border: 1px solid var(--border);
+    border-radius: 6px; padding: 2px 8px; vertical-align: middle;
 }
 
 /* ── MODAL ── */
@@ -444,11 +444,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 
 /* Contract section */
 .inv-doc-contract {
-    background: #fdf0e3; border: 1px solid #f0c898;
-    border-radius: 8px; padding: 12px 16px; margin-bottom: 24px;
-    font-size: 12px; color: #7a4010;
+    margin-bottom: 24px;
 }
-.inv-doc-contract strong { display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; color: #c07a30; font-family: Arial, sans-serif; }
+.inv-doc-contract strong { display: block; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; color: #999; font-family: Arial, sans-serif; }
 
 @media(max-width:600px){
     .li-header { grid-template-columns: 1fr 48px 76px 28px; }
@@ -2041,8 +2039,8 @@ function getPrintStyles(){
         '.inv-doc-footer{background:#0f0f0f;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}'+
         '.inv-doc-footer-left{font-size:11px;color:#666;}'+
         '.inv-doc-footer-right{font-size:11px;color:#e8703a;font-style:italic;}'+
-        '.inv-doc-contract{background:#fdf0e3;border:1px solid #f0c898;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#7a4010;}'+
-        '.inv-doc-contract strong{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;color:#c07a30;font-family:Arial,sans-serif;}'+
+        '.inv-doc-contract{margin-bottom:24px;}'+
+        '.inv-doc-contract strong{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;color:#999;font-family:Arial,sans-serif;}'+
         '@media print{@page{margin:0;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}'+
         '</style>';
 }
@@ -2101,8 +2099,11 @@ function buildPrintHTML(inv){
     // Contract info
     if(inv.isContract){
         html += '<div class="inv-doc-contract"><strong>Recurring Contract</strong>';
-        html += escHtml(inv.contractFrequency||'') + ' from ' + escHtml(inv.contractStart||'') + ' to ' + escHtml(inv.contractEnd||'');
-        html += ' · ' + jobIds.length + ' scheduled visits</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">';
+        html += '<span class="inv-doc-job-chip">'+escHtml(inv.contractFrequency||'—')+'</span>';
+        html += '<span class="inv-doc-job-chip">'+escHtml(inv.contractStart||'')+ ' → ' +escHtml(inv.contractEnd||'')+'</span>';
+        html += '<span class="inv-doc-job-chip">'+jobIds.length+' visits</span>';
+        html += '</div></div>';
     }
 
     // Line items table
@@ -2216,9 +2217,11 @@ function renderInvoices(invoices, targetHash){
         var contractHTML = '';
         if(inv.isContract){
             contractHTML = '<div><div class="inv-section-label">Contract Schedule</div>'+
-                '<div style="background:#fdf0e3;border:1px solid #f0c898;border-radius:8px;padding:10px 14px;font-size:13px;color:#7a4010;">'+
-                escHtml(inv.contractFrequency||'') + ' · ' + escHtml(inv.contractStart||'') + ' → ' + escHtml(inv.contractEnd||'') +
-                ' · <strong>' + jobIds.length + ' visits</strong></div></div>';
+                '<div style="display:flex;flex-wrap:wrap;gap:6px;">' +
+                '<span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">' + escHtml(inv.contractFrequency||'—') + '</span>' +
+                '<span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">' + escHtml(inv.contractStart||'') + ' → ' + escHtml(inv.contractEnd||'') + '</span>' +
+                '<span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">' + jobIds.length + ' visits</span>' +
+                '</div></div>';
         }
 
         // Linked jobs section — show all as individual links
