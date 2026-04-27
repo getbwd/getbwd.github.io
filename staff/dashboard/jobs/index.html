@@ -1215,25 +1215,21 @@ function renderJobs(jobs, targetHash){
         if(job.manualEmail)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value">'+escHtml(job.manualEmail)+'</div></div>');
         if(job.manualPhone)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value">'+escHtml(job.manualPhone)+'</div></div>');
 
-        // ── Services: show names + total only (no per-line pricing table) ──
+        // ── Services: pill chips + per-item price + total in label ──
         var svcListHTML = '';
         if(job.services && job.services.length){
             var hasPricing = job.services.some(function(s){ return s.unitPrice > 0; });
-            var svcNoteContent = job.services.map(function(s){ return escHtml(s.name||'—'); }).join('<br>');
-
-            if(hasPricing){
-                var svcTotal = job.services.reduce(function(sum,s){ return sum + (Number(s.qty)||1)*(Number(s.unitPrice)||0); }, 0);
-                svcListHTML = '<div>' +
-                    '<div class="detail-section-label">Services</div>' +
-                    '<div class="note-block">' + svcNoteContent + '</div>' +
-                    '<div style="font-size:13px;font-weight:700;color:var(--text-2);text-align:right;margin-top:6px;">Total: ' + fmtMoney(svcTotal) + '</div>' +
-                    '</div>';
-            } else {
-                svcListHTML = '<div>' +
-                    '<div class="detail-section-label">Services</div>' +
-                    '<div class="note-block">' + svcNoteContent + '</div>' +
-                    '</div>';
-            }
+            var svcTotal = hasPricing ? job.services.reduce(function(sum,s){ return sum + (Number(s.qty)||1)*(Number(s.unitPrice)||0); }, 0) : 0;
+            var chips = job.services.map(function(s){
+                return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">' +
+                    escHtml(s.name||'—') +
+                    (s.unitPrice > 0 ? '<span style="color:#aaa;font-weight:400;">· '+fmtMoney((Number(s.qty)||1)*(Number(s.unitPrice)||0))+'</span>' : '') +
+                    '</span>';
+            }).join('');
+            svcListHTML = '<div>' +
+                '<div class="detail-section-label">Services' + (hasPricing ? ' <span style="font-weight:400;color:#bbb;">· '+fmtMoney(svcTotal)+' total</span>' : '') + '</div>' +
+                '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + chips + '</div>' +
+                '</div>';
         }
 
         var notesHTML = '';
@@ -1248,15 +1244,10 @@ function renderJobs(jobs, targetHash){
             actionButtons += '<a class="btn-ghost" href="/staff/dashboard/invoices/?newFor='+jobId+'" style="text-decoration:none;">Create Invoice</a>';
         }
 
-        // Auto-invoice badge
-        var autoInvBadge = job.invoiceId
-            ? ' <span class="inv-created-badge">🧾 Invoice #'+job.invoiceId+'</span>'
-            : '';
-
         html += '<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
         html += '<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
         html += '<div style="min-width:0;flex:1;">'+
-            '<div class="job-card-title">'+escHtml(svcNames)+autoInvBadge+'</div>'+
+            '<div class="job-card-title">'+escHtml(svcNames)+'</div>'+
             '<div class="job-card-meta">'+
             '<span>📅 '+dateStr+(job.time?' · '+job.time:'')+'</span>'+
             (displayName?'<span>👤 '+escHtml(displayName)+'</span>':'')+
