@@ -28,7 +28,7 @@
 .line-items td { padding: 6px 8px 6px 0; color: var(--text-2); border-top: 1px solid var(--border-light); }
 .toggle-chevron { font-size: 18px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; line-height: 1; }
 .job-card.open .toggle-chevron { transform: rotate(180deg); }
-.job-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); }
+.job-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); margin-left: auto; }
 
 /* ── DATE/TIME — true side-by-side ── */
 .datetime-row { display: flex; gap: 12px; width: 100%; }
@@ -1215,23 +1215,24 @@ function renderJobs(jobs, targetHash){
         if(job.manualEmail)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value">'+escHtml(job.manualEmail)+'</div></div>');
         if(job.manualPhone)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value">'+escHtml(job.manualPhone)+'</div></div>');
 
-        // Services — show with pricing if available
+        // ── Services: show names + total only (no per-line pricing table) ──
         var svcListHTML = '';
         if(job.services && job.services.length){
             var hasPricing = job.services.some(function(s){ return s.unitPrice > 0; });
+            var svcNoteContent = job.services.map(function(s){ return escHtml(s.name||'—'); }).join('<br>');
+
             if(hasPricing){
                 var svcTotal = job.services.reduce(function(sum,s){ return sum + (Number(s.qty)||1)*(Number(s.unitPrice)||0); }, 0);
-                svcListHTML = '<div><div class="detail-section-label">Services</div>' +
-                    '<table class="line-items"><tr><th>Service</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Total</th></tr>' +
-                    job.services.map(function(s){
-                        var qty = Number(s.qty)||1, price = Number(s.unitPrice)||0;
-                        return '<tr><td>'+escHtml(s.name||'—')+'</td><td style="text-align:right;">'+qty+'</td><td style="text-align:right;">'+fmtMoney(price)+'</td><td style="text-align:right;">'+fmtMoney(qty*price)+'</td></tr>';
-                    }).join('') +
-                    '<tr style="font-weight:700;"><td colspan="3">Total</td><td style="text-align:right;">'+fmtMoney(svcTotal)+'</td></tr>' +
-                    '</table></div>';
+                svcListHTML = '<div>' +
+                    '<div class="detail-section-label">Services</div>' +
+                    '<div class="note-block">' + svcNoteContent + '</div>' +
+                    '<div style="font-size:13px;font-weight:700;color:var(--text-2);text-align:right;margin-top:6px;">Total: ' + fmtMoney(svcTotal) + '</div>' +
+                    '</div>';
             } else {
-                svcListHTML = '<div><div class="detail-section-label">Services</div>' +
-                    '<div class="note-block">' + job.services.map(function(s){ return escHtml(s.name||'—'); }).join('<br>') + '</div></div>';
+                svcListHTML = '<div>' +
+                    '<div class="detail-section-label">Services</div>' +
+                    '<div class="note-block">' + svcNoteContent + '</div>' +
+                    '</div>';
             }
         }
 
@@ -1242,9 +1243,9 @@ function renderJobs(jobs, targetHash){
         var actionButtons = '<button class="btn-ghost" onclick=\'editJob("'+jobId+'")\'>Edit</button>' +
             '<button class="btn-ghost danger" onclick=\'deleteJob("'+jobId+'")\'>Delete</button>';
         if(job.invoiceId){
-            actionButtons += '<a class="btn-ghost create-invoice" href="/staff/dashboard/invoices/#'+job.invoiceId+'">View Invoice</a>';
+            actionButtons += '<a class="btn-ghost" href="/staff/dashboard/invoices/#'+job.invoiceId+'" style="text-decoration:none;">View Invoice</a>';
         } else {
-            actionButtons += '<a class="btn-ghost create-invoice" href="/staff/dashboard/invoices/?newFor='+jobId+'">Create Invoice</a>';
+            actionButtons += '<a class="btn-ghost" href="/staff/dashboard/invoices/?newFor='+jobId+'" style="text-decoration:none;">Create Invoice</a>';
         }
 
         // Auto-invoice badge
@@ -1255,7 +1256,7 @@ function renderJobs(jobs, targetHash){
         html += '<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
         html += '<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
         html += '<div style="min-width:0;flex:1;">'+
-            '<div class="job-card-title">'+escHtml(svcNames)+' <span style="font-size:11px;font-weight:400;color:var(--text-3);">· #'+jobId+'</span>'+autoInvBadge+'</div>'+
+            '<div class="job-card-title">'+escHtml(svcNames)+autoInvBadge+'</div>'+
             '<div class="job-card-meta">'+
             '<span>📅 '+dateStr+(job.time?' · '+job.time:'')+'</span>'+
             (displayName?'<span>👤 '+escHtml(displayName)+'</span>':'')+
