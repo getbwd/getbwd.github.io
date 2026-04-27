@@ -103,12 +103,10 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .addr-prop-pill.manual-pill { border-style: dashed; }
 
 /* ── SERVICE LINE ITEMS ── */
-/* Name-only mode (no auto-invoice) */
 .svc-line-row {
     display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
 }
 .svc-line-row .svc-name-wrap { flex: 1; }
-/* Invoice mode: name + qty + price */
 .svc-inv-row {
     display: grid; grid-template-columns: 1fr 58px 86px 28px; gap: 8px;
     align-items: center; margin-bottom: 6px;
@@ -576,7 +574,6 @@ var autoInvEnabled  = false;
 autoInvCheckbox.addEventListener('change', function(){
     autoInvEnabled = this.checked;
     autoInvPanel.style.display = autoInvEnabled ? '' : 'none';
-    // Rebuild line items to show/hide price fields
     renderLineItems();
     updateSubtotalPreview();
 });
@@ -658,6 +655,8 @@ function setTimePickerValue(val24){
     var parts = val24.split(':');
     var h24 = parseInt(parts[0]||0);
     var m   = parseInt(parts[1]||0);
+    // Snap minute to nearest 10
+    m = Math.round(m / 10) * 10; if(m >= 60) m = 50;
     var ampm = h24 >= 12 ? 'PM' : 'AM';
     var h12 = h24 % 12; if(h12 === 0) h12 = 12;
     timePicker.hour = h12; timePicker.min = m; timePicker.ampm = ampm;
@@ -785,7 +784,6 @@ custSearchInput.addEventListener('blur', function(){
 });
 
 // ── Line items ──
-// Each item: { name, qty, price }  (qty/price only used when autoInvEnabled)
 var jobLineItemsArr = [];
 
 function calcSubtotal(){
@@ -843,7 +841,6 @@ function renderLineItems(){
     var wrap = document.getElementById('jobLineItems');
 
     if(autoInvEnabled){
-        // Show header row for price columns
         var headerHtml = '<div class="svc-inv-header"><span>Service</span><span>Qty</span><span>Unit Price</span><span></span></div>';
         var rowsHtml = jobLineItemsArr.map(function(li, i){
             return '<div class="svc-inv-row">' +
@@ -857,7 +854,6 @@ function renderLineItems(){
         }).join('');
         wrap.innerHTML = headerHtml + rowsHtml;
 
-        // Wire qty/price inputs
         wrap.querySelectorAll('[data-qty-idx]').forEach(function(input){
             input.addEventListener('input', function(){ jobLineItemsArr[parseInt(this.dataset.qtyIdx)].qty = this.value; updateSubtotalPreview(); });
         });
@@ -865,7 +861,6 @@ function renderLineItems(){
             input.addEventListener('input', function(){ jobLineItemsArr[parseInt(this.dataset.priceIdx)].price = this.value; updateSubtotalPreview(); });
         });
     } else {
-        // Name-only mode
         wrap.innerHTML = jobLineItemsArr.map(function(li, i){
             return '<div class="svc-line-row">' +
                 '<div class="svc-name-wrap">' +
@@ -876,7 +871,6 @@ function renderLineItems(){
         }).join('');
     }
 
-    // Create body-level svc dropdowns so modal overflow doesn't clip them
     jobLineItemsArr.forEach(function(li, i){
         var drop = document.createElement('div');
         drop.className = 'svc-dropdown';
@@ -917,7 +911,6 @@ document.getElementById('addLineBtn').addEventListener('click', function(){
     if(inputs.length) inputs[inputs.length - 1].focus();
 });
 
-// Reposition open svc dropdowns when modal body scrolls
 document.getElementById('jobModalBody').addEventListener('scroll', function(){
     document.querySelectorAll('.svc-dropdown.open').forEach(function(drop){
         var idx = drop.id.replace('svcDrop','');
@@ -971,21 +964,17 @@ function openModal(job){
     document.getElementById('autoInvNotes').value     = '';
     document.getElementById('autoInvStatus').value    = 'Payment Due';
 
-    // Hide auto-invoice toggle when editing (already has or doesn't have an invoice)
     document.getElementById('autoInvToggleWrap').style.display = isEdit ? 'none' : '';
     document.getElementById('manualInvoiceIdRow').style.display = isEdit ? '' : (job && job.invoiceId ? '' : 'none');
 
-    // Reset auto-invoice
     autoInvEnabled = false;
     autoInvCheckbox.checked = false;
     autoInvPanel.style.display = 'none';
 
-    // When editing show manual invoice id row always
     if(isEdit) document.getElementById('manualInvoiceIdRow').style.display = '';
 
     setTimePickerValue(job ? job.time : '');
 
-    // Reset customer picker
     pickerSelectedUid = ''; pickerIsManual = false;
     custSearchInput.classList.remove('has-account');
     custAccountBadge.style.display = 'none'; custTypeHint.style.display = 'none';
@@ -1074,7 +1063,6 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
     if(!addrVal){ status.textContent='An address is required.'; status.className='modal-status err'; return; }
     if(!services.length){ status.textContent='Add at least one service.'; status.className='modal-status err'; return; }
 
-    // Validate auto-invoice: all services need a price
     if(autoInvEnabled && !editId){
         var missingPrice = services.some(function(s){ return !s.unitPrice || s.unitPrice <= 0; });
         if(missingPrice){
@@ -1114,14 +1102,15 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
 
     try {
         if(editId){
-            // Edit existing job
+            // Edit: update in place, stay on page
             await db.collection('jobs').doc(editId).update(jobData);
+            status.textContent = 'Saved!'; status.className = 'modal-status ok';
+            setTimeout(function(){ closeModal(); loadJobs(); }, 600);
         } else {
             jobData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
             var jobId = await generateJobId(dateObj);
 
             if(autoInvEnabled){
-                // Generate invoice ID too
                 var invId = await generateInvId(dateObj);
                 var dueDateVal = document.getElementById('autoInvDueDate').value;
                 var invItems = services.map(function(s){ return { name:s.name, qty:s.qty, unitPrice:s.unitPrice }; });
@@ -1132,8 +1121,8 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
                     status:       document.getElementById('autoInvStatus').value,
                     dateIssued:   firebase.firestore.Timestamp.fromDate(dateObj),
                     dueDate:      dueDateVal ? firebase.firestore.Timestamp.fromDate(new Date(dueDateVal+'T12:00:00')) : null,
-                    jobIds:       [String(jobId)],   // multi-job array
-                    jobId:        String(jobId),      // legacy compat
+                    jobIds:       [String(jobId)],
+                    jobId:        String(jobId),
                     items:        invItems,
                     payments:     [],
                     billingAddress: addrVal,
@@ -1146,10 +1135,8 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
                     invData.manualPhone = jobData.manualPhone;
                 }
 
-                // Cross-link
                 jobData.invoiceId = String(invId);
 
-                // Write both atomically
                 var batch = db.batch();
                 batch.set(db.collection('jobs').doc(String(jobId)), jobData);
                 batch.set(db.collection('invoices').doc(String(invId)), invData);
@@ -1157,13 +1144,15 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
 
                 status.textContent = 'Saved! Job #'+jobId+' + Invoice #'+invId+' created.';
                 status.className = 'modal-status ok';
+                // ── CHANGE: redirect to new job anchor ──
+                setTimeout(function(){ closeModal(); window.location.href = '/staff/dashboard/jobs/#' + jobId; }, 600);
             } else {
                 await db.collection('jobs').doc(String(jobId)).set(jobData);
                 status.textContent = 'Saved!'; status.className = 'modal-status ok';
+                // ── CHANGE: redirect to new job anchor ──
+                setTimeout(function(){ closeModal(); window.location.href = '/staff/dashboard/jobs/#' + jobId; }, 600);
             }
         }
-
-        setTimeout(function(){ closeModal(); loadJobs(); }, 800);
     } catch(e){
         console.error(e);
         status.textContent = 'Error: ' + (e.message||'Permission denied');
@@ -1202,12 +1191,19 @@ function renderJobs(jobs, targetHash){
         var dateStr  = job.date ? job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
         var displayName = (job.uid && custNames[job.uid]) ? custNames[job.uid] : (job.customerName||'');
 
+        // ── CHANGE: invoice-style meta line, no emojis ──
+        var custLink = job.uid
+            ? '<a href="/staff/dashboard/customers/#'+job.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
+            : escHtml(displayName) + (displayName && !job.uid ? ' <span style="font-size:10px;color:#bbb;">(no account)</span>' : '');
+        var metaParts = dateStr +
+            (job.time ? ' · ' + job.time : '') +
+            ' · #' + jobId +
+            (job.invoiceId ? ' · <a href="/staff/dashboard/invoices/#'+job.invoiceId+'" style="color:var(--orange);">Invoice #'+job.invoiceId+'</a>' : '') +
+            (displayName ? ' · ' + custLink : '');
+
         var detailItems = [];
         if(displayName){
-            var custLink = job.uid
-                ? '<a href="/staff/dashboard/customers/#'+job.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
-                : escHtml(displayName);
-            detailItems.push('<div class="detail-item"><div class="detail-item-label">Customer</div><div class="detail-item-value">'+custLink+(job.uid?'':' <span style="font-size:10px;color:#bbb;">(no account)</span>')+'</div></div>');
+            detailItems.push('<div class="detail-item"><div class="detail-item-label">Customer</div><div class="detail-item-value">'+custLink+'</div></div>');
         }
         if(job.address)      detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+escHtml(job.address)+'</div></div>');
         if(job.assignedCrew) detailItems.push('<div class="detail-item"><div class="detail-item-label">Crew</div><div class="detail-item-value">'+escHtml(job.assignedCrew)+'</div></div>');
@@ -1215,7 +1211,6 @@ function renderJobs(jobs, targetHash){
         if(job.manualEmail)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value">'+escHtml(job.manualEmail)+'</div></div>');
         if(job.manualPhone)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value">'+escHtml(job.manualPhone)+'</div></div>');
 
-        // ── Services: pill chips + per-item price + total in label ──
         var svcListHTML = '';
         if(job.services && job.services.length){
             var hasPricing = job.services.some(function(s){ return s.unitPrice > 0; });
@@ -1248,11 +1243,8 @@ function renderJobs(jobs, targetHash){
         html += '<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
         html += '<div style="min-width:0;flex:1;">'+
             '<div class="job-card-title">'+escHtml(svcNames)+'</div>'+
-            '<div class="job-card-meta">'+
-            '<span>📅 '+dateStr+(job.time?' · '+job.time:'')+'</span>'+
-            (displayName?'<span>👤 '+escHtml(displayName)+'</span>':'')+
-            (job.assignedCrew?'<span>🔧 '+escHtml(job.assignedCrew)+'</span>':'')+
-            '</div></div>';
+            '<div class="job-card-meta">'+metaParts+'</div>'+
+            '</div>';
         html += '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(job.status)+'<span class="toggle-chevron">▾</span></div>';
         html += '</div>';
         html += '<div class="job-card-body'+(isTarget?'':' collapsed')+'" id="body-'+jobId+'">';
