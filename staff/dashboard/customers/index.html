@@ -26,6 +26,34 @@
 .svc-edit-name { font-size: 14px; font-weight: 700; color: var(--text); }
 .svc-edit-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 @media(max-width:600px){ .svc-edit-fields { grid-template-columns: 1fr; } }
+
+/* FIX: Table base styles — prevent collapsed borders and ensure full width */
+.data-table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: auto;
+}
+
+/* FIX: First and last cell padding so text doesn't get clipped by border-radius */
+.data-table td:first-child,
+.data-table th:first-child {
+    padding-left: 20px;
+}
+.data-table td:last-child,
+.data-table th:last-child {
+    padding-right: 20px;
+}
+
+/* FIX: Card table wrapper — overflow:hidden on outer rounded card, scroll on inner div */
+.card-table-wrap {
+    margin: 0;
+    overflow: hidden;
+    border-radius: inherit;
+}
+.card-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
 </style>
 </head>
 <body>
@@ -126,20 +154,20 @@ function showDetail(){ document.getElementById('listView').style.display='none';
 function renderTable(customers){
     var body = document.getElementById('custTableBody');
     if(!customers.length){ body.innerHTML='<p class="empty-state" style="margin:16px 20px;">No customers found.</p>'; return; }
-    body.innerHTML = '<table class="data-table" style="margin:0 0 0 0;"><thead><tr>'+
-        '<th style="padding-left:20px;">Name</th><th>Email</th><th class="hide-mobile">Phone</th><th class="hide-mobile">Properties</th><th></th>'+
+    body.innerHTML = '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;"><table class="data-table" style="margin:0;"><thead><tr>'+
+        '<th>Name</th><th>Email</th><th class="hide-mobile">Phone</th><th class="hide-mobile">Properties</th><th></th>'+
         '</tr></thead><tbody>'+
         customers.map(function(c){
             var propCount = (c.properties||[]).length;
             return '<tr>'+
-                '<td style="padding-left:20px;"><strong>'+c.name+'</strong></td>'+
+                '<td><strong>'+c.name+'</strong></td>'+
                 '<td style="color:var(--text-3);">'+c.email+'</td>'+
                 '<td class="hide-mobile" style="color:var(--text-3);">'+(c.phone||'—')+'</td>'+
                 '<td class="hide-mobile" style="color:var(--text-3);">'+propCount+' propert'+(propCount===1?'y':'ies')+'</td>'+
                 '<td><button class="btn-ghost" onclick=\'openCustomer("'+c.uid+'")\'>View</button></td>'+
                 '</tr>';
         }).join('')+
-        '</tbody></table>';
+        '</tbody></table></div>';
 }
 
 // ── Open customer detail ──
@@ -235,7 +263,7 @@ async function openCustomer(uid){
                 '<p class="cust-hero-name">'+cust.name+'</p>'+
                 '<p class="cust-hero-sub">'+(cust.email||'')+(cust.phone?' · '+cust.phone:'')+'</p>'+
             '</div>'+
-            '<div style="margin-left:auto;display:flex;gap:8px;">'+
+            '<div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">'+
                 '<a class="btn-primary" style="font-size:12px;padding:6px 14px;" href="/staff/dashboard/jobs/?newFor='+uid+'">+ Job</a>'+
                 '<a class="btn-secondary" style="font-size:12px;padding:6px 14px;" href="/staff/dashboard/invoices/?newFor='+uid+'">+ Invoice</a>'+
             '</div>'+
@@ -248,8 +276,17 @@ async function openCustomer(uid){
             '<button class="btn-secondary" style="margin-top:8px;font-size:12px;" onclick=\'addNewService("'+uid+'")\'>+ Add Service</button>'+
         '</div>'+
 
-        '<div class="cust-section"><p class="cust-section-title">Recent Jobs</p><div class="card" style="margin:0;overflow:auto;">'+recentJobsHTML+'</div></div>'+
-        '<div class="cust-section"><p class="cust-section-title">Invoices</p><div class="card" style="margin:0;overflow:auto;">'+recentInvHTML+'</div></div>';
+        '<div class="cust-section"><p class="cust-section-title">Recent Jobs</p>'+
+            '<div class="card" style="margin:0;overflow:hidden;">'+
+                '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">'+recentJobsHTML+'</div>'+
+            '</div>'+
+        '</div>'+
+
+        '<div class="cust-section"><p class="cust-section-title">Invoices</p>'+
+            '<div class="card" style="margin:0;overflow:hidden;">'+
+                '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">'+recentInvHTML+'</div>'+
+            '</div>'+
+        '</div>';
 }
 
 async function saveSvcEdit(uid, i){
