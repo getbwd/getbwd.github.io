@@ -22,13 +22,23 @@
 .detail-item-value { font-size: 13px; color: var(--text-2); line-height: 1.4; }
 .note-block { background: #fafaf8; border: 1px solid var(--border-light); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--text-3); line-height: 1.6; }
 .detail-section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: #bbb; margin-bottom: 6px; }
-.line-items { width: 100%; border-collapse: collapse; font-size: 13px; }
-.line-items th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; padding: 0 8px 6px 0; }
-.line-items th:last-child, .line-items td:last-child { text-align: right; }
-.line-items td { padding: 6px 8px 6px 0; color: var(--text-2); border-top: 1px solid var(--border-light); }
 .toggle-chevron { font-size: 18px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; line-height: 1; }
 .job-card.open .toggle-chevron { transform: rotate(180deg); }
 .job-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid var(--border-light); }
+.btn-ghost { text-decoration: none !important; }
+
+/* ── JOB SERVICES CHIP LIST ── */
+.svc-chip-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.svc-chip {
+    font-size: 12px; font-weight: 600; padding: 3px 10px;
+    background: #f0ede8; border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text-2); white-space: nowrap;
+}
+.job-total-line {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    padding-top: 6px; border-top: 1px solid var(--border-light);
+    display: flex; justify-content: space-between;
+}
 
 /* ── DATE/TIME — true side-by-side ── */
 .datetime-row { display: flex; gap: 12px; width: 100%; }
@@ -90,7 +100,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 }
 .manual-contact-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; margin-bottom: 2px; }
 
-/* ── ADDRESS PROPERTY PICKER ── */
+/* ── ADDRESS AUTOCOMPLETE (Smarty) ── */
 .addr-wrap { position: relative; }
 .addr-property-bar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
 .addr-prop-pill {
@@ -102,20 +112,31 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .addr-prop-pill.active { background: var(--orange); border-color: var(--orange); color: #fff; }
 .addr-prop-pill.manual-pill { border-style: dashed; }
 
-/* ── SERVICE LINE ITEMS ── */
-/* Name-only mode (no auto-invoice) */
-.svc-line-row {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+.addr-autocomplete-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 500;
+    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.13); display: none; overflow: hidden;
 }
+.addr-autocomplete-dropdown.open { display: block; }
+.addr-suggestion {
+    padding: 10px 14px; font-size: 13px; color: var(--text-2); cursor: pointer;
+    border-bottom: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 2px;
+}
+.addr-suggestion:last-child { border-bottom: none; }
+.addr-suggestion:hover { background: #fafaf8; }
+.addr-suggestion-main { font-weight: 600; color: var(--text); }
+.addr-suggestion-sub { font-size: 11px; color: var(--text-3); }
+.addr-powered { padding: 6px 14px; font-size: 10px; color: #bbb; text-align: right; border-top: 1px solid var(--border-light); }
+
+/* ── SERVICE LINE ITEMS ── */
+.svc-line-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .svc-line-row .svc-name-wrap { flex: 1; }
-/* Invoice mode: name + qty + price */
 .svc-inv-row {
     display: grid; grid-template-columns: 1fr 58px 86px 28px; gap: 8px;
     align-items: center; margin-bottom: 6px;
 }
 .svc-inv-header {
-    display: grid; grid-template-columns: 1fr 58px 86px 28px; gap: 8px;
-    margin-bottom: 4px;
+    display: grid; grid-template-columns: 1fr 58px 86px 28px; gap: 8px; margin-bottom: 4px;
 }
 .svc-inv-header span { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #bbb; }
 .svc-line-total-preview { font-size: 12px; color: var(--text-3); text-align: right; margin-top: 4px; font-variant-numeric: tabular-nums; }
@@ -123,25 +144,17 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 /* ── SERVICE AUTOCOMPLETE ── */
 .svc-name-wrap { position: relative; flex: 1; min-width: 0; }
 .svc-dropdown {
-    position: fixed;
-    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    position: fixed; background: var(--white); border: 1px solid var(--border); border-radius: 10px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.14); z-index: 1100;
-    max-height: 200px; overflow-y: auto; display: none;
-    min-width: 220px;
+    max-height: 200px; overflow-y: auto; display: none; min-width: 220px;
 }
 .svc-dropdown.open { display: block; }
-.svc-dropdown-item {
-    padding: 9px 14px; font-size: 13px; color: var(--text-2);
-    cursor: pointer; border-bottom: 1px solid var(--border-light);
-}
+.svc-dropdown-item { padding: 9px 14px; font-size: 13px; color: var(--text-2); cursor: pointer; border-bottom: 1px solid var(--border-light); }
 .svc-dropdown-item:last-child { border-bottom: none; }
 .svc-dropdown-item:hover, .svc-dropdown-item.focused { background: #fafaf8; }
 .svc-dropdown-item strong { color: var(--text); }
 
-.btn-remove-line {
-    background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px;
-    padding: 0 4px; line-height: 1; flex-shrink: 0;
-}
+.btn-remove-line { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; padding: 0 4px; line-height: 1; flex-shrink: 0; }
 .btn-remove-line:hover { color: #e55; }
 
 /* ── AUTO-INVOICE TOGGLE ── */
@@ -151,13 +164,10 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
     border-radius: 10px; cursor: pointer; user-select: none;
 }
 .auto-inv-toggle-row:hover { background: #faf0e4; }
-.toggle-switch {
-    position: relative; width: 36px; height: 20px; flex-shrink: 0;
-}
+.toggle-switch { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
 .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
 .toggle-slider {
-    position: absolute; inset: 0; background: #ddd; border-radius: 20px;
-    transition: background 0.2s; cursor: pointer;
+    position: absolute; inset: 0; background: #ddd; border-radius: 20px; transition: background 0.2s; cursor: pointer;
 }
 .toggle-slider::before {
     content: ''; position: absolute; width: 14px; height: 14px;
@@ -174,14 +184,8 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
     background: #fdf8f3; border: 1px solid #f0d9bc; border-radius: 10px;
     padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
 }
-.auto-inv-panel-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
-    color: #c07a30; margin-bottom: 2px;
-}
-.inv-subtotal-preview {
-    font-size: 12px; color: var(--text-3); text-align: right;
-    font-variant-numeric: tabular-nums; margin-top: 2px;
-}
+.auto-inv-panel-label { font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #c07a30; margin-bottom: 2px; }
+.inv-subtotal-preview { font-size: 12px; color: var(--text-3); text-align: right; font-variant-numeric: tabular-nums; margin-top: 2px; }
 
 /* ── CONFIRM EXIT MODAL ── */
 .confirm-modal-backdrop {
@@ -191,8 +195,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .confirm-modal-backdrop.open { display: flex; }
 .confirm-modal {
     background: var(--white); border-radius: 14px; padding: 28px 28px 22px;
-    width: min(400px, calc(100vw - 40px)); box-shadow: 0 16px 48px rgba(0,0,0,0.22);
-    text-align: center;
+    width: min(400px, calc(100vw - 40px)); box-shadow: 0 16px 48px rgba(0,0,0,0.22); text-align: center;
 }
 .confirm-modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 .confirm-modal-sub { font-size: 13px; color: var(--text-3); margin-bottom: 22px; line-height: 1.5; }
@@ -212,8 +215,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .time-picker-dropdown {
     position: absolute; top: calc(100% + 4px); left: 0; right: 0;
     background: var(--white); border: 1px solid var(--border); border-radius: 12px;
-    box-shadow: 0 10px 32px rgba(0,0,0,0.13); z-index: 600; padding: 12px;
-    display: none;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.13); z-index: 600; padding: 12px; display: none;
 }
 .time-picker-dropdown.open { display: block; }
 .time-picker-inner { display: flex; gap: 0; }
@@ -222,40 +224,21 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .time-col-scroll { max-height: 180px; overflow-y: auto; width: 100%; scrollbar-width: thin; }
 .time-col-scroll::-webkit-scrollbar { width: 4px; }
 .time-col-scroll::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
-.time-opt {
-    padding: 7px 10px; font-size: 13px; color: var(--text-2); border-radius: 7px;
-    cursor: pointer; text-align: center; transition: background 0.1s;
-}
+.time-opt { padding: 7px 10px; font-size: 13px; color: var(--text-2); border-radius: 7px; cursor: pointer; text-align: center; transition: background 0.1s; }
 .time-opt:hover { background: #fafaf8; }
 .time-opt.selected { background: var(--orange); color: #fff; font-weight: 700; }
 .time-divider { display: flex; align-items: center; padding: 0 6px; font-size: 18px; color: #bbb; padding-top: 28px; }
 .time-ampm-wrap { display: flex; flex-direction: column; gap: 6px; padding-top: 28px; padding-left: 8px; }
-.time-ampm-btn {
-    padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 7px;
-    border: 1px solid var(--border); background: var(--white); color: var(--text-2);
-    cursor: pointer; transition: all 0.12s;
-}
+.time-ampm-btn { padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 7px; border: 1px solid var(--border); background: var(--white); color: var(--text-2); cursor: pointer; transition: all 0.12s; }
 .time-ampm-btn.selected { background: var(--orange); border-color: var(--orange); color: #fff; }
 
-/* ── CREATE INVOICE btn ── */
-.btn-ghost.create-invoice { margin-left: auto; text-decoration: none; }
-.btn-ghost { text-decoration: none !important; }
-
-/* ── PHONE FLAG PREFIX ── */
+/* ── PHONE ── */
 .phone-wrap { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--white); }
-.phone-prefix {
-    padding: 8px 10px; font-size: 13.5px; color: var(--text-2);
-    background: #f5f5f3; border-right: 1px solid var(--border); white-space: nowrap;
-    font-family: 'Inter', sans-serif; user-select: none;
-}
-.phone-wrap input {
-    flex: 1; border: none !important; border-radius: 0 !important;
-    padding: 8px 10px; font-size: 13.5px; font-family: 'Inter', sans-serif;
-    color: var(--text); background: transparent; outline: none;
-}
+.phone-prefix { padding: 8px 10px; font-size: 13.5px; color: var(--text-2); background: #f5f5f3; border-right: 1px solid var(--border); white-space: nowrap; font-family: 'Inter', sans-serif; user-select: none; }
+.phone-wrap input { flex: 1; border: none !important; border-radius: 0 !important; padding: 8px 10px; font-size: 13.5px; font-family: 'Inter', sans-serif; color: var(--text); background: transparent; outline: none; }
 .phone-wrap:focus-within { border-color: var(--orange); }
 
-/* ── INV CREATED BADGE on card ── */
+/* ── INV BADGE ── */
 .inv-created-badge {
     display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
     color: #1e8a4a; background: #edf7f1; border: 1px solid #b6dfc8;
@@ -365,12 +348,8 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                         placeholder="Search by name or type a new customer…" autocomplete="off">
                     <div class="cust-dropdown" id="custDropdown"></div>
                 </div>
-                <div id="custAccountBadge" style="display:none;">
-                    <span class="cust-account-badge">✓ Has account</span>
-                </div>
-                <div id="custTypeHint" class="cust-type-hint" style="display:none;">
-                    No account found — you can still add this customer manually.
-                </div>
+                <div id="custAccountBadge" style="display:none;"><span class="cust-account-badge">✓ Has account</span></div>
+                <div id="custTypeHint" class="cust-type-hint" style="display:none;">No account found — you can still add this customer manually.</div>
                 <input type="hidden" id="custSelectedUid">
                 <div class="manual-contact-fields" id="manualContactFields" style="display:none;">
                     <div>
@@ -433,12 +412,16 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 </select>
             </div>
 
-            <!-- ADDRESS with property picker -->
+            <!-- ADDRESS with property picker + Smarty autocomplete -->
             <div class="form-row">
                 <label class="form-label">Address</label>
-                <div class="addr-wrap">
+                <div class="addr-wrap" id="addrWrap">
                     <div class="addr-property-bar" id="addrPropertyBar" style="display:none;"></div>
-                    <input class="form-input" type="text" id="jobAddress" placeholder="1234 Main St, Flint, MI 48501">
+                    <input class="form-input" type="text" id="jobAddress"
+                        placeholder="1234 Main St, Flint, MI 48501" autocomplete="off">
+                    <div class="addr-autocomplete-dropdown" id="addrDropdown">
+                        <div class="addr-powered">Powered by Smarty</div>
+                    </div>
                 </div>
             </div>
 
@@ -447,7 +430,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 <input class="form-input" type="text" id="jobCrew" placeholder="e.g. Brandon">
             </div>
 
-            <!-- Services with optional invoice pricing -->
+            <!-- Services -->
             <div class="form-row">
                 <label class="form-label">Services</label>
                 <div id="jobLineItems"></div>
@@ -469,7 +452,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 </label>
             </div>
 
-            <!-- AUTO-INVOICE EXTRA FIELDS (shown when toggle is on) -->
+            <!-- AUTO-INVOICE EXTRA FIELDS -->
             <div class="auto-inv-panel" id="autoInvPanel" style="display:none;">
                 <div class="auto-inv-panel-label">Invoice Details</div>
                 <div class="form-row" style="margin:0;">
@@ -536,12 +519,16 @@ firebase.initializeApp({
 var auth = firebase.auth();
 var db   = firebase.firestore();
 
+// ── Smarty Address Autocomplete key ──
+// Replace with your Smarty embedded key from https://www.smarty.com/docs/cloud/authentication
+var SMARTY_KEY = 'YOUR_SMARTY_EMBEDDED_KEY';
+
 document.getElementById('signOutBtn').addEventListener('click', function(){ auth.signOut().then(function(){ window.location.href='/staff/login/'; }); });
 document.getElementById('mobileMenuBtn').addEventListener('click', function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); });
 document.getElementById('sidebarOverlay').addEventListener('click', function(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); });
 
 function initials(n){ return n ? n.trim().split(/\s+/).map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2) : '?'; }
-function fmtMoney(n){ return '$' + Number(n).toFixed(2); }
+function fmtMoney(n){ return '$' + Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 function badge(status){
     var s = (status||'').toLowerCase().trim();
     var map = { 'scheduled':'bdg-scheduled','rescheduled':'bdg-paused','canceled':'bdg-cancelled','cancelled':'bdg-cancelled','completed':'bdg-completed','draft':'bdg-default','payment due':'bdg-unpaid','paid':'bdg-paid','overdue':'bdg-overdue' };
@@ -560,7 +547,6 @@ var serviceNames = [];
 // ── Customer picker state ──
 var pickerSelectedUid = '';
 var pickerIsManual    = false;
-
 var custSearchInput    = document.getElementById('custSearchInput');
 var custDropdown       = document.getElementById('custDropdown');
 var custSelectedUidEl  = document.getElementById('custSelectedUid');
@@ -576,7 +562,6 @@ var autoInvEnabled  = false;
 autoInvCheckbox.addEventListener('change', function(){
     autoInvEnabled = this.checked;
     autoInvPanel.style.display = autoInvEnabled ? '' : 'none';
-    // Rebuild line items to show/hide price fields
     renderLineItems();
     updateSubtotalPreview();
 });
@@ -599,92 +584,138 @@ function buildTimePicker(){
     var hourScroll = document.getElementById('timeHourScroll');
     var minScroll  = document.getElementById('timeMinScroll');
     var hHtml = '';
-    for(var h=1; h<=12; h++){ hHtml += '<div class="time-opt" data-h="'+h+'">' + (h < 10 ? '0'+h : h) + '</div>'; }
+    for(var h=1; h<=12; h++){ hHtml += '<div class="time-opt" data-h="'+h+'">'+(h<10?'0'+h:h)+'</div>'; }
     hourScroll.innerHTML = hHtml;
     var mHtml = '';
-    for(var m=0; m<60; m+=10){ mHtml += '<div class="time-opt" data-m="'+m+'">' + (m < 10 ? '0'+m : m) + '</div>'; }
+    for(var m=0; m<60; m+=10){ mHtml += '<div class="time-opt" data-m="'+m+'">'+(m<10?'0'+m:m)+'</div>'; }
     minScroll.innerHTML = mHtml;
-
     hourScroll.querySelectorAll('.time-opt').forEach(function(el){
         el.addEventListener('click', function(){
             hourScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); });
-            this.classList.add('selected');
-            timePicker.hour = parseInt(this.dataset.h);
-            updateTimeDisplay();
+            this.classList.add('selected'); timePicker.hour = parseInt(this.dataset.h); updateTimeDisplay();
         });
     });
     minScroll.querySelectorAll('.time-opt').forEach(function(el){
         el.addEventListener('click', function(){
             minScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); });
-            this.classList.add('selected');
-            timePicker.min = parseInt(this.dataset.m);
-            updateTimeDisplay();
+            this.classList.add('selected'); timePicker.min = parseInt(this.dataset.m); updateTimeDisplay();
         });
     });
     document.getElementById('timeAmAm').addEventListener('click', function(){
-        timePicker.ampm = 'AM';
-        document.getElementById('timeAmAm').classList.add('selected');
-        document.getElementById('timePmBtn').classList.remove('selected');
-        updateTimeDisplay();
+        timePicker.ampm='AM'; document.getElementById('timeAmAm').classList.add('selected'); document.getElementById('timePmBtn').classList.remove('selected'); updateTimeDisplay();
     });
     document.getElementById('timePmBtn').addEventListener('click', function(){
-        timePicker.ampm = 'PM';
-        document.getElementById('timePmBtn').classList.add('selected');
-        document.getElementById('timeAmAm').classList.remove('selected');
-        updateTimeDisplay();
+        timePicker.ampm='PM'; document.getElementById('timePmBtn').classList.add('selected'); document.getElementById('timeAmAm').classList.remove('selected'); updateTimeDisplay();
     });
 }
 
 function updateTimeDisplay(){
     var textEl = document.getElementById('timePickerText');
     var hiddenEl = document.getElementById('jobTime');
-    if(timePicker.hour === null || timePicker.min === null){
-        textEl.textContent = 'Select time…'; textEl.classList.add('time-placeholder'); hiddenEl.value = ''; return;
-    }
-    var hDisp = timePicker.hour < 10 ? '0'+timePicker.hour : ''+timePicker.hour;
-    var mDisp = timePicker.min < 10 ? '0'+timePicker.min : ''+timePicker.min;
-    textEl.textContent = hDisp + ':' + mDisp + ' ' + timePicker.ampm;
-    textEl.classList.remove('time-placeholder');
+    if(timePicker.hour===null||timePicker.min===null){ textEl.textContent='Select time…'; textEl.classList.add('time-placeholder'); hiddenEl.value=''; return; }
+    var hDisp = timePicker.hour<10?'0'+timePicker.hour:''+timePicker.hour;
+    var mDisp = timePicker.min<10?'0'+timePicker.min:''+timePicker.min;
+    textEl.textContent = hDisp+':'+mDisp+' '+timePicker.ampm; textEl.classList.remove('time-placeholder');
     var h24 = timePicker.hour;
-    if(timePicker.ampm === 'AM' && timePicker.hour === 12) h24 = 0;
-    if(timePicker.ampm === 'PM' && timePicker.hour !== 12) h24 = timePicker.hour + 12;
-    var h24s = h24 < 10 ? '0'+h24 : ''+h24;
-    hiddenEl.value = h24s + ':' + mDisp;
+    if(timePicker.ampm==='AM'&&timePicker.hour===12) h24=0;
+    if(timePicker.ampm==='PM'&&timePicker.hour!==12) h24=timePicker.hour+12;
+    hiddenEl.value = (h24<10?'0'+h24:''+h24)+':'+mDisp;
 }
 
 function setTimePickerValue(val24){
-    timePicker.hour = null; timePicker.min = null; timePicker.ampm = 'AM';
+    timePicker.hour=null; timePicker.min=null; timePicker.ampm='AM';
     if(!val24){ updateTimeDisplay(); return; }
-    var parts = val24.split(':');
-    var h24 = parseInt(parts[0]||0);
-    var m   = parseInt(parts[1]||0);
-    var ampm = h24 >= 12 ? 'PM' : 'AM';
-    var h12 = h24 % 12; if(h12 === 0) h12 = 12;
-    timePicker.hour = h12; timePicker.min = m; timePicker.ampm = ampm;
-    document.getElementById('timeHourScroll').querySelectorAll('.time-opt').forEach(function(el){
-        el.classList.toggle('selected', parseInt(el.dataset.h) === h12);
-    });
-    document.getElementById('timeMinScroll').querySelectorAll('.time-opt').forEach(function(el){
-        el.classList.toggle('selected', parseInt(el.dataset.m) === m);
-    });
+    var parts=val24.split(':');
+    var h24=parseInt(parts[0]||0), m=parseInt(parts[1]||0);
+    var ampm=h24>=12?'PM':'AM';
+    var h12=h24%12; if(h12===0)h12=12;
+    timePicker.hour=h12; timePicker.min=m; timePicker.ampm=ampm;
+    document.getElementById('timeHourScroll').querySelectorAll('.time-opt').forEach(function(el){ el.classList.toggle('selected', parseInt(el.dataset.h)===h12); });
+    document.getElementById('timeMinScroll').querySelectorAll('.time-opt').forEach(function(el){ el.classList.toggle('selected', parseInt(el.dataset.m)===m); });
     document.getElementById('timeAmAm').classList.toggle('selected', ampm==='AM');
     document.getElementById('timePmBtn').classList.toggle('selected', ampm==='PM');
     updateTimeDisplay();
 }
 
-function openTimePicker(){ document.getElementById('timePickerDropdown').classList.add('open'); timePicker.open = true; }
-function closeTimePicker(){ document.getElementById('timePickerDropdown').classList.remove('open'); timePicker.open = false; }
+function openTimePicker(){ document.getElementById('timePickerDropdown').classList.add('open'); timePicker.open=true; }
+function closeTimePicker(){ document.getElementById('timePickerDropdown').classList.remove('open'); timePicker.open=false; }
 
-document.getElementById('timePickerDisplay').addEventListener('click', function(e){
-    e.stopPropagation(); if(timePicker.open) closeTimePicker(); else openTimePicker();
-});
+document.getElementById('timePickerDisplay').addEventListener('click', function(e){ e.stopPropagation(); if(timePicker.open) closeTimePicker(); else openTimePicker(); });
 document.getElementById('timePickerDisplay').addEventListener('keydown', function(e){
-    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if(timePicker.open) closeTimePicker(); else openTimePicker(); }
-    if(e.key === 'Escape') closeTimePicker();
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); if(timePicker.open) closeTimePicker(); else openTimePicker(); }
+    if(e.key==='Escape') closeTimePicker();
 });
 document.addEventListener('click', function(e){
     var wrap = document.getElementById('timePickerWrap');
     if(wrap && !wrap.contains(e.target)) closeTimePicker();
+});
+
+// ══════════════════════════════════════════
+// SMARTY ADDRESS AUTOCOMPLETE
+// ══════════════════════════════════════════
+var addrInput    = document.getElementById('jobAddress');
+var addrDropdown = document.getElementById('addrDropdown');
+var addrDebounce = null;
+var addrSuppressNext = false; // set true after selecting a suggestion
+
+function smartySearch(query){
+    if(!query || query.length < 3){ closeAddrDropdown(); return; }
+    var url = 'https://us-autocomplete-pro.api.smarty.com/lookup'
+        + '?key=' + encodeURIComponent(SMARTY_KEY)
+        + '&search=' + encodeURIComponent(query)
+        + '&max_results=6'
+        + '&prefer_geolocation=none';
+    fetch(url)
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+            var suggestions = (data && data.suggestions) ? data.suggestions : [];
+            renderAddrSuggestions(suggestions, query);
+        })
+        .catch(function(){ closeAddrDropdown(); });
+}
+
+function renderAddrSuggestions(suggestions, query){
+    if(!suggestions.length){ closeAddrDropdown(); return; }
+    var html = '';
+    suggestions.forEach(function(s){
+        var street = s.street_line || '';
+        var city   = s.city || '';
+        var state  = s.state || '';
+        var zip    = s.zipcode || '';
+        var secondary = s.secondary ? ' ' + s.secondary : '';
+        var full   = street + secondary + ', ' + city + ', ' + state + ' ' + zip;
+        html += '<div class="addr-suggestion" data-full="'+escHtml(full)+'">'
+            + '<span class="addr-suggestion-main">'+escHtml(street + secondary)+'</span>'
+            + '<span class="addr-suggestion-sub">'+escHtml(city + ', ' + state + ' ' + zip)+'</span>'
+            + '</div>';
+    });
+    html += '<div class="addr-powered">Powered by Smarty</div>';
+    addrDropdown.innerHTML = html;
+    addrDropdown.querySelectorAll('.addr-suggestion').forEach(function(el){
+        el.addEventListener('mousedown', function(e){
+            e.preventDefault();
+            addrSuppressNext = true;
+            addrInput.value = el.dataset.full;
+            closeAddrDropdown();
+        });
+    });
+    addrDropdown.classList.add('open');
+}
+
+function closeAddrDropdown(){ addrDropdown.classList.remove('open'); }
+
+addrInput.addEventListener('input', function(){
+    if(addrSuppressNext){ addrSuppressNext = false; return; }
+    var q = this.value.trim();
+    clearTimeout(addrDebounce);
+    if(q.length < 3){ closeAddrDropdown(); return; }
+    addrDebounce = setTimeout(function(){ smartySearch(q); }, 250);
+});
+
+addrInput.addEventListener('blur', function(){ setTimeout(closeAddrDropdown, 180); });
+
+document.addEventListener('click', function(e){
+    if(!document.getElementById('addrWrap').contains(e.target)) closeAddrDropdown();
 });
 
 // ── Address / property picker ──
@@ -718,51 +749,51 @@ function renderPropertyPills(uid){
 }
 
 function selectProperty(idx){
-    var addrEl = document.getElementById('jobAddress');
+    var addrEl  = document.getElementById('jobAddress');
     var notesEl = document.getElementById('jobCustomerNotes');
-    if(idx === -1){ addrEl.value = ''; addrEl.focus(); return; }
+    if(idx===-1){ addrEl.value=''; addrEl.focus(); return; }
     var prop = currentProperties[idx];
     if(!prop) return;
     if(prop.address) addrEl.value = prop.address;
     if(prop.notes && !notesEl.value){ notesEl.value = prop.notes; }
-    else if(prop.notes && notesEl.dataset.autofilled === 'true'){ notesEl.value = prop.notes; }
+    else if(prop.notes && notesEl.dataset.autofilled==='true'){ notesEl.value = prop.notes; }
     if(prop.notes){ notesEl.dataset.autofilled = 'true'; }
 }
 
 function clearPropertyPills(){
     var bar = document.getElementById('addrPropertyBar');
-    bar.style.display = 'none'; bar.innerHTML = ''; currentProperties = [];
+    bar.style.display='none'; bar.innerHTML=''; currentProperties=[];
 }
 
 // ── Customer picker ──
 function setCustPicker(uid, name){
-    pickerSelectedUid = uid; pickerIsManual = false;
-    custSearchInput.value = name; custSearchInput.classList.add('has-account');
-    custSelectedUidEl.value = uid; custAccountBadge.style.display = '';
-    custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none';
+    pickerSelectedUid=uid; pickerIsManual=false;
+    custSearchInput.value=name; custSearchInput.classList.add('has-account');
+    custSelectedUidEl.value=uid; custAccountBadge.style.display='';
+    custTypeHint.style.display='none'; manualContactFields.style.display='none';
     closeDropdown(); renderPropertyPills(uid);
 }
 function clearCustPicker(){
-    pickerSelectedUid = ''; custSelectedUidEl.value = '';
-    custSearchInput.classList.remove('has-account'); custAccountBadge.style.display = 'none';
+    pickerSelectedUid=''; custSelectedUidEl.value='';
+    custSearchInput.classList.remove('has-account'); custAccountBadge.style.display='none';
     clearPropertyPills();
 }
 function openDropdown(){ custDropdown.classList.add('open'); }
 function closeDropdown(){ custDropdown.classList.remove('open'); }
 
 function renderDropdown(query){
-    var q = (query||'').toLowerCase().trim();
-    var matches = q ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q) !== -1; }) : custList.slice(0, 8);
-    var html = '';
+    var q=(query||'').toLowerCase().trim();
+    var matches = q ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q)!==-1; }) : custList.slice(0,8);
+    var html='';
     matches.forEach(function(c){
-        var sub = custDocs[c.uid] && custDocs[c.uid].phone ? custDocs[c.uid].phone : '';
-        html += '<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'">' +
-            '<span class="cust-dot"></span>' +
-            '<span><div style="font-weight:600;">'+escHtml(c.name)+'</div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span>' +
-            '</div>';
+        var sub = custDocs[c.uid]&&custDocs[c.uid].phone?custDocs[c.uid].phone:'';
+        html+='<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'">'
+            +'<span class="cust-dot"></span>'
+            +'<span><div style="font-weight:600;">'+escHtml(c.name)+'</div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span>'
+            +'</div>';
     });
-    if(!html && q){ html = '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No accounts match — enter manually below</div>'; }
-    custDropdown.innerHTML = html;
+    if(!html&&q){ html='<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No accounts match — enter manually below</div>'; }
+    custDropdown.innerHTML=html;
     custDropdown.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
         el.addEventListener('mousedown', function(e){ e.preventDefault(); setCustPicker(el.dataset.uid, el.dataset.name); });
     });
@@ -770,414 +801,353 @@ function renderDropdown(query){
 
 custSearchInput.addEventListener('focus', function(){ renderDropdown(this.value); openDropdown(); });
 custSearchInput.addEventListener('input', function(){
-    var q = this.value.trim();
+    var q=this.value.trim();
     clearCustPicker(); renderDropdown(q); openDropdown();
     if(q){
-        var exact = custList.find(function(c){ return c.name.toLowerCase() === q.toLowerCase(); });
+        var exact=custList.find(function(c){ return c.name.toLowerCase()===q.toLowerCase(); });
         if(exact){ setCustPicker(exact.uid, exact.name); }
-        else { pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
-    } else { pickerIsManual = false; custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none'; }
+        else { pickerIsManual=true; custTypeHint.style.display=''; manualContactFields.style.display=''; }
+    } else { pickerIsManual=false; custTypeHint.style.display='none'; manualContactFields.style.display='none'; }
 });
 custSearchInput.addEventListener('blur', function(){
-    setTimeout(closeDropdown, 150);
-    var q = this.value.trim();
-    if(q && !pickerSelectedUid){ pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
+    setTimeout(closeDropdown,150);
+    var q=this.value.trim();
+    if(q&&!pickerSelectedUid){ pickerIsManual=true; custTypeHint.style.display=''; manualContactFields.style.display=''; }
 });
 
 // ── Line items ──
-// Each item: { name, qty, price }  (qty/price only used when autoInvEnabled)
 var jobLineItemsArr = [];
 
 function calcSubtotal(){
     if(!autoInvEnabled) return 0;
-    return jobLineItemsArr.reduce(function(s,li){ return s + (Number(li.qty)||0)*(Number(li.price)||0); }, 0);
+    return jobLineItemsArr.reduce(function(s,li){ return s+(Number(li.qty)||0)*(Number(li.price)||0); },0);
 }
 
 function updateSubtotalPreview(){
-    var el = document.getElementById('jobSubtotalPreview');
+    var el=document.getElementById('jobSubtotalPreview');
     if(!autoInvEnabled){ el.style.display='none'; return; }
-    var total = calcSubtotal();
-    el.style.display = total > 0 ? '' : 'none';
-    el.textContent = 'Invoice subtotal: ' + fmtMoney(total);
+    var total=calcSubtotal();
+    el.style.display=total>0?'':'none';
+    el.textContent='Invoice subtotal: '+fmtMoney(total);
 }
 
 function highlightMatch(text, query){
     if(!query) return escHtml(text);
-    var idx = text.toLowerCase().indexOf(query.toLowerCase());
-    if(idx === -1) return escHtml(text);
-    return escHtml(text.slice(0, idx)) + '<strong>' + escHtml(text.slice(idx, idx + query.length)) + '</strong>' + escHtml(text.slice(idx + query.length));
+    var idx=text.toLowerCase().indexOf(query.toLowerCase());
+    if(idx===-1) return escHtml(text);
+    return escHtml(text.slice(0,idx))+'<strong>'+escHtml(text.slice(idx,idx+query.length))+'</strong>'+escHtml(text.slice(idx+query.length));
 }
 
 function positionSvcDropdown(inputEl, dropdownEl){
-    var rect = inputEl.getBoundingClientRect();
-    dropdownEl.style.top   = (rect.bottom + 4) + 'px';
-    dropdownEl.style.left  = rect.left + 'px';
-    dropdownEl.style.width = rect.width + 'px';
+    var rect=inputEl.getBoundingClientRect();
+    dropdownEl.style.top=(rect.bottom+4)+'px';
+    dropdownEl.style.left=rect.left+'px';
+    dropdownEl.style.width=rect.width+'px';
 }
 
 function buildSvcDropdownFor(inputEl, dropdownEl, lineIdx){
-    var q = inputEl.value.trim();
-    var matches = q
-        ? serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase()) !== -1 && n.toLowerCase() !== q.toLowerCase(); })
-        : serviceNames.slice(0, 8);
+    var q=inputEl.value.trim();
+    var matches=q
+        ?serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase())!==-1&&n.toLowerCase()!==q.toLowerCase(); })
+        :serviceNames.slice(0,8);
     if(!matches.length){ dropdownEl.classList.remove('open'); return; }
-    dropdownEl.innerHTML = matches.slice(0,8).map(function(n){
-        return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n, q)+'</div>';
+    dropdownEl.innerHTML=matches.slice(0,8).map(function(n){
+        return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n,q)+'</div>';
     }).join('');
     dropdownEl.querySelectorAll('.svc-dropdown-item').forEach(function(item){
         item.addEventListener('mousedown', function(e){
             e.preventDefault();
-            jobLineItemsArr[lineIdx].name = item.dataset.name;
-            inputEl.value = item.dataset.name;
+            jobLineItemsArr[lineIdx].name=item.dataset.name;
+            inputEl.value=item.dataset.name;
             dropdownEl.classList.remove('open');
             updateSubtotalPreview();
         });
     });
-    positionSvcDropdown(inputEl, dropdownEl);
+    positionSvcDropdown(inputEl,dropdownEl);
     dropdownEl.classList.add('open');
 }
 
 function renderLineItems(){
     document.querySelectorAll('.svc-dropdown[data-body-drop]').forEach(function(el){ el.remove(); });
-
-    var wrap = document.getElementById('jobLineItems');
-
+    var wrap=document.getElementById('jobLineItems');
     if(autoInvEnabled){
-        // Show header row for price columns
-        var headerHtml = '<div class="svc-inv-header"><span>Service</span><span>Qty</span><span>Unit Price</span><span></span></div>';
-        var rowsHtml = jobLineItemsArr.map(function(li, i){
-            return '<div class="svc-inv-row">' +
-                '<div class="svc-name-wrap">' +
-                '<input class="form-input svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off">' +
-                '</div>' +
-                '<input class="form-input" type="number" min="1" step="1" placeholder="1" value="'+escHtml(String(li.qty !== undefined && li.qty !== '' ? li.qty : ''))+'" data-qty-idx="'+i+'" style="text-align:right;">' +
-                '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price !== undefined && li.price !== '' ? li.price : ''))+'" data-price-idx="'+i+'" style="text-align:right;">' +
-                '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>' +
-                '</div>';
+        var headerHtml='<div class="svc-inv-header"><span>Service</span><span>Qty</span><span>Unit Price</span><span></span></div>';
+        var rowsHtml=jobLineItemsArr.map(function(li,i){
+            return '<div class="svc-inv-row">'
+                +'<div class="svc-name-wrap"><input class="form-input svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off"></div>'
+                +'<input class="form-input" type="number" min="1" step="1" placeholder="1" value="'+escHtml(String(li.qty!==undefined&&li.qty!==''?li.qty:''))+'" data-qty-idx="'+i+'" style="text-align:right;">'
+                +'<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price!==undefined&&li.price!==''?li.price:''))+'" data-price-idx="'+i+'" style="text-align:right;">'
+                +'<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>'
+                +'</div>';
         }).join('');
-        wrap.innerHTML = headerHtml + rowsHtml;
-
-        // Wire qty/price inputs
+        wrap.innerHTML=headerHtml+rowsHtml;
         wrap.querySelectorAll('[data-qty-idx]').forEach(function(input){
-            input.addEventListener('input', function(){ jobLineItemsArr[parseInt(this.dataset.qtyIdx)].qty = this.value; updateSubtotalPreview(); });
+            input.addEventListener('input', function(){ jobLineItemsArr[parseInt(this.dataset.qtyIdx)].qty=this.value; updateSubtotalPreview(); });
         });
         wrap.querySelectorAll('[data-price-idx]').forEach(function(input){
-            input.addEventListener('input', function(){ jobLineItemsArr[parseInt(this.dataset.priceIdx)].price = this.value; updateSubtotalPreview(); });
+            input.addEventListener('input', function(){ jobLineItemsArr[parseInt(this.dataset.priceIdx)].price=this.value; updateSubtotalPreview(); });
         });
     } else {
-        // Name-only mode
-        wrap.innerHTML = jobLineItemsArr.map(function(li, i){
-            return '<div class="svc-line-row">' +
-                '<div class="svc-name-wrap">' +
-                '<input class="form-input svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off">' +
-                '</div>' +
-                '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>' +
-                '</div>';
+        wrap.innerHTML=jobLineItemsArr.map(function(li,i){
+            return '<div class="svc-line-row">'
+                +'<div class="svc-name-wrap"><input class="form-input svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off"></div>'
+                +'<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>'
+                +'</div>';
         }).join('');
     }
-
-    // Create body-level svc dropdowns so modal overflow doesn't clip them
-    jobLineItemsArr.forEach(function(li, i){
-        var drop = document.createElement('div');
-        drop.className = 'svc-dropdown';
-        drop.id = 'svcDrop'+i;
-        drop.setAttribute('data-body-drop', '1');
+    jobLineItemsArr.forEach(function(li,i){
+        var drop=document.createElement('div');
+        drop.className='svc-dropdown'; drop.id='svcDrop'+i;
+        drop.setAttribute('data-body-drop','1');
         document.body.appendChild(drop);
     });
-
     wrap.querySelectorAll('.svc-name-input').forEach(function(input){
-        var idx = parseInt(input.dataset.idx);
-        var drop = document.getElementById('svcDrop'+idx);
-        input.addEventListener('input', function(){
-            jobLineItemsArr[idx].name = this.value;
-            buildSvcDropdownFor(this, drop, idx);
-        });
-        input.addEventListener('focus', function(){ buildSvcDropdownFor(this, drop, idx); });
-        input.addEventListener('blur', function(){ setTimeout(function(){ drop.classList.remove('open'); }, 150); });
+        var idx=parseInt(input.dataset.idx);
+        var drop=document.getElementById('svcDrop'+idx);
+        input.addEventListener('input', function(){ jobLineItemsArr[idx].name=this.value; buildSvcDropdownFor(this,drop,idx); });
+        input.addEventListener('focus', function(){ buildSvcDropdownFor(this,drop,idx); });
+        input.addEventListener('blur', function(){ setTimeout(function(){ drop.classList.remove('open'); },150); });
         input.addEventListener('keydown', function(e){
-            var items = drop.querySelectorAll('.svc-dropdown-item');
-            var focused = drop.querySelector('.focused');
-            var focusedIdx = focused ? Array.from(items).indexOf(focused) : -1;
-            if(e.key === 'ArrowDown'){ e.preventDefault(); var next = focusedIdx + 1 < items.length ? focusedIdx + 1 : 0; items.forEach(function(it){ it.classList.remove('focused'); }); if(items[next]) items[next].classList.add('focused'); }
-            else if(e.key === 'ArrowUp'){ e.preventDefault(); var prev = focusedIdx - 1 >= 0 ? focusedIdx - 1 : items.length - 1; items.forEach(function(it){ it.classList.remove('focused'); }); if(items[prev]) items[prev].classList.add('focused'); }
-            else if(e.key === 'Enter' && focused){ e.preventDefault(); jobLineItemsArr[idx].name = focused.dataset.name; input.value = focused.dataset.name; drop.classList.remove('open'); updateSubtotalPreview(); }
-            else if(e.key === 'Escape'){ drop.classList.remove('open'); }
+            var items=drop.querySelectorAll('.svc-dropdown-item');
+            var focused=drop.querySelector('.focused');
+            var fi=focused?Array.from(items).indexOf(focused):-1;
+            if(e.key==='ArrowDown'){ e.preventDefault(); var n=fi+1<items.length?fi+1:0; items.forEach(function(it){it.classList.remove('focused');}); if(items[n])items[n].classList.add('focused'); }
+            else if(e.key==='ArrowUp'){ e.preventDefault(); var p=fi-1>=0?fi-1:items.length-1; items.forEach(function(it){it.classList.remove('focused');}); if(items[p])items[p].classList.add('focused'); }
+            else if(e.key==='Enter'&&focused){ e.preventDefault(); jobLineItemsArr[idx].name=focused.dataset.name; input.value=focused.dataset.name; drop.classList.remove('open'); updateSubtotalPreview(); }
+            else if(e.key==='Escape'){ drop.classList.remove('open'); }
         });
     });
-
     updateSubtotalPreview();
 }
 
 function removeLine(i){ jobLineItemsArr.splice(i,1); renderLineItems(); }
-
 document.getElementById('addLineBtn').addEventListener('click', function(){
-    jobLineItemsArr.push({name:'', qty:1, price:''});
+    jobLineItemsArr.push({name:'',qty:1,price:''});
     renderLineItems();
-    var inputs = document.querySelectorAll('.svc-name-input');
-    if(inputs.length) inputs[inputs.length - 1].focus();
+    var inputs=document.querySelectorAll('.svc-name-input');
+    if(inputs.length) inputs[inputs.length-1].focus();
 });
-
-// Reposition open svc dropdowns when modal body scrolls
 document.getElementById('jobModalBody').addEventListener('scroll', function(){
     document.querySelectorAll('.svc-dropdown.open').forEach(function(drop){
-        var idx = drop.id.replace('svcDrop','');
-        var input = document.querySelector('.svc-name-input[data-idx="'+idx+'"]');
-        if(input) positionSvcDropdown(input, drop);
+        var idx=drop.id.replace('svcDrop','');
+        var input=document.querySelector('.svc-name-input[data-idx="'+idx+'"]');
+        if(input) positionSvcDropdown(input,drop);
     });
-}, { passive: true });
+},{passive:true});
 
 // ── Confirm-exit modal ──
-var pendingCloseCallback = null;
-
+var pendingCloseCallback=null;
 function maybeClose(callback){
-    var custVal   = custSearchInput.value.trim();
-    var dateVal   = document.getElementById('jobDate').value;
-    var addrVal   = document.getElementById('jobAddress').value.trim();
-    var hasData   = custVal || dateVal || addrVal || jobLineItemsArr.some(function(li){ return li.name.trim(); });
-    if(hasData){ pendingCloseCallback = callback; document.getElementById('confirmExitModal').classList.add('open'); }
+    var custVal=custSearchInput.value.trim();
+    var dateVal=document.getElementById('jobDate').value;
+    var addrVal=document.getElementById('jobAddress').value.trim();
+    var hasData=custVal||dateVal||addrVal||jobLineItemsArr.some(function(li){ return li.name.trim(); });
+    if(hasData){ pendingCloseCallback=callback; document.getElementById('confirmExitModal').classList.add('open'); }
     else { callback(); }
 }
-
-document.getElementById('confirmExitCancel').addEventListener('click', function(){
-    document.getElementById('confirmExitModal').classList.remove('open'); pendingCloseCallback = null;
-});
+document.getElementById('confirmExitCancel').addEventListener('click', function(){ document.getElementById('confirmExitModal').classList.remove('open'); pendingCloseCallback=null; });
 document.getElementById('confirmExitOk').addEventListener('click', function(){
     document.getElementById('confirmExitModal').classList.remove('open');
-    if(pendingCloseCallback){ pendingCloseCallback(); pendingCloseCallback = null; }
+    if(pendingCloseCallback){ pendingCloseCallback(); pendingCloseCallback=null; }
 });
 
 // ── Modal open/close ──
 function openModal(job){
-    var isEdit = !!job;
+    var isEdit=!!job;
+    jobLineItemsArr=job
+        ?(Array.isArray(job.services)?job.services.map(function(s){ return {name:s.name||'',qty:s.qty||1,price:s.unitPrice||''}; }):[{name:'',qty:1,price:''}])
+        :[{name:'',qty:1,price:''}];
 
-    jobLineItemsArr = job
-        ? (Array.isArray(job.services) ? job.services.map(function(s){ return {name:s.name||'', qty:s.qty||1, price:s.unitPrice||''}; }) : [{name:'',qty:1,price:''}])
-        : [{name:'',qty:1,price:''}];
+    document.getElementById('editJobId').value         = job?job.jobId:'';
+    document.getElementById('jobModalTitle').textContent = job?'Edit Job':'New Job';
+    document.getElementById('jobDate').value           = job&&job.date?job.date.toISOString().slice(0,10):'';
+    document.getElementById('jobStatus').value         = job?job.status:'Scheduled';
+    document.getElementById('jobAddress').value        = job?job.address:'';
+    document.getElementById('jobCrew').value           = job?job.assignedCrew:'';
+    document.getElementById('jobCustomerNotes').value  = job?(job.customerNotes||''):'';
+    document.getElementById('jobCrewNotes').value      = job?(job.crewNotes||''):'';
+    document.getElementById('jobInvoiceId').value      = job?job.invoiceId:'';
+    document.getElementById('custManualEmail').value   = job?(job.manualEmail||''):'';
+    document.getElementById('custManualPhone').value   = job?(job.manualPhone||'').replace(/^\+1\s*/,''):'';
+    document.getElementById('jobModalStatus').textContent='';
+    document.getElementById('jobCustomerNotes').dataset.autofilled='false';
+    document.getElementById('autoInvDueDate').value='';
+    document.getElementById('autoInvNotes').value='';
+    document.getElementById('autoInvStatus').value='Payment Due';
 
-    document.getElementById('editJobId').value        = job ? job.jobId : '';
-    document.getElementById('jobModalTitle').textContent = job ? 'Edit Job' : 'New Job';
-    document.getElementById('jobDate').value          = job && job.date ? job.date.toISOString().slice(0,10) : '';
-    document.getElementById('jobStatus').value        = job ? job.status : 'Scheduled';
-    document.getElementById('jobAddress').value       = job ? job.address : '';
-    document.getElementById('jobCrew').value          = job ? job.assignedCrew : '';
-    document.getElementById('jobCustomerNotes').value = job ? (job.customerNotes||'') : '';
-    document.getElementById('jobCrewNotes').value     = job ? (job.crewNotes||'') : '';
-    document.getElementById('jobInvoiceId').value     = job ? job.invoiceId : '';
-    document.getElementById('custManualEmail').value  = job ? (job.manualEmail||'') : '';
-    document.getElementById('custManualPhone').value  = job ? (job.manualPhone||'').replace(/^\+1\s*/,'') : '';
-    document.getElementById('jobModalStatus').textContent = '';
-    document.getElementById('jobCustomerNotes').dataset.autofilled = 'false';
-    document.getElementById('autoInvDueDate').value   = '';
-    document.getElementById('autoInvNotes').value     = '';
-    document.getElementById('autoInvStatus').value    = 'Payment Due';
+    document.getElementById('autoInvToggleWrap').style.display=isEdit?'none':'';
+    document.getElementById('manualInvoiceIdRow').style.display=isEdit?'':(job&&job.invoiceId?'':'none');
+    autoInvEnabled=false; autoInvCheckbox.checked=false; autoInvPanel.style.display='none';
+    if(isEdit) document.getElementById('manualInvoiceIdRow').style.display='';
 
-    // Hide auto-invoice toggle when editing (already has or doesn't have an invoice)
-    document.getElementById('autoInvToggleWrap').style.display = isEdit ? 'none' : '';
-    document.getElementById('manualInvoiceIdRow').style.display = isEdit ? '' : (job && job.invoiceId ? '' : 'none');
-
-    // Reset auto-invoice
-    autoInvEnabled = false;
-    autoInvCheckbox.checked = false;
-    autoInvPanel.style.display = 'none';
-
-    // When editing show manual invoice id row always
-    if(isEdit) document.getElementById('manualInvoiceIdRow').style.display = '';
-
-    setTimePickerValue(job ? job.time : '');
-
-    // Reset customer picker
-    pickerSelectedUid = ''; pickerIsManual = false;
+    setTimePickerValue(job?job.time:'');
+    pickerSelectedUid=''; pickerIsManual=false;
     custSearchInput.classList.remove('has-account');
-    custAccountBadge.style.display = 'none'; custTypeHint.style.display = 'none';
-    manualContactFields.style.display = 'none'; custSelectedUidEl.value = '';
+    custAccountBadge.style.display='none'; custTypeHint.style.display='none';
+    manualContactFields.style.display='none'; custSelectedUidEl.value='';
     clearPropertyPills();
 
     if(job){
-        if(job.uid && custNames[job.uid]){
-            setCustPicker(job.uid, custNames[job.uid]);
-            document.getElementById('jobAddress').value = job.address;
-            document.getElementById('jobCustomerNotes').value = job.customerNotes||'';
+        if(job.uid&&custNames[job.uid]){
+            setCustPicker(job.uid,custNames[job.uid]);
+            document.getElementById('jobAddress').value=job.address;
+            document.getElementById('jobCustomerNotes').value=job.customerNotes||'';
         } else if(job.customerName){
-            custSearchInput.value = job.customerName;
-            pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = '';
+            custSearchInput.value=job.customerName;
+            pickerIsManual=true; custTypeHint.style.display=''; manualContactFields.style.display='';
         }
     }
 
     renderLineItems();
+    closeAddrDropdown();
     document.body.classList.add('modal-open');
     document.getElementById('jobModal').classList.add('open');
-    document.getElementById('jobModalBody').scrollTop = 0;
+    document.getElementById('jobModalBody').scrollTop=0;
 }
 
 function closeModal(){
     document.getElementById('jobModal').classList.remove('open');
     document.body.classList.remove('modal-open');
-    closeDropdown(); closeTimePicker();
+    closeDropdown(); closeTimePicker(); closeAddrDropdown();
     document.querySelectorAll('.svc-dropdown[data-body-drop]').forEach(function(el){ el.remove(); });
 }
 
 document.getElementById('newJobBtn').addEventListener('click', function(){ openModal(null); });
 document.getElementById('jobModalClose').addEventListener('click', function(){ maybeClose(closeModal); });
 document.getElementById('cancelJobBtn').addEventListener('click', function(){ maybeClose(closeModal); });
-document.getElementById('jobModal').addEventListener('click', function(e){ if(e.target === this) maybeClose(closeModal); });
-document.getElementById('jobModal').addEventListener('touchmove', function(e){ if(e.target === this) e.preventDefault(); }, { passive: false });
+document.getElementById('jobModal').addEventListener('click', function(e){ if(e.target===this) maybeClose(closeModal); });
+document.getElementById('jobModal').addEventListener('touchmove', function(e){ if(e.target===this) e.preventDefault(); },{passive:false});
 
 // ── Generate Job ID ──
 async function generateJobId(dateObj){
-    var yy = String(dateObj.getFullYear()).slice(2);
-    var mm = String(dateObj.getMonth()+1).padStart(2,'0');
-    var dd = String(dateObj.getDate()).padStart(2,'0');
-    var counterDocId = yy + mm + dd;
-    var counterRef = db.collection('jobCounters').doc(counterDocId);
+    var yy=String(dateObj.getFullYear()).slice(2);
+    var mm=String(dateObj.getMonth()+1).padStart(2,'0');
+    var dd=String(dateObj.getDate()).padStart(2,'0');
+    var counterDocId=yy+mm+dd;
+    var counterRef=db.collection('jobCounters').doc(counterDocId);
     var newCount;
     await db.runTransaction(async function(t){
-        var doc = await t.get(counterRef);
-        newCount = doc.exists ? (parseInt(doc.data().count)||0) + 1 : 1;
-        t.set(counterRef, { count: String(newCount) });
+        var doc=await t.get(counterRef);
+        newCount=doc.exists?(parseInt(doc.data().count)||0)+1:1;
+        t.set(counterRef,{count:String(newCount)});
     });
-    return counterDocId + newCount;
+    return counterDocId+newCount;
 }
 
 // ── Generate Invoice ID ──
 async function generateInvId(dateObj){
-    var yy = String(dateObj.getFullYear()).slice(2);
-    var mm = String(dateObj.getMonth()+1).padStart(2,'0');
-    var dd = String(dateObj.getDate()).padStart(2,'0');
-    var counterDocId = yy + mm + dd;
-    var counterRef = db.collection('invoiceCounters').doc(counterDocId);
+    var yy=String(dateObj.getFullYear()).slice(2);
+    var mm=String(dateObj.getMonth()+1).padStart(2,'0');
+    var dd=String(dateObj.getDate()).padStart(2,'0');
+    var counterDocId=yy+mm+dd;
+    var counterRef=db.collection('invoiceCounters').doc(counterDocId);
     var newCount;
     await db.runTransaction(async function(t){
-        var doc = await t.get(counterRef);
-        newCount = doc.exists ? (parseInt(doc.data().count)||0) + 1 : 1;
-        t.set(counterRef, { count: String(newCount) });
+        var doc=await t.get(counterRef);
+        newCount=doc.exists?(parseInt(doc.data().count)||0)+1:1;
+        t.set(counterRef,{count:String(newCount)});
     });
-    return counterDocId + newCount;
+    return counterDocId+newCount;
 }
 
 // ── Save ──
 document.getElementById('saveJobBtn').addEventListener('click', async function(){
-    var btn    = this;
-    var status = document.getElementById('jobModalStatus');
-
-    var custName = custSearchInput.value.trim();
-    var uid      = custSelectedUidEl.value;
-    var isManual = !uid && custName;
-    var dateVal  = document.getElementById('jobDate').value;
-    var addrVal  = document.getElementById('jobAddress').value.trim();
-    var services = jobLineItemsArr.map(function(li){
-        return { name:(li.name||'').trim(), qty:Number(li.qty)||1, unitPrice:Number(li.price)||0 };
-    }).filter(function(s){ return s.name; });
-    var editId   = document.getElementById('editJobId').value;
+    var btn=this;
+    var status=document.getElementById('jobModalStatus');
+    var custName=custSearchInput.value.trim();
+    var uid=custSelectedUidEl.value;
+    var isManual=!uid&&custName;
+    var dateVal=document.getElementById('jobDate').value;
+    var addrVal=document.getElementById('jobAddress').value.trim();
+    var services=jobLineItemsArr.map(function(li){ return {name:(li.name||'').trim(),qty:Number(li.qty)||1,unitPrice:Number(li.price)||0}; }).filter(function(s){ return s.name; });
+    var editId=document.getElementById('editJobId').value;
 
     if(!custName){ status.textContent='Enter or select a customer.'; status.className='modal-status err'; return; }
     if(!dateVal){ status.textContent='Pick a date.'; status.className='modal-status err'; return; }
     if(!addrVal){ status.textContent='An address is required.'; status.className='modal-status err'; return; }
     if(!services.length){ status.textContent='Add at least one service.'; status.className='modal-status err'; return; }
-
-    // Validate auto-invoice: all services need a price
-    if(autoInvEnabled && !editId){
-        var missingPrice = services.some(function(s){ return !s.unitPrice || s.unitPrice <= 0; });
-        if(missingPrice){
-            status.textContent='Add a price for each service to create an invoice.'; status.className='modal-status err'; return;
-        }
+    if(autoInvEnabled&&!editId){
+        var missingPrice=services.some(function(s){ return !s.unitPrice||s.unitPrice<=0; });
+        if(missingPrice){ status.textContent='Add a price for each service to create an invoice.'; status.className='modal-status err'; return; }
     }
-
     if(isManual){
-        var email = document.getElementById('custManualEmail').value.trim();
-        var phone = document.getElementById('custManualPhone').value.trim();
-        if(!email && !phone){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; }
+        var email=document.getElementById('custManualEmail').value.trim();
+        var phone=document.getElementById('custManualPhone').value.trim();
+        if(!email&&!phone){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; }
     }
 
-    var dateObj = new Date(dateVal+'T12:00:00');
-
-    var jobData = {
-        uid:           uid || '',
-        customerName:  uid ? (custNames[uid]||custName) : custName,
-        status:        document.getElementById('jobStatus').value,
-        date:          firebase.firestore.Timestamp.fromDate(dateObj),
-        time:          document.getElementById('jobTime').value,
-        address:       addrVal,
-        assignedCrew:  document.getElementById('jobCrew').value.trim(),
-        services:      services,
-        customerNotes: document.getElementById('jobCustomerNotes').value.trim(),
-        crewNotes:     document.getElementById('jobCrewNotes').value.trim(),
-        invoiceId:     document.getElementById('jobInvoiceId').value.trim(),
-        updatedAt:     firebase.firestore.FieldValue.serverTimestamp(),
+    var dateObj=new Date(dateVal+'T12:00:00');
+    var jobData={
+        uid:uid||'',
+        customerName:uid?(custNames[uid]||custName):custName,
+        status:document.getElementById('jobStatus').value,
+        date:firebase.firestore.Timestamp.fromDate(dateObj),
+        time:document.getElementById('jobTime').value,
+        address:addrVal,
+        assignedCrew:document.getElementById('jobCrew').value.trim(),
+        services:services,
+        customerNotes:document.getElementById('jobCustomerNotes').value.trim(),
+        crewNotes:document.getElementById('jobCrewNotes').value.trim(),
+        invoiceId:document.getElementById('jobInvoiceId').value.trim(),
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
     };
     if(isManual){
-        jobData.manualEmail = document.getElementById('custManualEmail').value.trim();
-        var rawPhone = document.getElementById('custManualPhone').value.trim();
-        jobData.manualPhone = rawPhone ? '+1 ' + rawPhone : '';
+        jobData.manualEmail=document.getElementById('custManualEmail').value.trim();
+        var rawPhone=document.getElementById('custManualPhone').value.trim();
+        jobData.manualPhone=rawPhone?'+1 '+rawPhone:'';
     }
 
-    btn.disabled = true; status.textContent = 'Saving…'; status.className = 'modal-status';
-
+    btn.disabled=true; status.textContent='Saving…'; status.className='modal-status';
     try {
         if(editId){
-            // Edit existing job
             await db.collection('jobs').doc(editId).update(jobData);
         } else {
-            jobData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-            var jobId = await generateJobId(dateObj);
-
+            jobData.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+            var jobId=await generateJobId(dateObj);
             if(autoInvEnabled){
-                // Generate invoice ID too
-                var invId = await generateInvId(dateObj);
-                var dueDateVal = document.getElementById('autoInvDueDate').value;
-                var invItems = services.map(function(s){ return { name:s.name, qty:s.qty, unitPrice:s.unitPrice }; });
-
-                var invData = {
-                    uid:          uid || '',
-                    customerName: uid ? (custNames[uid]||custName) : custName,
-                    status:       document.getElementById('autoInvStatus').value,
-                    dateIssued:   firebase.firestore.Timestamp.fromDate(dateObj),
-                    dueDate:      dueDateVal ? firebase.firestore.Timestamp.fromDate(new Date(dueDateVal+'T12:00:00')) : null,
-                    jobIds:       [String(jobId)],   // multi-job array
-                    jobId:        String(jobId),      // legacy compat
-                    items:        invItems,
-                    payments:     [],
-                    billingAddress: addrVal,
-                    notes:        document.getElementById('autoInvNotes').value.trim(),
-                    createdAt:    firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt:    firebase.firestore.FieldValue.serverTimestamp(),
+                var invId=await generateInvId(dateObj);
+                var dueDateVal=document.getElementById('autoInvDueDate').value;
+                var invItems=services.map(function(s){ return {name:s.name,qty:s.qty,unitPrice:s.unitPrice}; });
+                var invData={
+                    uid:uid||'',
+                    customerName:uid?(custNames[uid]||custName):custName,
+                    status:document.getElementById('autoInvStatus').value,
+                    dateIssued:firebase.firestore.Timestamp.fromDate(dateObj),
+                    dueDate:dueDateVal?firebase.firestore.Timestamp.fromDate(new Date(dueDateVal+'T12:00:00')):null,
+                    jobIds:[String(jobId)], jobId:String(jobId),
+                    items:invItems, payments:[], billingAddress:addrVal,
+                    notes:document.getElementById('autoInvNotes').value.trim(),
+                    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
                 };
-                if(isManual){
-                    invData.manualEmail = jobData.manualEmail;
-                    invData.manualPhone = jobData.manualPhone;
-                }
-
-                // Cross-link
-                jobData.invoiceId = String(invId);
-
-                // Write both atomically
-                var batch = db.batch();
-                batch.set(db.collection('jobs').doc(String(jobId)), jobData);
-                batch.set(db.collection('invoices').doc(String(invId)), invData);
+                if(isManual){ invData.manualEmail=jobData.manualEmail; invData.manualPhone=jobData.manualPhone; }
+                jobData.invoiceId=String(invId);
+                var batch=db.batch();
+                batch.set(db.collection('jobs').doc(String(jobId)),jobData);
+                batch.set(db.collection('invoices').doc(String(invId)),invData);
                 await batch.commit();
-
-                status.textContent = 'Saved! Job #'+jobId+' + Invoice #'+invId+' created.';
-                status.className = 'modal-status ok';
+                status.textContent='Saved! Job #'+jobId+' + Invoice #'+invId+' created.';
+                status.className='modal-status ok';
             } else {
                 await db.collection('jobs').doc(String(jobId)).set(jobData);
-                status.textContent = 'Saved!'; status.className = 'modal-status ok';
+                status.textContent='Saved!'; status.className='modal-status ok';
             }
         }
-
-        setTimeout(function(){ closeModal(); loadJobs(); }, 800);
+        setTimeout(function(){ closeModal(); loadJobs(); },800);
     } catch(e){
         console.error(e);
-        status.textContent = 'Error: ' + (e.message||'Permission denied');
-        status.className = 'modal-status err'; btn.disabled = false;
+        status.textContent='Error: '+(e.message||'Permission denied');
+        status.className='modal-status err'; btn.disabled=false;
     }
 });
 
 // ── Toggle card ──
 function toggleCard(jobId){
-    var body = document.getElementById('body-'+jobId);
-    var card = document.getElementById('card-'+jobId);
+    var body=document.getElementById('body-'+jobId);
+    var card=document.getElementById('card-'+jobId);
     if(!body) return;
-    var wasOpen = !body.classList.contains('collapsed');
-    body.classList.toggle('collapsed'); card.classList.toggle('open', wasOpen);
+    var wasOpen=!body.classList.contains('collapsed');
+    body.classList.toggle('collapsed'); card.classList.toggle('open',wasOpen);
     if(!wasOpen){ history.replaceState(null,null,'#'+jobId); }
     else if(window.location.hash==='#'+jobId){ history.replaceState(null,null,' '); }
 }
@@ -1191,116 +1161,110 @@ async function deleteJob(jobId){
 
 // ── Render jobs ──
 function renderJobs(jobs, targetHash){
-    var container = document.getElementById('jobListContainer');
-    if(!jobs.length){ container.innerHTML = empty('No jobs match your filters.'); return; }
+    var container=document.getElementById('jobListContainer');
+    if(!jobs.length){ container.innerHTML=empty('No jobs match your filters.'); return; }
 
-    var html = '';
+    var html='';
     jobs.forEach(function(job){
         var jobId    = job.jobId;
-        var isTarget = jobId === targetHash;
+        var isTarget = jobId===targetHash;
         var svcNames = (job.services||[]).map(function(s){ return s.name||'—'; }).join(', ') || 'Service Visit';
-        var dateStr  = job.date ? job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
-        var displayName = (job.uid && custNames[job.uid]) ? custNames[job.uid] : (job.customerName||'');
+        var dateStr  = job.date?job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}):'—';
+        var displayName=(job.uid&&custNames[job.uid])?custNames[job.uid]:(job.customerName||'');
 
-        var detailItems = [];
+        // ── Detail grid items ──
+        var detailItems=[];
         if(displayName){
-            var custLink = job.uid
-                ? '<a href="/staff/dashboard/customers/#'+job.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
-                : escHtml(displayName);
+            var custLink=job.uid
+                ?'<a href="/staff/dashboard/customers/#'+job.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
+                :escHtml(displayName);
             detailItems.push('<div class="detail-item"><div class="detail-item-label">Customer</div><div class="detail-item-value">'+custLink+(job.uid?'':' <span style="font-size:10px;color:#bbb;">(no account)</span>')+'</div></div>');
         }
         if(job.address)      detailItems.push('<div class="detail-item"><div class="detail-item-label">Address</div><div class="detail-item-value">'+escHtml(job.address)+'</div></div>');
         if(job.assignedCrew) detailItems.push('<div class="detail-item"><div class="detail-item-label">Crew</div><div class="detail-item-value">'+escHtml(job.assignedCrew)+'</div></div>');
-        if(job.invoiceId)    detailItems.push('<div class="detail-item"><div class="detail-item-label">Invoice</div><div class="detail-item-value"><a href="/staff/dashboard/invoices/#'+job.invoiceId+'" style="color:var(--orange);">#'+job.invoiceId+'</a></div></div>');
         if(job.manualEmail)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value">'+escHtml(job.manualEmail)+'</div></div>');
         if(job.manualPhone)  detailItems.push('<div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value">'+escHtml(job.manualPhone)+'</div></div>');
 
-        // Services — show with pricing if available
-        var svcListHTML = '';
-        if(job.services && job.services.length){
-            var hasPricing = job.services.some(function(s){ return s.unitPrice > 0; });
-            if(hasPricing){
-                var svcTotal = job.services.reduce(function(sum,s){ return sum + (Number(s.qty)||1)*(Number(s.unitPrice)||0); }, 0);
-                svcListHTML = '<div><div class="detail-section-label">Services</div>' +
-                    '<table class="line-items"><tr><th>Service</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Total</th></tr>' +
-                    job.services.map(function(s){
-                        var qty = Number(s.qty)||1, price = Number(s.unitPrice)||0;
-                        return '<tr><td>'+escHtml(s.name||'—')+'</td><td style="text-align:right;">'+qty+'</td><td style="text-align:right;">'+fmtMoney(price)+'</td><td style="text-align:right;">'+fmtMoney(qty*price)+'</td></tr>';
-                    }).join('') +
-                    '<tr style="font-weight:700;"><td colspan="3">Total</td><td style="text-align:right;">'+fmtMoney(svcTotal)+'</td></tr>' +
-                    '</table></div>';
-            } else {
-                svcListHTML = '<div><div class="detail-section-label">Services</div>' +
-                    '<div class="note-block">' + job.services.map(function(s){ return escHtml(s.name||'—'); }).join('<br>') + '</div></div>';
+        // ── Services: chips + optional total ──
+        var svcHTML='';
+        if(job.services&&job.services.length){
+            var jobTotal=job.services.reduce(function(sum,s){ return sum+(Number(s.qty)||1)*(Number(s.unitPrice)||0); },0);
+            svcHTML='<div><div class="detail-section-label">Services</div>'
+                +'<div class="svc-chip-list">'
+                +job.services.map(function(s){ return '<span class="svc-chip">'+escHtml(s.name||'—')+'</span>'; }).join('')
+                +'</div>';
+            if(jobTotal>0){
+                svcHTML+='<div class="job-total-line"><span>Job Total</span><span>'+fmtMoney(jobTotal)+'</span></div>';
             }
+            svcHTML+='</div>';
         }
 
-        var notesHTML = '';
-        if(job.customerNotes) notesHTML += '<div><div class="detail-section-label">Customer Notes</div><div class="note-block">'+escHtml(job.customerNotes)+'</div></div>';
-        if(job.crewNotes)     notesHTML += '<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+escHtml(job.crewNotes)+'</div></div>';
+        var notesHTML='';
+        if(job.customerNotes) notesHTML+='<div><div class="detail-section-label">Customer Notes</div><div class="note-block">'+escHtml(job.customerNotes)+'</div></div>';
+        if(job.crewNotes)     notesHTML+='<div><div class="detail-section-label">Crew Notes</div><div class="note-block">'+escHtml(job.crewNotes)+'</div></div>';
 
-        var actionButtons = '<button class="btn-ghost" onclick=\'editJob("'+jobId+'")\'>Edit</button>' +
-            '<button class="btn-ghost danger" onclick=\'deleteJob("'+jobId+'")\'>Delete</button>';
+        // ── Action buttons — invoice-style ──
+        var actionButtons='<button class="btn-ghost" onclick=\'editJob("'+jobId+'")\'>Edit</button>'
+            +'<button class="btn-ghost danger" onclick=\'deleteJob("'+jobId+'")\'>Delete</button>';
         if(job.invoiceId){
-            actionButtons += '<a class="btn-ghost create-invoice" href="/staff/dashboard/invoices/#'+job.invoiceId+'">View Invoice</a>';
+            actionButtons+='<a class="btn-ghost" href="/staff/dashboard/invoices/#'+job.invoiceId+'">View Invoice</a>';
         } else {
-            actionButtons += '<a class="btn-ghost create-invoice" href="/staff/dashboard/invoices/?newFor='+jobId+'">Create Invoice</a>';
+            actionButtons+='<a class="btn-ghost" href="/staff/dashboard/invoices/?newFor='+jobId+'">Create Invoice</a>';
         }
 
-        // Auto-invoice badge
-        var autoInvBadge = job.invoiceId
-            ? ' <span class="inv-created-badge">🧾 Invoice #'+job.invoiceId+'</span>'
-            : '';
+        // ── Invoice badge in title ──
+        var invBadge=job.invoiceId
+            ?'<span class="inv-created-badge" style="margin-left:6px;">Invoice #'+job.invoiceId+'</span>'
+            :'';
 
-        html += '<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
-        html += '<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
-        html += '<div style="min-width:0;flex:1;">'+
-            '<div class="job-card-title">'+escHtml(svcNames)+' <span style="font-size:11px;font-weight:400;color:var(--text-3);">· #'+jobId+'</span>'+autoInvBadge+'</div>'+
-            '<div class="job-card-meta">'+
-            '<span>📅 '+dateStr+(job.time?' · '+job.time:'')+'</span>'+
-            (displayName?'<span>👤 '+escHtml(displayName)+'</span>':'')+
-            (job.assignedCrew?'<span>🔧 '+escHtml(job.assignedCrew)+'</span>':'')+
-            '</div></div>';
-        html += '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(job.status)+'<span class="toggle-chevron">▾</span></div>';
-        html += '</div>';
-        html += '<div class="job-card-body'+(isTarget?'':' collapsed')+'" id="body-'+jobId+'">';
-        if(detailItems.length) html += '<div class="detail-grid">'+detailItems.join('')+'</div>';
-        html += svcListHTML + notesHTML;
-        html += '<div class="job-actions">'+actionButtons+'</div>';
-        html += '</div></div>';
+        html+='<div class="job-card'+(isTarget?' highlight':'')+'" id="card-'+jobId+'">';
+        html+='<div class="job-card-header" onclick="toggleCard(\''+jobId+'\')">';
+        html+='<div style="min-width:0;flex:1;">'
+            +'<div class="job-card-title">'+escHtml(svcNames)+' <span style="font-size:11px;font-weight:400;color:var(--text-3);">· #'+jobId+'</span>'+invBadge+'</div>'
+            +'<div class="job-card-meta">'
+            +'<span>'+dateStr+(job.time?' · '+job.time:'')+'</span>'
+            +(displayName?'<span>'+escHtml(displayName)+'</span>':'')
+            +(job.assignedCrew?'<span>'+escHtml(job.assignedCrew)+'</span>':'')
+            +'</div></div>';
+        html+='<div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">'+badge(job.status)+'<span class="toggle-chevron">▾</span></div>';
+        html+='</div>';
+        html+='<div class="job-card-body'+(isTarget?'':' collapsed')+'" id="body-'+jobId+'">';
+        if(detailItems.length) html+='<div class="detail-grid">'+detailItems.join('')+'</div>';
+        html+=svcHTML+notesHTML;
+        html+='<div class="job-actions">'+actionButtons+'</div>';
+        html+='</div></div>';
     });
 
-    container.innerHTML = html;
+    container.innerHTML=html;
     if(targetHash){
-        var el = document.getElementById('card-'+targetHash);
-        if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+        var el=document.getElementById('card-'+targetHash);
+        if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); },100);
     }
 }
 
 function editJob(jobId){
-    var job = allJobs.find(function(j){ return j.jobId===jobId; });
+    var job=allJobs.find(function(j){ return j.jobId===jobId; });
     if(job) openModal(job);
 }
 
 // ── Filter & search ──
 function applyFilters(){
-    var search = document.getElementById('searchInput').value.toLowerCase().trim();
-    var status = document.getElementById('statusFilter').value.toLowerCase();
-    var time   = document.getElementById('timeFilter').value;
-    var now    = new Date(); now.setHours(0,0,0,0);
-
-    var filtered = allJobs.filter(function(j){
-        if(status && j.status.toLowerCase().indexOf(status) === -1) return false;
-        if(time === 'upcoming' && j.date && j.date < now) return false;
-        if(time === 'past'     && j.date && j.date >= now) return false;
+    var search=document.getElementById('searchInput').value.toLowerCase().trim();
+    var status=document.getElementById('statusFilter').value.toLowerCase();
+    var time=document.getElementById('timeFilter').value;
+    var now=new Date(); now.setHours(0,0,0,0);
+    var filtered=allJobs.filter(function(j){
+        if(status&&j.status.toLowerCase().indexOf(status)===-1) return false;
+        if(time==='upcoming'&&j.date&&j.date<now) return false;
+        if(time==='past'&&j.date&&j.date>=now) return false;
         if(search){
-            var displayName = (j.uid && custNames[j.uid]) ? custNames[j.uid] : (j.customerName||'');
-            var haystack = [displayName, j.address, j.jobId, j.invoiceId, j.assignedCrew].join(' ').toLowerCase();
-            if(haystack.indexOf(search) === -1) return false;
+            var displayName=(j.uid&&custNames[j.uid])?custNames[j.uid]:(j.customerName||'');
+            var haystack=[displayName,j.address,j.jobId,j.invoiceId,j.assignedCrew].join(' ').toLowerCase();
+            if(haystack.indexOf(search)===-1) return false;
         }
         return true;
     });
-    renderJobs(filtered, window.location.hash.replace('#',''));
+    renderJobs(filtered,window.location.hash.replace('#',''));
 }
 
 ['searchInput','statusFilter','timeFilter'].forEach(function(id){
@@ -1311,32 +1275,26 @@ function applyFilters(){
 // ── Load jobs ──
 async function loadJobs(){
     try {
-        var snapshot = await db.collection('jobs').orderBy('date','desc').limit(300).get();
-        allJobs = [];
+        var snapshot=await db.collection('jobs').orderBy('date','desc').limit(300).get();
+        allJobs=[];
         snapshot.forEach(function(doc){
-            var d = doc.data();
+            var d=doc.data();
             allJobs.push({
-                jobId:         doc.id,
-                uid:           d.uid||'',
-                customerName:  d.customerName||'',
-                status:        d.status||'Scheduled',
-                date:          d.date ? d.date.toDate() : null,
-                time:          d.time||'',
-                address:       d.address||'',
-                services:      Array.isArray(d.services) ? d.services : [],
-                assignedCrew:  d.assignedCrew||'',
-                customerNotes: d.customerNotes||'',
-                crewNotes:     d.crewNotes||'',
-                invoiceId:     d.invoiceId||'',
-                manualEmail:   d.manualEmail||'',
-                manualPhone:   d.manualPhone||'',
+                jobId:doc.id, uid:d.uid||'', customerName:d.customerName||'',
+                status:d.status||'Scheduled',
+                date:d.date?d.date.toDate():null,
+                time:d.time||'', address:d.address||'',
+                services:Array.isArray(d.services)?d.services:[],
+                assignedCrew:d.assignedCrew||'',
+                customerNotes:d.customerNotes||'', crewNotes:d.crewNotes||'',
+                invoiceId:d.invoiceId||'',
+                manualEmail:d.manualEmail||'', manualPhone:d.manualPhone||'',
             });
         });
         applyFilters();
     } catch(e){
         console.error(e);
-        document.getElementById('jobListContainer').innerHTML =
-            '<p class="empty-state">Load failed: '+(e.message||'Permission denied')+'</p>';
+        document.getElementById('jobListContainer').innerHTML='<p class="empty-state">Load failed: '+(e.message||'Permission denied')+'</p>';
     }
 }
 
@@ -1344,19 +1302,18 @@ async function loadJobs(){
 auth.onAuthStateChanged(async function(user){
     try {
         if(!user){ window.location.href='/staff/login/'; return; }
-        document.getElementById('mobileAvatar').textContent = initials(user.displayName||user.email||'');
+        document.getElementById('mobileAvatar').textContent=initials(user.displayName||user.email||'');
 
-        var custSnap = await db.collection('customers').get();
-        custList = [];
+        var custSnap=await db.collection('customers').get();
+        custList=[];
         custSnap.forEach(function(doc){
-            var d = doc.data();
-            custNames[doc.id] = d.name||doc.id;
-            custDocs[doc.id]  = d;
-            custList.push({uid:doc.id, name:d.name||doc.id});
+            var d=doc.data();
+            custNames[doc.id]=d.name||doc.id; custDocs[doc.id]=d;
+            custList.push({uid:doc.id,name:d.name||doc.id});
         });
         custList.sort(function(a,b){ return a.name.localeCompare(b.name); });
 
-        serviceNames = [
+        serviceNames=[
             "Aeration","Debris Removal","Edging & Trimming","Fall Cleanup","Fertilization",
             "Garden Bed Maintenance","Gutter Cleaning","Hedge & Shrub Trimming","Ice Melt Application",
             "Lawn Mowing","Leaf Removal","Mulching","Overseeding","Pet Waste Removal",
@@ -1366,9 +1323,8 @@ auth.onAuthStateChanged(async function(user){
         buildTimePicker();
         await loadJobs();
     } catch(e){
-        console.error("MAIN ERROR:", e);
-        document.getElementById('jobListContainer').innerHTML =
-            '<p class="empty-state">Load failed: '+(e.message||'Unknown error')+'</p>';
+        console.error('MAIN ERROR:',e);
+        document.getElementById('jobListContainer').innerHTML='<p class="empty-state">Load failed: '+(e.message||'Unknown error')+'</p>';
     }
 });
 </script>
