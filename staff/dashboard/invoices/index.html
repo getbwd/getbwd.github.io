@@ -703,7 +703,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                         <div class="form-row" style="margin:0;">
                             <label class="form-label">Payment Method</label>
                             <select class="form-select" id="ctrPrepayType">
-                                <option>Cash</option><option>Check</option><option>Venmo</option><option>Zelle</option><option>Card</option><option>Other</option>
+                                <option>Cash</option>
+                                <option>Check</option>
+                                <option>Card</option>
+                                <option>Venmo</option>
+                                <option>Paypal</option>
+                                <option>CashApp</option>
+                                <option>Credit</option>
+                                <option>Other</option>
                             </select>
                         </div>
                     </div>
@@ -817,7 +824,7 @@ var serviceNames = [];
 var invLineItemsArr = [];
 var invPaymentsArr  = [];
 var linkedJobIds    = [];
-var PAYMENT_TYPES   = ['Cash','Check','Venmo','Zelle','Card','Other'];
+var PAYMENT_TYPES = ['Cash','Check','Card','Venmo','Paypal','CashApp','Credit','Other'];
 
 // ── Customer picker (invoice modal) ──
 var pickerSelectedUid   = '';
