@@ -1795,7 +1795,57 @@ auth.onAuthStateChanged(async function(user){
             custList.sort(function(a,b){return a.name.localeCompare(b.name);});
         } catch(e){ console.warn('Could not load guest customers:', e.message); }
 
-        serviceNames=["Aeration","Debris Removal","Edging & Trimming","Fall Cleanup","Fertilization","Garden Bed Maintenance","Gutter Cleaning","Hedge & Shrub Trimming","Ice Melt Application","Lawn Mowing","Leaf Removal","Mulching","Overseeding","Pet Waste Removal","Power Washing","Snow Removal","Soil Testing","Spring Cleanup","Tree Pruning","Weed Control"];
+        serviceNames = [
+        "Aeration",
+        "Debris Removal",
+        "Debris Removal (weekly)",
+        "Debris Removal (bi-weekly)",
+        "Debris Removal (monthly)",
+        "Dethatching",
+        "Edging & Trimming",
+        "Fall Cleanup",
+        "Fertilization",
+        "Garden Bed Maintenance",
+        "Garden Bed Maintenance (weekly)",
+        "Garden Bed Maintenance (bi-weekly)",
+        "Garden Bed Maintenance (monthly)",
+        "Gutter Cleaning",
+        "Hedge & Shrub Trimming",
+        "Ice Melt Application",
+        "Ice Melt Application (per visit)",
+        "Ice Melt Application (weekly)",
+        "Ice Melt Application (monthly)",
+        "Lawn Mowing",
+        "Lawn Mowing (weekly)",
+        "Lawn Mowing (bi-weekly)",
+        "Lawn Mowing (monthly)",
+        "Leaf Removal",
+        "Leaf Removal (weekly)",
+        "Leaf Removal (bi-weekly)",
+        "Leaf Removal (monthly)",
+        "Mulch Installation",
+        "Overseeding",
+        "Pet Waste Removal",
+        "Pet Waste Removal (weekly)",
+        "Pet Waste Removal (bi-weekly)",
+        "Pet Waste Removal (monthly)",
+        "Power Washing",
+        "Salting",
+        "Salting (per visit)",
+        "Salting (monthly)",
+        "Sidewalk Snow Clearing",
+        "Sidewalk Snow Clearing (per visit)",
+        "Sidewalk Snow Clearing (monthly)",
+        "Snow Removal",
+        "Snow Removal (per visit)",
+        "Snow Removal (monthly)",
+        "Sod Installation",
+        "Soil Testing",
+        "Spring Cleanup",
+        "Tree Pruning",
+        "Weed Control",
+        "Yard Winterization"
+        ];
 
         setupCtrCustPicker();
         buildCtrTimePicker();
