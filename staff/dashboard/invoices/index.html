@@ -91,8 +91,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
     font-size: 11px; padding: 3px 9px; background: var(--white);
     border: 1px solid #b6dfc8; border-radius: 20px; color: var(--text-2); white-space: nowrap;
 }
+/* FIX: freq-row no longer contains Job Time / Crew — only Every + Unit */
 .freq-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
-.freq-row .form-row { flex: 1; min-width: 120px; margin: 0; }
+.freq-row .form-row { flex: 1; min-width: 100px; max-width: 160px; margin: 0; }
 
 /* ── DATE side-by-side ── */
 .date-row { display: flex; gap: 12px; width: 100%; }
@@ -108,6 +109,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 }
 .cust-picker-input:focus { outline: none; border-color: var(--orange); }
 .cust-picker-input.has-account { background: #f6fff9; border-color: #8ecfa8; }
+.cust-picker-input.has-guest { background: #fff8f0; border-color: var(--orange); }
 .cust-dropdown {
     position: absolute; top: calc(100% + 4px); left: 0; right: 0;
     background: var(--white); border: 1px solid var(--border); border-radius: 10px;
@@ -122,10 +124,15 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .cust-dropdown-item:last-child { border-bottom: none; }
 .cust-dropdown-item:hover { background: #fafaf8; }
 .cust-dot { width: 7px; height: 7px; border-radius: 50%; background: #8ecfa8; flex-shrink: 0; }
+.cust-dot.guest { background: var(--orange); }
 .cust-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
 .cust-account-badge {
     display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
     color: #1e8a4a; background: #edf7f1; border: 1px solid #b6dfc8; border-radius: 100px; padding: 2px 8px; margin-top: 4px;
+}
+.cust-guest-badge {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+    color: #c07a30; background: #fdf8f3; border: 1px solid #f0d9bc; border-radius: 100px; padding: 2px 8px; margin-top: 4px;
 }
 .cust-type-hint { font-size: 11px; color: var(--text-3); margin-top: 4px; }
 .manual-contact-fields {
@@ -249,19 +256,54 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .toggle-label { font-size: 13px; font-weight: 600; color: var(--text-2); }
 .toggle-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
 
+/* ── TIME PICKER (shared) ── */
+.time-picker-wrap { position: relative; }
+.time-picker-display {
+    border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px;
+    font-size: 13.5px; font-family: 'Inter', sans-serif; color: var(--text);
+    background: var(--white); width: 100%; box-sizing: border-box;
+    cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+    user-select: none; transition: border-color 0.15s;
+}
+.time-picker-display:focus { outline: none; border-color: var(--orange); }
+.time-picker-display .time-placeholder { color: #bbb; }
+/* FIX: contract time picker dropdown uses position:fixed to escape flex container */
+.time-picker-dropdown {
+    position: fixed;
+    background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.13); z-index: 1200; padding: 12px;
+    display: none; width: 260px;
+}
+.time-picker-dropdown.open { display: block; }
+.time-picker-inner { display: flex; gap: 0; }
+.time-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; }
+.time-col-label { font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #bbb; margin-bottom: 6px; }
+.time-col-scroll { max-height: 180px; overflow-y: auto; width: 100%; scrollbar-width: thin; }
+.time-col-scroll::-webkit-scrollbar { width: 4px; }
+.time-col-scroll::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+.time-opt {
+    padding: 7px 10px; font-size: 13px; color: var(--text-2); border-radius: 7px;
+    cursor: pointer; text-align: center; transition: background 0.1s;
+}
+.time-opt:hover { background: #fafaf8; }
+.time-opt.selected { background: var(--orange); color: #fff; font-weight: 700; }
+.time-divider { display: flex; align-items: center; padding: 0 6px; font-size: 18px; color: #bbb; padding-top: 28px; }
+.time-ampm-wrap { display: flex; flex-direction: column; gap: 6px; padding-top: 28px; padding-left: 8px; }
+.time-ampm-btn {
+    padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--white); color: var(--text-2);
+    cursor: pointer; transition: all 0.12s;
+}
+.time-ampm-btn.selected { background: var(--orange); border-color: var(--orange); color: #fff; }
+
 /* ═══════════════════════════════════════════════
    PRINT INVOICE STYLES
    ═══════════════════════════════════════════════ */
-#printFrame {
-    display: none;
-}
-
+#printFrame { display: none; }
 @media print {
     body * { display: none !important; }
     #printFrame { display: block !important; position: fixed; inset: 0; background: white; z-index: 9999; }
 }
-
-/* Print preview modal */
 .print-modal-backdrop {
     position: fixed; inset: 0; background: rgba(10,10,10,0.75); z-index: 1200;
     display: none; align-items: center; justify-content: center;
@@ -277,8 +319,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 }
 .print-preview-toolbar {
     background: #1e1e1e; padding: 14px 20px;
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0;
 }
 .print-preview-title { font-size: 13px; font-weight: 600; color: #aaa; }
 .print-preview-actions { display: flex; gap: 8px; align-items: center; }
@@ -287,165 +328,62 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .btn-close-print { background: #3a3a3a; color: #ccc; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
 .btn-close-print:hover { background: #444; }
 .print-preview-scroll { flex: 1; overflow-y: auto; padding: 24px; background: #3a3a3a; }
-.print-paper {
-    background: #fff; margin: 0 auto;
-    width: 100%; max-width: 780px;
-    border-radius: 4px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-    overflow: hidden;
-}
-
-/* ── INVOICE PRINT DOCUMENT STYLES ── */
-.inv-doc {
-    font-family: Arial, 'Helvetica Neue', sans-serif;
-    color: #1a1a1a;
-    padding: 0;
-}
-.inv-doc-header {
-    background: #0f0f0f;
-    padding: 40px 48px 36px;
-    display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;
-}
+.print-paper { background: #fff; margin: 0 auto; width: 100%; max-width: 780px; border-radius: 4px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); overflow: hidden; }
+.inv-doc { font-family: Arial, 'Helvetica Neue', sans-serif; color: #1a1a1a; padding: 0; }
+.inv-doc-header { background: #0f0f0f; padding: 40px 48px 36px; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
 .inv-doc-brand { flex: 1; }
-.inv-doc-logo-name {
-    font-family: Arial, 'Helvetica Neue', sans-serif;
-    font-size: 26px; font-weight: 700; color: #fff;
-    letter-spacing: -0.5px; margin-bottom: 4px;
-}
-.inv-doc-logo-sub {
-    font-size: 11px; color: #888; letter-spacing: 2px; text-transform: uppercase;
-}
+.inv-doc-logo-name { font-family: Arial, 'Helvetica Neue', sans-serif; font-size: 26px; font-weight: 700; color: #fff; letter-spacing: -0.5px; margin-bottom: 4px; }
+.inv-doc-logo-sub { font-size: 11px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
 .inv-doc-header-right { text-align: right; }
-.inv-doc-inv-label {
-    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-    color: #e8703a; margin-bottom: 6px;
-}
-.inv-doc-inv-num {
-    font-size: 28px; font-weight: 700; color: #fff; font-family: Arial, 'Helvetica Neue', sans-serif;
-    letter-spacing: -1px;
-}
-.inv-doc-status-chip {
-    display: inline-block; margin-top: 8px;
-    padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.5px; text-transform: uppercase; font-family: 'Inter', Arial, sans-serif;
-}
+.inv-doc-inv-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #e8703a; margin-bottom: 6px; }
+.inv-doc-inv-num { font-size: 28px; font-weight: 700; color: #fff; font-family: Arial, 'Helvetica Neue', sans-serif; letter-spacing: -1px; }
+.inv-doc-status-chip { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; font-family: 'Inter', Arial, sans-serif; }
 .inv-doc-status-chip.paid { background: #1e8a4a; color: #fff; }
 .inv-doc-status-chip.due { background: #e8703a; color: #fff; }
 .inv-doc-status-chip.overdue { background: #d93025; color: #fff; }
 .inv-doc-status-chip.draft { background: #666; color: #fff; }
-
-.inv-doc-meta-strip {
-    background: #f5f4f1;
-    padding: 20px 48px;
-    display: flex; gap: 0; border-bottom: 2px solid #e0ddd8;
-}
+.inv-doc-meta-strip { background: #f5f4f1; padding: 20px 48px; display: flex; gap: 0; border-bottom: 2px solid #e0ddd8; }
 .inv-doc-meta-block { flex: 1; padding-right: 24px; }
 .inv-doc-meta-block:last-child { padding-right: 0; }
-.inv-doc-meta-label {
-    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-    color: #999; margin-bottom: 5px; font-family: 'Inter', Arial, sans-serif;
-}
-.inv-doc-meta-value {
-    font-size: 13px; color: #1a1a1a; font-weight: 600; line-height: 1.4;
-}
-
+.inv-doc-meta-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 5px; font-family: 'Inter', Arial, sans-serif; }
+.inv-doc-meta-value { font-size: 13px; color: #1a1a1a; font-weight: 600; line-height: 1.4; }
 .inv-doc-body { padding: 36px 48px; }
-
-.inv-doc-bill-row {
-    display: flex; gap: 40px; margin-bottom: 32px;
-}
+.inv-doc-bill-row { display: flex; gap: 40px; margin-bottom: 32px; }
 .inv-doc-bill-block { flex: 1; }
-.inv-doc-bill-label {
-    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-    color: #e8703a; margin-bottom: 8px; font-family: 'Inter', Arial, sans-serif;
-    font-weight: 700;
-}
+.inv-doc-bill-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #e8703a; margin-bottom: 8px; font-family: 'Inter', Arial, sans-serif; font-weight: 700; }
 .inv-doc-bill-name { font-size: 16px; font-weight: 700; color: #0f0f0f; margin-bottom: 3px; }
 .inv-doc-bill-addr { font-size: 12px; color: #555; line-height: 1.6; }
-
 .inv-doc-from-name { font-size: 15px; font-weight: 700; color: #0f0f0f; margin-bottom: 3px; }
 .inv-doc-from-detail { font-size: 12px; color: #555; line-height: 1.6; }
-
-/* Line items table */
 .inv-doc-table-wrap { margin-bottom: 24px; }
-.inv-doc-table {
-    width: 100%; border-collapse: collapse;
-}
-.inv-doc-table thead tr {
-    background: #0f0f0f;
-}
-.inv-doc-table thead th {
-    padding: 11px 16px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-    color: #e8703a; text-align: left; font-family: 'Inter', Arial, sans-serif; font-weight: 700;
-}
+.inv-doc-table { width: 100%; border-collapse: collapse; }
+.inv-doc-table thead tr { background: #0f0f0f; }
+.inv-doc-table thead th { padding: 11px 16px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #e8703a; text-align: left; font-family: 'Inter', Arial, sans-serif; font-weight: 700; }
 .inv-doc-table thead th:last-child { text-align: right; }
 .inv-doc-table tbody tr { border-bottom: 1px solid #e8e6e2; }
 .inv-doc-table tbody tr:last-child { border-bottom: none; }
-.inv-doc-table tbody td {
-    padding: 13px 16px; font-size: 13px; color: #333; vertical-align: top;
-}
+.inv-doc-table tbody td { padding: 13px 16px; font-size: 13px; color: #333; vertical-align: top; }
 .inv-doc-table tbody td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .inv-doc-table tbody td.td-num { text-align: right; font-variant-numeric: tabular-nums; color: #555; }
-.inv-doc-table tfoot tr.subtotal-row td {
-    padding: 10px 16px; font-size: 12px; color: #666; border-top: 1px solid #e8e6e2;
-}
-.inv-doc-table tfoot tr.total-row td {
-    padding: 14px 16px; font-size: 16px; font-weight: 700; color: #0f0f0f;
-    border-top: 3px solid #0f0f0f; background: #faf9f7;
-}
+.inv-doc-table tfoot tr.subtotal-row td { padding: 10px 16px; font-size: 12px; color: #666; border-top: 1px solid #e8e6e2; }
+.inv-doc-table tfoot tr.total-row td { padding: 14px 16px; font-size: 16px; font-weight: 700; color: #0f0f0f; border-top: 3px solid #0f0f0f; background: #faf9f7; }
 .inv-doc-table tfoot tr td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .inv-doc-table tfoot tr.paid-row td { color: #1e8a4a; font-size: 13px; padding: 8px 16px; }
-.inv-doc-table tfoot tr.balance-row td {
-    font-size: 18px; font-weight: 800; color: #d93025; padding: 14px 16px;
-    border-top: 2px solid #d93025;
-}
+.inv-doc-table tfoot tr.balance-row td { font-size: 18px; font-weight: 800; color: #d93025; padding: 14px 16px; border-top: 2px solid #d93025; }
 .inv-doc-table tfoot tr.balance-row.clear td { color: #1e8a4a; border-color: #1e8a4a; }
-
-/* Payment history */
 .inv-doc-payments { margin-bottom: 24px; }
-.inv-doc-pay-label {
-    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-    color: #999; margin-bottom: 10px; font-family: 'Inter', Arial, sans-serif;
-}
-.inv-doc-pay-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 8px 14px; background: #f5f4f1; border-radius: 6px;
-    margin-bottom: 5px; font-size: 12px; color: #555;
-}
+.inv-doc-pay-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 10px; font-family: 'Inter', Arial, sans-serif; }
+.inv-doc-pay-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: #f5f4f1; border-radius: 6px; margin-bottom: 5px; font-size: 12px; color: #555; }
 .inv-doc-pay-amt { font-weight: 700; color: #1e8a4a; }
-
-/* Jobs linked */
 .inv-doc-jobs { margin-bottom: 24px; }
-.inv-doc-jobs-label {
-    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-    color: #999; margin-bottom: 8px; font-family: 'Inter', Arial, sans-serif;
-}
+.inv-doc-jobs-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 8px; font-family: 'Inter', Arial, sans-serif; }
 .inv-doc-jobs-list { display: flex; flex-wrap: wrap; gap: 6px; }
-.inv-doc-job-chip {
-    font-size: 11px; padding: 4px 10px; background: #f0ede8;
-    border: 1px solid #d8d3cc; border-radius: 6px; color: #333; font-family: 'Inter', Arial, sans-serif;
-}
-
-/* Notes */
-.inv-doc-notes {
-    background: #f5f4f1; border-left: 3px solid #e8703a;
-    padding: 12px 16px; border-radius: 0 6px 6px 0;
-    font-size: 12px; color: #555; line-height: 1.6; margin-bottom: 24px;
-}
-
-/* Footer */
-.inv-doc-footer {
-    background: #0f0f0f; padding: 20px 48px;
-    display: flex; justify-content: space-between; align-items: center; gap: 20px;
-    flex-wrap: wrap;
-}
+.inv-doc-job-chip { font-size: 11px; padding: 4px 10px; background: #f0ede8; border: 1px solid #d8d3cc; border-radius: 6px; color: #333; font-family: 'Inter', Arial, sans-serif; }
+.inv-doc-notes { background: #f5f4f1; border-left: 3px solid #e8703a; padding: 12px 16px; border-radius: 0 6px 6px 0; font-size: 12px; color: #555; line-height: 1.6; margin-bottom: 24px; }
+.inv-doc-footer { background: #0f0f0f; padding: 20px 48px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
 .inv-doc-footer-left { font-size: 11px; color: #666; }
 .inv-doc-footer-right { font-size: 11px; color: #e8703a; font-style: italic; }
-
-/* Contract section */
-.inv-doc-contract {
-    margin-bottom: 24px;
-}
+.inv-doc-contract { margin-bottom: 24px; }
 .inv-doc-contract strong { display: block; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; color: #999; font-family: Arial, sans-serif; }
 
 @media(max-width:600px){
@@ -470,32 +408,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
         <span class="staff-badge">⚡ Staff</span>
     </div>
     <nav class="sidebar-nav">
-        <a class="nav-item" href="/staff/dashboard/">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            Overview
-        </a>
-        <a class="nav-item" href="/staff/dashboard/jobs/">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Jobs
-        </a>
-        <a class="nav-item active" href="/staff/dashboard/invoices/">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            Invoices
-        </a>
-        <a class="nav-item" href="/staff/dashboard/customers/">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            Customers
-        </a>
-        <a class="nav-item" href="/staff/dashboard/services/">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            Services
-        </a>
+        <a class="nav-item" href="/staff/dashboard/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Overview</a>
+        <a class="nav-item" href="/staff/dashboard/jobs/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Jobs</a>
+        <a class="nav-item active" href="/staff/dashboard/invoices/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
+        <a class="nav-item" href="/staff/dashboard/customers/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Customers</a>
+        <a class="nav-item" href="/staff/dashboard/services/"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Services</a>
     </nav>
     <div class="sidebar-footer">
-        <button class="nav-item signout-btn" id="signOutBtn">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Sign Out
-        </button>
+        <button class="nav-item signout-btn" id="signOutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
     </div>
 </aside>
 
@@ -518,7 +438,6 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 <button class="btn-primary" id="newInvBtn">+ New Invoice</button>
             </div>
         </div>
-
         <div class="filter-bar">
             <input class="filter-input" id="searchInput" type="text" placeholder="Search customer, description, invoice #, job #…">
             <select class="filter-select" id="statusFilter">
@@ -529,7 +448,6 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 <option value="draft">Draft</option>
             </select>
         </div>
-
         <div id="invListContainer"><p style="color:#ccc;font-size:14px;">Loading…</p></div>
     </div>
 </main>
@@ -552,17 +470,19 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
             <div class="form-row">
                 <label class="form-label">Customer</label>
                 <div class="cust-picker-wrap">
-                    <input class="cust-picker-input" type="text" id="custSearchInput"
-                        placeholder="Search by name or type a new customer…" autocomplete="off">
+                    <input class="cust-picker-input" type="text" id="custSearchInput" placeholder="Search by name or type a new customer…" autocomplete="off">
                     <div class="cust-dropdown" id="custDropdown"></div>
                 </div>
                 <div id="custAccountBadge" style="display:none;"><span class="cust-account-badge">✓ Has account</span></div>
-                <div id="custTypeHint" class="cust-type-hint" style="display:none;">No account found — you can still add this customer manually.</div>
+                <div id="custGuestBadge" style="display:none;"><span class="cust-guest-badge">★ Returning guest — info pre-filled</span></div>
+                <div id="custTypeHint" class="cust-type-hint" style="display:none;">No account found — contact info will be saved for future lookups.</div>
                 <input type="hidden" id="custSelectedUid">
+                <input type="hidden" id="custSelectedGuestId">
                 <div class="manual-contact-fields" id="manualContactFields" style="display:none;">
+                    <div><div class="manual-contact-label">Full Name</div><input class="form-input" type="text" id="custManualName" placeholder="Customer full name"></div>
                     <div><div class="manual-contact-label">Email</div><input class="form-input" type="email" id="custManualEmail" placeholder="customer@email.com"></div>
                     <div><div class="manual-contact-label">Phone</div><div class="phone-wrap"><span class="phone-prefix">🇺🇸 +1</span><input type="tel" id="custManualPhone" placeholder="(555) 000-0000" maxlength="14" autocomplete="tel"></div></div>
-                    <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required.</p>
+                    <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required. Info is saved for future lookups.</p>
                 </div>
             </div>
 
@@ -659,13 +579,16 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                     <div class="cust-dropdown" id="ctrCustDropdown"></div>
                 </div>
                 <div id="ctrCustBadge" style="display:none;"><span class="cust-account-badge">✓ Has account</span></div>
-                <div id="ctrCustTypeHint" class="cust-type-hint" style="display:none;">No account found — you can still add this customer manually.</div>
+                <div id="ctrCustGuestBadge" style="display:none;"><span class="cust-guest-badge">★ Returning guest — info pre-filled</span></div>
+                <div id="ctrCustTypeHint" class="cust-type-hint" style="display:none;">No account found — contact info will be saved for future lookups.</div>
                 <input type="hidden" id="ctrCustUid">
+                <input type="hidden" id="ctrCustGuestId">
                 <input type="hidden" id="ctrCustName">
                 <div class="manual-contact-fields" id="ctrManualContactFields" style="display:none;">
+                    <div><div class="manual-contact-label">Full Name</div><input class="form-input" type="text" id="ctrManualName" placeholder="Customer full name"></div>
                     <div><div class="manual-contact-label">Email</div><input class="form-input" type="email" id="ctrManualEmail" placeholder="customer@email.com"></div>
                     <div><div class="manual-contact-label">Phone</div><div class="phone-wrap"><span class="phone-prefix">🇺🇸 +1</span><input type="tel" id="ctrManualPhone" placeholder="(555) 000-0000" maxlength="14" autocomplete="tel"></div></div>
-                    <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required.</p>
+                    <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required. Info is saved for future lookups.</p>
                 </div>
             </div>
 
@@ -702,6 +625,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                         <input class="form-input" type="date" id="ctrEndDate">
                     </div>
                 </div>
+                <!-- FIX: Frequency row contains ONLY Every + Unit — no time picker here -->
                 <div class="form-row" style="margin:0;">
                     <label class="form-label">Frequency</label>
                     <div class="freq-row">
@@ -716,37 +640,24 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                                 <option value="weeks" selected>Weeks</option>
                             </select>
                         </div>
-                        <div class="form-row" style="margin:0;">
-                            <label class="form-label" style="font-size:10px;">Job Time (optional)</label>
-                            <div class="time-picker-wrap" id="ctrTimePickerWrap">
-                                <div class="time-picker-display" id="ctrTimePickerDisplay" tabindex="0">
-                                    <span id="ctrTimePickerText" class="time-placeholder">Select time…</span>
-                                    <span style="color:#bbb;font-size:12px;">▾</span>
-                                </div>
-                                <div class="time-picker-dropdown" id="ctrTimePickerDropdown">
-                                    <div class="time-picker-inner">
-                                        <div class="time-col">
-                                            <div class="time-col-label">Hour</div>
-                                            <div class="time-col-scroll" id="ctrTimeHourScroll"></div>
-                                        </div>
-                                        <div class="time-divider">:</div>
-                                        <div class="time-col">
-                                            <div class="time-col-label">Min</div>
-                                            <div class="time-col-scroll" id="ctrTimeMinScroll"></div>
-                                        </div>
-                                        <div class="time-ampm-wrap">
-                                            <button type="button" class="time-ampm-btn selected" id="ctrTimeAmBtn" data-v="AM">AM</button>
-                                            <button type="button" class="time-ampm-btn" id="ctrTimePmBtn" data-v="PM">PM</button>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                <!-- FIX: Job Time and Crew are now in their own date-row, outside freq-row -->
+                <div class="date-row" style="margin-top:0;">
+                    <div class="form-row" style="margin:0;">
+                        <label class="form-label" style="font-size:10px;">Job Time (optional)</label>
+                        <div class="time-picker-wrap" id="ctrTimePickerWrap">
+                            <div class="time-picker-display" id="ctrTimePickerDisplay" tabindex="0">
+                                <span id="ctrTimePickerText" class="time-placeholder">Select time…</span>
+                                <span style="color:#bbb;font-size:12px;">▾</span>
                             </div>
-                            <input type="hidden" id="ctrJobTime">
+                            <!-- dropdown is appended to body via JS to escape stacking context -->
                         </div>
-                        <div class="form-row" style="margin:0;">
-                            <label class="form-label" style="font-size:10px;">Assigned Crew</label>
-                            <input class="form-input" type="text" id="ctrCrew" placeholder="e.g. Brandon">
-                        </div>
+                        <input type="hidden" id="ctrJobTime">
+                    </div>
+                    <div class="form-row" style="margin:0;">
+                        <label class="form-label" style="font-size:10px;">Assigned Crew</label>
+                        <input class="form-input" type="text" id="ctrCrew" placeholder="e.g. Brandon">
                     </div>
                 </div>
 
@@ -778,14 +689,8 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 
             <!-- PREPAYMENT -->
             <label class="toggle-row" for="ctrPrepayCheck" style="margin:0;">
-                <div class="toggle-switch">
-                    <input type="checkbox" id="ctrPrepayCheck">
-                    <span class="toggle-slider"></span>
-                </div>
-                <div>
-                    <div class="toggle-label">Customer is prepaying</div>
-                    <div class="toggle-sub">Record a prepayment and link it to the service record</div>
-                </div>
+                <div class="toggle-switch"><input type="checkbox" id="ctrPrepayCheck"><span class="toggle-slider"></span></div>
+                <div><div class="toggle-label">Customer is prepaying</div><div class="toggle-sub">Record a prepayment and link it to the service record</div></div>
             </label>
             <div id="ctrPrepayPanel" style="display:none;">
                 <div class="contract-section">
@@ -863,14 +768,10 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
             </div>
         </div>
         <div class="print-preview-scroll">
-            <div class="print-paper">
-                <div id="printDocContent"></div>
-            </div>
+            <div class="print-paper"><div id="printDocContent"></div></div>
         </div>
     </div>
 </div>
-
-<!-- Hidden print frame -->
 <div id="printFrame"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
@@ -899,7 +800,6 @@ function badge(status){
 }
 function empty(msg){ return '<p class="empty-state">'+msg+'</p>'; }
 
-// Default due date: 3 days from issue
 function defaultDueDate(issueDateVal) {
     if (!issueDateVal) return '';
     var d = new Date(issueDateVal + 'T12:00:00');
@@ -920,12 +820,15 @@ var linkedJobIds    = [];
 var PAYMENT_TYPES   = ['Cash','Check','Venmo','Zelle','Card','Other'];
 
 // ── Customer picker (invoice modal) ──
-var pickerSelectedUid = '';
-var pickerIsManual    = false;
+var pickerSelectedUid   = '';
+var pickerSelectedGuest = null;
+var pickerIsManual      = false;
 var custSearchInput     = document.getElementById('custSearchInput');
 var custDropdown        = document.getElementById('custDropdown');
 var custSelectedUidEl   = document.getElementById('custSelectedUid');
+var custSelectedGuestIdEl = document.getElementById('custSelectedGuestId');
 var custAccountBadge    = document.getElementById('custAccountBadge');
+var custGuestBadge      = document.getElementById('custGuestBadge');
 var custTypeHint        = document.getElementById('custTypeHint');
 var manualContactFields = document.getElementById('manualContactFields');
 
@@ -939,17 +842,63 @@ document.getElementById('custManualPhone').addEventListener('input', function(){
     this.value = out;
 });
 
+// ── Guest customer helpers ──
+function guestDocId(email, phone){
+    var raw = (email || phone || '').toLowerCase().replace(/\W/g,'');
+    return 'guest_' + raw.slice(0, 40);
+}
+
+async function upsertGuestCustomer(name, email, phone, address){
+    var docId = guestDocId(email, phone);
+    if(!docId || docId === 'guest_') return null;
+    var data = { name: name||'', email: email||'', phone: phone||'', isGuest: true, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+    if(address){
+        var snap = await db.collection('guestCustomers').doc(docId).get();
+        var existing = snap.exists ? (snap.data().addresses || []) : [];
+        if(existing.indexOf(address) === -1) existing.push(address);
+        data.addresses = existing;
+        data.lastAddress = address;
+    }
+    await db.collection('guestCustomers').doc(docId).set(data, { merge: true });
+    return docId;
+}
+
 function setCustPicker(uid, name){
-    pickerSelectedUid = uid; pickerIsManual = false;
-    custSearchInput.value = name; custSearchInput.classList.add('has-account');
-    custSelectedUidEl.value = uid; custAccountBadge.style.display = '';
+    pickerSelectedUid = uid; pickerIsManual = false; pickerSelectedGuest = null;
+    custSearchInput.value = name; custSearchInput.classList.add('has-account'); custSearchInput.classList.remove('has-guest');
+    custSelectedUidEl.value = uid; custSelectedGuestIdEl.value = '';
+    custAccountBadge.style.display = ''; custGuestBadge.style.display = 'none';
     custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none';
     closeDropdown();
     prefillBillingFromCustomer(uid);
 }
+
+function setCustPickerGuest(guest){
+    pickerSelectedUid = ''; pickerIsManual = false; pickerSelectedGuest = guest;
+    custSearchInput.value = guest.name; custSearchInput.classList.remove('has-account'); custSearchInput.classList.add('has-guest');
+    custSelectedUidEl.value = ''; custSelectedGuestIdEl.value = guest.guestId;
+    custAccountBadge.style.display = 'none'; custGuestBadge.style.display = '';
+    custTypeHint.style.display = 'none';
+    manualContactFields.style.display = '';
+    document.getElementById('custManualName').value  = guest.name  || '';
+    document.getElementById('custManualEmail').value = guest.email || '';
+    document.getElementById('custManualPhone').value = (guest.phone || '').replace(/^\+1\s*/,'');
+    if(guest.lastAddress){
+        var billingEl = document.getElementById('invBillingAddress');
+        if(!billingEl.value || billingEl.dataset.autofilled === 'false'){
+            billingEl.value = guest.lastAddress;
+            billingEl.dataset.autofilled = 'guest';
+            document.getElementById('billingAddrHint').textContent = 'Prefilled from guest\'s last address. You can edit this.';
+            document.getElementById('billingAddrHint').style.display = '';
+        }
+    }
+    closeDropdown();
+}
+
 function clearCustPicker(){
-    pickerSelectedUid = ''; custSelectedUidEl.value = '';
-    custSearchInput.classList.remove('has-account'); custAccountBadge.style.display = 'none';
+    pickerSelectedUid = ''; pickerSelectedGuest = null; custSelectedUidEl.value = ''; custSelectedGuestIdEl.value = '';
+    custSearchInput.classList.remove('has-account'); custSearchInput.classList.remove('has-guest');
+    custAccountBadge.style.display = 'none'; custGuestBadge.style.display = 'none';
     clearBillingPrefillPills();
 }
 function openDropdown(){ custDropdown.classList.add('open'); }
@@ -957,19 +906,34 @@ function closeDropdown(){ custDropdown.classList.remove('open'); }
 
 function renderDropdown(query){
     var q = (query||'').toLowerCase().trim();
-    var matches = q ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q) !== -1; }) : custList.slice(0,8);
+    var accountMatches = q
+        ? custList.filter(function(c){ return !c.isGuest && c.name.toLowerCase().indexOf(q) !== -1; })
+        : custList.filter(function(c){ return !c.isGuest; }).slice(0, 6);
+    var guestMatches = q
+        ? custList.filter(function(c){ return c.isGuest && c.name.toLowerCase().indexOf(q) !== -1; })
+        : custList.filter(function(c){ return c.isGuest; }).slice(0, 4);
+
     var html = '';
-    matches.forEach(function(c){
+    accountMatches.forEach(function(c){
         var sub = custDocs[c.uid] && custDocs[c.uid].phone ? custDocs[c.uid].phone : '';
-        html += '<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'">'+
-            '<span class="cust-dot"></span>'+
-            '<span><div style="font-weight:600;">'+escHtml(c.name)+'</div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span>'+
-            '</div>';
+        html += '<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'"><span class="cust-dot"></span><span><div style="font-weight:600;">'+escHtml(c.name)+'</div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span></div>';
     });
-    if(!html && q){ html = '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No accounts match — enter manually below</div>'; }
+    guestMatches.forEach(function(c){
+        var sub = [custDocs[c.uid] && custDocs[c.uid].email, custDocs[c.uid] && custDocs[c.uid].phone].filter(Boolean).join(' · ');
+        html += '<div class="cust-dropdown-item" data-guest-id="'+c.uid+'" data-name="'+escHtml(c.name)+'"><span class="cust-dot guest"></span><span><div style="font-weight:600;">'+escHtml(c.name)+'<span style="font-size:10px;color:#c07a30;margin-left:6px;">guest</span></div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span></div>';
+    });
+    if(!html && q){ html = '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No matches — enter as new customer below</div>'; }
     custDropdown.innerHTML = html;
     custDropdown.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
         el.addEventListener('mousedown', function(e){ e.preventDefault(); setCustPicker(el.dataset.uid, el.dataset.name); });
+    });
+    custDropdown.querySelectorAll('.cust-dropdown-item[data-guest-id]').forEach(function(el){
+        el.addEventListener('mousedown', function(e){
+            e.preventDefault();
+            var gid = el.dataset.guestId;
+            var gDoc = custDocs[gid] || {};
+            setCustPickerGuest({ guestId: gid, name: el.dataset.name, email: gDoc.email||'', phone: gDoc.phone||'', lastAddress: gDoc.lastAddress||'' });
+        });
     });
 }
 
@@ -978,28 +942,31 @@ custSearchInput.addEventListener('input', function(){
     var q = this.value.trim();
     clearCustPicker(); renderDropdown(q); openDropdown();
     if(q){
-        var exact = custList.find(function(c){ return c.name.toLowerCase() === q.toLowerCase(); });
+        var exact = custList.find(function(c){ return !c.isGuest && c.name.toLowerCase() === q.toLowerCase(); });
         if(exact){ setCustPicker(exact.uid, exact.name); }
-        else { pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
+        else {
+            var exactGuest = custList.find(function(c){ return c.isGuest && c.name.toLowerCase() === q.toLowerCase(); });
+            if(exactGuest){
+                var gDoc = custDocs[exactGuest.uid] || {};
+                setCustPickerGuest({ guestId: exactGuest.uid, name: exactGuest.name, email: gDoc.email||'', phone: gDoc.phone||'', lastAddress: gDoc.lastAddress||'' });
+            } else {
+                pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = '';
+                document.getElementById('custManualName').value = q;
+            }
+        }
     } else { pickerIsManual = false; custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none'; }
 });
 custSearchInput.addEventListener('blur', function(){
     setTimeout(closeDropdown, 150);
     var q = this.value.trim();
-    if(q && !pickerSelectedUid){ pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
+    if(q && !pickerSelectedUid && !pickerSelectedGuest){ pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; document.getElementById('custManualName').value = document.getElementById('custManualName').value || q; }
 });
 
-// Auto-set due date when issue date changes
 document.getElementById('invDate').addEventListener('change', function(){
     var due = document.getElementById('invDueDate');
-    if (!due.value || due.dataset.autoset === 'true') {
-        due.value = defaultDueDate(this.value);
-        due.dataset.autoset = 'true';
-    }
+    if (!due.value || due.dataset.autoset === 'true') { due.value = defaultDueDate(this.value); due.dataset.autoset = 'true'; }
 });
-document.getElementById('invDueDate').addEventListener('change', function(){
-    this.dataset.autoset = 'false'; // user manually set it
-});
+document.getElementById('invDueDate').addEventListener('change', function(){ this.dataset.autoset = 'false'; });
 
 // ── Billing address prefill ──
 var billingPrefillOptions = [];
@@ -1009,16 +976,15 @@ function prefillBillingFromCustomer(uid){
     if(!doc){ clearBillingPrefillPills(); return; }
     var props = Array.isArray(doc.properties) ? doc.properties : [];
     billingPrefillOptions = [];
-    props.forEach(function(p, i){
-        if(p.address) billingPrefillOptions.push({ label: p.label || (p.primary ? 'Primary' : 'Property '+(i+1)), address: p.address });
-    });
+    props.forEach(function(p, i){ if(p.address) billingPrefillOptions.push({ label: p.label || (p.primary ? 'Primary' : 'Property '+(i+1)), address: p.address }); });
     renderBillingPrefillPills();
     var primaryIdx = props.findIndex(function(p){ return p.primary && p.address; });
     if(primaryIdx >= 0 && billingPrefillOptions[primaryIdx]){
         var billingEl = document.getElementById('invBillingAddress');
-        if(!billingEl.value || billingEl.dataset.autofilled === 'true'){
+        if(!billingEl.value || billingEl.dataset.autofilled === 'true' || billingEl.dataset.autofilled === 'guest'){
             billingEl.value = billingPrefillOptions[primaryIdx].address;
             billingEl.dataset.autofilled = 'true';
+            document.getElementById('billingAddrHint').textContent = 'Prefilled from customer\'s primary property. You can edit this.';
             document.getElementById('billingAddrHint').style.display = '';
         }
     }
@@ -1028,9 +994,7 @@ function renderBillingPrefillPills(){
     var bar = document.getElementById('billingAddrPrefillBar');
     if(!billingPrefillOptions.length){ bar.style.display='none'; bar.innerHTML=''; return; }
     var html = '';
-    billingPrefillOptions.forEach(function(opt, i){
-        html += '<button type="button" class="billing-addr-pill'+(i===0?' active':'')+'" data-idx="'+i+'">'+escHtml(opt.label)+'</button>';
-    });
+    billingPrefillOptions.forEach(function(opt, i){ html += '<button type="button" class="billing-addr-pill'+(i===0?' active':'')+'" data-idx="'+i+'">'+escHtml(opt.label)+'</button>'; });
     html += '<button type="button" class="billing-addr-pill" data-idx="-1" style="border-style:dashed;">✎ Other</button>';
     bar.innerHTML = html; bar.style.display = 'flex';
     bar.querySelectorAll('.billing-addr-pill').forEach(function(btn){
@@ -1038,15 +1002,8 @@ function renderBillingPrefillPills(){
             bar.querySelectorAll('.billing-addr-pill').forEach(function(b){ b.classList.remove('active'); });
             this.classList.add('active');
             var idx = parseInt(this.dataset.idx);
-            if(idx === -1){
-                document.getElementById('invBillingAddress').value = '';
-                document.getElementById('invBillingAddress').focus();
-                document.getElementById('billingAddrHint').style.display = 'none';
-            } else if(billingPrefillOptions[idx]){
-                document.getElementById('invBillingAddress').value = billingPrefillOptions[idx].address;
-                document.getElementById('invBillingAddress').dataset.autofilled = 'true';
-                document.getElementById('billingAddrHint').style.display = '';
-            }
+            if(idx === -1){ document.getElementById('invBillingAddress').value = ''; document.getElementById('invBillingAddress').focus(); document.getElementById('billingAddrHint').style.display = 'none'; }
+            else if(billingPrefillOptions[idx]){ document.getElementById('invBillingAddress').value = billingPrefillOptions[idx].address; document.getElementById('invBillingAddress').dataset.autofilled = 'true'; document.getElementById('billingAddrHint').style.display = ''; }
         });
     });
 }
@@ -1058,10 +1015,7 @@ function clearBillingPrefillPills(){
     document.getElementById('billingAddrHint').style.display='none';
 }
 
-document.getElementById('invBillingAddress').addEventListener('input', function(){
-    this.dataset.autofilled = 'false';
-    document.getElementById('billingAddrHint').style.display = 'none';
-});
+document.getElementById('invBillingAddress').addEventListener('input', function(){ this.dataset.autofilled = 'false'; document.getElementById('billingAddrHint').style.display = 'none'; });
 
 // ── Linked Jobs (multi-tag) ──
 var jobIdInput = document.getElementById('jobIdInput');
@@ -1077,37 +1031,18 @@ function renderJobTags(){
         var label = jobEntry ? '#'+jid+' — '+(jobEntry.customerName||jid) : '#'+jid;
         tag.innerHTML = escHtml(label)+'<button class="job-tag-remove" data-idx="'+i+'" title="Remove">✕</button>';
         jobTagsWrap.insertBefore(tag, jobIdInput);
-        tag.querySelector('.job-tag-remove').addEventListener('click', function(e){
-            e.stopPropagation();
-            linkedJobIds.splice(parseInt(this.dataset.idx), 1);
-            renderJobTags();
-            tryPrefillBillingFromJobs();
-        });
+        tag.querySelector('.job-tag-remove').addEventListener('click', function(e){ e.stopPropagation(); linkedJobIds.splice(parseInt(this.dataset.idx), 1); renderJobTags(); tryPrefillBillingFromJobs(); });
     });
 }
 
-function addJobId(jid){
-    jid = jid.trim();
-    if(!jid) return;
-    if(linkedJobIds.indexOf(jid) !== -1) return;
-    linkedJobIds.push(jid);
-    renderJobTags();
-    jobIdInput.value = '';
-    closeJobDropdown();
-    tryPrefillBillingFromJobs();
-}
+function addJobId(jid){ jid = jid.trim(); if(!jid) return; if(linkedJobIds.indexOf(jid) !== -1) return; linkedJobIds.push(jid); renderJobTags(); jobIdInput.value = ''; closeJobDropdown(); tryPrefillBillingFromJobs(); }
 
 function tryPrefillBillingFromJobs(){
     var billingEl = document.getElementById('invBillingAddress');
     if(billingEl.value && billingEl.dataset.autofilled !== 'job') return;
     if(!linkedJobIds.length) return;
     var firstJob = allJobsCache.find(function(j){ return j.jobId === linkedJobIds[0]; });
-    if(firstJob && firstJob.address){
-        billingEl.value = firstJob.address;
-        billingEl.dataset.autofilled = 'job';
-        document.getElementById('billingAddrHint').textContent = 'Prefilled from linked job address. You can edit this.';
-        document.getElementById('billingAddrHint').style.display = '';
-    }
+    if(firstJob && firstJob.address){ billingEl.value = firstJob.address; billingEl.dataset.autofilled = 'job'; document.getElementById('billingAddrHint').textContent = 'Prefilled from linked job address. You can edit this.'; document.getElementById('billingAddrHint').style.display = ''; }
 }
 
 function openJobDropdown(){ jobAutoDropdown.classList.add('open'); }
@@ -1116,22 +1051,10 @@ function closeJobDropdown(){ jobAutoDropdown.classList.remove('open'); }
 function renderJobDropdown(q){
     q = (q||'').toLowerCase().trim();
     var already = linkedJobIds;
-    var matches = allJobsCache.filter(function(j){
-        if(already.indexOf(j.jobId) !== -1) return false;
-        var hay = (j.jobId+' '+(j.customerName||'')+' '+(j.address||'')).toLowerCase();
-        return !q || hay.indexOf(q) !== -1;
-    }).slice(0, 8);
+    var matches = allJobsCache.filter(function(j){ if(already.indexOf(j.jobId) !== -1) return false; var hay = (j.jobId+' '+(j.customerName||'')+' '+(j.address||'')).toLowerCase(); return !q || hay.indexOf(q) !== -1; }).slice(0, 8);
     if(!matches.length){ closeJobDropdown(); return; }
-    jobAutoDropdown.innerHTML = matches.map(function(j){
-        var desc = (j.services||[]).map(function(s){return s.name;}).filter(Boolean).slice(0,2).join(', ') || 'Service Visit';
-        var dateStr = j.date ? j.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
-        return '<div class="job-auto-item" data-jid="'+escHtml(j.jobId)+'">'+
-            '<strong>#'+escHtml(j.jobId)+'</strong> — '+escHtml(j.customerName||'')+'<br>'+
-            '<div class="job-auto-sub">'+escHtml(desc)+(dateStr?' · '+dateStr:'')+'</div></div>';
-    }).join('');
-    jobAutoDropdown.querySelectorAll('.job-auto-item').forEach(function(item){
-        item.addEventListener('mousedown', function(e){ e.preventDefault(); addJobId(item.dataset.jid); });
-    });
+    jobAutoDropdown.innerHTML = matches.map(function(j){ var desc = (j.services||[]).map(function(s){return s.name;}).filter(Boolean).slice(0,2).join(', ') || 'Service Visit'; var dateStr = j.date ? j.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : ''; return '<div class="job-auto-item" data-jid="'+escHtml(j.jobId)+'"><strong>#'+escHtml(j.jobId)+'</strong> — '+escHtml(j.customerName||'')+'<br><div class="job-auto-sub">'+escHtml(desc)+(dateStr?' · '+dateStr:'')+'</div></div>'; }).join('');
+    jobAutoDropdown.querySelectorAll('.job-auto-item').forEach(function(item){ item.addEventListener('mousedown', function(e){ e.preventDefault(); addJobId(item.dataset.jid); }); });
     openJobDropdown();
 }
 
@@ -1139,16 +1062,9 @@ jobIdInput.addEventListener('input', function(){ renderJobDropdown(this.value); 
 jobIdInput.addEventListener('focus', function(){ renderJobDropdown(this.value); });
 jobIdInput.addEventListener('blur', function(){ setTimeout(closeJobDropdown, 150); });
 jobIdInput.addEventListener('keydown', function(e){
-    if(e.key === 'Enter'){
-        e.preventDefault();
-        var focused = jobAutoDropdown.querySelector('.job-auto-item:hover');
-        if(focused){ addJobId(focused.dataset.jid); }
-        else if(this.value.trim()){ addJobId(this.value); }
-    } else if(e.key === 'Backspace' && !this.value && linkedJobIds.length){
-        linkedJobIds.splice(linkedJobIds.length-1, 1);
-        renderJobTags();
-        tryPrefillBillingFromJobs();
-    } else if(e.key === 'Escape'){ closeJobDropdown(); }
+    if(e.key === 'Enter'){ e.preventDefault(); var focused = jobAutoDropdown.querySelector('.job-auto-item:hover'); if(focused){ addJobId(focused.dataset.jid); } else if(this.value.trim()){ addJobId(this.value); } }
+    else if(e.key === 'Backspace' && !this.value && linkedJobIds.length){ linkedJobIds.splice(linkedJobIds.length-1, 1); renderJobTags(); tryPrefillBillingFromJobs(); }
+    else if(e.key === 'Escape'){ closeJobDropdown(); }
 });
 
 // ── Totals ──
@@ -1157,75 +1073,34 @@ function updateTotals(){
     var lt = calcLineTotal();
     document.getElementById('invLineTotal').textContent = lt > 0 ? 'Subtotal: '+fmtMoney(lt) : '';
     var paid = invPaymentsArr.reduce(function(s,p){ return s+(Number(p.amount)||0); }, 0);
-    if(lt > 0){
-        document.getElementById('invBalancePreview').textContent = 'Paid: '+fmtMoney(paid)+' · Balance: '+fmtMoney(Math.max(0,lt-paid));
-    } else {
-        document.getElementById('invBalancePreview').textContent = '';
-    }
+    if(lt > 0){ document.getElementById('invBalancePreview').textContent = 'Paid: '+fmtMoney(paid)+' · Balance: '+fmtMoney(Math.max(0,lt-paid)); }
+    else { document.getElementById('invBalancePreview').textContent = ''; }
 }
 
-// ── Service autocomplete helpers ──
 function highlightMatch(text, query){
     if(!query) return escHtml(text);
     var idx = text.toLowerCase().indexOf(query.toLowerCase());
     if(idx === -1) return escHtml(text);
     return escHtml(text.slice(0,idx))+'<strong>'+escHtml(text.slice(idx,idx+query.length))+'</strong>'+escHtml(text.slice(idx+query.length));
 }
-function positionSvcDropdown(inputEl, dropEl){
-    var rect = inputEl.getBoundingClientRect();
-    dropEl.style.top = (rect.bottom+4)+'px';
-    dropEl.style.left = rect.left+'px';
-    dropEl.style.width = rect.width+'px';
-}
+function positionSvcDropdown(inputEl, dropEl){ var rect = inputEl.getBoundingClientRect(); dropEl.style.top = (rect.bottom+4)+'px'; dropEl.style.left = rect.left+'px'; dropEl.style.width = rect.width+'px'; }
 function buildSvcDropdownFor(inputEl, dropEl, lineIdx){
     var q = inputEl.value.trim();
-    var matches = q
-        ? serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase()) !== -1 && n.toLowerCase() !== q.toLowerCase(); })
-        : serviceNames.slice(0,8);
+    var matches = q ? serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase()) !== -1 && n.toLowerCase() !== q.toLowerCase(); }) : serviceNames.slice(0,8);
     if(!matches.length){ dropEl.classList.remove('open'); return; }
-    dropEl.innerHTML = matches.slice(0,8).map(function(n){
-        return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n,q)+'</div>';
-    }).join('');
-    dropEl.querySelectorAll('.svc-dropdown-item').forEach(function(item){
-        item.addEventListener('mousedown', function(e){
-            e.preventDefault();
-            invLineItemsArr[lineIdx].name = item.dataset.name;
-            inputEl.value = item.dataset.name;
-            dropEl.classList.remove('open');
-            updateTotals();
-        });
-    });
+    dropEl.innerHTML = matches.slice(0,8).map(function(n){ return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n,q)+'</div>'; }).join('');
+    dropEl.querySelectorAll('.svc-dropdown-item').forEach(function(item){ item.addEventListener('mousedown', function(e){ e.preventDefault(); invLineItemsArr[lineIdx].name = item.dataset.name; inputEl.value = item.dataset.name; dropEl.classList.remove('open'); updateTotals(); }); });
     positionSvcDropdown(inputEl, dropEl);
     dropEl.classList.add('open');
 }
 
-// ── Line items render ──
 function renderLineItems(){
     document.querySelectorAll('.svc-dropdown[data-body-drop]').forEach(function(el){ el.remove(); });
     var wrap = document.getElementById('invLineItems');
-    wrap.innerHTML = invLineItemsArr.map(function(li,i){
-        return '<div class="line-item-build-row">'+
-            '<div class="svc-name-wrap"><input class="form-input svc-name-input" type="text" placeholder="Description" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off"></div>'+
-            '<input class="form-input" type="number" min="1" step="1" placeholder="1" value="'+escHtml(String(li.qty||''))+'" data-qty-idx="'+i+'" style="text-align:right;">'+
-            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price!==''?li.price:''))+'" data-price-idx="'+i+'" style="text-align:right;">'+
-            '<button class="btn-remove-line" onclick="removeLine('+i+')">✕</button>'+
-            '</div>';
-    }).join('');
-
-    wrap.querySelectorAll('[data-qty-idx]').forEach(function(input){
-        input.addEventListener('input', function(){ invLineItemsArr[parseInt(this.dataset.qtyIdx)].qty = this.value; updateTotals(); });
-    });
-    wrap.querySelectorAll('[data-price-idx]').forEach(function(input){
-        input.addEventListener('input', function(){ invLineItemsArr[parseInt(this.dataset.priceIdx)].price = this.value; updateTotals(); });
-    });
-
-    invLineItemsArr.forEach(function(li,i){
-        var drop = document.createElement('div');
-        drop.className = 'svc-dropdown'; drop.id = 'svcDrop'+i;
-        drop.setAttribute('data-body-drop','1');
-        document.body.appendChild(drop);
-    });
-
+    wrap.innerHTML = invLineItemsArr.map(function(li,i){ return '<div class="line-item-build-row"><div class="svc-name-wrap"><input class="form-input svc-name-input" type="text" placeholder="Description" value="'+escHtml(li.name)+'" data-idx="'+i+'" autocomplete="off"></div><input class="form-input" type="number" min="1" step="1" placeholder="1" value="'+escHtml(String(li.qty||''))+'" data-qty-idx="'+i+'" style="text-align:right;"><input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price!==''?li.price:''))+'" data-price-idx="'+i+'" style="text-align:right;"><button class="btn-remove-line" onclick="removeLine('+i+')">✕</button></div>'; }).join('');
+    wrap.querySelectorAll('[data-qty-idx]').forEach(function(input){ input.addEventListener('input', function(){ invLineItemsArr[parseInt(this.dataset.qtyIdx)].qty = this.value; updateTotals(); }); });
+    wrap.querySelectorAll('[data-price-idx]').forEach(function(input){ input.addEventListener('input', function(){ invLineItemsArr[parseInt(this.dataset.priceIdx)].price = this.value; updateTotals(); }); });
+    invLineItemsArr.forEach(function(li,i){ var drop = document.createElement('div'); drop.className = 'svc-dropdown'; drop.id = 'svcDrop'+i; drop.setAttribute('data-body-drop','1'); document.body.appendChild(drop); });
     wrap.querySelectorAll('.svc-name-input').forEach(function(input){
         var idx = parseInt(input.dataset.idx);
         var drop = document.getElementById('svcDrop'+idx);
@@ -1233,9 +1108,7 @@ function renderLineItems(){
         input.addEventListener('focus', function(){ buildSvcDropdownFor(this,drop,idx); });
         input.addEventListener('blur', function(){ setTimeout(function(){ drop.classList.remove('open'); },150); });
         input.addEventListener('keydown', function(e){
-            var items = drop.querySelectorAll('.svc-dropdown-item');
-            var focused = drop.querySelector('.focused');
-            var fi = focused ? Array.from(items).indexOf(focused) : -1;
+            var items = drop.querySelectorAll('.svc-dropdown-item'); var focused = drop.querySelector('.focused'); var fi = focused ? Array.from(items).indexOf(focused) : -1;
             if(e.key==='ArrowDown'){ e.preventDefault(); var n=fi+1<items.length?fi+1:0; items.forEach(function(it){it.classList.remove('focused');}); if(items[n])items[n].classList.add('focused'); }
             else if(e.key==='ArrowUp'){ e.preventDefault(); var p=fi-1>=0?fi-1:items.length-1; items.forEach(function(it){it.classList.remove('focused');}); if(items[p])items[p].classList.add('focused'); }
             else if(e.key==='Enter'&&focused){ e.preventDefault(); invLineItemsArr[idx].name=focused.dataset.name; input.value=focused.dataset.name; drop.classList.remove('open'); updateTotals(); }
@@ -1246,32 +1119,12 @@ function renderLineItems(){
 }
 
 function removeLine(i){ invLineItemsArr.splice(i,1); renderLineItems(); }
-document.getElementById('addLineBtn').addEventListener('click', function(){
-    invLineItemsArr.push({name:'',qty:1,price:''});
-    renderLineItems();
-    var inputs = document.querySelectorAll('.svc-name-input');
-    if(inputs.length) inputs[inputs.length-1].focus();
-});
+document.getElementById('addLineBtn').addEventListener('click', function(){ invLineItemsArr.push({name:'',qty:1,price:''}); renderLineItems(); var inputs = document.querySelectorAll('.svc-name-input'); if(inputs.length) inputs[inputs.length-1].focus(); });
+document.getElementById('invModalBody').addEventListener('scroll', function(){ document.querySelectorAll('.svc-dropdown.open').forEach(function(drop){ var idx = drop.id.replace('svcDrop',''); var input = document.querySelector('.svc-name-input[data-idx="'+idx+'"]'); if(input) positionSvcDropdown(input,drop); }); }, { passive: true });
 
-document.getElementById('invModalBody').addEventListener('scroll', function(){
-    document.querySelectorAll('.svc-dropdown.open').forEach(function(drop){
-        var idx = drop.id.replace('svcDrop','');
-        var input = document.querySelector('.svc-name-input[data-idx="'+idx+'"]');
-        if(input) positionSvcDropdown(input,drop);
-    });
-}, { passive: true });
-
-// ── Payments render ──
 function renderPayments(){
     var wrap = document.getElementById('invPayments');
-    wrap.innerHTML = invPaymentsArr.map(function(p,i){
-        return '<div class="pay-build-row">'+
-            '<input class="form-input" type="date" value="'+escHtml(p.date||'')+'" data-pay-date="'+i+'">'+
-            '<select class="form-select" data-pay-type="'+i+'">'+PAYMENT_TYPES.map(function(t){ return '<option value="'+t+'"'+(p.type===t?' selected':'')+'>'+t+'</option>'; }).join('')+'</select>'+
-            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(p.amount!==''&&p.amount!==0?p.amount:''))+'" data-pay-amount="'+i+'">'+
-            '<button class="btn-remove-line" onclick="removePayment('+i+')">✕</button>'+
-            '</div>';
-    }).join('');
+    wrap.innerHTML = invPaymentsArr.map(function(p,i){ return '<div class="pay-build-row"><input class="form-input" type="date" value="'+escHtml(p.date||'')+'" data-pay-date="'+i+'"><select class="form-select" data-pay-type="'+i+'">'+PAYMENT_TYPES.map(function(t){ return '<option value="'+t+'"'+(p.type===t?' selected':'')+'>'+t+'</option>'; }).join('')+'</select><input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(p.amount!==''&&p.amount!==0?p.amount:''))+'" data-pay-amount="'+i+'"><button class="btn-remove-line" onclick="removePayment('+i+')">✕</button></div>'; }).join('');
     wrap.querySelectorAll('[data-pay-date]').forEach(function(input){ input.addEventListener('input', function(){ invPaymentsArr[parseInt(this.dataset.payDate)].date=this.value; updateTotals(); }); });
     wrap.querySelectorAll('[data-pay-type]').forEach(function(sel){ sel.addEventListener('change', function(){ invPaymentsArr[parseInt(this.dataset.payType)].type=this.value; }); });
     wrap.querySelectorAll('[data-pay-amount]').forEach(function(input){ input.addEventListener('input', function(){ invPaymentsArr[parseInt(this.dataset.payAmount)].amount=this.value; updateTotals(); }); });
@@ -1279,50 +1132,37 @@ function renderPayments(){
 }
 
 function removePayment(i){ invPaymentsArr.splice(i,1); renderPayments(); }
-document.getElementById('addPaymentBtn').addEventListener('click', function(){
-    invPaymentsArr.push({date:new Date().toISOString().slice(0,10),type:'Cash',amount:''});
-    renderPayments();
-});
+document.getElementById('addPaymentBtn').addEventListener('click', function(){ invPaymentsArr.push({date:new Date().toISOString().slice(0,10),type:'Cash',amount:''}); renderPayments(); });
 
-// ── Confirm exit ──
 var pendingCloseCallback = null;
 function maybeClose(callback){
-    var custVal = custSearchInput.value.trim();
-    var dateVal = document.getElementById('invDate').value;
+    var custVal = custSearchInput.value.trim(); var dateVal = document.getElementById('invDate').value;
     var hasData = custVal || dateVal || invLineItemsArr.some(function(li){return li.name.trim();}) || invPaymentsArr.length;
-    if(hasData){ pendingCloseCallback=callback; document.getElementById('confirmExitModal').classList.add('open'); }
-    else { callback(); }
+    if(hasData){ pendingCloseCallback=callback; document.getElementById('confirmExitModal').classList.add('open'); } else { callback(); }
 }
 document.getElementById('confirmExitCancel').addEventListener('click', function(){ document.getElementById('confirmExitModal').classList.remove('open'); pendingCloseCallback=null; });
 document.getElementById('confirmExitOk').addEventListener('click', function(){ document.getElementById('confirmExitModal').classList.remove('open'); if(pendingCloseCallback){pendingCloseCallback();pendingCloseCallback=null;} });
 
-// ── Modal open/close ──
 function openModal(inv, prefillJobId){
-    invLineItemsArr = inv
-        ? (Array.isArray(inv.items) ? inv.items.map(function(it){ return {name:it.name||'',qty:Number(it.qty)||1,price:Number(it.unitPrice)||0}; }) : [])
-        : [{name:'',qty:1,price:''}];
-    invPaymentsArr = inv && Array.isArray(inv.payments)
-        ? inv.payments.map(function(p){ var d=''; try{d=p.date.toDate().toISOString().slice(0,10);}catch(e){} return {date:d,type:p.type||'Cash',amount:Number(p.amount)||0}; })
-        : [];
+    invLineItemsArr = inv ? (Array.isArray(inv.items) ? inv.items.map(function(it){ return {name:it.name||'',qty:Number(it.qty)||1,price:Number(it.unitPrice)||0}; }) : []) : [{name:'',qty:1,price:''}];
+    invPaymentsArr = inv && Array.isArray(inv.payments) ? inv.payments.map(function(p){ var d=''; try{d=p.date.toDate().toISOString().slice(0,10);}catch(e){} return {date:d,type:p.type||'Cash',amount:Number(p.amount)||0}; }) : [];
     linkedJobIds = [];
-    if(inv){
-        if(Array.isArray(inv.jobIds) && inv.jobIds.length){ linkedJobIds = inv.jobIds.slice(); }
-        else if(inv.jobId){ linkedJobIds = [inv.jobId]; }
-    } else if(prefillJobId){ linkedJobIds = [prefillJobId]; }
+    if(inv){ if(Array.isArray(inv.jobIds) && inv.jobIds.length){ linkedJobIds = inv.jobIds.slice(); } else if(inv.jobId){ linkedJobIds = [inv.jobId]; } }
+    else if(prefillJobId){ linkedJobIds = [prefillJobId]; }
 
-    document.getElementById('editInvId').value            = inv ? inv.invId : '';
-    document.getElementById('invModalTitle').textContent   = inv ? 'Edit Invoice' : 'New Invoice';
+    document.getElementById('editInvId').value = inv ? inv.invId : '';
+    document.getElementById('invModalTitle').textContent = inv ? 'Edit Invoice' : 'New Invoice';
     var today = new Date().toISOString().slice(0,10);
-    document.getElementById('invDate').value               = inv && inv.dateIssued ? inv.dateIssued.toISOString().slice(0,10) : today;
-    // Due date: stored value, or default 3 days
+    document.getElementById('invDate').value = inv && inv.dateIssued ? inv.dateIssued.toISOString().slice(0,10) : today;
     var dueDateEl = document.getElementById('invDueDate');
     if(inv && inv.dueDate){ dueDateEl.value = inv.dueDate.toISOString().slice(0,10); dueDateEl.dataset.autoset = 'false'; }
     else { dueDateEl.value = defaultDueDate(document.getElementById('invDate').value); dueDateEl.dataset.autoset = 'true'; }
-    document.getElementById('invStatus').value             = inv ? inv.status : 'Payment Due';
-    document.getElementById('invNotes').value              = inv ? (inv.notes||'') : '';
-    document.getElementById('invModalStatus').textContent  = '';
-    document.getElementById('custManualEmail').value       = '';
-    document.getElementById('custManualPhone').value       = '';
+    document.getElementById('invStatus').value = inv ? inv.status : 'Payment Due';
+    document.getElementById('invNotes').value = inv ? (inv.notes||'') : '';
+    document.getElementById('invModalStatus').textContent = '';
+    document.getElementById('custManualName').value = '';
+    document.getElementById('custManualEmail').value = '';
+    document.getElementById('custManualPhone').value = '';
 
     var billingEl = document.getElementById('invBillingAddress');
     billingEl.value = inv ? (inv.billingAddress||'') : '';
@@ -1330,19 +1170,15 @@ function openModal(inv, prefillJobId){
     document.getElementById('billingAddrHint').style.display = 'none';
     clearBillingPrefillPills();
 
-    pickerSelectedUid=''; pickerIsManual=false;
-    custSearchInput.classList.remove('has-account'); custSearchInput.value='';
-    custAccountBadge.style.display='none'; custTypeHint.style.display='none';
-    manualContactFields.style.display='none'; custSelectedUidEl.value='';
+    pickerSelectedUid=''; pickerIsManual=false; pickerSelectedGuest=null;
+    custSearchInput.classList.remove('has-account'); custSearchInput.classList.remove('has-guest');
+    custSearchInput.value=''; custAccountBadge.style.display='none'; custGuestBadge.style.display='none';
+    custTypeHint.style.display='none'; manualContactFields.style.display='none';
+    custSelectedUidEl.value=''; custSelectedGuestIdEl.value='';
 
     if(inv){
         if(inv.uid && custNames[inv.uid]){ setCustPicker(inv.uid, custNames[inv.uid]); }
-        else if(inv.customerName){
-            custSearchInput.value=inv.customerName; pickerIsManual=true;
-            custTypeHint.style.display=''; manualContactFields.style.display='';
-            document.getElementById('custManualEmail').value=inv.manualEmail||'';
-            document.getElementById('custManualPhone').value=(inv.manualPhone||'').replace(/^\+1\s*/,'');
-        }
+        else if(inv.customerName){ custSearchInput.value=inv.customerName; pickerIsManual=true; custTypeHint.style.display=''; manualContactFields.style.display=''; document.getElementById('custManualName').value=inv.customerName; document.getElementById('custManualEmail').value=inv.manualEmail||''; document.getElementById('custManualPhone').value=(inv.manualPhone||'').replace(/^\+1\s*/,''); }
     }
 
     renderJobTags(); renderLineItems(); renderPayments();
@@ -1359,76 +1195,70 @@ function closeModal(){
     document.querySelectorAll('.svc-dropdown[data-body-drop]').forEach(function(el){ el.remove(); });
 }
 
-document.getElementById('newInvBtn').addEventListener('click', function(){
-    var params = new URLSearchParams(window.location.search);
-    var jobFor = params.get('newFor');
-    openModal(null, jobFor||null);
-});
+document.getElementById('newInvBtn').addEventListener('click', function(){ var params = new URLSearchParams(window.location.search); var jobFor = params.get('newFor'); openModal(null, jobFor||null); });
 document.getElementById('invModalClose').addEventListener('click', function(){ maybeClose(closeModal); });
 document.getElementById('cancelInvBtn').addEventListener('click', function(){ maybeClose(closeModal); });
 document.getElementById('invModal').addEventListener('click', function(e){ if(e.target===this) maybeClose(closeModal); });
 document.getElementById('invModal').addEventListener('touchmove', function(e){ if(e.target===this) e.preventDefault(); },{passive:false});
 
-// ── Generate IDs ──
 async function generateId(collection, dateObj){
-    var yy=String(dateObj.getFullYear()).slice(2);
-    var mm=String(dateObj.getMonth()+1).padStart(2,'0');
-    var dd=String(dateObj.getDate()).padStart(2,'0');
-    var counterDocId=yy+mm+dd;
-    var counterRef=db.collection(collection).doc(counterDocId);
-    var newCount;
-    await db.runTransaction(async function(t){
-        var doc=await t.get(counterRef);
-        newCount=doc.exists?(parseInt(doc.data().count)||0)+1:1;
-        t.set(counterRef,{count:String(newCount)});
-    });
+    var yy=String(dateObj.getFullYear()).slice(2); var mm=String(dateObj.getMonth()+1).padStart(2,'0'); var dd=String(dateObj.getDate()).padStart(2,'0');
+    var counterDocId=yy+mm+dd; var counterRef=db.collection(collection).doc(counterDocId); var newCount;
+    await db.runTransaction(async function(t){ var doc=await t.get(counterRef); newCount=doc.exists?(parseInt(doc.data().count)||0)+1:1; t.set(counterRef,{count:String(newCount)}); });
     return counterDocId+newCount;
 }
 
-// ── Save invoice ──
 document.getElementById('saveInvBtn').addEventListener('click', async function(){
     var btn=this, status=document.getElementById('invModalStatus');
     var custName=custSearchInput.value.trim();
     var uid=custSelectedUidEl.value;
+    var guestId=custSelectedGuestIdEl.value;
     var isManual=!uid&&custName;
     var dateVal=document.getElementById('invDate').value;
     var billingAddr=document.getElementById('invBillingAddress').value.trim();
     var editId=document.getElementById('editInvId').value;
     var items=invLineItemsArr.map(function(li){ return {name:(li.name||'').trim(),qty:Number(li.qty)||1,unitPrice:Number(li.price)||0}; }).filter(function(it){return it.name;});
+    var manualName=document.getElementById('custManualName').value.trim();
+    var manualEmail=document.getElementById('custManualEmail').value.trim();
+    var manualPhone=document.getElementById('custManualPhone').value.trim();
+    var resolvedName = uid ? (custNames[uid]||custName) : (manualName||custName);
 
     if(!custName){ status.textContent='Enter or select a customer.'; status.className='modal-status err'; return; }
     if(!dateVal){ status.textContent='Pick a date.'; status.className='modal-status err'; return; }
     if(!billingAddr){ status.textContent='A billing address is required.'; status.className='modal-status err'; return; }
     if(!items.length){ status.textContent='Add at least one line item.'; status.className='modal-status err'; return; }
-    if(isManual){
-        var email=document.getElementById('custManualEmail').value.trim();
-        var phone=document.getElementById('custManualPhone').value.trim();
-        if(!email&&!phone){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; }
-    }
+    if(isManual && !guestId){ var email=manualEmail; var phone=manualPhone; if(!email&&!phone){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; } }
 
     var payments=invPaymentsArr.filter(function(p){ return p.date&&(Number(p.amount)>0); }).map(function(p){ return {date:firebase.firestore.Timestamp.fromDate(new Date(p.date+'T12:00:00')),type:p.type||'Cash',amount:Number(p.amount)||0}; });
     var dueDateVal=document.getElementById('invDueDate').value || defaultDueDate(dateVal);
     var jobIdsToSave = linkedJobIds.filter(function(id){ return id.trim(); });
 
     var data={
-        uid:uid||'', customerName:uid?(custNames[uid]||custName):custName,
+        uid:uid||'', customerName:resolvedName,
         status:document.getElementById('invStatus').value,
         dateIssued:firebase.firestore.Timestamp.fromDate(new Date(dateVal+'T12:00:00')),
         dueDate:dueDateVal?firebase.firestore.Timestamp.fromDate(new Date(dueDateVal+'T12:00:00')):null,
         jobIds:jobIdsToSave, jobId:jobIdsToSave[0]||'',
-        billingAddress:billingAddr,
-        items:items, payments:payments,
+        billingAddress:billingAddr, items:items, payments:payments,
         notes:document.getElementById('invNotes').value.trim(),
         updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
     };
-    if(isManual){
-        data.manualEmail=document.getElementById('custManualEmail').value.trim();
-        var rawPhone=document.getElementById('custManualPhone').value.trim();
-        data.manualPhone=rawPhone?'+1 '+rawPhone:'';
-    }
+    if(isManual||guestId){ data.manualEmail=manualEmail; data.manualPhone=manualPhone?'+1 '+manualPhone:''; if(guestId) data.guestId=guestId; }
 
     btn.disabled=true; status.textContent='Saving…'; status.className='modal-status';
     try {
+        var savedGuestId = null;
+        if((isManual||guestId) && !uid){
+            savedGuestId = await upsertGuestCustomer(resolvedName, manualEmail, manualPhone?'+1 '+manualPhone:'', billingAddr);
+            if(savedGuestId) data.guestId = savedGuestId;
+            var cacheKey = savedGuestId || guestId;
+            if(cacheKey && !custDocs[cacheKey]){
+                custDocs[cacheKey] = { name: resolvedName, email: manualEmail, phone: manualPhone?'+1 '+manualPhone:'', lastAddress: billingAddr, isGuest: true };
+                custNames[cacheKey] = resolvedName;
+                var exists = custList.find(function(c){ return c.uid === cacheKey; });
+                if(!exists) custList.push({ uid: cacheKey, name: resolvedName, isGuest: true });
+            } else if(cacheKey){ custDocs[cacheKey].lastAddress = billingAddr; }
+        }
         if(editId){
             await db.collection('invoices').doc(editId).update(data);
         } else {
@@ -1439,20 +1269,33 @@ document.getElementById('saveInvBtn').addEventListener('click', async function()
         status.textContent='Saved!'; status.className='modal-status ok';
         setTimeout(function(){ closeModal(); loadInvoices(); },600);
     } catch(e){
-        console.error(e);
-        status.textContent='Error: '+(e.message||'Permission denied');
-        status.className='modal-status err'; btn.disabled=false;
+        console.error(e); status.textContent='Error: '+(e.message||'Permission denied'); status.className='modal-status err'; btn.disabled=false;
     }
 });
 
 // ═══════════════════════════════════════════════════════════════
-// CONTRACT SYSTEM
+// CONTRACT TIME PICKER — uses position:fixed dropdown appended to body
 // ═══════════════════════════════════════════════════════════════
-
-// ── Contract Time Picker ──
 var ctrTimePicker = { hour: null, min: null, ampm: 'AM', open: false };
+var ctrTimeDropdownEl = null; // created dynamically and appended to body
 
 function buildCtrTimePicker(){
+    // Create the dropdown element and append to body (escapes all flex/overflow contexts)
+    ctrTimeDropdownEl = document.createElement('div');
+    ctrTimeDropdownEl.id = 'ctrTimePickerDropdown';
+    ctrTimeDropdownEl.className = 'time-picker-dropdown';
+    ctrTimeDropdownEl.innerHTML =
+        '<div class="time-picker-inner">' +
+            '<div class="time-col"><div class="time-col-label">Hour</div><div class="time-col-scroll" id="ctrTimeHourScroll"></div></div>' +
+            '<div class="time-divider">:</div>' +
+            '<div class="time-col"><div class="time-col-label">Min</div><div class="time-col-scroll" id="ctrTimeMinScroll"></div></div>' +
+            '<div class="time-ampm-wrap">' +
+                '<button type="button" class="time-ampm-btn selected" id="ctrTimeAmBtn" data-v="AM">AM</button>' +
+                '<button type="button" class="time-ampm-btn" id="ctrTimePmBtn" data-v="PM">PM</button>' +
+            '</div>' +
+        '</div>';
+    document.body.appendChild(ctrTimeDropdownEl);
+
     var hourScroll = document.getElementById('ctrTimeHourScroll');
     var minScroll  = document.getElementById('ctrTimeMinScroll');
     var hHtml = '';
@@ -1463,33 +1306,13 @@ function buildCtrTimePicker(){
     minScroll.innerHTML = mHtml;
 
     hourScroll.querySelectorAll('.time-opt').forEach(function(el){
-        el.addEventListener('click', function(){
-            hourScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); });
-            this.classList.add('selected');
-            ctrTimePicker.hour = parseInt(this.dataset.h);
-            updateCtrTimeDisplay();
-        });
+        el.addEventListener('click', function(){ hourScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); }); this.classList.add('selected'); ctrTimePicker.hour = parseInt(this.dataset.h); updateCtrTimeDisplay(); });
     });
     minScroll.querySelectorAll('.time-opt').forEach(function(el){
-        el.addEventListener('click', function(){
-            minScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); });
-            this.classList.add('selected');
-            ctrTimePicker.min = parseInt(this.dataset.m);
-            updateCtrTimeDisplay();
-        });
+        el.addEventListener('click', function(){ minScroll.querySelectorAll('.time-opt').forEach(function(x){ x.classList.remove('selected'); }); this.classList.add('selected'); ctrTimePicker.min = parseInt(this.dataset.m); updateCtrTimeDisplay(); });
     });
-    document.getElementById('ctrTimeAmBtn').addEventListener('click', function(){
-        ctrTimePicker.ampm = 'AM';
-        document.getElementById('ctrTimeAmBtn').classList.add('selected');
-        document.getElementById('ctrTimePmBtn').classList.remove('selected');
-        updateCtrTimeDisplay();
-    });
-    document.getElementById('ctrTimePmBtn').addEventListener('click', function(){
-        ctrTimePicker.ampm = 'PM';
-        document.getElementById('ctrTimePmBtn').classList.add('selected');
-        document.getElementById('ctrTimeAmBtn').classList.remove('selected');
-        updateCtrTimeDisplay();
-    });
+    document.getElementById('ctrTimeAmBtn').addEventListener('click', function(){ ctrTimePicker.ampm='AM'; document.getElementById('ctrTimeAmBtn').classList.add('selected'); document.getElementById('ctrTimePmBtn').classList.remove('selected'); updateCtrTimeDisplay(); });
+    document.getElementById('ctrTimePmBtn').addEventListener('click', function(){ ctrTimePicker.ampm='PM'; document.getElementById('ctrTimePmBtn').classList.add('selected'); document.getElementById('ctrTimeAmBtn').classList.remove('selected'); updateCtrTimeDisplay(); });
 
     document.getElementById('ctrTimePickerDisplay').addEventListener('click', function(e){
         e.stopPropagation();
@@ -1500,17 +1323,16 @@ function buildCtrTimePicker(){
         if(e.key==='Escape') closeCtrTimePicker();
     });
     document.addEventListener('click', function(e){
-        var wrap = document.getElementById('ctrTimePickerWrap');
-        if(wrap && !wrap.contains(e.target)) closeCtrTimePicker();
+        if(!ctrTimePicker.open) return;
+        var display = document.getElementById('ctrTimePickerDisplay');
+        if(display && !display.contains(e.target) && !ctrTimeDropdownEl.contains(e.target)) closeCtrTimePicker();
     });
 }
 
 function updateCtrTimeDisplay(){
-    var textEl   = document.getElementById('ctrTimePickerText');
+    var textEl = document.getElementById('ctrTimePickerText');
     var hiddenEl = document.getElementById('ctrJobTime');
-    if(ctrTimePicker.hour===null||ctrTimePicker.min===null){
-        textEl.textContent='Select time…'; textEl.classList.add('time-placeholder'); hiddenEl.value=''; return;
-    }
+    if(ctrTimePicker.hour===null||ctrTimePicker.min===null){ textEl.textContent='Select time…'; textEl.classList.add('time-placeholder'); hiddenEl.value=''; return; }
     var hDisp = ctrTimePicker.hour<10?'0'+ctrTimePicker.hour:''+ctrTimePicker.hour;
     var mDisp = ctrTimePicker.min<10?'0'+ctrTimePicker.min:''+ctrTimePicker.min;
     textEl.textContent = hDisp+':'+mDisp+' '+ctrTimePicker.ampm;
@@ -1521,106 +1343,37 @@ function updateCtrTimeDisplay(){
     hiddenEl.value = (h24<10?'0'+h24:''+h24)+':'+mDisp;
 }
 
+function openCtrTimePicker(){
+    var display = document.getElementById('ctrTimePickerDisplay');
+    var rect = display.getBoundingClientRect();
+    // Position dropdown below the display button using fixed coords
+    ctrTimeDropdownEl.style.top  = (rect.bottom + 4) + 'px';
+    ctrTimeDropdownEl.style.left = rect.left + 'px';
+    ctrTimeDropdownEl.style.width = Math.max(rect.width, 260) + 'px';
+    ctrTimeDropdownEl.classList.add('open');
+    ctrTimePicker.open = true;
+}
+function closeCtrTimePicker(){ ctrTimeDropdownEl.classList.remove('open'); ctrTimePicker.open = false; }
+
 function setCtrTimePickerValue(val24){
     ctrTimePicker.hour=null; ctrTimePicker.min=null; ctrTimePicker.ampm='AM';
     if(!val24){ updateCtrTimeDisplay(); return; }
-    var parts=val24.split(':');
-    var h24=parseInt(parts[0]||0), m=parseInt(parts[1]||0);
-    var ampm=h24>=12?'PM':'AM';
-    var h12=h24%12; if(h12===0)h12=12;
+    var parts=val24.split(':'); var h24=parseInt(parts[0]||0), m=parseInt(parts[1]||0);
+    var ampm=h24>=12?'PM':'AM'; var h12=h24%12; if(h12===0)h12=12;
     ctrTimePicker.hour=h12; ctrTimePicker.min=m; ctrTimePicker.ampm=ampm;
-    document.getElementById('ctrTimeHourScroll').querySelectorAll('.time-opt').forEach(function(el){
-        el.classList.toggle('selected', parseInt(el.dataset.h)===h12);
-    });
-    document.getElementById('ctrTimeMinScroll').querySelectorAll('.time-opt').forEach(function(el){
-        el.classList.toggle('selected', parseInt(el.dataset.m)===m);
-    });
+    document.getElementById('ctrTimeHourScroll').querySelectorAll('.time-opt').forEach(function(el){ el.classList.toggle('selected', parseInt(el.dataset.h)===h12); });
+    document.getElementById('ctrTimeMinScroll').querySelectorAll('.time-opt').forEach(function(el){ el.classList.toggle('selected', parseInt(el.dataset.m)===m); });
     document.getElementById('ctrTimeAmBtn').classList.toggle('selected', ampm==='AM');
     document.getElementById('ctrTimePmBtn').classList.toggle('selected', ampm==='PM');
     updateCtrTimeDisplay();
 }
 
-function openCtrTimePicker(){ document.getElementById('ctrTimePickerDropdown').classList.add('open'); ctrTimePicker.open=true; }
-function closeCtrTimePicker(){ document.getElementById('ctrTimePickerDropdown').classList.remove('open'); ctrTimePicker.open=false; }
-
-// Contract customer picker state
+// ═══════════════════════════════════════════════════════════════
+// CONTRACT CUSTOMER PICKER
+// ═══════════════════════════════════════════════════════════════
 var ctrCustSelectedUid = '';
+var ctrCustSelectedGuest = null;
 var ctrCustIsManual = false;
-
-// Multi-service lines for contract
-var ctrServiceLinesArr = []; // [{name, price}]
-
-function ctrRenderServiceLines(){
-    document.querySelectorAll('.svc-dropdown[data-ctr-drop]').forEach(function(el){ el.remove(); });
-    var wrap = document.getElementById('ctrServiceLines');
-    wrap.innerHTML = ctrServiceLinesArr.map(function(li, i){
-        return '<div style="display:grid;grid-template-columns:1fr 90px 28px;gap:8px;align-items:center;margin-bottom:6px;">'+
-            '<div class="svc-name-wrap"><input class="form-input ctr-svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-ctr-idx="'+i+'" autocomplete="off"></div>'+
-            '<input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price!==''?li.price:''))+'" data-ctr-price-idx="'+i+'" style="text-align:right;">'+
-            '<button class="btn-remove-line" onclick="ctrRemoveService('+i+')" type="button">✕</button>'+
-            '</div>';
-    }).join('');
-
-    wrap.querySelectorAll('[data-ctr-price-idx]').forEach(function(input){
-        input.addEventListener('input', function(){
-            ctrServiceLinesArr[parseInt(this.dataset.ctrPriceIdx)].price = this.value;
-            ctrUpdateInvPreview();
-            ctrUpdatePrepayInfo();
-        });
-    });
-
-    // Create body-level svc dropdowns
-    ctrServiceLinesArr.forEach(function(li, i){
-        var drop = document.createElement('div');
-        drop.className = 'svc-dropdown'; drop.id = 'ctrSvcDrop'+i;
-        drop.setAttribute('data-ctr-drop', '1');
-        document.body.appendChild(drop);
-    });
-
-    wrap.querySelectorAll('.ctr-svc-name-input').forEach(function(input){
-        var idx = parseInt(input.dataset.ctrIdx);
-        var drop = document.getElementById('ctrSvcDrop'+idx);
-
-        function renderCtrSvcDrop(q){
-            q = (q||'').trim();
-            var matches = q
-                ? serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase())!==-1 && n.toLowerCase()!==q.toLowerCase(); })
-                : serviceNames.slice(0,8);
-            if(!matches.length){ drop.classList.remove('open'); return; }
-            drop.innerHTML = matches.slice(0,8).map(function(n){ return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n,q)+'</div>'; }).join('');
-            drop.querySelectorAll('.svc-dropdown-item').forEach(function(item){
-                item.addEventListener('mousedown', function(e){
-                    e.preventDefault();
-                    ctrServiceLinesArr[idx].name = item.dataset.name;
-                    input.value = item.dataset.name;
-                    drop.classList.remove('open');
-                    ctrUpdatePrepayInfo();
-                });
-            });
-            positionSvcDropdown(input, drop);
-            drop.classList.add('open');
-        }
-
-        input.addEventListener('input', function(){ ctrServiceLinesArr[idx].name = this.value; renderCtrSvcDrop(this.value); ctrUpdatePrepayInfo(); });
-        input.addEventListener('focus', function(){ renderCtrSvcDrop(this.value); });
-        input.addEventListener('blur', function(){ setTimeout(function(){ drop.classList.remove('open'); }, 150); });
-    });
-
-    ctrUpdateInvPreview();
-}
-
-function ctrRemoveService(i){ ctrServiceLinesArr.splice(i,1); ctrRenderServiceLines(); }
-
-document.getElementById('ctrAddServiceBtn').addEventListener('click', function(){
-    ctrServiceLinesArr.push({name:'', price:''});
-    ctrRenderServiceLines();
-    var inputs = document.querySelectorAll('.ctr-svc-name-input');
-    if(inputs.length) inputs[inputs.length-1].focus();
-});
-
-function ctrTotalPricePerVisit(){
-    return ctrServiceLinesArr.reduce(function(s,li){ return s + (parseFloat(li.price)||0); }, 0);
-}
 
 function setupCtrCustPicker(){
     var inp = document.getElementById('ctrCustSearch');
@@ -1628,25 +1381,41 @@ function setupCtrCustPicker(){
 
     function renderCtrDrop(q){
         q = (q||'').toLowerCase().trim();
-        var matches = q ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q)!==-1; }) : custList.slice(0,8);
-        drop.innerHTML = matches.map(function(c){
-            return '<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'"><span class="cust-dot"></span><span style="font-weight:600;">'+escHtml(c.name)+'</span></div>';
-        }).join('') || '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No matches</div>';
+        var accountMatches = q ? custList.filter(function(c){ return !c.isGuest && c.name.toLowerCase().indexOf(q)!==-1; }) : custList.filter(function(c){return !c.isGuest;}).slice(0,6);
+        var guestMatches = q ? custList.filter(function(c){ return c.isGuest && c.name.toLowerCase().indexOf(q)!==-1; }) : custList.filter(function(c){return c.isGuest;}).slice(0,4);
+        var html = '';
+        accountMatches.forEach(function(c){ html += '<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'"><span class="cust-dot"></span><span style="font-weight:600;">'+escHtml(c.name)+'</span></div>'; });
+        guestMatches.forEach(function(c){ var sub = [custDocs[c.uid]&&custDocs[c.uid].email, custDocs[c.uid]&&custDocs[c.uid].phone].filter(Boolean).join(' · '); html += '<div class="cust-dropdown-item" data-guest-id="'+c.uid+'" data-name="'+escHtml(c.name)+'"><span class="cust-dot guest"></span><span style="font-weight:600;">'+escHtml(c.name)+'<span style="font-size:10px;color:#c07a30;margin-left:6px;">guest</span></span>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</div>'; });
+        drop.innerHTML = html || '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No matches</div>';
         drop.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
             el.addEventListener('mousedown', function(e){
                 e.preventDefault();
-                ctrCustSelectedUid = el.dataset.uid;
-                ctrCustIsManual = false;
-                inp.value = el.dataset.name;
-                inp.classList.add('has-account');
-                document.getElementById('ctrCustBadge').style.display='';
-                document.getElementById('ctrCustTypeHint').style.display='none';
-                document.getElementById('ctrManualContactFields').style.display='none';
-                document.getElementById('ctrCustUid').value = el.dataset.uid;
+                ctrCustSelectedUid = el.dataset.uid; ctrCustIsManual = false; ctrCustSelectedGuest = null;
+                inp.value = el.dataset.name; inp.classList.add('has-account'); inp.classList.remove('has-guest');
+                document.getElementById('ctrCustBadge').style.display=''; document.getElementById('ctrCustGuestBadge').style.display='none';
+                document.getElementById('ctrCustTypeHint').style.display='none'; document.getElementById('ctrManualContactFields').style.display='none';
+                document.getElementById('ctrCustUid').value = el.dataset.uid; document.getElementById('ctrCustGuestId').value = '';
                 document.getElementById('ctrCustName').value = el.dataset.name;
                 drop.classList.remove('open');
-                ctrPrefillAddress(el.dataset.uid);
-                ctrUpdateInvPreview();
+                ctrPrefillAddress(el.dataset.uid); ctrUpdateInvPreview();
+            });
+        });
+        drop.querySelectorAll('.cust-dropdown-item[data-guest-id]').forEach(function(el){
+            el.addEventListener('mousedown', function(e){
+                e.preventDefault();
+                var gid = el.dataset.guestId; var gDoc = custDocs[gid]||{};
+                ctrCustSelectedUid = ''; ctrCustSelectedGuest = { guestId: gid, name: el.dataset.name, email: gDoc.email||'', phone: gDoc.phone||'', lastAddress: gDoc.lastAddress||'' };
+                ctrCustIsManual = false;
+                inp.value = el.dataset.name; inp.classList.remove('has-account'); inp.classList.add('has-guest');
+                document.getElementById('ctrCustBadge').style.display='none'; document.getElementById('ctrCustGuestBadge').style.display='';
+                document.getElementById('ctrCustTypeHint').style.display='none'; document.getElementById('ctrManualContactFields').style.display='';
+                document.getElementById('ctrCustUid').value = ''; document.getElementById('ctrCustGuestId').value = gid;
+                document.getElementById('ctrCustName').value = el.dataset.name;
+                document.getElementById('ctrManualName').value = el.dataset.name;
+                document.getElementById('ctrManualEmail').value = gDoc.email||'';
+                document.getElementById('ctrManualPhone').value = (gDoc.phone||'').replace(/^\+1\s*/,'');
+                if(gDoc.lastAddress) document.getElementById('ctrAddress').value = gDoc.lastAddress;
+                drop.classList.remove('open'); ctrUpdateInvPreview();
             });
         });
         drop.classList.add('open');
@@ -1654,118 +1423,107 @@ function setupCtrCustPicker(){
 
     inp.addEventListener('focus', function(){ renderCtrDrop(this.value); });
     inp.addEventListener('input', function(){
-        ctrCustSelectedUid='';
-        inp.classList.remove('has-account');
-        document.getElementById('ctrCustBadge').style.display='none';
-        document.getElementById('ctrCustUid').value='';
-        document.getElementById('ctrCustName').value='';
+        ctrCustSelectedUid=''; ctrCustSelectedGuest=null;
+        inp.classList.remove('has-account'); inp.classList.remove('has-guest');
+        document.getElementById('ctrCustBadge').style.display='none'; document.getElementById('ctrCustGuestBadge').style.display='none';
+        document.getElementById('ctrCustUid').value=''; document.getElementById('ctrCustGuestId').value=''; document.getElementById('ctrCustName').value='';
         renderCtrDrop(this.value);
         var q = this.value.trim();
         if(q){
-            var exact = custList.find(function(c){ return c.name.toLowerCase()===q.toLowerCase(); });
+            var exact = custList.find(function(c){ return !c.isGuest && c.name.toLowerCase()===q.toLowerCase(); });
             if(exact){
-                ctrCustSelectedUid=exact.uid; ctrCustIsManual=false;
-                inp.classList.add('has-account');
-                document.getElementById('ctrCustBadge').style.display='';
-                document.getElementById('ctrCustTypeHint').style.display='none';
-                document.getElementById('ctrManualContactFields').style.display='none';
-                document.getElementById('ctrCustUid').value=exact.uid;
-                document.getElementById('ctrCustName').value=exact.name;
+                ctrCustSelectedUid=exact.uid; inp.classList.add('has-account'); document.getElementById('ctrCustBadge').style.display='';
+                document.getElementById('ctrCustTypeHint').style.display='none'; document.getElementById('ctrManualContactFields').style.display='none';
+                document.getElementById('ctrCustUid').value=exact.uid; document.getElementById('ctrCustName').value=exact.name;
                 ctrPrefillAddress(exact.uid);
             } else {
-                ctrCustIsManual=true;
-                document.getElementById('ctrCustTypeHint').style.display='';
-                document.getElementById('ctrManualContactFields').style.display='';
+                var exactGuest = custList.find(function(c){ return c.isGuest && c.name.toLowerCase()===q.toLowerCase(); });
+                if(exactGuest){
+                    var gDoc2 = custDocs[exactGuest.uid]||{};
+                    ctrCustSelectedGuest = { guestId: exactGuest.uid, name: exactGuest.name, email: gDoc2.email||'', phone: gDoc2.phone||'', lastAddress: gDoc2.lastAddress||'' };
+                    inp.classList.add('has-guest'); document.getElementById('ctrCustGuestBadge').style.display='';
+                    document.getElementById('ctrManualContactFields').style.display='';
+                    document.getElementById('ctrCustGuestId').value = exactGuest.uid;
+                    document.getElementById('ctrManualName').value = exactGuest.name;
+                    document.getElementById('ctrManualEmail').value = gDoc2.email||'';
+                    document.getElementById('ctrManualPhone').value = (gDoc2.phone||'').replace(/^\+1\s*/,'');
+                } else {
+                    ctrCustIsManual=true; document.getElementById('ctrCustTypeHint').style.display=''; document.getElementById('ctrManualContactFields').style.display='';
+                    document.getElementById('ctrManualName').value = q;
+                }
             }
-        } else {
-            ctrCustIsManual=false;
-            document.getElementById('ctrCustTypeHint').style.display='none';
-            document.getElementById('ctrManualContactFields').style.display='none';
-        }
+        } else { ctrCustIsManual=false; document.getElementById('ctrCustTypeHint').style.display='none'; document.getElementById('ctrManualContactFields').style.display='none'; }
     });
-    inp.addEventListener('blur', function(){
-        setTimeout(function(){ drop.classList.remove('open'); }, 150);
-        var q = inp.value.trim();
-        if(q && !ctrCustSelectedUid){ ctrCustIsManual=true; document.getElementById('ctrCustTypeHint').style.display=''; document.getElementById('ctrManualContactFields').style.display=''; }
-    });
+    inp.addEventListener('blur', function(){ setTimeout(function(){ drop.classList.remove('open'); }, 150); var q=inp.value.trim(); if(q&&!ctrCustSelectedUid&&!ctrCustSelectedGuest){ ctrCustIsManual=true; document.getElementById('ctrCustTypeHint').style.display=''; document.getElementById('ctrManualContactFields').style.display=''; } });
 
-    // Phone format
     document.getElementById('ctrManualPhone').addEventListener('input', function(){
-        var digits = this.value.replace(/\D/g,'').slice(0,10);
-        var out='';
-        if(digits.length===0){out='';}
-        else if(digits.length<=3){out='('+digits;}
-        else if(digits.length<=6){out='('+digits.slice(0,3)+') '+digits.slice(3);}
-        else{out='('+digits.slice(0,3)+') '+digits.slice(3,6)+'-'+digits.slice(6);}
+        var digits = this.value.replace(/\D/g,'').slice(0,10); var out='';
+        if(digits.length===0){out='';}else if(digits.length<=3){out='('+digits;}else if(digits.length<=6){out='('+digits.slice(0,3)+') '+digits.slice(3);}else{out='('+digits.slice(0,3)+') '+digits.slice(3,6)+'-'+digits.slice(6);}
         this.value=out;
     });
 }
 
 function ctrPrefillAddress(uid){
-    var doc = custDocs[uid];
-    if(!doc) return;
+    var doc = custDocs[uid]; if(!doc) return;
     var props = Array.isArray(doc.properties) ? doc.properties : [];
     var bar = document.getElementById('ctrAddrBar');
     if(!props.length){ bar.style.display='none'; return; }
     var html='';
-    props.forEach(function(p,i){
-        if(p.address) html+='<button type="button" class="billing-addr-pill'+(i===0?' active':'')+'" data-addr="'+escHtml(p.address)+'">'+(p.label||(p.primary?'Primary':'Prop '+(i+1)))+'</button>';
-    });
+    props.forEach(function(p,i){ if(p.address) html+='<button type="button" class="billing-addr-pill'+(i===0?' active':'')+'" data-addr="'+escHtml(p.address)+'">'+(p.label||(p.primary?'Primary':'Prop '+(i+1)))+'</button>'; });
     bar.innerHTML=html; bar.style.display='flex';
     var primary = props.find(function(p){ return p.primary && p.address; }) || props.find(function(p){ return p.address; });
     if(primary) document.getElementById('ctrAddress').value = primary.address;
-    bar.querySelectorAll('.billing-addr-pill').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            bar.querySelectorAll('.billing-addr-pill').forEach(function(b){b.classList.remove('active');});
-            this.classList.add('active');
-            document.getElementById('ctrAddress').value = this.dataset.addr;
-        });
-    });
+    bar.querySelectorAll('.billing-addr-pill').forEach(function(btn){ btn.addEventListener('click',function(){ bar.querySelectorAll('.billing-addr-pill').forEach(function(b){b.classList.remove('active');}); this.classList.add('active'); document.getElementById('ctrAddress').value = this.dataset.addr; }); });
 }
 
-// Generate dates for contract
+// Multi-service lines for contract
+var ctrServiceLinesArr = [];
+
+function ctrRenderServiceLines(){
+    document.querySelectorAll('.svc-dropdown[data-ctr-drop]').forEach(function(el){ el.remove(); });
+    var wrap = document.getElementById('ctrServiceLines');
+    wrap.innerHTML = ctrServiceLinesArr.map(function(li, i){ return '<div style="display:grid;grid-template-columns:1fr 90px 28px;gap:8px;align-items:center;margin-bottom:6px;"><div class="svc-name-wrap"><input class="form-input ctr-svc-name-input" type="text" placeholder="Service name" value="'+escHtml(li.name)+'" data-ctr-idx="'+i+'" autocomplete="off"></div><input class="form-input" type="number" min="0" step="0.01" placeholder="0.00" value="'+escHtml(String(li.price!==''?li.price:''))+'" data-ctr-price-idx="'+i+'" style="text-align:right;"><button class="btn-remove-line" onclick="ctrRemoveService('+i+')" type="button">✕</button></div>'; }).join('');
+    wrap.querySelectorAll('[data-ctr-price-idx]').forEach(function(input){ input.addEventListener('input', function(){ ctrServiceLinesArr[parseInt(this.dataset.ctrPriceIdx)].price = this.value; ctrUpdateInvPreview(); ctrUpdatePrepayInfo(); }); });
+    ctrServiceLinesArr.forEach(function(li, i){ var drop = document.createElement('div'); drop.className = 'svc-dropdown'; drop.id = 'ctrSvcDrop'+i; drop.setAttribute('data-ctr-drop', '1'); document.body.appendChild(drop); });
+    wrap.querySelectorAll('.ctr-svc-name-input').forEach(function(input){
+        var idx = parseInt(input.dataset.ctrIdx); var drop = document.getElementById('ctrSvcDrop'+idx);
+        function renderCtrSvcDrop(q){ q = (q||'').trim(); var matches = q ? serviceNames.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase())!==-1&&n.toLowerCase()!==q.toLowerCase(); }) : serviceNames.slice(0,8); if(!matches.length){ drop.classList.remove('open'); return; } drop.innerHTML = matches.slice(0,8).map(function(n){ return '<div class="svc-dropdown-item" data-name="'+escHtml(n)+'">'+highlightMatch(n,q)+'</div>'; }).join(''); drop.querySelectorAll('.svc-dropdown-item').forEach(function(item){ item.addEventListener('mousedown', function(e){ e.preventDefault(); ctrServiceLinesArr[idx].name = item.dataset.name; input.value = item.dataset.name; drop.classList.remove('open'); ctrUpdatePrepayInfo(); }); }); positionSvcDropdown(input, drop); drop.classList.add('open'); }
+        input.addEventListener('input', function(){ ctrServiceLinesArr[idx].name = this.value; renderCtrSvcDrop(this.value); ctrUpdatePrepayInfo(); });
+        input.addEventListener('focus', function(){ renderCtrSvcDrop(this.value); });
+        input.addEventListener('blur', function(){ setTimeout(function(){ drop.classList.remove('open'); }, 150); });
+    });
+    ctrUpdateInvPreview();
+}
+
+function ctrRemoveService(i){ ctrServiceLinesArr.splice(i,1); ctrRenderServiceLines(); }
+document.getElementById('ctrAddServiceBtn').addEventListener('click', function(){ ctrServiceLinesArr.push({name:'', price:''}); ctrRenderServiceLines(); var inputs = document.querySelectorAll('.ctr-svc-name-input'); if(inputs.length) inputs[inputs.length-1].focus(); });
+function ctrTotalPricePerVisit(){ return ctrServiceLinesArr.reduce(function(s,li){ return s + (parseFloat(li.price)||0); }, 0); }
+
 function generateContractDates(startStr, endStr, freqNum, freqUnit){
     if(!startStr || !endStr || !freqNum) return [];
-    var start = new Date(startStr+'T12:00:00');
-    var end   = new Date(endStr+'T12:00:00');
+    var start = new Date(startStr+'T12:00:00'); var end = new Date(endStr+'T12:00:00');
     if(end < start) return [];
-    var dates = [];
-    var cur = new Date(start);
-    var stepDays = freqUnit === 'weeks' ? freqNum * 7 : freqNum;
-    while(cur <= end){
-        dates.push(new Date(cur));
-        cur.setDate(cur.getDate() + stepDays);
-    }
+    var dates = []; var cur = new Date(start); var stepDays = freqUnit === 'weeks' ? freqNum * 7 : freqNum;
+    while(cur <= end){ dates.push(new Date(cur)); cur.setDate(cur.getDate() + stepDays); }
     return dates;
 }
 
 function ctrUpdatePreview(){
-    var startStr = document.getElementById('ctrStartDate').value;
-    var endStr   = document.getElementById('ctrEndDate').value;
-    var freqNum  = parseInt(document.getElementById('ctrFreqNum').value) || 1;
-    var freqUnit = document.getElementById('ctrFreqUnit').value;
+    var startStr = document.getElementById('ctrStartDate').value; var endStr = document.getElementById('ctrEndDate').value;
+    var freqNum = parseInt(document.getElementById('ctrFreqNum').value)||1; var freqUnit = document.getElementById('ctrFreqUnit').value;
     var box = document.getElementById('ctrPreviewBox');
-
     if(!startStr || !endStr){ box.classList.remove('visible'); ctrUpdateInvPreview(); return; }
     var dates = generateContractDates(startStr, endStr, freqNum, freqUnit);
     if(!dates.length){ box.classList.remove('visible'); ctrUpdateInvPreview(); return; }
-
     document.getElementById('ctrPreviewCount').textContent = dates.length + ' visit' + (dates.length===1?'':'s') + ' scheduled';
-    document.getElementById('ctrPreviewDates').innerHTML = dates.map(function(d){
-        return '<span class="contract-date-chip">'+d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+'</span>';
-    }).join('');
-    box.classList.add('visible');
-    ctrUpdateInvPreview();
-    ctrUpdatePrepayInfo();
+    document.getElementById('ctrPreviewDates').innerHTML = dates.map(function(d){ return '<span class="contract-date-chip">'+d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+'</span>'; }).join('');
+    box.classList.add('visible'); ctrUpdateInvPreview(); ctrUpdatePrepayInfo();
 }
 
 function ctrUpdateInvPreview(){
-    var startStr = document.getElementById('ctrStartDate').value;
-    var endStr   = document.getElementById('ctrEndDate').value;
-    var freqNum  = parseInt(document.getElementById('ctrFreqNum').value) || 1;
-    var freqUnit = document.getElementById('ctrFreqUnit').value;
-    var pricePerVisit = ctrTotalPricePerVisit();
-    var el = document.getElementById('ctrInvPreview');
+    var startStr = document.getElementById('ctrStartDate').value; var endStr = document.getElementById('ctrEndDate').value;
+    var freqNum = parseInt(document.getElementById('ctrFreqNum').value)||1; var freqUnit = document.getElementById('ctrFreqUnit').value;
+    var pricePerVisit = ctrTotalPricePerVisit(); var el = document.getElementById('ctrInvPreview');
     if(!startStr||!endStr){ el.textContent=''; return; }
     var dates = generateContractDates(startStr, endStr, freqNum, freqUnit);
     if(!dates.length||!pricePerVisit){ el.textContent=''; return; }
@@ -1775,12 +1533,9 @@ function ctrUpdateInvPreview(){
 }
 
 function ctrUpdatePrepayInfo(){
-    var startStr = document.getElementById('ctrStartDate').value;
-    var endStr   = document.getElementById('ctrEndDate').value;
-    var freqNum  = parseInt(document.getElementById('ctrFreqNum').value) || 1;
-    var freqUnit = document.getElementById('ctrFreqUnit').value;
-    var price = ctrTotalPricePerVisit();
-    var prepayAmt = parseFloat(document.getElementById('ctrPrepayAmount').value)||0;
+    var startStr = document.getElementById('ctrStartDate').value; var endStr = document.getElementById('ctrEndDate').value;
+    var freqNum = parseInt(document.getElementById('ctrFreqNum').value)||1; var freqUnit = document.getElementById('ctrFreqUnit').value;
+    var price = ctrTotalPricePerVisit(); var prepayAmt = parseFloat(document.getElementById('ctrPrepayAmount').value)||0;
     var infoEl = document.getElementById('ctrPrepayVisitsInfo');
     if(!startStr||!endStr){ infoEl.style.display='none'; return; }
     var dates = generateContractDates(startStr, endStr, freqNum, freqUnit);
@@ -1789,79 +1544,36 @@ function ctrUpdatePrepayInfo(){
     var freqLabel = freqUnit === 'weeks' ? 'every ' + freqNum + ' week' + (freqNum>1?'s':'') : 'every ' + freqNum + ' day' + (freqNum>1?'s':'');
     var svcNames = ctrServiceLinesArr.map(function(s){ return s.name||'Service'; }).filter(Boolean).join(', ') || 'Service';
     infoEl.style.display='';
-    infoEl.innerHTML =
-        '<strong>Service record will show:</strong><br>' +
-        svcNames + ' — ' + freqLabel + '<br>' +
-        'Prepaid: ' + (price>0 ? visitsIncluded + ' of ' + dates.length + ' visits' : dates.length + ' visits') + (prepayAmt>0?' ('+fmtMoney(prepayAmt)+' paid)':'') + '<br>' +
-        dates.length + ' total visits scheduled';
+    infoEl.innerHTML = '<strong>Service record will show:</strong><br>'+svcNames+' — '+freqLabel+'<br>'+'Prepaid: '+(price>0?visitsIncluded+' of '+dates.length+' visits':dates.length+' visits')+(prepayAmt>0?' ('+fmtMoney(prepayAmt)+' paid)':'')+'<br>'+dates.length+' total visits scheduled';
 }
 
-// Wire contract preview updates
-['ctrStartDate','ctrEndDate','ctrFreqNum','ctrFreqUnit'].forEach(function(id){
-    document.getElementById(id).addEventListener('change', ctrUpdatePreview);
-    document.getElementById(id).addEventListener('input', ctrUpdatePreview);
-});
+['ctrStartDate','ctrEndDate','ctrFreqNum','ctrFreqUnit'].forEach(function(id){ document.getElementById(id).addEventListener('change', ctrUpdatePreview); document.getElementById(id).addEventListener('input', ctrUpdatePreview); });
 document.getElementById('ctrPrepayAmount').addEventListener('input', ctrUpdatePrepayInfo);
+document.getElementById('ctrPrepayCheck').addEventListener('change', function(){ document.getElementById('ctrPrepayPanel').style.display = this.checked ? '' : 'none'; if(this.checked){ document.getElementById('ctrPrepayDate').value = new Date().toISOString().slice(0,10); ctrUpdatePrepayInfo(); } });
 
-// Prepay toggle
-document.getElementById('ctrPrepayCheck').addEventListener('change', function(){
-    document.getElementById('ctrPrepayPanel').style.display = this.checked ? '' : 'none';
-    if(this.checked){
-        var today = new Date().toISOString().slice(0,10);
-        document.getElementById('ctrPrepayDate').value = today;
-        ctrUpdatePrepayInfo();
-    }
-});
-
-// ── Contract confirm-exit ──
 var pendingContractCloseCallback = null;
 function maybeCloseContract(callback){
-    var custVal = document.getElementById('ctrCustSearch').value.trim();
-    var startVal = document.getElementById('ctrStartDate').value;
+    var custVal = document.getElementById('ctrCustSearch').value.trim(); var startVal = document.getElementById('ctrStartDate').value;
     var hasData = custVal || startVal || ctrServiceLinesArr.some(function(s){ return s.name.trim(); });
-    if(hasData){ pendingContractCloseCallback=callback; document.getElementById('confirmContractExitModal').classList.add('open'); }
-    else { callback(); }
+    if(hasData){ pendingContractCloseCallback=callback; document.getElementById('confirmContractExitModal').classList.add('open'); } else { callback(); }
 }
-document.getElementById('confirmContractExitCancel').addEventListener('click', function(){
-    document.getElementById('confirmContractExitModal').classList.remove('open'); pendingContractCloseCallback=null;
-});
-document.getElementById('confirmContractExitOk').addEventListener('click', function(){
-    document.getElementById('confirmContractExitModal').classList.remove('open');
-    if(pendingContractCloseCallback){ pendingContractCloseCallback(); pendingContractCloseCallback=null; }
-});
+document.getElementById('confirmContractExitCancel').addEventListener('click', function(){ document.getElementById('confirmContractExitModal').classList.remove('open'); pendingContractCloseCallback=null; });
+document.getElementById('confirmContractExitOk').addEventListener('click', function(){ document.getElementById('confirmContractExitModal').classList.remove('open'); if(pendingContractCloseCallback){ pendingContractCloseCallback(); pendingContractCloseCallback=null; } });
 
-// Open / close contract modal
 document.getElementById('newContractBtn').addEventListener('click', function(){
-    ctrCustSelectedUid=''; ctrCustIsManual=false;
+    ctrCustSelectedUid=''; ctrCustSelectedGuest=null; ctrCustIsManual=false;
     ctrServiceLinesArr = [{name:'', price:''}];
-    document.getElementById('ctrCustSearch').value='';
-    document.getElementById('ctrCustSearch').classList.remove('has-account');
-    document.getElementById('ctrCustBadge').style.display='none';
-    document.getElementById('ctrCustTypeHint').style.display='none';
-    document.getElementById('ctrManualContactFields').style.display='none';
-    document.getElementById('ctrManualEmail').value='';
-    document.getElementById('ctrManualPhone').value='';
-    document.getElementById('ctrCustUid').value='';
-    document.getElementById('ctrCustName').value='';
-    document.getElementById('ctrAddress').value='';
-    document.getElementById('ctrAddrBar').style.display='none';
-    document.getElementById('ctrStartDate').value='';
-    document.getElementById('ctrEndDate').value='';
-    document.getElementById('ctrFreqNum').value='1';
-    document.getElementById('ctrFreqUnit').value='weeks';
+    ['ctrCustSearch','ctrAddress','ctrManualName','ctrManualEmail','ctrManualPhone','ctrCrew','ctrInvNotes','ctrCustomerNotes'].forEach(function(id){ document.getElementById(id).value=''; });
+    ['ctrCustBadge','ctrCustGuestBadge','ctrCustTypeHint','ctrManualContactFields','ctrAddrBar'].forEach(function(id){ document.getElementById(id).style.display='none'; });
+    document.getElementById('ctrCustSearch').classList.remove('has-account','has-guest');
+    document.getElementById('ctrStartDate').value=''; document.getElementById('ctrEndDate').value='';
+    document.getElementById('ctrFreqNum').value='1'; document.getElementById('ctrFreqUnit').value='weeks';
     setCtrTimePickerValue('');
-    document.getElementById('ctrCrew').value='';
-    document.getElementById('ctrInvStatus').value='Payment Due';
-    document.getElementById('ctrDueDate').value='';
-    document.getElementById('ctrCustomerNotes').value='';
-    document.getElementById('ctrInvNotes').value='';
-    document.getElementById('ctrPrepayCheck').checked=false;
-    document.getElementById('ctrPrepayPanel').style.display='none';
-    document.getElementById('ctrPrepayAmount').value='';
-    document.getElementById('ctrPrepayDate').value='';
+    document.getElementById('ctrInvStatus').value='Payment Due'; document.getElementById('ctrDueDate').value='';
+    document.getElementById('ctrPrepayCheck').checked=false; document.getElementById('ctrPrepayPanel').style.display='none';
+    document.getElementById('ctrPrepayAmount').value=''; document.getElementById('ctrPrepayDate').value='';
     document.getElementById('ctrPreviewBox').classList.remove('visible');
-    document.getElementById('ctrInvPreview').textContent='';
-    document.getElementById('ctrServiceTotal').textContent='';
+    document.getElementById('ctrInvPreview').textContent=''; document.getElementById('ctrServiceTotal').textContent='';
     document.getElementById('contractModalStatus').textContent='';
     ctrRenderServiceLines();
     document.body.classList.add('modal-open');
@@ -1880,424 +1592,139 @@ document.getElementById('contractModalClose').addEventListener('click', function
 document.getElementById('cancelContractBtn').addEventListener('click', function(){ maybeCloseContract(closeContractModal); });
 document.getElementById('contractModal').addEventListener('click', function(e){ if(e.target===this) maybeCloseContract(closeContractModal); });
 
-// ── Save contract (batch create jobs + invoice + update services) ──
 document.getElementById('saveContractBtn').addEventListener('click', async function(){
-    var btn = this;
-    var status = document.getElementById('contractModalStatus');
-
-    var uid        = document.getElementById('ctrCustUid').value;
-    var custName   = document.getElementById('ctrCustSearch').value.trim();
-    var isManual   = !uid && custName;
-    var address    = document.getElementById('ctrAddress').value.trim();
-    var startStr   = document.getElementById('ctrStartDate').value;
-    var endStr     = document.getElementById('ctrEndDate').value;
-    var freqNum    = parseInt(document.getElementById('ctrFreqNum').value)||1;
-    var freqUnit   = document.getElementById('ctrFreqUnit').value;
-    var crew       = document.getElementById('ctrCrew').value.trim();
-    var jobTime    = document.getElementById('ctrJobTime').value || '';
-    var custNotes  = document.getElementById('ctrCustomerNotes').value.trim();
-    var invNotes   = document.getElementById('ctrInvNotes').value.trim();
-    var invStatus  = document.getElementById('ctrInvStatus').value;
-    var dueDateStr = document.getElementById('ctrDueDate').value;
-    var doPrepay   = document.getElementById('ctrPrepayCheck').checked;
-    var prepayAmt  = parseFloat(document.getElementById('ctrPrepayAmount').value)||0;
+    var btn = this; var status = document.getElementById('contractModalStatus');
+    var uid = document.getElementById('ctrCustUid').value;
+    var guestId = document.getElementById('ctrCustGuestId').value;
+    var custName = document.getElementById('ctrCustSearch').value.trim();
+    var isManual = !uid && !guestId && custName;
+    var address = document.getElementById('ctrAddress').value.trim();
+    var startStr = document.getElementById('ctrStartDate').value; var endStr = document.getElementById('ctrEndDate').value;
+    var freqNum = parseInt(document.getElementById('ctrFreqNum').value)||1; var freqUnit = document.getElementById('ctrFreqUnit').value;
+    var crew = document.getElementById('ctrCrew').value.trim(); var jobTime = document.getElementById('ctrJobTime').value || '';
+    var custNotes = document.getElementById('ctrCustomerNotes').value.trim(); var invNotes = document.getElementById('ctrInvNotes').value.trim();
+    var invStatus = document.getElementById('ctrInvStatus').value; var dueDateStr = document.getElementById('ctrDueDate').value;
+    var doPrepay = document.getElementById('ctrPrepayCheck').checked;
+    var prepayAmt = parseFloat(document.getElementById('ctrPrepayAmount').value)||0;
     var prepayType = document.getElementById('ctrPrepayType').value;
     var prepayDate = document.getElementById('ctrPrepayDate').value;
-
-    // Validate services
+    var manualName = document.getElementById('ctrManualName').value.trim();
+    var manualEmail = document.getElementById('ctrManualEmail').value.trim();
+    var manualPhone = document.getElementById('ctrManualPhone').value.trim();
+    var resolvedCustName = uid ? (custNames[uid]||custName) : (manualName||custName);
     var services = ctrServiceLinesArr.map(function(li){ return {name:(li.name||'').trim(), price:parseFloat(li.price)||0}; }).filter(function(s){ return s.name; });
 
     if(!custName){ status.textContent='Select a customer.'; status.className='modal-status err'; return; }
-    if(isManual){
-        var ctrEmail = document.getElementById('ctrManualEmail').value.trim();
-        var ctrPhone = document.getElementById('ctrManualPhone').value.trim();
-        if(!ctrEmail && !ctrPhone){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; }
-    }
+    if((isManual||guestId) && !uid){ var em=manualEmail; var ph=manualPhone; if(!em&&!ph){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; } }
     if(!address){ status.textContent='Enter a service address.'; status.className='modal-status err'; return; }
     if(!services.length){ status.textContent='Add at least one service.'; status.className='modal-status err'; return; }
-    var missingPrice = services.some(function(s){ return !s.price || s.price <= 0; });
-    if(missingPrice){ status.textContent='Enter a price for each service.'; status.className='modal-status err'; return; }
+    if(services.some(function(s){ return !s.price||s.price<=0; })){ status.textContent='Enter a price for each service.'; status.className='modal-status err'; return; }
     if(!startStr||!endStr){ status.textContent='Set a start and end date.'; status.className='modal-status err'; return; }
-
     var dates = generateContractDates(startStr, endStr, freqNum, freqUnit);
     if(!dates.length){ status.textContent='No visits generated — check your dates and frequency.'; status.className='modal-status err'; return; }
     if(dates.length > 200){ status.textContent='Too many visits ('+dates.length+'). Shorten the date range.'; status.className='modal-status err'; return; }
-
-    if(doPrepay && (!prepayAmt || !prepayDate)){
-        status.textContent='Enter prepayment amount and date.'; status.className='modal-status err'; return;
-    }
+    if(doPrepay && (!prepayAmt || !prepayDate)){ status.textContent='Enter prepayment amount and date.'; status.className='modal-status err'; return; }
 
     btn.disabled=true; status.textContent='Creating '+dates.length+' jobs…'; status.className='modal-status';
 
     var pricePerVisit = services.reduce(function(s,sv){ return s+sv.price; }, 0);
     var freqLabel = freqUnit === 'weeks' ? 'Every ' + freqNum + ' week' + (freqNum>1?'s':'') : 'Every ' + freqNum + ' day' + (freqNum>1?'s':'');
-    var resolvedCustName = uid ? (custNames[uid]||custName) : custName;
 
     try {
+        // Save guest customer record if needed
+        var savedGuestId = null;
+        if((isManual||guestId) && !uid){
+            savedGuestId = await upsertGuestCustomer(resolvedCustName, manualEmail, manualPhone?'+1 '+manualPhone:'', address);
+            if(savedGuestId){
+                var cacheKey = savedGuestId;
+                if(!custDocs[cacheKey]){ custDocs[cacheKey] = { name: resolvedCustName, email: manualEmail, phone: manualPhone?'+1 '+manualPhone:'', lastAddress: address, isGuest: true }; custNames[cacheKey] = resolvedCustName; var exi = custList.find(function(c){ return c.uid === cacheKey; }); if(!exi) custList.push({ uid: cacheKey, name: resolvedCustName, isGuest: true }); }
+                else { custDocs[cacheKey].lastAddress = address; }
+            }
+        }
+
         var issueDate = new Date(startStr+'T12:00:00');
         var effectiveDueDate = dueDateStr ? new Date(dueDateStr+'T12:00:00') : new Date(startStr+'T12:00:00');
         if(!dueDateStr) effectiveDueDate.setDate(effectiveDueDate.getDate()+3);
 
-        // 1. Generate all job IDs
         var jobIds = [];
-        for(var i=0; i<dates.length; i++){
-            status.textContent = 'Generating IDs ('+(i+1)+'/'+dates.length+')…';
-            var jid = await generateId('jobCounters', dates[i]);
-            jobIds.push(String(jid));
-        }
-
-        // 2. Generate invoice ID
-        var invId = await generateId('invoiceCounters', issueDate);
-        invId = String(invId);
-
-        // 3. Build invoice line items (one row per service × visits)
+        for(var i=0; i<dates.length; i++){ status.textContent = 'Generating IDs ('+(i+1)+'/'+dates.length+')…'; var jid = await generateId('jobCounters', dates[i]); jobIds.push(String(jid)); }
+        var invId = await generateId('invoiceCounters', issueDate); invId = String(invId);
         var invItems = services.map(function(s){ return { name: s.name, qty: dates.length, unitPrice: s.price }; });
-
-        // 4. Payments
         var payments = [];
-        if(doPrepay && prepayAmt > 0 && prepayDate){
-            payments.push({
-                date: firebase.firestore.Timestamp.fromDate(new Date(prepayDate+'T12:00:00')),
-                type: prepayType,
-                amount: prepayAmt,
-            });
-        }
+        if(doPrepay && prepayAmt > 0 && prepayDate){ payments.push({ date: firebase.firestore.Timestamp.fromDate(new Date(prepayDate+'T12:00:00')), type: prepayType, amount: prepayAmt }); }
 
-        // 5. Batch write jobs + invoice
         var CHUNK = 400;
         for(var chunk=0; chunk<dates.length; chunk+=CHUNK){
             var batch = db.batch();
-            var sliceDates = dates.slice(chunk, chunk+CHUNK);
-            var sliceJobIds = jobIds.slice(chunk, chunk+CHUNK);
-
+            var sliceDates = dates.slice(chunk, chunk+CHUNK); var sliceJobIds = jobIds.slice(chunk, chunk+CHUNK);
             sliceDates.forEach(function(d, idx){
-                var jid = sliceJobIds[idx];
-                var jobData = {
-                    uid: uid||'',
-                    customerName: resolvedCustName,
-                    status: 'Scheduled',
-                    date: firebase.firestore.Timestamp.fromDate(d),
-                    time: jobTime,
-                    address: address,
-                    assignedCrew: crew,
-                    services: services.map(function(s){ return { name: s.name, qty: 1, unitPrice: s.price }; }),
-                    customerNotes: custNotes,
-                    crewNotes: '',
-                    invoiceId: invId,
-                    contractId: invId,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                };
-                if(isManual){
-                    jobData.manualEmail = document.getElementById('ctrManualEmail').value.trim();
-                    var rawPh = document.getElementById('ctrManualPhone').value.trim();
-                    jobData.manualPhone = rawPh ? '+1 '+rawPh : '';
-                }
-                batch.set(db.collection('jobs').doc(jid), jobData);
+                var jid2 = sliceJobIds[idx];
+                var jobData = { uid: uid||'', customerName: resolvedCustName, status: 'Scheduled', date: firebase.firestore.Timestamp.fromDate(d), time: jobTime, address: address, assignedCrew: crew, services: services.map(function(s){ return { name: s.name, qty: 1, unitPrice: s.price }; }), customerNotes: custNotes, crewNotes: '', invoiceId: invId, contractId: invId, createdAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                if(isManual||guestId||savedGuestId){ jobData.manualEmail=manualEmail; jobData.manualPhone=manualPhone?'+1 '+manualPhone:''; if(savedGuestId) jobData.guestId=savedGuestId; }
+                batch.set(db.collection('jobs').doc(jid2), jobData);
             });
-
             if(chunk === 0){
-                var invData = {
-                    uid: uid||'',
-                    customerName: resolvedCustName,
-                    status: invStatus,
-                    dateIssued: firebase.firestore.Timestamp.fromDate(issueDate),
-                    dueDate: firebase.firestore.Timestamp.fromDate(effectiveDueDate),
-                    jobIds: jobIds,
-                    jobId: jobIds[0]||'',
-                    billingAddress: address,
-                    items: invItems,
-                    payments: payments,
-                    notes: invNotes,
-                    isContract: true,
-                    contractFrequency: freqLabel,
-                    contractStart: startStr,
-                    contractEnd: endStr,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                };
-                if(isManual){
-                    invData.manualEmail = document.getElementById('ctrManualEmail').value.trim();
-                    var rawPh2 = document.getElementById('ctrManualPhone').value.trim();
-                    invData.manualPhone = rawPh2 ? '+1 '+rawPh2 : '';
-                }
+                var invData = { uid: uid||'', customerName: resolvedCustName, status: invStatus, dateIssued: firebase.firestore.Timestamp.fromDate(issueDate), dueDate: firebase.firestore.Timestamp.fromDate(effectiveDueDate), jobIds: jobIds, jobId: jobIds[0]||'', billingAddress: address, items: invItems, payments: payments, notes: invNotes, isContract: true, contractFrequency: freqLabel, contractStart: startStr, contractEnd: endStr, createdAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                if(isManual||guestId||savedGuestId){ invData.manualEmail=manualEmail; invData.manualPhone=manualPhone?'+1 '+manualPhone:''; if(savedGuestId) invData.guestId=savedGuestId; }
                 batch.set(db.collection('invoices').doc(invId), invData);
             }
-
             await batch.commit();
             status.textContent = 'Saved jobs '+(chunk+1)+'–'+Math.min(chunk+CHUNK, dates.length)+' of '+dates.length+'…';
         }
 
-        // 6. Update services doc (one entry per service line, only for customers with accounts)
         if(uid){
             status.textContent = 'Updating service record…';
-            var svcDocRef = db.collection('services').doc(uid);
-            var svcSnap = await svcDocRef.get();
+            var svcDocRef = db.collection('services').doc(uid); var svcSnap = await svcDocRef.get();
             var existingSvcs = svcSnap.exists ? (svcSnap.data().services || []) : [];
-
-            // For each service in the contract, upsert
-            services.forEach(function(sv){
-                var visitsIncluded = sv.price > 0 ? Math.floor(prepayAmt / sv.price / services.length) : 0;
-                var newSvc = {
-                    name: sv.name,
-                    frequency: freqLabel,
-                    pricePerVisit: sv.price,
-                    status: 'Active',
-                    startDate: firebase.firestore.Timestamp.fromDate(issueDate),
-                    contractId: invId,
-                    contractStart: startStr,
-                    contractEnd: endStr,
-                    notes: custNotes,
-                };
-                if(doPrepay && prepayAmt > 0){
-                    newSvc.prepay = {
-                        enabled: true,
-                        amountPaid: prepayAmt / services.length,
-                        visitsIncluded: visitsIncluded,
-                        visitsPending: visitsIncluded,
-                        paymentDate: prepayDate,
-                        paymentType: prepayType,
-                    };
-                }
-                var found = existingSvcs.findIndex(function(s){ return s.contractId === invId && s.name === sv.name; });
-                if(found >= 0){ existingSvcs[found] = newSvc; }
-                else { existingSvcs.push(newSvc); }
-            });
-
-            if(svcSnap.exists){
-                await svcDocRef.update({ services: existingSvcs, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-            } else {
-                await svcDocRef.set({ services: existingSvcs, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-            }
+            services.forEach(function(sv){ var visitsIncluded = sv.price > 0 ? Math.floor(prepayAmt / sv.price / services.length) : 0; var newSvc = { name: sv.name, frequency: freqLabel, pricePerVisit: sv.price, status: 'Active', startDate: firebase.firestore.Timestamp.fromDate(issueDate), contractId: invId, contractStart: startStr, contractEnd: endStr, notes: custNotes }; if(doPrepay && prepayAmt > 0){ newSvc.prepay = { enabled: true, amountPaid: prepayAmt / services.length, visitsIncluded: visitsIncluded, visitsPending: visitsIncluded, paymentDate: prepayDate, paymentType: prepayType }; } var found = existingSvcs.findIndex(function(s){ return s.contractId === invId && s.name === sv.name; }); if(found >= 0){ existingSvcs[found] = newSvc; } else { existingSvcs.push(newSvc); } });
+            if(svcSnap.exists){ await svcDocRef.update({ services: existingSvcs, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); } else { await svcDocRef.set({ services: existingSvcs, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
         }
 
         status.textContent = 'Contract created! ' + dates.length + ' jobs + Invoice #' + invId;
         status.className = 'modal-status ok';
         setTimeout(function(){ closeContractModal(); loadInvoices(); }, 1200);
-
-    } catch(e){
-        console.error(e);
-        status.textContent = 'Error: '+(e.message||'Something went wrong');
-        status.className = 'modal-status err'; btn.disabled=false;
-    }
+    } catch(e){ console.error(e); status.textContent = 'Error: '+(e.message||'Something went wrong'); status.className = 'modal-status err'; btn.disabled=false; }
 });
 
 // ═══════════════════════════════════════════════════════════════
 // PRINT INVOICE
 // ═══════════════════════════════════════════════════════════════
-
-function openPrintModal(inv){
-    var html = buildPrintHTML(inv);
-    document.getElementById('printDocContent').innerHTML = html;
-    document.getElementById('printPreviewTitle').textContent = 'Invoice #' + inv.invId;
-    document.getElementById('printModal').classList.add('open');
-}
-
-document.getElementById('closePrintBtn').addEventListener('click', function(){
-    document.getElementById('printModal').classList.remove('open');
-});
+function openPrintModal(inv){ var html = buildPrintHTML(inv); document.getElementById('printDocContent').innerHTML = html; document.getElementById('printPreviewTitle').textContent = 'Invoice #' + inv.invId; document.getElementById('printModal').classList.add('open'); }
+document.getElementById('closePrintBtn').addEventListener('click', function(){ document.getElementById('printModal').classList.remove('open'); });
 document.getElementById('printModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+document.getElementById('doPrintBtn').addEventListener('click', function(){ var content = document.getElementById('printDocContent').innerHTML; var printWin = window.open('', '_blank', 'width=900,height=700'); printWin.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Invoice</title>'+getPrintStyles()+'</head><body>'+content+'</body></html>'); printWin.document.close(); printWin.focus(); setTimeout(function(){ printWin.print(); }, 400); });
 
-document.getElementById('doPrintBtn').addEventListener('click', function(){
-    var content = document.getElementById('printDocContent').innerHTML;
-    var printWin = window.open('', '_blank', 'width=900,height=700');
-    printWin.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Invoice</title>'+getPrintStyles()+'</head><body>'+content+'</body></html>');
-    printWin.document.close();
-    printWin.focus();
-    setTimeout(function(){ printWin.print(); }, 400);
-});
-
-function getPrintStyles(){
-    return '<style>'+
-        '*{margin:0;padding:0;box-sizing:border-box;}'+
-        'body{font-family:Arial,"Helvetica Neue",sans-serif;color:#1a1a1a;background:#fff;}'+
-        '.inv-doc-header{background:#0f0f0f;padding:40px 48px 36px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}'+
-        '.inv-doc-brand{flex:1;}'+
-        '.inv-doc-logo-name{font-family:Arial,"Helvetica Neue",sans-serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:4px;}'+
-        '.inv-doc-logo-sub{font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;}'+
-        '.inv-doc-header-right{text-align:right;}'+
-        '.inv-doc-inv-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#e8703a;margin-bottom:6px;}'+
-        '.inv-doc-inv-num{font-size:28px;font-weight:700;color:#fff;font-family:Arial,"Helvetica Neue",sans-serif;letter-spacing:-1px;}'+
-        '.inv-doc-status-chip{display:inline-block;margin-top:8px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;font-family:Arial,sans-serif;}'+
-        '.inv-doc-status-chip.paid{background:#1e8a4a;color:#fff;}'+
-        '.inv-doc-status-chip.due{background:#e8703a;color:#fff;}'+
-        '.inv-doc-status-chip.overdue{background:#d93025;color:#fff;}'+
-        '.inv-doc-status-chip.draft{background:#666;color:#fff;}'+
-        '.inv-doc-meta-strip{background:#f5f4f1;padding:20px 48px;display:flex;gap:0;border-bottom:2px solid #e0ddd8;}'+
-        '.inv-doc-meta-block{flex:1;padding-right:24px;}'+
-        '.inv-doc-meta-block:last-child{padding-right:0;}'+
-        '.inv-doc-meta-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:5px;font-family:Arial,sans-serif;}'+
-        '.inv-doc-meta-value{font-size:13px;color:#1a1a1a;font-weight:600;line-height:1.4;}'+
-        '.inv-doc-body{padding:36px 48px;}'+
-        '.inv-doc-bill-row{display:flex;gap:40px;margin-bottom:32px;}'+
-        '.inv-doc-bill-block{flex:1;}'+
-        '.inv-doc-bill-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8703a;margin-bottom:8px;font-family:Arial,sans-serif;font-weight:700;}'+
-        '.inv-doc-bill-name{font-size:16px;font-weight:700;color:#0f0f0f;margin-bottom:3px;}'+
-        '.inv-doc-bill-addr{font-size:12px;color:#555;line-height:1.6;}'+
-        '.inv-doc-from-name{font-size:15px;font-weight:700;color:#0f0f0f;margin-bottom:3px;}'+
-        '.inv-doc-from-detail{font-size:12px;color:#555;line-height:1.6;}'+
-        '.inv-doc-table-wrap{margin-bottom:24px;}'+
-        '.inv-doc-table{width:100%;border-collapse:collapse;}'+
-        '.inv-doc-table thead tr{background:#0f0f0f;}'+
-        '.inv-doc-table thead th{padding:11px 16px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8703a;text-align:left;font-family:Arial,sans-serif;font-weight:700;}'+
-        '.inv-doc-table thead th:last-child{text-align:right;}'+
-        '.inv-doc-table tbody tr{border-bottom:1px solid #e8e6e2;}'+
-        '.inv-doc-table tbody td{padding:13px 16px;font-size:13px;color:#333;vertical-align:top;}'+
-        '.inv-doc-table tbody td:last-child{text-align:right;font-variant-numeric:tabular-nums;}'+
-        '.inv-doc-table tbody td.td-num{text-align:right;font-variant-numeric:tabular-nums;color:#555;}'+
-        '.inv-doc-table tfoot tr.subtotal-row td{padding:10px 16px;font-size:12px;color:#666;border-top:1px solid #e8e6e2;}'+
-        '.inv-doc-table tfoot tr.total-row td{padding:14px 16px;font-size:16px;font-weight:700;color:#0f0f0f;border-top:3px solid #0f0f0f;background:#faf9f7;}'+
-        '.inv-doc-table tfoot tr td:last-child{text-align:right;font-variant-numeric:tabular-nums;}'+
-        '.inv-doc-table tfoot tr.paid-row td{color:#1e8a4a;font-size:13px;padding:8px 16px;}'+
-        '.inv-doc-table tfoot tr.balance-row td{font-size:18px;font-weight:800;color:#d93025;padding:14px 16px;border-top:2px solid #d93025;}'+
-        '.inv-doc-table tfoot tr.balance-row.clear td{color:#1e8a4a;border-color:#1e8a4a;}'+
-        '.inv-doc-payments{margin-bottom:24px;}'+
-        '.inv-doc-pay-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:10px;font-family:Arial,sans-serif;}'+
-        '.inv-doc-pay-row{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#f5f4f1;border-radius:6px;margin-bottom:5px;font-size:12px;color:#555;}'+
-        '.inv-doc-pay-amt{font-weight:700;color:#1e8a4a;}'+
-        '.inv-doc-jobs{margin-bottom:24px;}'+
-        '.inv-doc-jobs-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:8px;font-family:Arial,sans-serif;}'+
-        '.inv-doc-jobs-list{display:flex;flex-wrap:wrap;gap:6px;}'+
-        '.inv-doc-job-chip{font-size:11px;padding:4px 10px;background:#f0ede8;border:1px solid #d8d3cc;border-radius:6px;color:#333;font-family:Arial,sans-serif;}'+
-        '.inv-doc-notes{background:#f5f4f1;border-left:3px solid #e8703a;padding:12px 16px;border-radius:0 6px 6px 0;font-size:12px;color:#555;line-height:1.6;margin-bottom:24px;}'+
-        '.inv-doc-footer{background:#0f0f0f;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}'+
-        '.inv-doc-footer-left{font-size:11px;color:#666;}'+
-        '.inv-doc-footer-right{font-size:11px;color:#e8703a;font-style:italic;}'+
-        '.inv-doc-contract{margin-bottom:24px;}'+
-        '.inv-doc-contract strong{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;color:#999;font-family:Arial,sans-serif;}'+
-        '@media print{@page{margin:0;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}'+
-        '</style>';
-}
+function getPrintStyles(){ return '<style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,"Helvetica Neue",sans-serif;color:#1a1a1a;background:#fff;}.inv-doc-header{background:#0f0f0f;padding:40px 48px 36px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}.inv-doc-brand{flex:1;}.inv-doc-logo-name{font-size:26px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:4px;}.inv-doc-logo-sub{font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;}.inv-doc-header-right{text-align:right;}.inv-doc-inv-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#e8703a;margin-bottom:6px;}.inv-doc-inv-num{font-size:28px;font-weight:700;color:#fff;letter-spacing:-1px;}.inv-doc-status-chip{display:inline-block;margin-top:8px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}.inv-doc-status-chip.paid{background:#1e8a4a;color:#fff;}.inv-doc-status-chip.due{background:#e8703a;color:#fff;}.inv-doc-status-chip.overdue{background:#d93025;color:#fff;}.inv-doc-status-chip.draft{background:#666;color:#fff;}.inv-doc-meta-strip{background:#f5f4f1;padding:20px 48px;display:flex;gap:0;border-bottom:2px solid #e0ddd8;}.inv-doc-meta-block{flex:1;padding-right:24px;}.inv-doc-meta-block:last-child{padding-right:0;}.inv-doc-meta-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:5px;}.inv-doc-meta-value{font-size:13px;color:#1a1a1a;font-weight:600;line-height:1.4;}.inv-doc-body{padding:36px 48px;}.inv-doc-bill-row{display:flex;gap:40px;margin-bottom:32px;}.inv-doc-bill-block{flex:1;}.inv-doc-bill-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8703a;margin-bottom:8px;font-weight:700;}.inv-doc-bill-name{font-size:16px;font-weight:700;color:#0f0f0f;margin-bottom:3px;}.inv-doc-bill-addr{font-size:12px;color:#555;line-height:1.6;}.inv-doc-from-name{font-size:15px;font-weight:700;color:#0f0f0f;margin-bottom:3px;}.inv-doc-from-detail{font-size:12px;color:#555;line-height:1.6;}.inv-doc-table-wrap{margin-bottom:24px;}.inv-doc-table{width:100%;border-collapse:collapse;}.inv-doc-table thead tr{background:#0f0f0f;}.inv-doc-table thead th{padding:11px 16px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8703a;text-align:left;font-weight:700;}.inv-doc-table thead th:last-child{text-align:right;}.inv-doc-table tbody tr{border-bottom:1px solid #e8e6e2;}.inv-doc-table tbody td{padding:13px 16px;font-size:13px;color:#333;vertical-align:top;}.inv-doc-table tbody td:last-child{text-align:right;}.inv-doc-table tbody td.td-num{text-align:right;color:#555;}.inv-doc-table tfoot tr.total-row td{padding:14px 16px;font-size:16px;font-weight:700;color:#0f0f0f;border-top:3px solid #0f0f0f;background:#faf9f7;}.inv-doc-table tfoot tr td:last-child{text-align:right;}.inv-doc-table tfoot tr.paid-row td{color:#1e8a4a;font-size:13px;padding:8px 16px;}.inv-doc-table tfoot tr.balance-row td{font-size:18px;font-weight:800;color:#d93025;padding:14px 16px;border-top:2px solid #d93025;}.inv-doc-table tfoot tr.balance-row.clear td{color:#1e8a4a;border-color:#1e8a4a;}.inv-doc-payments{margin-bottom:24px;}.inv-doc-pay-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:10px;}.inv-doc-pay-row{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#f5f4f1;border-radius:6px;margin-bottom:5px;font-size:12px;color:#555;}.inv-doc-pay-amt{font-weight:700;color:#1e8a4a;}.inv-doc-jobs{margin-bottom:24px;}.inv-doc-jobs-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:8px;}.inv-doc-jobs-list{display:flex;flex-wrap:wrap;gap:6px;}.inv-doc-job-chip{font-size:11px;padding:4px 10px;background:#f0ede8;border:1px solid #d8d3cc;border-radius:6px;color:#333;}.inv-doc-notes{background:#f5f4f1;border-left:3px solid #e8703a;padding:12px 16px;border-radius:0 6px 6px 0;font-size:12px;color:#555;line-height:1.6;margin-bottom:24px;}.inv-doc-footer{background:#0f0f0f;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}.inv-doc-footer-left{font-size:11px;color:#666;}.inv-doc-footer-right{font-size:11px;color:#e8703a;font-style:italic;}.inv-doc-contract{margin-bottom:24px;}.inv-doc-contract strong{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;color:#999;}@media print{@page{margin:0;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}</style>'; }
 
 function buildPrintHTML(inv){
     var items = (inv.items||[]).map(function(it){ var qty=Number(it.qty)||1,unit=Number(it.unitPrice)||0; return {name:it.name||'—',qty:qty,unitPrice:unit,lineTotal:qty*unit}; });
-    var total = items.reduce(function(s,i){return s+i.lineTotal;},0);
-    var payments = inv.payments||[];
-    var paidAmt = payments.reduce(function(s,p){return s+Number(p.amount||0);},0);
-    var balance = Math.max(0, Math.round((total-paidAmt)*100)/100);
+    var total = items.reduce(function(s,i){return s+i.lineTotal;},0); var payments = inv.payments||[];
+    var paidAmt = payments.reduce(function(s,p){return s+Number(p.amount||0);},0); var balance = Math.max(0,Math.round((total-paidAmt)*100)/100);
     var displayName = (inv.uid&&custNames[inv.uid])?custNames[inv.uid]:(inv.customerName||'Customer');
     var jobIds = Array.isArray(inv.jobIds)&&inv.jobIds.length ? inv.jobIds : (inv.jobId?[inv.jobId]:[]);
-
-    var issuedStr = '—';
-    if(inv.dateIssued){ try{ issuedStr = inv.dateIssued.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); }catch(e){} }
-    var dueStr = '—';
-    if(inv.dueDate){ try{ dueStr = inv.dueDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); }catch(e){} }
-
-    var statusKey = (inv.status||'').toLowerCase();
-    var statusClass = statusKey==='paid'?'paid':statusKey==='overdue'?'overdue':statusKey==='draft'?'draft':'due';
-    var statusLabel = inv.status||'—';
-
-    var html = '<div class="inv-doc">';
-
-    // Header
-    html += '<div class="inv-doc-header">';
-    html += '<div class="inv-doc-brand"><div class="inv-doc-logo-name">BWD Services</div><div class="inv-doc-logo-sub">Genesee County, Michigan</div></div>';
-    html += '<div class="inv-doc-header-right">';
-    html += '<div class="inv-doc-inv-label">Invoice</div>';
-    html += '<div class="inv-doc-inv-num">#'+escHtml(inv.invId)+'</div>';
-    html += '<div><span class="inv-doc-status-chip '+statusClass+'">'+escHtml(statusLabel)+'</span></div>';
-    html += '</div></div>';
-
-    // Meta strip
-    html += '<div class="inv-doc-meta-strip">';
-    html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Date Issued</div><div class="inv-doc-meta-value">'+escHtml(issuedStr)+'</div></div>';
-    html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Due Date</div><div class="inv-doc-meta-value">'+escHtml(dueStr)+'</div></div>';
-    html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Invoice Total</div><div class="inv-doc-meta-value">'+fmtMoney(total)+'</div></div>';
-    if(balance > 0.01) html += '<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Balance Due</div><div class="inv-doc-meta-value" style="color:#d93025;">'+fmtMoney(balance)+'</div></div>';
-    html += '</div>';
-
-    // Body
-    html += '<div class="inv-doc-body">';
-
-    // Bill to / From
-    html += '<div class="inv-doc-bill-row">';
-    html += '<div class="inv-doc-bill-block"><div class="inv-doc-bill-label">Bill To</div>';
-    html += '<div class="inv-doc-bill-name">'+escHtml(displayName)+'</div>';
-    if(inv.billingAddress) html += '<div class="inv-doc-bill-addr">'+escHtml(inv.billingAddress).replace(/\n/g,'<br>')+'</div>';
-    html += '</div>';
-    html += '<div class="inv-doc-bill-block"><div class="inv-doc-bill-label">From</div>';
-    html += '<div class="inv-doc-from-name">BWD Services</div>';
-    html += '<div class="inv-doc-from-detail">Genesee County, Michigan<br>bwdservices.com</div>';
-    html += '</div></div>';
-
-    // Contract info
-    if(inv.isContract){
-        html += '<div class="inv-doc-contract"><strong>Recurring Contract</strong>';
-        html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">';
-        html += '<span class="inv-doc-job-chip">'+escHtml(inv.contractFrequency||'—')+'</span>';
-        html += '<span class="inv-doc-job-chip">'+escHtml(inv.contractStart||'')+ ' → ' +escHtml(inv.contractEnd||'')+'</span>';
-        html += '<span class="inv-doc-job-chip">'+jobIds.length+' visits</span>';
-        html += '</div></div>';
-    }
-
-    // Line items table
-    html += '<div class="inv-doc-table-wrap"><table class="inv-doc-table">';
-    html += '<thead><tr><th>Description</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Amount</th></tr></thead>';
-    html += '<tbody>';
-    items.forEach(function(it){
-        html += '<tr><td>'+escHtml(it.name)+'</td><td class="td-num">'+it.qty+'</td><td class="td-num">'+fmtMoney(it.unitPrice)+'</td><td>'+fmtMoney(it.lineTotal)+'</td></tr>';
-    });
-    html += '</tbody><tfoot>';
-    html += '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr>';
-    if(paidAmt > 0){
-        html += '<tr class="paid-row"><td colspan="3">Amount Paid</td><td>− '+fmtMoney(paidAmt)+'</td></tr>';
-        html += '<tr class="balance-row'+(balance<0.01?' clear':'')+'" ><td colspan="3">'+(balance<0.01?'Paid in Full':'Balance Remaining')+'</td><td>'+fmtMoney(balance)+'</td></tr>';
-    }
-    html += '</tfoot></table></div>';
-
-    // Payment history
-    if(payments.length){
-        html += '<div class="inv-doc-payments"><div class="inv-doc-pay-label">Payment History</div>';
-        payments.forEach(function(p){
-            var pd='—'; try{ pd=p.date.toDate().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }catch(e){}
-            html += '<div class="inv-doc-pay-row"><span>'+escHtml(pd)+' — '+escHtml(p.type||'—')+'</span><span class="inv-doc-pay-amt">+'+fmtMoney(p.amount)+'</span></div>';
-        });
-        html += '</div>';
-    }
-
-    // Linked jobs
-    if(jobIds.length){
-        html += '<div class="inv-doc-jobs"><div class="inv-doc-jobs-label">Linked Jobs ('+jobIds.length+')</div><div class="inv-doc-jobs-list">';
-        jobIds.forEach(function(jid){ html += '<span class="inv-doc-job-chip">#'+escHtml(jid)+'</span>'; });
-        html += '</div></div>';
-    }
-
-    // Notes
-    if(inv.notes){
-        html += '<div class="inv-doc-notes">'+escHtml(inv.notes).replace(/\n/g,'<br>')+'</div>';
-    }
-
-    html += '</div>'; // end body
-
-    // Footer
-    html += '<div class="inv-doc-footer">';
-    html += '<div class="inv-doc-footer-left">BWD Services · Genesee County, Michigan · bwdservices.com</div>';
-    html += '<div class="inv-doc-footer-right">Thank you for your business!</div>';
-    html += '</div>';
-
-    html += '</div>'; // end inv-doc
+    var issuedStr='—'; if(inv.dateIssued){ try{ issuedStr=inv.dateIssued.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); }catch(e){} }
+    var dueStr='—'; if(inv.dueDate){ try{ dueStr=inv.dueDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); }catch(e){} }
+    var statusKey=(inv.status||'').toLowerCase(); var statusClass=statusKey==='paid'?'paid':statusKey==='overdue'?'overdue':statusKey==='draft'?'draft':'due';
+    var html='<div class="inv-doc">';
+    html+='<div class="inv-doc-header"><div class="inv-doc-brand"><div class="inv-doc-logo-name">BWD Services</div><div class="inv-doc-logo-sub">Genesee County, Michigan</div></div><div class="inv-doc-header-right"><div class="inv-doc-inv-label">Invoice</div><div class="inv-doc-inv-num">#'+escHtml(inv.invId)+'</div><div><span class="inv-doc-status-chip '+statusClass+'">'+escHtml(inv.status||'—')+'</span></div></div></div>';
+    html+='<div class="inv-doc-meta-strip"><div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Date Issued</div><div class="inv-doc-meta-value">'+escHtml(issuedStr)+'</div></div><div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Due Date</div><div class="inv-doc-meta-value">'+escHtml(dueStr)+'</div></div><div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Invoice Total</div><div class="inv-doc-meta-value">'+fmtMoney(total)+'</div></div>'+(balance>0.01?'<div class="inv-doc-meta-block"><div class="inv-doc-meta-label">Balance Due</div><div class="inv-doc-meta-value" style="color:#d93025;">'+fmtMoney(balance)+'</div></div>':'')+'</div>';
+    html+='<div class="inv-doc-body"><div class="inv-doc-bill-row"><div class="inv-doc-bill-block"><div class="inv-doc-bill-label">Bill To</div><div class="inv-doc-bill-name">'+escHtml(displayName)+'</div>'+(inv.billingAddress?'<div class="inv-doc-bill-addr">'+escHtml(inv.billingAddress).replace(/\n/g,'<br>')+'</div>':'')+'</div><div class="inv-doc-bill-block"><div class="inv-doc-bill-label">From</div><div class="inv-doc-from-name">BWD Services</div><div class="inv-doc-from-detail">Genesee County, Michigan<br>bwdservices.com</div></div></div>';
+    if(inv.isContract){ html+='<div class="inv-doc-contract"><strong>Recurring Contract</strong><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;"><span class="inv-doc-job-chip">'+escHtml(inv.contractFrequency||'—')+'</span><span class="inv-doc-job-chip">'+escHtml(inv.contractStart||'')+' → '+escHtml(inv.contractEnd||'')+'</span><span class="inv-doc-job-chip">'+jobIds.length+' visits</span></div></div>'; }
+    html+='<div class="inv-doc-table-wrap"><table class="inv-doc-table"><thead><tr><th>Description</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Amount</th></tr></thead><tbody>';
+    items.forEach(function(it){ html+='<tr><td>'+escHtml(it.name)+'</td><td class="td-num">'+it.qty+'</td><td class="td-num">'+fmtMoney(it.unitPrice)+'</td><td>'+fmtMoney(it.lineTotal)+'</td></tr>'; });
+    html+='</tbody><tfoot><tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr>';
+    if(paidAmt>0){ html+='<tr class="paid-row"><td colspan="3">Amount Paid</td><td>− '+fmtMoney(paidAmt)+'</td></tr><tr class="balance-row'+(balance<0.01?' clear':'')+'"><td colspan="3">'+(balance<0.01?'Paid in Full':'Balance Remaining')+'</td><td>'+fmtMoney(balance)+'</td></tr>'; }
+    html+='</tfoot></table></div>';
+    if(payments.length){ html+='<div class="inv-doc-payments"><div class="inv-doc-pay-label">Payment History</div>'; payments.forEach(function(p){ var pd='—'; try{pd=p.date.toDate().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){} html+='<div class="inv-doc-pay-row"><span>'+escHtml(pd)+' — '+escHtml(p.type||'—')+'</span><span class="inv-doc-pay-amt">+'+fmtMoney(p.amount)+'</span></div>'; }); html+='</div>'; }
+    if(jobIds.length){ html+='<div class="inv-doc-jobs"><div class="inv-doc-jobs-label">Linked Jobs ('+jobIds.length+')</div><div class="inv-doc-jobs-list">'; jobIds.forEach(function(jid){ html+='<span class="inv-doc-job-chip">#'+escHtml(jid)+'</span>'; }); html+='</div></div>'; }
+    if(inv.notes){ html+='<div class="inv-doc-notes">'+escHtml(inv.notes).replace(/\n/g,'<br>')+'</div>'; }
+    html+='</div><div class="inv-doc-footer"><div class="inv-doc-footer-left">BWD Services · Genesee County, Michigan · bwdservices.com</div><div class="inv-doc-footer-right">Thank you for your business!</div></div></div>';
     return html;
 }
 
-// ── Toggle card ──
-function toggleInv(invId){
-    var body=document.getElementById('inv-body-'+invId);
-    var card=document.getElementById('inv-card-'+invId);
-    if(!body) return;
-    var wasOpen=!body.classList.contains('collapsed');
-    body.classList.toggle('collapsed'); card.classList.toggle('open',wasOpen);
-    if(!wasOpen){ history.replaceState(null,null,'#'+invId); }
-    else if(window.location.hash==='#'+invId){ history.replaceState(null,null,' '); }
-}
+function toggleInv(invId){ var body=document.getElementById('inv-body-'+invId); var card=document.getElementById('inv-card-'+invId); if(!body) return; var wasOpen=!body.classList.contains('collapsed'); body.classList.toggle('collapsed'); card.classList.toggle('open',wasOpen); if(!wasOpen){ history.replaceState(null,null,'#'+invId); } else if(window.location.hash==='#'+invId){ history.replaceState(null,null,' '); } }
+async function deleteInv(invId){ if(!confirm('Delete this invoice permanently?')) return; try { await db.collection('invoices').doc(invId).delete(); loadInvoices(); } catch(e){ alert('Error: '+(e.message||'Permission denied')); } }
 
-// ── Delete ──
-async function deleteInv(invId){
-    if(!confirm('Delete this invoice permanently?')) return;
-    try { await db.collection('invoices').doc(invId).delete(); loadInvoices(); }
-    catch(e){ alert('Error: '+(e.message||'Permission denied')); }
-}
-
-// ── Render ──
 function renderInvoices(invoices, targetHash){
     var container=document.getElementById('invListContainer');
     if(!invoices.length){ container.innerHTML=empty('No invoices match your filters.'); return; }
@@ -2310,161 +1737,47 @@ function renderInvoices(invoices, targetHash){
         var balance=Math.max(0,Math.round((total-paidAmt)*100)/100);
         var desc=items.length?items.map(function(i){return i.name;}).join(', '):'Invoice';
         var displayName=(inv.uid&&custNames[inv.uid])?custNames[inv.uid]:(inv.customerName||'');
-        var dateStr='—';
-        if(inv.dateIssued){ try{dateStr=inv.dateIssued.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){} }
-        var custLink=inv.uid
-            ?'<a href="/staff/dashboard/customers/#'+inv.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
-            :escHtml(displayName)+(displayName&&!inv.uid?' <span style="font-size:10px;color:#bbb;">(no account)</span>':'');
-
+        var dateStr='—'; if(inv.dateIssued){ try{dateStr=inv.dateIssued.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){} }
+        var custLink=inv.uid?'<a href="/staff/dashboard/customers/#'+inv.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>':escHtml(displayName)+(displayName&&!inv.uid?' <span style="font-size:10px;color:#bbb;">(no account)</span>':'');
         var jobIds = Array.isArray(inv.jobIds) && inv.jobIds.length ? inv.jobIds : (inv.jobId ? [inv.jobId] : []);
-
-        // In the card header meta, show up to 3 job links, then "+N more" indicator (no link, they're in the body)
-        var jobMetaHtml = '';
-        if(jobIds.length === 1){
-            jobMetaHtml = '<a href="/staff/dashboard/jobs/#'+jobIds[0]+'" style="color:var(--orange);">Job #'+jobIds[0]+'</a>';
-        } else if(jobIds.length > 1){
-            jobMetaHtml = jobIds.length + ' jobs linked';
-        }
-
+        var jobMetaHtml = jobIds.length===1?'<a href="/staff/dashboard/jobs/#'+jobIds[0]+'" style="color:var(--orange);">Job #'+jobIds[0]+'</a>':jobIds.length>1?jobIds.length+' jobs linked':'';
         var contractBadge = inv.isContract ? ' <span class="contract-badge">Recurring Contract</span>' : '';
-
-        var metaParts=dateStr+' · #'+invId+
-            (jobMetaHtml?' · '+jobMetaHtml:'')+
-            (displayName?' · '+custLink:'');
-
-        var lineHTML = '';
-        if(items.length){
-            lineHTML = '<div><div class="inv-section-label">Line Items</div><table class="line-items"><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+
-                items.map(function(i){
-                    return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>';
-                }).join('')+
-                '<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>';
-        }
-
-        // Contract schedule info
-        var contractHTML = '';
-        if(inv.isContract){
-            contractHTML = '<div><div class="inv-section-label">Contract Schedule</div>'+
-                '<div style="display:flex;flex-wrap:wrap;gap:6px;">' +
-                '<span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">' + escHtml(inv.contractFrequency||'—') + '</span>' +
-                '<span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">' + escHtml(inv.contractStart||'') + ' → ' + escHtml(inv.contractEnd||'') + '</span>' +
-                '<span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">' + jobIds.length + ' visits</span>' +
-                '</div></div>';
-        }
-
-        // Linked jobs section — show all as individual links
-        var linkedJobsHTML = '';
-        if(jobIds.length){
-            linkedJobsHTML = '<div><div class="inv-section-label">Linked Jobs ('+jobIds.length+')</div>'+
-                '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
-            jobIds.forEach(function(jid){
-                linkedJobsHTML += '<a href="/staff/dashboard/jobs/#'+escHtml(jid)+'" style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--orange);text-decoration:none;white-space:nowrap;">Job #'+escHtml(jid)+'</a>';
-            });
-            linkedJobsHTML += '</div></div>';
-        }
-
-        var billingHTML = inv.billingAddress
-            ? '<div><div class="inv-section-label">Billing Address</div><div style="background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);">'+escHtml(inv.billingAddress)+'</div></div>'
-            : '';
-
+        var metaParts=dateStr+' · #'+invId+(jobMetaHtml?' · '+jobMetaHtml:'')+(displayName?' · '+custLink:'');
+        var lineHTML = items.length ? '<div><div class="inv-section-label">Line Items</div><table class="line-items"><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>'+items.map(function(i){ return '<tr><td>'+escHtml(i.name)+'</td><td>'+i.qty+'</td><td>'+fmtMoney(i.unitPrice)+'</td><td>'+fmtMoney(i.lineTotal)+'</td></tr>'; }).join('')+'<tr class="total-row"><td colspan="3">Invoice Total</td><td>'+fmtMoney(total)+'</td></tr></table></div>' : '';
+        var contractHTML = inv.isContract ? '<div><div class="inv-section-label">Contract Schedule</div><div style="display:flex;flex-wrap:wrap;gap:6px;"><span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">'+escHtml(inv.contractFrequency||'—')+'</span><span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">'+escHtml(inv.contractStart||'')+' → '+escHtml(inv.contractEnd||'')+'</span><span style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">'+jobIds.length+' visits</span></div></div>' : '';
+        var linkedJobsHTML = jobIds.length ? '<div><div class="inv-section-label">Linked Jobs ('+jobIds.length+')</div><div style="display:flex;flex-wrap:wrap;gap:6px;">'+jobIds.map(function(jid){ return '<a href="/staff/dashboard/jobs/#'+escHtml(jid)+'" style="font-size:12px;font-weight:600;padding:3px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--orange);text-decoration:none;white-space:nowrap;">Job #'+escHtml(jid)+'</a>'; }).join('')+'</div></div>' : '';
+        var billingHTML = inv.billingAddress ? '<div><div class="inv-section-label">Billing Address</div><div style="background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);">'+escHtml(inv.billingAddress)+'</div></div>' : '';
         var payHTML='';
-        if(inv.payments&&inv.payments.length){
-            payHTML='<div><div class="inv-section-label">Payment History</div><div class="pay-history">'+
-                inv.payments.map(function(p){
-                    var pd='—'; try{pd=p.date.toDate().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){}
-                    return '<div class="pay-row"><span>'+pd+' · '+escHtml(p.type||'—')+'</span><span class="pay-amount">+'+fmtMoney(p.amount)+'</span></div>';
-                }).join('')+
-                '</div><div class="balance-summary"><span>'+(balance>=0.01?'Balance Remaining':'Fully Paid')+'</span>'+
-                '<span class="'+(balance>=0.01?'balance-due':'balance-clear')+'">'+fmtMoney(balance)+'</span></div></div>';
-        } else if(total>0){
-            payHTML='<div class="balance-summary"><span>Balance Due</span><span class="balance-due">'+fmtMoney(total)+'</span></div>';
-        }
+        if(inv.payments&&inv.payments.length){ payHTML='<div><div class="inv-section-label">Payment History</div><div class="pay-history">'+inv.payments.map(function(p){ var pd='—'; try{pd=p.date.toDate().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){} return '<div class="pay-row"><span>'+pd+' · '+escHtml(p.type||'—')+'</span><span class="pay-amount">+'+fmtMoney(p.amount)+'</span></div>'; }).join('')+'</div><div class="balance-summary"><span>'+(balance>=0.01?'Balance Remaining':'Fully Paid')+'</span><span class="'+(balance>=0.01?'balance-due':'balance-clear')+'">'+fmtMoney(balance)+'</span></div></div>'; }
+        else if(total>0){ payHTML='<div class="balance-summary"><span>Balance Due</span><span class="balance-due">'+fmtMoney(total)+'</span></div>'; }
         var notesHTML=inv.notes?'<div><div class="inv-section-label">Notes</div><div style="background:#fafaf8;border:1px solid var(--border-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-3);line-height:1.6;">'+escHtml(inv.notes)+'</div></div>':'';
-
-        var actionButtons='<button class="btn-ghost" onclick=\'editInv("'+invId+'")\'>Edit</button>'+
-            '<button class="btn-ghost" onclick=\'printInv("'+invId+'")\' style="display:flex;align-items:center;gap:4px;">🖨 Print</button>'+
-            '<button class="btn-ghost danger" onclick=\'deleteInv("'+invId+'")\'>Delete</button>';
-
-        html+='<div class="inv-card'+(isTarget?' highlight':'')+'" id="inv-card-'+invId+'">';
-        html+='<div class="inv-card-header" onclick="toggleInv(\''+invId+'\')">';
-        html+='<div class="inv-header-left"><div class="inv-card-title">'+escHtml(desc)+contractBadge+'</div><div class="inv-card-meta">'+metaParts+'</div>'+badge(inv.status)+'</div>';
-        html+='<div class="inv-header-right"><div class="inv-total-amt">'+fmtMoney(total)+'</div>'+
-            (balance>=0.01&&balance<total?'<div class="inv-remaining">'+fmtMoney(balance)+' remaining</div>':'')+
-            '<span class="toggle-chevron">▾</span></div>';
-        html+='</div>';
-        html+='<div class="inv-card-body'+(isTarget ? '' : ' collapsed')+'" id="inv-body-'+invId+'">';
-        html+=contractHTML+lineHTML+billingHTML+linkedJobsHTML+payHTML+notesHTML;
-        html+='<div class="inv-actions">'+actionButtons+'</div>';
-        html+='</div></div>';
+        var actionButtons='<button class="btn-ghost" onclick=\'editInv("'+invId+'")\'>Edit</button><button class="btn-ghost" onclick=\'printInv("'+invId+'")\' style="display:flex;align-items:center;gap:4px;">🖨 Print</button><button class="btn-ghost danger" onclick=\'deleteInv("'+invId+'")\'>Delete</button>';
+        html+='<div class="inv-card'+(isTarget?' highlight':'')+'" id="inv-card-'+invId+'"><div class="inv-card-header" onclick="toggleInv(\''+invId+'\')"><div class="inv-header-left"><div class="inv-card-title">'+escHtml(desc)+contractBadge+'</div><div class="inv-card-meta">'+metaParts+'</div>'+badge(inv.status)+'</div><div class="inv-header-right"><div class="inv-total-amt">'+fmtMoney(total)+'</div>'+(balance>=0.01&&balance<total?'<div class="inv-remaining">'+fmtMoney(balance)+' remaining</div>':'')+'<span class="toggle-chevron">▾</span></div></div><div class="inv-card-body'+(isTarget?'':' collapsed')+'" id="inv-body-'+invId+'">'+contractHTML+lineHTML+billingHTML+linkedJobsHTML+payHTML+notesHTML+'<div class="inv-actions">'+actionButtons+'</div></div></div>';
     });
     container.innerHTML=html;
-    if(targetHash){
-        var el=document.getElementById('inv-card-'+targetHash);
-        if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); },100);
-    }
+    if(targetHash){ var el=document.getElementById('inv-card-'+targetHash); if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); },100); }
 }
 
-function editInv(invId){
-    var inv=allInvoices.find(function(i){return i.invId===invId;});
-    if(inv) openModal(inv, null);
-}
+function editInv(invId){ var inv=allInvoices.find(function(i){return i.invId===invId;}); if(inv) openModal(inv, null); }
+function printInv(invId){ var inv=allInvoices.find(function(i){return i.invId===invId;}); if(inv) openPrintModal(inv); }
 
-function printInv(invId){
-    var inv=allInvoices.find(function(i){return i.invId===invId;});
-    if(inv) openPrintModal(inv);
-}
-
-// ── Filters ──
 function applyFilters(){
-    var search=document.getElementById('searchInput').value.toLowerCase().trim();
-    var status=document.getElementById('statusFilter').value.toLowerCase();
-    var filtered=allInvoices.filter(function(inv){
-        if(status&&inv.status.toLowerCase()!==status) return false;
-        if(search){
-            var displayName=(inv.uid&&custNames[inv.uid])?custNames[inv.uid]:(inv.customerName||'');
-            var jobIdsStr = (Array.isArray(inv.jobIds)?inv.jobIds:[inv.jobId||'']).join(' ');
-            var hay=[displayName,inv.invId,jobIdsStr,(inv.items||[]).map(function(i){return i.name;}).join(' ')].join(' ').toLowerCase();
-            if(hay.indexOf(search)===-1) return false;
-        }
-        return true;
-    });
+    var search=document.getElementById('searchInput').value.toLowerCase().trim(); var status=document.getElementById('statusFilter').value.toLowerCase();
+    var filtered=allInvoices.filter(function(inv){ if(status&&inv.status.toLowerCase()!==status) return false; if(search){ var displayName=(inv.uid&&custNames[inv.uid])?custNames[inv.uid]:(inv.customerName||''); var jobIdsStr=(Array.isArray(inv.jobIds)?inv.jobIds:[inv.jobId||'']).join(' '); var hay=[displayName,inv.invId,jobIdsStr,(inv.items||[]).map(function(i){return i.name;}).join(' ')].join(' ').toLowerCase(); if(hay.indexOf(search)===-1) return false; } return true; });
     renderInvoices(filtered,window.location.hash.replace('#',''));
 }
 document.getElementById('searchInput').addEventListener('input',applyFilters);
 document.getElementById('statusFilter').addEventListener('change',applyFilters);
 
-// ── Load ──
 async function loadInvoices(){
     try {
         var snapshot=await db.collection('invoices').orderBy('dateIssued','desc').limit(300).get();
         allInvoices=[];
-        snapshot.forEach(function(doc){
-            var d=doc.data();
-            var jobIds = Array.isArray(d.jobIds) ? d.jobIds : (d.jobId ? [d.jobId] : []);
-            allInvoices.push({
-                invId:doc.id, uid:d.uid||'', customerName:d.customerName||'',
-                status:d.status||'Payment Due',
-                dateIssued:d.dateIssued?d.dateIssued.toDate():null,
-                dueDate:d.dueDate?d.dueDate.toDate():null,
-                jobId:d.jobId||'', jobIds:jobIds,
-                billingAddress:d.billingAddress||'',
-                items:Array.isArray(d.items)?d.items:[],
-                payments:Array.isArray(d.payments)?d.payments:[],
-                notes:d.notes||'', manualEmail:d.manualEmail||'', manualPhone:d.manualPhone||'',
-                isContract:!!d.isContract,
-                contractFrequency:d.contractFrequency||'',
-                contractStart:d.contractStart||'',
-                contractEnd:d.contractEnd||'',
-            });
-        });
+        snapshot.forEach(function(doc){ var d=doc.data(); var jobIds=Array.isArray(d.jobIds)?d.jobIds:(d.jobId?[d.jobId]:[]); allInvoices.push({ invId:doc.id, uid:d.uid||'', customerName:d.customerName||'', status:d.status||'Payment Due', dateIssued:d.dateIssued?d.dateIssued.toDate():null, dueDate:d.dueDate?d.dueDate.toDate():null, jobId:d.jobId||'', jobIds:jobIds, billingAddress:d.billingAddress||'', items:Array.isArray(d.items)?d.items:[], payments:Array.isArray(d.payments)?d.payments:[], notes:d.notes||'', manualEmail:d.manualEmail||'', manualPhone:d.manualPhone||'', isContract:!!d.isContract, contractFrequency:d.contractFrequency||'', contractStart:d.contractStart||'', contractEnd:d.contractEnd||'' }); });
         applyFilters();
-    } catch(e){
-        console.error(e);
-        document.getElementById('invListContainer').innerHTML='<p class="empty-state">Load failed: '+(e.message||'Permission denied')+'</p>';
-    }
+    } catch(e){ console.error(e); document.getElementById('invListContainer').innerHTML='<p class="empty-state">Load failed: '+(e.message||'Permission denied')+'</p>'; }
 }
 
-// ── Auth & init ──
 auth.onAuthStateChanged(async function(user){
     try {
         if(!user){ window.location.href='/staff/login/'; return; }
@@ -2472,44 +1785,30 @@ auth.onAuthStateChanged(async function(user){
 
         var custSnap=await db.collection('customers').get();
         custList=[];
-        custSnap.forEach(function(doc){
-            var d=doc.data();
-            custNames[doc.id]=d.name||doc.id; custDocs[doc.id]=d;
-            custList.push({uid:doc.id,name:d.name||doc.id});
-        });
+        custSnap.forEach(function(doc){ var d=doc.data(); custNames[doc.id]=d.name||doc.id; custDocs[doc.id]=d; custList.push({uid:doc.id,name:d.name||doc.id,isGuest:false}); });
         custList.sort(function(a,b){return a.name.localeCompare(b.name);});
 
-        serviceNames=[
-            "Aeration","Debris Removal","Edging & Trimming","Fall Cleanup","Fertilization",
-            "Garden Bed Maintenance","Gutter Cleaning","Hedge & Shrub Trimming","Ice Melt Application",
-            "Lawn Mowing","Leaf Removal","Mulching","Overseeding","Pet Waste Removal",
-            "Power Washing","Snow Removal","Soil Testing","Spring Cleanup","Tree Pruning","Weed Control"
-        ];
+        // Load guest customers
+        try {
+            var guestSnap = await db.collection('guestCustomers').get();
+            guestSnap.forEach(function(doc){ var d=doc.data(); if(!d.name) return; custNames[doc.id]=d.name; custDocs[doc.id]=d; custList.push({uid:doc.id,name:d.name,email:d.email||'',phone:d.phone||'',isGuest:true}); });
+            custList.sort(function(a,b){return a.name.localeCompare(b.name);});
+        } catch(e){ console.warn('Could not load guest customers:', e.message); }
+
+        serviceNames=["Aeration","Debris Removal","Edging & Trimming","Fall Cleanup","Fertilization","Garden Bed Maintenance","Gutter Cleaning","Hedge & Shrub Trimming","Ice Melt Application","Lawn Mowing","Leaf Removal","Mulching","Overseeding","Pet Waste Removal","Power Washing","Snow Removal","Soil Testing","Spring Cleanup","Tree Pruning","Weed Control"];
 
         setupCtrCustPicker();
         buildCtrTimePicker();
 
         var jobSnap=await db.collection('jobs').orderBy('date','desc').limit(500).get();
         allJobsCache=[];
-        jobSnap.forEach(function(doc){
-            var d=doc.data();
-            allJobsCache.push({
-                jobId:doc.id, uid:d.uid||'', customerName:d.customerName||'',
-                address:d.address||'', date:d.date?d.date.toDate():null,
-                services:Array.isArray(d.services)?d.services:[],
-            });
-        });
+        jobSnap.forEach(function(doc){ var d=doc.data(); allJobsCache.push({ jobId:doc.id, uid:d.uid||'', customerName:d.customerName||'', address:d.address||'', date:d.date?d.date.toDate():null, services:Array.isArray(d.services)?d.services:[] }); });
 
         await loadInvoices();
 
-        var params=new URLSearchParams(window.location.search);
-        var jobFor=params.get('newFor');
+        var params=new URLSearchParams(window.location.search); var jobFor=params.get('newFor');
         if(jobFor){ openModal(null, jobFor); }
-
-    } catch(e){
-        console.error('MAIN ERROR:',e);
-        document.getElementById('invListContainer').innerHTML='<p class="empty-state">Load failed: '+(e.message||'Unknown error')+'</p>';
-    }
+    } catch(e){ console.error('MAIN ERROR:',e); document.getElementById('invListContainer').innerHTML='<p class="empty-state">Load failed: '+(e.message||'Unknown error')+'</p>'; }
 });
 </script>
 </body>

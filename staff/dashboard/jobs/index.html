@@ -14,7 +14,7 @@
 .job-card-header:hover { background: #fafaf8; }
 .job-card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
 .job-card-meta { font-size: 12px; color: var(--text-3); display: flex; flex-wrap: wrap; gap: 8px; }
-.job-card-body { padding: 18px 20px; border-top: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 16px; }
+.job-card-body { padding: 18px 20px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
 .job-card-body.collapsed { display: none; }
 .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .detail-item { background: #fafaf8; border: 1px solid var(--border-light); border-radius: 8px; padding: 10px 14px; }
@@ -64,6 +64,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 }
 .cust-picker-input:focus { outline: none; border-color: var(--orange); }
 .cust-picker-input.has-account { background: #f6fff9; border-color: #8ecfa8; }
+.cust-picker-input.has-guest { background: #fff8f0; border-color: var(--orange); }
 .cust-dropdown {
     position: absolute; top: calc(100% + 4px); left: 0; right: 0;
     background: var(--white); border: 1px solid var(--border); border-radius: 10px;
@@ -78,10 +79,15 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .cust-dropdown-item:last-child { border-bottom: none; }
 .cust-dropdown-item:hover { background: #fafaf8; }
 .cust-dropdown-item .cust-dot { width: 7px; height: 7px; border-radius: 50%; background: #8ecfa8; flex-shrink: 0; }
+.cust-dropdown-item .cust-dot.guest { background: var(--orange); }
 .cust-dropdown-item .cust-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
 .cust-account-badge {
     display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
     color: #1e8a4a; background: #edf7f1; border: 1px solid #b6dfc8; border-radius: 100px; padding: 2px 8px; margin-top: 4px;
+}
+.cust-guest-badge {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+    color: #c07a30; background: #fdf8f3; border: 1px solid #f0d9bc; border-radius: 100px; padding: 2px 8px; margin-top: 4px;
 }
 .cust-type-hint { font-size: 11px; color: var(--text-3); margin-top: 4px; }
 .manual-contact-fields {
@@ -366,11 +372,19 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                 <div id="custAccountBadge" style="display:none;">
                     <span class="cust-account-badge">✓ Has account</span>
                 </div>
+                <div id="custGuestBadge" style="display:none;">
+                    <span class="cust-guest-badge">★ Returning guest — info pre-filled</span>
+                </div>
                 <div id="custTypeHint" class="cust-type-hint" style="display:none;">
-                    No account found — you can still add this customer manually.
+                    No account found — contact info will be saved for future jobs.
                 </div>
                 <input type="hidden" id="custSelectedUid">
+                <input type="hidden" id="custSelectedGuestId">
                 <div class="manual-contact-fields" id="manualContactFields" style="display:none;">
+                    <div>
+                        <div class="manual-contact-label">Full Name</div>
+                        <input class="form-input" type="text" id="custManualName" placeholder="Customer full name">
+                    </div>
                     <div>
                         <div class="manual-contact-label">Email</div>
                         <input class="form-input" type="email" id="custManualEmail" placeholder="customer@email.com">
@@ -382,7 +396,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
                             <input type="tel" id="custManualPhone" placeholder="(555) 000-0000" maxlength="14" autocomplete="tel">
                         </div>
                     </div>
-                    <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required.</p>
+                    <p style="font-size:11px;color:#bbb;margin-top:2px;">At least one contact method is required. Info is saved for future lookups.</p>
                 </div>
             </div>
 
@@ -556,13 +570,16 @@ var custDocs  = {};
 var serviceNames = [];
 
 // ── Customer picker state ──
-var pickerSelectedUid = '';
-var pickerIsManual    = false;
+var pickerSelectedUid   = '';
+var pickerSelectedGuest = null; // {guestId, name, email, phone}
+var pickerIsManual      = false;
 
 var custSearchInput    = document.getElementById('custSearchInput');
 var custDropdown       = document.getElementById('custDropdown');
 var custSelectedUidEl  = document.getElementById('custSelectedUid');
+var custSelectedGuestIdEl = document.getElementById('custSelectedGuestId');
 var custAccountBadge   = document.getElementById('custAccountBadge');
+var custGuestBadge     = document.getElementById('custGuestBadge');
 var custTypeHint       = document.getElementById('custTypeHint');
 var manualContactFields= document.getElementById('manualContactFields');
 
@@ -655,7 +672,6 @@ function setTimePickerValue(val24){
     var parts = val24.split(':');
     var h24 = parseInt(parts[0]||0);
     var m   = parseInt(parts[1]||0);
-    // Snap minute to nearest 10
     m = Math.round(m / 10) * 10; if(m >= 60) m = 50;
     var ampm = h24 >= 12 ? 'PM' : 'AM';
     var h12 = h24 % 12; if(h12 === 0) h12 = 12;
@@ -733,17 +749,67 @@ function clearPropertyPills(){
     bar.style.display = 'none'; bar.innerHTML = ''; currentProperties = [];
 }
 
+// ── Guest customer helpers ──
+// Build a stable doc ID from email or phone
+function guestDocId(email, phone){
+    var raw = (email || phone || '').toLowerCase().replace(/\W/g,'');
+    return 'guest_' + raw.slice(0, 40);
+}
+
+async function upsertGuestCustomer(name, email, phone, address){
+    var docId = guestDocId(email, phone);
+    if(!docId || docId === 'guest_') return null;
+    var data = {
+        name: name || '',
+        email: email || '',
+        phone: phone || '',
+        isGuest: true,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    // Merge address into addresses array
+    if(address){
+        var snap = await db.collection('guestCustomers').doc(docId).get();
+        var existing = snap.exists ? (snap.data().addresses || []) : [];
+        if(existing.indexOf(address) === -1) existing.push(address);
+        data.addresses = existing;
+        data.lastAddress = address;
+    }
+    await db.collection('guestCustomers').doc(docId).set(data, { merge: true });
+    return docId;
+}
+
 // ── Customer picker ──
 function setCustPicker(uid, name){
-    pickerSelectedUid = uid; pickerIsManual = false;
-    custSearchInput.value = name; custSearchInput.classList.add('has-account');
-    custSelectedUidEl.value = uid; custAccountBadge.style.display = '';
+    pickerSelectedUid = uid; pickerIsManual = false; pickerSelectedGuest = null;
+    custSearchInput.value = name; custSearchInput.classList.add('has-account'); custSearchInput.classList.remove('has-guest');
+    custSelectedUidEl.value = uid; custSelectedGuestIdEl.value = '';
+    custAccountBadge.style.display = ''; custGuestBadge.style.display = 'none';
     custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none';
     closeDropdown(); renderPropertyPills(uid);
 }
+
+function setCustPickerGuest(guest){
+    pickerSelectedUid = ''; pickerIsManual = false; pickerSelectedGuest = guest;
+    custSearchInput.value = guest.name; custSearchInput.classList.remove('has-account'); custSearchInput.classList.add('has-guest');
+    custSelectedUidEl.value = ''; custSelectedGuestIdEl.value = guest.guestId;
+    custAccountBadge.style.display = 'none'; custGuestBadge.style.display = '';
+    custTypeHint.style.display = 'none';
+    manualContactFields.style.display = '';
+    // Pre-fill contact fields
+    document.getElementById('custManualName').value  = guest.name  || '';
+    document.getElementById('custManualEmail').value = guest.email || '';
+    document.getElementById('custManualPhone').value = (guest.phone || '').replace(/^\+1\s*/,'');
+    // Pre-fill address if available
+    if(guest.lastAddress && !document.getElementById('jobAddress').value){
+        document.getElementById('jobAddress').value = guest.lastAddress;
+    }
+    closeDropdown();
+}
+
 function clearCustPicker(){
-    pickerSelectedUid = ''; custSelectedUidEl.value = '';
-    custSearchInput.classList.remove('has-account'); custAccountBadge.style.display = 'none';
+    pickerSelectedUid = ''; pickerSelectedGuest = null; custSelectedUidEl.value = ''; custSelectedGuestIdEl.value = '';
+    custSearchInput.classList.remove('has-account'); custSearchInput.classList.remove('has-guest');
+    custAccountBadge.style.display = 'none'; custGuestBadge.style.display = 'none';
     clearPropertyPills();
 }
 function openDropdown(){ custDropdown.classList.add('open'); }
@@ -751,19 +817,42 @@ function closeDropdown(){ custDropdown.classList.remove('open'); }
 
 function renderDropdown(query){
     var q = (query||'').toLowerCase().trim();
-    var matches = q ? custList.filter(function(c){ return c.name.toLowerCase().indexOf(q) !== -1; }) : custList.slice(0, 8);
+    // Filter accounts
+    var accountMatches = q
+        ? custList.filter(function(c){ return !c.isGuest && c.name.toLowerCase().indexOf(q) !== -1; })
+        : custList.filter(function(c){ return !c.isGuest; }).slice(0, 6);
+    // Filter guests
+    var guestMatches = q
+        ? custList.filter(function(c){ return c.isGuest && c.name.toLowerCase().indexOf(q) !== -1; })
+        : custList.filter(function(c){ return c.isGuest; }).slice(0, 4);
+
     var html = '';
-    matches.forEach(function(c){
+    accountMatches.forEach(function(c){
         var sub = custDocs[c.uid] && custDocs[c.uid].phone ? custDocs[c.uid].phone : '';
         html += '<div class="cust-dropdown-item" data-uid="'+c.uid+'" data-name="'+escHtml(c.name)+'">' +
             '<span class="cust-dot"></span>' +
             '<span><div style="font-weight:600;">'+escHtml(c.name)+'</div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span>' +
             '</div>';
     });
-    if(!html && q){ html = '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No accounts match — enter manually below</div>'; }
+    guestMatches.forEach(function(c){
+        var sub = [c.email, c.phone].filter(Boolean).join(' · ');
+        html += '<div class="cust-dropdown-item" data-guest-id="'+c.uid+'" data-name="'+escHtml(c.name)+'">' +
+            '<span class="cust-dot guest"></span>' +
+            '<span><div style="font-weight:600;">'+escHtml(c.name)+'<span style="font-size:10px;color:#c07a30;margin-left:6px;">guest</span></div>'+(sub?'<div class="cust-sub">'+escHtml(sub)+'</div>':'')+'</span>' +
+            '</div>';
+    });
+    if(!html && q){ html = '<div class="cust-dropdown-item" style="color:#bbb;cursor:default;font-style:italic;">No matches — enter as new customer below</div>'; }
     custDropdown.innerHTML = html;
     custDropdown.querySelectorAll('.cust-dropdown-item[data-uid]').forEach(function(el){
         el.addEventListener('mousedown', function(e){ e.preventDefault(); setCustPicker(el.dataset.uid, el.dataset.name); });
+    });
+    custDropdown.querySelectorAll('.cust-dropdown-item[data-guest-id]').forEach(function(el){
+        el.addEventListener('mousedown', function(e){
+            e.preventDefault();
+            var gid = el.dataset.guestId;
+            var gDoc = custDocs[gid] || {};
+            setCustPickerGuest({ guestId: gid, name: el.dataset.name, email: gDoc.email||'', phone: gDoc.phone||'', lastAddress: gDoc.lastAddress||'' });
+        });
     });
 }
 
@@ -772,15 +861,33 @@ custSearchInput.addEventListener('input', function(){
     var q = this.value.trim();
     clearCustPicker(); renderDropdown(q); openDropdown();
     if(q){
-        var exact = custList.find(function(c){ return c.name.toLowerCase() === q.toLowerCase(); });
+        var exact = custList.find(function(c){ return !c.isGuest && c.name.toLowerCase() === q.toLowerCase(); });
         if(exact){ setCustPicker(exact.uid, exact.name); }
-        else { pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
-    } else { pickerIsManual = false; custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none'; }
+        else {
+            // Check for exact guest match
+            var exactGuest = custList.find(function(c){ return c.isGuest && c.name.toLowerCase() === q.toLowerCase(); });
+            if(exactGuest){
+                var gDoc = custDocs[exactGuest.uid] || {};
+                setCustPickerGuest({ guestId: exactGuest.uid, name: exactGuest.name, email: gDoc.email||'', phone: gDoc.phone||'', lastAddress: gDoc.lastAddress||'' });
+            } else {
+                pickerIsManual = true;
+                custTypeHint.style.display = '';
+                manualContactFields.style.display = '';
+                // Pre-fill name field
+                document.getElementById('custManualName').value = q;
+            }
+        }
+    } else {
+        pickerIsManual = false; custTypeHint.style.display = 'none'; manualContactFields.style.display = 'none';
+    }
 });
 custSearchInput.addEventListener('blur', function(){
     setTimeout(closeDropdown, 150);
     var q = this.value.trim();
-    if(q && !pickerSelectedUid){ pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = ''; }
+    if(q && !pickerSelectedUid && !pickerSelectedGuest){
+        pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = '';
+        document.getElementById('custManualName').value = document.getElementById('custManualName').value || q;
+    }
 });
 
 // ── Line items ──
@@ -956,6 +1063,7 @@ function openModal(job){
     document.getElementById('jobCustomerNotes').value = job ? (job.customerNotes||'') : '';
     document.getElementById('jobCrewNotes').value     = job ? (job.crewNotes||'') : '';
     document.getElementById('jobInvoiceId').value     = job ? job.invoiceId : '';
+    document.getElementById('custManualName').value   = '';
     document.getElementById('custManualEmail').value  = job ? (job.manualEmail||'') : '';
     document.getElementById('custManualPhone').value  = job ? (job.manualPhone||'').replace(/^\+1\s*/,'') : '';
     document.getElementById('jobModalStatus').textContent = '';
@@ -975,10 +1083,11 @@ function openModal(job){
 
     setTimePickerValue(job ? job.time : '');
 
-    pickerSelectedUid = ''; pickerIsManual = false;
-    custSearchInput.classList.remove('has-account');
-    custAccountBadge.style.display = 'none'; custTypeHint.style.display = 'none';
-    manualContactFields.style.display = 'none'; custSelectedUidEl.value = '';
+    pickerSelectedUid = ''; pickerSelectedGuest = null; pickerIsManual = false;
+    custSearchInput.classList.remove('has-account'); custSearchInput.classList.remove('has-guest');
+    custAccountBadge.style.display = 'none'; custGuestBadge.style.display = 'none';
+    custTypeHint.style.display = 'none';
+    manualContactFields.style.display = 'none'; custSelectedUidEl.value = ''; custSelectedGuestIdEl.value = '';
     clearPropertyPills();
 
     if(job){
@@ -989,6 +1098,7 @@ function openModal(job){
         } else if(job.customerName){
             custSearchInput.value = job.customerName;
             pickerIsManual = true; custTypeHint.style.display = ''; manualContactFields.style.display = '';
+            document.getElementById('custManualName').value = job.customerName;
         }
     }
 
@@ -1050,6 +1160,7 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
 
     var custName = custSearchInput.value.trim();
     var uid      = custSelectedUidEl.value;
+    var guestId  = custSelectedGuestIdEl.value;
     var isManual = !uid && custName;
     var dateVal  = document.getElementById('jobDate').value;
     var addrVal  = document.getElementById('jobAddress').value.trim();
@@ -1057,6 +1168,14 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         return { name:(li.name||'').trim(), qty:Number(li.qty)||1, unitPrice:Number(li.price)||0 };
     }).filter(function(s){ return s.name; });
     var editId   = document.getElementById('editJobId').value;
+
+    // Resolve display name
+    var manualName  = document.getElementById('custManualName').value.trim();
+    var manualEmail = document.getElementById('custManualEmail').value.trim();
+    var manualPhone = document.getElementById('custManualPhone').value.trim();
+
+    // For manual entries use the explicit name field if filled, else the search input
+    var resolvedName = uid ? (custNames[uid]||custName) : (manualName || custName);
 
     if(!custName){ status.textContent='Enter or select a customer.'; status.className='modal-status err'; return; }
     if(!dateVal){ status.textContent='Pick a date.'; status.className='modal-status err'; return; }
@@ -1070,17 +1189,15 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         }
     }
 
-    if(isManual){
-        var email = document.getElementById('custManualEmail').value.trim();
-        var phone = document.getElementById('custManualPhone').value.trim();
-        if(!email && !phone){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; }
+    if(isManual && !guestId){
+        if(!manualEmail && !manualPhone){ status.textContent='Provide an email or phone for this customer.'; status.className='modal-status err'; return; }
     }
 
     var dateObj = new Date(dateVal+'T12:00:00');
 
     var jobData = {
         uid:           uid || '',
-        customerName:  uid ? (custNames[uid]||custName) : custName,
+        customerName:  resolvedName,
         status:        document.getElementById('jobStatus').value,
         date:          firebase.firestore.Timestamp.fromDate(dateObj),
         time:          document.getElementById('jobTime').value,
@@ -1092,17 +1209,33 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
         invoiceId:     document.getElementById('jobInvoiceId').value.trim(),
         updatedAt:     firebase.firestore.FieldValue.serverTimestamp(),
     };
-    if(isManual){
-        jobData.manualEmail = document.getElementById('custManualEmail').value.trim();
-        var rawPhone = document.getElementById('custManualPhone').value.trim();
-        jobData.manualPhone = rawPhone ? '+1 ' + rawPhone : '';
+    if(isManual || guestId){
+        jobData.manualEmail = manualEmail;
+        jobData.manualPhone = manualPhone ? '+1 ' + manualPhone : '';
+        if(guestId) jobData.guestId = guestId;
     }
 
     btn.disabled = true; status.textContent = 'Saving…'; status.className = 'modal-status';
 
     try {
+        // ── Upsert guest customer record (for manual/guest entries) ──
+        var savedGuestId = null;
+        if((isManual || guestId) && !uid){
+            savedGuestId = await upsertGuestCustomer(resolvedName, manualEmail, manualPhone ? '+1 ' + manualPhone : '', addrVal);
+            if(savedGuestId) jobData.guestId = savedGuestId;
+            // Update local cache so picker works immediately
+            var cacheKey = savedGuestId || guestId;
+            if(cacheKey && !custDocs[cacheKey]){
+                custDocs[cacheKey] = { name: resolvedName, email: manualEmail, phone: manualPhone ? '+1 ' + manualPhone : '', lastAddress: addrVal, isGuest: true };
+                custNames[cacheKey] = resolvedName;
+                var exists = custList.find(function(c){ return c.uid === cacheKey; });
+                if(!exists) custList.push({ uid: cacheKey, name: resolvedName, email: manualEmail, phone: manualPhone, isGuest: true });
+            } else if(cacheKey){
+                custDocs[cacheKey].lastAddress = addrVal;
+            }
+        }
+
         if(editId){
-            // Edit: update in place, stay on page
             await db.collection('jobs').doc(editId).update(jobData);
             status.textContent = 'Saved!'; status.className = 'modal-status ok';
             setTimeout(function(){ closeModal(); loadJobs(); }, 600);
@@ -1117,7 +1250,7 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
 
                 var invData = {
                     uid:          uid || '',
-                    customerName: uid ? (custNames[uid]||custName) : custName,
+                    customerName: resolvedName,
                     status:       document.getElementById('autoInvStatus').value,
                     dateIssued:   firebase.firestore.Timestamp.fromDate(dateObj),
                     dueDate:      dueDateVal ? firebase.firestore.Timestamp.fromDate(new Date(dueDateVal+'T12:00:00')) : null,
@@ -1130,9 +1263,10 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
                     createdAt:    firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt:    firebase.firestore.FieldValue.serverTimestamp(),
                 };
-                if(isManual){
-                    invData.manualEmail = jobData.manualEmail;
-                    invData.manualPhone = jobData.manualPhone;
+                if(isManual || guestId){
+                    invData.manualEmail = manualEmail;
+                    invData.manualPhone = manualPhone ? '+1 ' + manualPhone : '';
+                    if(savedGuestId) invData.guestId = savedGuestId;
                 }
 
                 jobData.invoiceId = String(invId);
@@ -1144,12 +1278,10 @@ document.getElementById('saveJobBtn').addEventListener('click', async function()
 
                 status.textContent = 'Saved! Job #'+jobId+' + Invoice #'+invId+' created.';
                 status.className = 'modal-status ok';
-                // ── CHANGE: redirect to new job anchor ──
                 setTimeout(function(){ closeModal(); window.location.href = '/staff/dashboard/jobs/#' + jobId; }, 600);
             } else {
                 await db.collection('jobs').doc(String(jobId)).set(jobData);
                 status.textContent = 'Saved!'; status.className = 'modal-status ok';
-                // ── CHANGE: redirect to new job anchor ──
                 setTimeout(function(){ closeModal(); window.location.href = '/staff/dashboard/jobs/#' + jobId; }, 600);
             }
         }
@@ -1191,7 +1323,6 @@ function renderJobs(jobs, targetHash){
         var dateStr  = job.date ? job.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '—';
         var displayName = (job.uid && custNames[job.uid]) ? custNames[job.uid] : (job.customerName||'');
 
-        // ── CHANGE: invoice-style meta line, no emojis ──
         var custLink = job.uid
             ? '<a href="/staff/dashboard/customers/#'+job.uid+'" style="color:var(--orange);">'+escHtml(displayName)+'</a>'
             : escHtml(displayName) + (displayName && !job.uid ? ' <span style="font-size:10px;color:#bbb;">(no account)</span>' : '');
@@ -1215,8 +1346,9 @@ function renderJobs(jobs, targetHash){
         if(job.services && job.services.length){
             var hasPricing = job.services.some(function(s){ return s.unitPrice > 0; });
             var svcTotal = hasPricing ? job.services.reduce(function(sum,s){ return sum + (Number(s.qty)||1)*(Number(s.unitPrice)||0); }, 0) : 0;
+            // FIX: Match chip style to detail-item style (#fafaf8 bg, border-light border)
             var chips = job.services.map(function(s){
-                return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 10px;background:#f0ede8;border:1px solid var(--border);border-radius:6px;color:var(--text-2);white-space:nowrap;">' +
+                return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 10px;background:#fafaf8;border:1px solid var(--border-light);border-radius:6px;color:var(--text-2);white-space:nowrap;">' +
                     escHtml(s.name||'—') +
                     (s.unitPrice > 0 ? '<span style="color:#aaa;font-weight:400;">· '+fmtMoney((Number(s.qty)||1)*(Number(s.unitPrice)||0))+'</span>' : '') +
                     '</span>';
@@ -1330,15 +1462,30 @@ auth.onAuthStateChanged(async function(user){
         if(!user){ window.location.href='/staff/login/'; return; }
         document.getElementById('mobileAvatar').textContent = initials(user.displayName||user.email||'');
 
+        // Load account customers
         var custSnap = await db.collection('customers').get();
         custList = [];
         custSnap.forEach(function(doc){
             var d = doc.data();
             custNames[doc.id] = d.name||doc.id;
             custDocs[doc.id]  = d;
-            custList.push({uid:doc.id, name:d.name||doc.id});
+            custList.push({uid:doc.id, name:d.name||doc.id, isGuest:false});
         });
         custList.sort(function(a,b){ return a.name.localeCompare(b.name); });
+
+        // Load guest customers and merge into picker
+        try {
+            var guestSnap = await db.collection('guestCustomers').get();
+            guestSnap.forEach(function(doc){
+                var d = doc.data();
+                if(!d.name) return;
+                custNames[doc.id] = d.name;
+                custDocs[doc.id]  = d;
+                custList.push({uid:doc.id, name:d.name, email:d.email||'', phone:d.phone||'', isGuest:true});
+            });
+            // Re-sort with guests mixed in alphabetically
+            custList.sort(function(a,b){ return a.name.localeCompare(b.name); });
+        } catch(e){ console.warn('Could not load guest customers:', e.message); }
 
         serviceNames = [
             "Aeration","Debris Removal","Edging & Trimming","Fall Cleanup","Fertilization",
