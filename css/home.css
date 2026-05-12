@@ -630,29 +630,48 @@
     text-transform: uppercase;
 }
 
-.area-towns { display: flex; flex-direction: column; }
+/* ===== AREA TOWNS — desktop ===== */
+.area-towns {
+    display: flex;
+    flex-direction: column;
+}
 
 .area-town {
     font-size: 36px;
     font-weight: 800;
-    color: rgba(255,255,255,0.1);
+    /* Always visible — no hidden-until-hover ghost effect */
+    color: rgba(255,255,255,0.55);
     letter-spacing: 0.5px;
-    padding: 13px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    transition: color 0.18s, padding-left 0.18s;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid transparent;
+    transition: color 0.18s, border-left-color 0.18s, padding-left 0.18s, background 0.18s;
     cursor: default;
+    border-radius: 0 8px 8px 0;
 }
 
-.area-town:hover { color: var(--white); padding-left: 14px; }
+.area-town:hover {
+    color: var(--white);
+    border-left-color: var(--orange);
+    padding-left: 22px;
+    background: rgba(255,255,255,0.04);
+}
 
 .area-town--more {
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 600;
     letter-spacing: 2px;
     border-bottom: none;
-    color: rgba(255,255,255,0.06);
+    /* Always visible at a softer level */
+    color: rgba(255,255,255,0.35);
 }
 
-.area-town--more:hover { color: var(--orange); }
+.area-town--more:hover {
+    color: var(--orange);
+    border-left-color: transparent;
+    padding-left: 16px;
+    background: none;
+}
 
 /* ===== FINAL CTA ===== */
 
@@ -679,47 +698,157 @@
 }
 
 /* =============================================================
-   RESPONSIVE (≤ 900px)
+   RESPONSIVE — TABLET  (≤ 1100px)
+   ============================================================= */
+
+@media (max-width: 1100px) {
+    .gp-grid { grid-template-columns: 1fr 1fr; }
+    .gp-card--featured { grid-column: span 2; }
+
+    .why-layout { gap: 60px; }
+
+    .area-layout { gap: 60px; }
+    .area-town { font-size: 30px; }
+}
+
+/* =============================================================
+   RESPONSIVE — TABLET/MOBILE  (≤ 900px)
    ============================================================= */
 
 @media (max-width: 900px) {
 
+    .home-section { padding: 72px 6%; }
+
     .hero { min-height: 100svh; }
     .hero h1 { font-size: clamp(40px, 10vw, 60px); }
-    .hero-trust { display: none; }
+    /* Keep trust bar on tablet — hide only on small phones */
 
+    /* --- Get a Price --- */
     .gp-grid { grid-template-columns: 1fr; }
+    .gp-card--featured { grid-column: span 1; }
 
+    /* --- Services --- */
     .svc-grid { grid-template-columns: 1fr 1fr; }
     .svc-tile--wide { grid-column: span 2; }
     .svc-tile--all  { grid-column: span 2; }
 
-    .why-layout { grid-template-columns: 1fr; gap: 56px; }
+    /* --- Why BWD --- */
+    .why-layout { grid-template-columns: 1fr; gap: 48px; }
     .why-left { position: static; }
+    .why-num { font-size: 36px; }
 
+    /* --- Guarantee --- */
     .guarantee-inner { flex-direction: column; text-align: center; }
 
+    /* --- Reviews --- */
     .reviews-grid { grid-template-columns: 1fr 1fr; }
     .review-card:nth-child(3) { grid-column: span 2; }
 
-    .area-layout { grid-template-columns: 1fr; gap: 56px; }
-    .area-town { font-size: 28px; }
+    /* --- Service Area — switch to card grid on tablet/mobile --- */
+    .area-layout { grid-template-columns: 1fr; gap: 48px; }
 
+    /* Replace the huge animated list with a clean visible card grid */
+    .area-towns {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .area-town {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--white);
+        background: rgba(255,255,255,0.07);
+        border: 1.5px solid rgba(255,255,255,0.12);
+        border-left: 3px solid var(--orange);
+        border-radius: 10px;
+        padding: 16px 14px;
+        text-align: center;
+        letter-spacing: 0.5px;
+        /* Touch-friendly: no hover-only reveal */
+        transition: background 0.18s, border-color 0.18s;
+    }
+
+    .area-town:hover,
+    .area-town:active {
+        background: rgba(255,255,255,0.13);
+        border-color: var(--orange);
+        padding-left: 14px; /* reset the desktop indent on mobile */
+    }
+
+    .area-town--more {
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.5);
+        border-left: 1.5px solid rgba(255,255,255,0.12);
+        background: transparent;
+    }
+
+    .area-town--more:hover,
+    .area-town--more:active {
+        color: var(--orange);
+        background: transparent;
+        border-color: var(--orange);
+    }
+
+    /* --- Final CTA --- */
     .final-cta h2 { font-size: 36px; }
+    .final-cta { padding: 72px 6%; }
 }
 
+/* =============================================================
+   RESPONSIVE — MOBILE  (≤ 600px)
+   ============================================================= */
+
 @media (max-width: 600px) {
+
+    .home-section { padding: 60px 5%; }
+
     .hero h1 { font-size: 38px; }
+    .hero-sub { font-size: 17px; }
     .hero-btns { flex-direction: column; }
     .hero-btns .btn { text-align: center; }
+    .hero-trust { display: none; }
 
-    .stat-item { flex: 1 1 100%; }
+    /* --- Section headers --- */
+    .home-section-header h2,
+    .home-section h2 {
+        font-size: 30px;
+    }
 
+    /* --- Services --- */
     .svc-grid { grid-template-columns: 1fr; }
     .svc-tile--wide, .svc-tile--all { grid-column: span 1; }
+    /* Make tiles easier to tap */
+    .svc-tile { padding: 22px 18px; }
+    .svc-tile-body h3 { font-size: 17px; }
 
+    /* --- Get a Price — bigger tap targets --- */
+    .gp-card { padding: 28px 22px; }
+    .gp-card h3 { font-size: 19px; }
+    .gp-card p { font-size: 15px; }
+
+    /* --- Why BWD --- */
+    .why-body h3 { font-size: 17px; }
+    .why-body p { font-size: 15px; }
+    .why-num { font-size: 32px; }
+
+    /* --- Reviews --- */
     .reviews-grid { grid-template-columns: 1fr; }
     .review-card:nth-child(3) { grid-column: span 1; }
+    .review-card { padding: 26px 22px; }
+    .review-text { font-size: 15px; }
 
+    /* --- Service Area towns — 2-col on small phones --- */
+    .area-towns { grid-template-columns: repeat(2, 1fr); }
+
+    /* --- Guarantee --- */
+    .guarantee-bar { padding: 48px 5%; }
+    .guarantee-text h2 { font-size: 24px; }
+    .guarantee-text p { font-size: 15px; }
+
+    /* --- Final CTA --- */
     .final-cta h2 { font-size: 30px; }
+    .final-cta p { font-size: 16px; }
+    .final-cta { padding: 60px 5%; }
 }
