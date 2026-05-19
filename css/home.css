@@ -139,12 +139,19 @@
    ============================================================= */
 
 .hero {
+  /* Full-bleed: escape any parent horizontal padding/max-width */
+  width: 100vw;
   position: relative;
-  /* Exactly one viewport height — no more, no less */
-  height: 100svh;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Fill remaining viewport after sticky nav (70px) + announcement bar (~38px) */
+  /* Use min-height so it never shrinks, but won't force scroll */
+  min-height: calc(100dvh - 108px);
+  height: calc(100dvh - 108px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  margin-bottom: 0;
 }
 
 .hero-bg {
@@ -1053,8 +1060,9 @@
   .pg-section { padding: 60px clamp(16px, 5vw, 24px); }
   .pg-wrap { padding: 0 clamp(16px, 5vw, 24px); }
 
-  /* Hero */
-  .hero-content { padding: 90px 20px 24px; }
+  /* Hero — on small phones announcement bar may wrap, adjust */
+  .hero { height: calc(100dvh - 70px); min-height: calc(100dvh - 70px); }
+  .hero-content { padding: 60px 20px 20px; }
 
   .hero-h1 { font-size: clamp(44px, 13vw, 64px); }
   .hero-sub { font-size: 16px; }
