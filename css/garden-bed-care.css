@@ -162,11 +162,108 @@
     inset: 0;
 }
 
+/* ===== MULCH ADD-ON ===== */
+
+.gbc-mulch {
+    padding: 80px 8%;
+    background: var(--gray);
+}
+
+.gbc-mulch-inner {
+    display: flex;
+    gap: 70px;
+    align-items: center;
+}
+
+.gbc-mulch-text {
+    flex: 1.4;
+}
+
+.gbc-mulch-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--orange);
+    margin-bottom: 12px;
+}
+
+.gbc-mulch-text h2 {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 14px;
+}
+
+.gbc-mulch-text > p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.gbc-mulch-perks {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gbc-mulch-perks li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 15px;
+    color: var(--dark);
+    line-height: 1.5;
+}
+
+.gbc-mulch-badge-col {
+    flex: 0 0 auto;
+}
+
+.gbc-mulch-badge {
+    background: var(--white);
+    border: 2px solid var(--orange);
+    border-radius: 18px;
+    padding: 36px 40px;
+    text-align: center;
+    min-width: 220px;
+}
+
+.gbc-mulch-badge-icon {
+    font-size: 40px;
+    margin-bottom: 14px;
+}
+
+.gbc-mulch-badge-label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--orange);
+    margin-bottom: 10px;
+}
+
+.gbc-mulch-badge-price {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 6px;
+}
+
+.gbc-mulch-badge-note {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.5;
+}
+
 /* ===== PRICING ===== */
 
 .gbc-pricing {
     padding: 100px 8%;
-    background: var(--gray);
+    background: var(--white);
 }
 
 .gbc-pricing-header {
@@ -187,42 +284,32 @@
     margin-bottom: 28px;
 }
 
-.gbc-factors {
-    background: var(--white);
-    border-radius: 16px;
-    padding: 24px 28px;
+.gbc-ad-guarantee {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: #fff8f0;
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 18px 24px;
+    text-align: left;
     max-width: 620px;
     margin: 0 auto 32px;
-    text-align: left;
 }
 
-.gbc-factors-label {
-    font-size: 11px;
+.gbc-ad-guarantee strong {
+    display: block;
+    font-size: 16px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.8px;
-    color: #aaa;
-    margin-bottom: 16px;
-}
-
-.gbc-factors-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.gbc-factor {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    font-weight: 600;
     color: var(--dark);
+    margin-bottom: 5px;
 }
 
-.gbc-factor-icon {
-    font-size: 18px;
-    flex-shrink: 0;
+.gbc-ad-guarantee p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
 }
 
 .gbc-pricing-toggle {
@@ -261,7 +348,7 @@
 }
 
 .gbc-price-card {
-    background: var(--white);
+    background: var(--gray);
     border-radius: 16px;
     padding: 36px 30px;
     border: 2px solid transparent;
@@ -544,6 +631,23 @@
         font-size: 30px;
     }
 
+    .gbc-mulch-inner {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .gbc-mulch-text h2 {
+        font-size: 28px;
+    }
+
+    .gbc-mulch-badge-col {
+        width: 100%;
+    }
+
+    .gbc-mulch-badge {
+        min-width: unset;
+    }
+
     .gbc-pricing-grid {
         grid-template-columns: 1fr;
     }
@@ -552,8 +656,9 @@
         font-size: 30px;
     }
 
-    .gbc-factors-grid {
-        grid-template-columns: 1fr;
+    .gbc-ad-guarantee {
+        flex-direction: column;
+        gap: 10px;
     }
 
     .gbc-getprice-grid {
