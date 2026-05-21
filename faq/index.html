@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FAQ | BWD Services — Lawn Care in Genesee County, MI</title>
+<meta name="description" content="Answers to the most common questions about BWD Services — pricing, scheduling, what's included, service area, billing, and more.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://getbwd.com/faq/">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; color: #111; background: #fff; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Layout ── */
+.pg-wrap {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 72px);
+}
+.pg-section { padding: clamp(72px, 10vw, 120px) clamp(20px, 5vw, 72px); }
+.pg-section--white { background: #fff; }
+.pg-section--gray  { background: #f4f4f2; }
+.pg-section--dark  { background: #111; }
+
+.pg-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #ff6404;
+  margin-bottom: 14px;
+}
+.pg-eyebrow--light { color: rgba(255,255,255,0.4); }
+
+/* ── Buttons ── */
+.btn-orange {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ff6404;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 15px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background .2s, transform .2s;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+}
+.btn-orange:hover { background: #d94f00; transform: translateY(-2px); }
+.btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  border: 2px solid rgba(255,255,255,0.2);
+  padding: 12px 22px;
+  border-radius: 8px;
+  transition: border-color .2s, color .2s, background .2s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn-outline-light:hover { border-color: #ff6404; color: #fff; background: rgba(255,100,4,0.1); }
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+.faq-hero {
+  background: #111;
+  padding: clamp(80px, 12vw, 130px) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.faq-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 70% at 80% -10%, rgba(255,100,4,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 40% at 10% 100%, rgba(255,100,4,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.faq-hero-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 72px);
+  position: relative;
+  z-index: 1;
+}
+.faq-hero h1 {
+  font-size: clamp(44px, 7vw, 84px);
+  font-weight: 900;
+  line-height: 1.0;
+  color: #fff;
+  margin-bottom: 20px;
+  max-width: 700px;
+  opacity: 0;
+  animation: fadeUp .5s ease .1s forwards;
+}
+.faq-hero h1 em { font-style: normal; color: #ff6404; }
+.faq-hero-sub {
+  font-size: clamp(16px, 2vw, 19px);
+  color: rgba(255,255,255,0.5);
+  line-height: 1.65;
+  max-width: 520px;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp .5s ease .22s forwards;
+}
+
+/* ── Search bar ── */
+.faq-search-wrap {
+  opacity: 0;
+  animation: fadeUp .5s ease .34s forwards;
+  margin-bottom: 0;
+  padding-bottom: clamp(48px, 7vw, 80px);
+}
+.faq-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  max-width: 620px;
+  transition: border-color .2s, background .2s;
+  overflow: hidden;
+}
+.faq-search-box:focus-within {
+  border-color: #ff6404;
+  background: rgba(255,255,255,0.1);
+}
+.faq-search-icon {
+  padding: 0 16px 0 20px;
+  font-size: 18px;
+  color: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+  line-height: 1;
+}
+#faq-search {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: #fff;
+  padding: 16px 0;
+}
+#faq-search::placeholder { color: rgba(255,255,255,0.3); }
+.faq-search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 18px;
+  font-size: 18px;
+  color: rgba(255,255,255,0.3);
+  line-height: 1;
+  display: none;
+  transition: color .2s;
+}
+.faq-search-clear:hover { color: rgba(255,255,255,0.7); }
+.faq-search-clear.visible { display: flex; align-items: center; }
+
+/* ── Category pill bar ── */
+.faq-cats-bar {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e4;
+  position: sticky;
+  top: 0; /* adjust if navbar is fixed */
+  z-index: 100;
+}
+.faq-cats-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 72px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.faq-cats-inner::-webkit-scrollbar { display: none; }
+.faq-cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #555;
+  background: #f4f4f2;
+  border: 1.5px solid #e8e8e4;
+  border-radius: 100px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .18s, border-color .18s, color .18s;
+  user-select: none;
+}
+.faq-cat-pill:hover { background: #ffe8d6; border-color: #ffb07c; color: #111; }
+.faq-cat-pill.active { background: #ff6404; border-color: #ff6404; color: #fff; }
+.faq-cat-pill-icon { font-size: 14px; }
+.faq-cat-pill-count {
+  background: rgba(0,0,0,0.08);
+  border-radius: 100px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.faq-cat-pill.active .faq-cat-pill-count { background: rgba(255,255,255,0.25); }
+
+/* ═══════════════════════════════
+   MAIN CONTENT — two-col layout
+═══════════════════════════════ */
+.faq-body {
+  padding: clamp(52px, 8vw, 100px) clamp(20px, 5vw, 72px);
+  background: #fff;
+}
+.faq-body-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* ── Sticky sidebar nav ── */
+.faq-sidebar {
+  position: sticky;
+  top: 72px;
+}
+.faq-sidebar-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 16px;
+  display: block;
+}
+.faq-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.faq-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  padding: 9px 12px;
+  border-radius: 8px;
+  transition: background .15s, color .15s;
+  cursor: pointer;
+  border: none;
+  background: none;
+  text-align: left;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+.faq-sidebar-link:hover { background: #f4f4f2; color: #111; }
+.faq-sidebar-link.active { background: #fff4ee; color: #ff6404; }
+.faq-sidebar-link-icon { font-size: 16px; flex-shrink: 0; }
+
+/* ── FAQ categories & accordions ── */
+.faq-main { min-width: 0; }
+
+.faq-category {
+  margin-bottom: 64px;
+  scroll-margin-top: 80px;
+}
+.faq-category:last-child { margin-bottom: 0; }
+
+.faq-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #f0f0ee;
+}
+.faq-cat-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255,100,4,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.faq-cat-header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  line-height: 1.1;
+}
+.faq-cat-header-count {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+  color: #bbb;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* ── Single accordion item ── */
+.faq-item {
+  border-bottom: 1px solid #efefed;
+}
+.faq-item:first-of-type { border-top: 1px solid #efefed; }
+
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 22px 0;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.35;
+  transition: color .15s;
+}
+.faq-q:hover { color: #ff6404; }
+.faq-q[aria-expanded="true"] { color: #ff6404; }
+
+.faq-q-text { flex: 1; }
+
+.faq-chevron {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f4f4f2;
+  border: 1.5px solid #e8e8e4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s, border-color .2s, transform .25s;
+  color: #999;
+  font-size: 12px;
+  font-weight: 900;
+}
+.faq-q:hover .faq-chevron,
+.faq-q[aria-expanded="true"] .faq-chevron {
+  background: rgba(255,100,4,0.1);
+  border-color: rgba(255,100,4,0.3);
+  color: #ff6404;
+}
+.faq-q[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); }
+
+/* Answer panel */
+.faq-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .28s ease;
+}
+.faq-a.open { grid-template-rows: 1fr; }
+.faq-a-inner {
+  overflow: hidden;
+}
+.faq-a-content {
+  padding: 0 48px 24px 0;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.8;
+}
+.faq-a-content p { margin-bottom: 12px; }
+.faq-a-content p:last-child { margin-bottom: 0; }
+.faq-a-content strong { color: #111; font-weight: 700; }
+.faq-a-content a { color: #ff6404; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.faq-a-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.faq-a-content ul li {
+  padding-left: 22px;
+  position: relative;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.65;
+}
+.faq-a-content ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #ff6404;
+  font-weight: 700;
+}
+
+/* ── No results state ── */
+.faq-no-results {
+  display: none;
+  text-align: center;
+  padding: 80px 20px;
+}
+.faq-no-results.visible { display: block; }
+.faq-no-results-icon { font-size: 48px; margin-bottom: 16px; }
+.faq-no-results h3 { font-size: 22px; font-weight: 800; color: #111; margin-bottom: 8px; }
+.faq-no-results p { font-size: 15px; color: #888; line-height: 1.65; max-width: 360px; margin: 0 auto 28px; }
+
+/* ── Search result highlight ── */
+mark {
+  background: rgba(255,100,4,0.15);
+  color: #c94e00;
+  border-radius: 3px;
+  padding: 0 2px;
+  font-weight: inherit;
+}
+
+/* ═══════════════════════════════
+   STILL NEED HELP BANNER
+═══════════════════════════════ */
+.faq-help-banner {
+  background: #f4f4f2;
+  border-top: 1px solid #e8e8e4;
+  padding: clamp(52px, 7vw, 88px) clamp(20px, 5vw, 72px);
+}
+.faq-help-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 48px;
+}
+.faq-help-left {}
+.faq-help-left .pg-eyebrow { color: #ff6404; }
+.faq-help-left h2 {
+  font-size: clamp(26px, 3.5vw, 42px);
+  font-weight: 800;
+  color: #111;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.faq-help-left p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.7;
+  max-width: 500px;
+}
+.faq-help-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.faq-help-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #fff;
+  border: 1.5px solid #e8e8e4;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #111;
+  min-width: 240px;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.faq-help-option:hover {
+  border-color: #ff6404;
+  transform: translateX(4px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+.faq-help-option-icon { font-size: 22px; flex-shrink: 0; }
+.faq-help-option-body {}
+.faq-help-option-body strong { display: block; font-size: 15px; font-weight: 700; color: #111; margin-bottom: 2px; }
+.faq-help-option-body span { font-size: 13px; color: #999; }
+.faq-help-option-arrow { margin-left: auto; color: #ccc; font-size: 16px; transition: color .2s, transform .2s; }
+.faq-help-option:hover .faq-help-option-arrow { color: #ff6404; transform: translateX(3px); }
+
+/* ═══════════════════════════════
+   FINAL CTA
+═══════════════════════════════ */
+.faq-cta {
+  background: #111;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: clamp(72px, 10vw, 120px) clamp(20px, 5vw, 72px);
+}
+.faq-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,100,4,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.faq-cta-inner { position: relative; z-index: 1; }
+.faq-cta h2 {
+  font-size: clamp(30px, 5vw, 60px);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+.faq-cta p {
+  font-size: 17px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+  max-width: 460px;
+  margin: 0 auto 36px;
+}
+.faq-cta-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ═══════════════════════════════
+   ANIMATIONS
+═══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq-hero h1, .faq-hero-sub, .faq-search-wrap { animation: none; opacity: 1; }
+  .faq-a { transition: none; }
+  .faq-chevron { transition: none; }
+}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media (max-width: 1024px) {
+  .faq-body-inner { grid-template-columns: 1fr; gap: 0; }
+  .faq-sidebar { display: none; }
+}
+@media (max-width: 700px) {
+  .pg-section { padding: 60px clamp(16px, 5vw, 24px); }
+  .faq-body { padding: 44px clamp(16px, 5vw, 24px); }
+  .faq-a-content { padding-right: 16px; }
+  .faq-q { font-size: 15px; padding: 18px 0; }
+  .faq-cat-header h2 { font-size: 18px; }
+  .faq-help-inner { grid-template-columns: 1fr; }
+  .faq-help-right { width: 100%; }
+  .faq-help-option { min-width: auto; }
+  .faq-cta-btns { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<div id="announcement"></div>
+<div id="navbar"></div>
+
+
+<!-- ═══════════════════════════════════════
+  HERO
+═══════════════════════════════════════ -->
+<section class="faq-hero" aria-label="FAQ page header">
+  <div class="faq-hero-inner">
+    <p class="pg-eyebrow" style="color:rgba(255,255,255,0.4); opacity:0; animation: fadeUp .5s ease 0s forwards;">Frequently Asked Questions</p>
+    <h1>Quick answers.<br><em>No runaround.</em></h1>
+    <p class="faq-hero-sub">Everything you need to know about BWD Services — pricing, scheduling, what's included, and more. Can't find your answer? We're one text away.</p>
+    <div class="faq-search-wrap" role="search">
+      <div class="faq-search-box">
+        <span class="faq-search-icon" aria-hidden="true">🔍</span>
+        <input type="search" id="faq-search" placeholder="Search questions…" autocomplete="off" aria-label="Search FAQ questions">
+        <button class="faq-search-clear" id="faq-search-clear" aria-label="Clear search" tabindex="-1">✕</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+  CATEGORY PILL BAR
+═══════════════════════════════════════ -->
+<nav class="faq-cats-bar" aria-label="FAQ categories">
+  <div class="faq-cats-inner">
+    <button class="faq-cat-pill active" data-cat="all">
+      <span class="faq-cat-pill-icon" aria-hidden="true">⚡</span>
+      All Questions
+      <span class="faq-cat-pill-count" id="count-all">24</span>
+    </button>
+    <button class="faq-cat-pill" data-cat="pricing">
+      <span class="faq-cat-pill-icon" aria-hidden="true">💰</span>
+      Pricing
+      <span class="faq-cat-pill-count">5</span>
+    </button>
+    <button class="faq-cat-pill" data-cat="scheduling">
+      <span class="faq-cat-pill-icon" aria-hidden="true">🗓️</span>
+      Scheduling
+      <span class="faq-cat-pill-count">5</span>
+    </button>
+    <button class="faq-cat-pill" data-cat="services">
+      <span class="faq-cat-pill-icon" aria-hidden="true">🌿</span>
+      Services
+      <span class="faq-cat-pill-count">6</span>
+    </button>
+    <button class="faq-cat-pill" data-cat="area">
+      <span class="faq-cat-pill-icon" aria-hidden="true">📍</span>
+      Service Area
+      <span class="faq-cat-pill-count">3</span>
+    </button>
+    <button class="faq-cat-pill" data-cat="billing">
+      <span class="faq-cat-pill-icon" aria-hidden="true">💳</span>
+      Billing
+      <span class="faq-cat-pill-count">5</span>
+    </button>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════
+  FAQ BODY
+═══════════════════════════════════════ -->
+<div class="faq-body">
+  <div class="faq-body-inner">
+
+    <!-- Sidebar -->
+    <aside class="faq-sidebar" aria-label="Jump to category">
+      <span class="faq-sidebar-label">Jump to</span>
+      <nav class="faq-sidebar-nav">
+        <button class="faq-sidebar-link active" data-target="cat-pricing">
+          <span class="faq-sidebar-link-icon" aria-hidden="true">💰</span> Pricing
+        </button>
+        <button class="faq-sidebar-link" data-target="cat-scheduling">
+          <span class="faq-sidebar-link-icon" aria-hidden="true">🗓️</span> Scheduling
+        </button>
+        <button class="faq-sidebar-link" data-target="cat-services">
+          <span class="faq-sidebar-link-icon" aria-hidden="true">🌿</span> Services
+        </button>
+        <button class="faq-sidebar-link" data-target="cat-area">
+          <span class="faq-sidebar-link-icon" aria-hidden="true">📍</span> Service Area
+        </button>
+        <button class="faq-sidebar-link" data-target="cat-billing">
+          <span class="faq-sidebar-link-icon" aria-hidden="true">💳</span> Billing
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main FAQ content -->
+    <main class="faq-main" id="faq-main">
+
+      <!-- ── PRICING ── -->
+      <section class="faq-category" id="cat-pricing" data-cat="pricing">
+        <div class="faq-cat-header">
+          <div class="faq-cat-header-icon" aria-hidden="true">💰</div>
+          <h2>Pricing</h2>
+          <span class="faq-cat-header-count">5 questions</span>
+        </div>
+
+        <div class="faq-item" data-cat="pricing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">How do I get a price for my lawn?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Visit <a href="https://getbwd.com/pricing">getbwd.com/pricing</a> and answer a few quick questions about your property — size, location, and what you need. You'll get a real, flat price in under 60 seconds.</p>
+                <p>No account needed, no obligation, and no one will call you afterward to upsell you. The price you see is what you pay.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="pricing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What does lawn mowing cost?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Lawn mowing starts at <strong>$20 per visit</strong> for smaller properties. Your exact price depends on the size of your lawn and how often you'd like us to come.</p>
+                <p>Every mowing visit includes the full mow, string trimming around all edges and obstacles, and a sidewalk and driveway blowdown — no add-ons needed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="pricing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Are there any hidden fees?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Never. The price you see when you book is exactly what you pay. We don't add fuel surcharges, equipment fees, or surprise add-ons when we show up. No fine print.</p>
+                <p>If anything changes — like you want to add a service — we'll always tell you the new price before we do anything.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="pricing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Is weekly cheaper than bi-weekly?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Weekly visits are priced lower per visit than bi-weekly, because the lawn stays more manageable between cuts. Bi-weekly visits take more time when the grass has grown taller, so the per-visit rate is slightly higher.</p>
+                <p>Either way, you get the full service every time — mow, trim, and blowdown.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="pricing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Can I get a one-time mow without a recurring plan?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Yes. We offer one-time visits with no commitment required. Just select "one-time" when you get your price online. One-time visits are priced slightly higher than recurring service since we can't schedule them as efficiently, but there's no lock-in and no pressure to continue.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ── SCHEDULING ── -->
+      <section class="faq-category" id="cat-scheduling" data-cat="scheduling">
+        <div class="faq-cat-header">
+          <div class="faq-cat-header-icon" aria-hidden="true">🗓️</div>
+          <h2>Scheduling</h2>
+          <span class="faq-cat-header-count">5 questions</span>
+        </div>
+
+        <div class="faq-item" data-cat="scheduling">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">How often will you mow my lawn?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>We offer <strong>weekly</strong> and <strong>bi-weekly</strong> mowing schedules. During summer when grass grows quickly, weekly is usually the better choice — it keeps the lawn looking its best and prevents overgrowth.</p>
+                <p>The choice is always yours, and you can switch between schedules if things change during the season.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="scheduling">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Do I need to be home when you come?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Nope. As long as we can access your yard, you don't need to be there. We'll send you a notification when the work is done so you always know it's been taken care of.</p>
+                <p>If access is ever an issue (locked gate, parked cars blocking the yard, etc.), just text us ahead of time and we'll work it out.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="scheduling">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Can I skip a visit or reschedule?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Yes. Just text us at least <strong>24 hours before your scheduled visit</strong> and we'll skip or move it at no charge. We don't charge cancellation fees for reasonable schedule changes.</p>
+                <p>Skipping a bi-weekly visit because it rained? No problem. Going on vacation for two weeks? Just let us know.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="scheduling">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What happens if it rains on my scheduled day?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>If conditions are too wet to mow safely and leave good results, we'll reschedule your visit to the next available day. We'll notify you if your visit is moved due to weather.</p>
+                <p>We won't mow in heavy rain or right after a storm when the ground is saturated — it damages the lawn and the results look bad. We'd rather reschedule than do a poor job.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="scheduling">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Can I pause service for the winter?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Absolutely. Mowing service naturally wraps up at the end of the growing season. You can pause summer service and pick back up in spring without any fees or hassle.</p>
+                <p>And if you'd like to continue with BWD through the winter, we offer <strong>snow removal</strong> across Genesee County — so you never have to find a new contractor.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ── SERVICES ── -->
+      <section class="faq-category" id="cat-services" data-cat="services">
+        <div class="faq-cat-header">
+          <div class="faq-cat-header-icon" aria-hidden="true">🌿</div>
+          <h2>Services</h2>
+          <span class="faq-cat-header-count">6 questions</span>
+        </div>
+
+        <div class="faq-item" data-cat="services">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What's included in every mowing visit?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Every single mowing visit includes:</p>
+                <ul>
+                  <li>Full lawn mow to your preferred height</li>
+                  <li>String trimming around all edges, fences, trees, and obstacles</li>
+                  <li>Sidewalk and driveway blowdown — clippings cleared off hard surfaces</li>
+                </ul>
+                <p>No shortcuts, no extra charges for trimming. It's the same every time.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="services">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Do you do fall cleanup and snow removal too?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Yes — BWD handles your property every season. We offer:</p>
+                <ul>
+                  <li><strong>Spring &amp; Summer:</strong> Mowing, trimming, garden bed care, debris removal, custom treatments</li>
+                  <li><strong>Fall:</strong> Leaf cleanup, fall property cleanup</li>
+                  <li><strong>Winter:</strong> Snow removal across Genesee County</li>
+                </ul>
+                <p>One company, one relationship, all year. You don't have to find someone new every season.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="services">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Do you handle garden beds and weeding?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Yes. Our <a href="/services/spring-summer/garden-bed-care/">Garden Bed Care</a> service covers weeding and mulching. Since we're already on site for your lawn, we can take care of the beds during the same visit — no separate appointment needed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="services">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Do you offer fertilization or weed control?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Yes. Our <a href="/services/spring-summer/custom-treatments/">Custom Lawn Treatments</a> service includes fertilization, weed control, and overseeding — all tailored to your specific lawn. We'll assess what your yard actually needs rather than applying a one-size-fits-all plan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="services">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What does debris and waste removal include?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Our <a href="/services/spring-summer/debris-waste-removal/">Debris &amp; Waste Removal</a> service clears out:</p>
+                <ul>
+                  <li>Pet waste</li>
+                  <li>Sticks and fallen branches</li>
+                  <li>General yard clutter and buildup</li>
+                </ul>
+                <p>Everything is removed completely — not just pushed to a corner. It's a good add-on if you want a genuinely clean yard, not just a mowed one.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="services">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What if my lawn is overgrown? Will you still mow it?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Yes, but very overgrown lawns may require an initial cleanup visit before we start a regular schedule. This takes more time and equipment to do properly.</p>
+                <p>When you get your price online, we'll ask about the current condition of your lawn. If a cleanup is needed first, we'll let you know the price upfront — no surprises.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ── SERVICE AREA ── -->
+      <section class="faq-category" id="cat-area" data-cat="area">
+        <div class="faq-cat-header">
+          <div class="faq-cat-header-icon" aria-hidden="true">📍</div>
+          <h2>Service Area</h2>
+          <span class="faq-cat-header-count">3 questions</span>
+        </div>
+
+        <div class="faq-item" data-cat="area">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What areas do you serve?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>BWD currently serves communities throughout <strong>Genesee County, Michigan</strong>, including:</p>
+                <ul>
+                  <li>Flint</li>
+                  <li>Burton</li>
+                  <li>Grand Blanc</li>
+                  <li>Fenton</li>
+                  <li>Swartz Creek</li>
+                  <li>And surrounding Genesee County communities</li>
+                </ul>
+                <p>Not sure if we cover your address? Enter it at <a href="https://getbwd.com/pricing">getbwd.com/pricing</a> and we'll confirm right away.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="area">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Are you expanding to new areas?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>We're focused on serving Genesee County well before expanding further. That means keeping our schedules tight and our quality consistent for the customers we already have.</p>
+                <p>If you're just outside our current service area, feel free to reach out — we'll let you know if and when your area becomes available.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="area">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Do you serve commercial properties?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Our primary focus is residential properties throughout Genesee County. For commercial inquiries, reach out to us directly — we handle commercial requests on a case-by-case basis depending on scope and location.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ── BILLING ── -->
+      <section class="faq-category" id="cat-billing" data-cat="billing">
+        <div class="faq-cat-header">
+          <div class="faq-cat-header-icon" aria-hidden="true">💳</div>
+          <h2>Billing</h2>
+          <span class="faq-cat-header-count">5 questions</span>
+        </div>
+
+        <div class="faq-item" data-cat="billing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">When do I get charged?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Invoices go out automatically after each completed visit. You'll receive a notification when the job is done, and payment is processed at that time using the card you have on file.</p>
+                <p>You'll never be charged for a visit that didn't happen.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="billing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What payment methods do you accept?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>We accept all major credit and debit cards. Payment is handled securely online — no cash, no checks, no chasing invoices. Your card is stored securely and charged automatically after each visit.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="billing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What if I see a charge that doesn't look right?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>Contact us within <strong>7 days</strong> of the charge and we'll review it right away — no questions asked. Billing mistakes are rare but they happen, and we fix them quickly.</p>
+                <p>You can reach us by <a href="/support/">text, phone, or message</a>. Include the date of the charge and we'll sort it out.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="billing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">Is there a contract or minimum commitment?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>No contracts and no minimum commitment for recurring service. You can cancel or pause at any time by texting us. We keep customers by doing good work, not by locking people in.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="billing">
+          <button class="faq-q" aria-expanded="false">
+            <span class="faq-q-text">What's your satisfaction guarantee?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-a" role="region">
+            <div class="faq-a-inner">
+              <div class="faq-a-content">
+                <p>If the result doesn't meet your expectations, contact us within <strong>48 hours</strong> of the visit and we'll come back to make it right at no additional charge. No arguments, no hoops to jump through.</p>
+                <p>We stand behind every job. If something was missed or didn't look right, we want to know about it and we'll fix it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- No results -->
+      <div class="faq-no-results" id="faq-no-results" role="status" aria-live="polite">
+        <div class="faq-no-results-icon" aria-hidden="true">🔍</div>
+        <h3>No results found</h3>
+        <p id="faq-no-results-msg">Try different keywords, or browse by category above.</p>
+        <a href="/support/" class="btn-orange">Ask Us Directly →</a>
+      </div>
+
+    </main><!-- /faq-main -->
+  </div>
+</div><!-- /faq-body -->
+
+
+<!-- ═══════════════════════════════════════
+  STILL NEED HELP
+═══════════════════════════════════════ -->
+<div class="faq-help-banner" id="still-need-help">
+  <div class="faq-help-inner pg-wrap" style="padding:0;">
+    <div class="faq-help-left">
+      <p class="pg-eyebrow">Still Need Help?</p>
+      <h2>Didn't find your answer?</h2>
+      <p>We're a small local team and we respond fast. Reach out directly and you'll hear from a real person — not a bot, not a ticket queue.</p>
+    </div>
+    <div class="faq-help-right">
+      <a href="sms:+1XXXXXXXXXX" class="faq-help-option">
+        <span class="faq-help-option-icon" aria-hidden="true">💬</span>
+        <div class="faq-help-option-body">
+          <strong>Text Us</strong>
+          <span>Usually under 1 hour</span>
+        </div>
+        <span class="faq-help-option-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="tel:+1XXXXXXXXXX" class="faq-help-option">
+        <span class="faq-help-option-icon" aria-hidden="true">📞</span>
+        <div class="faq-help-option-body">
+          <strong>Call Us</strong>
+          <span>Mon–Sat, 8am–6pm</span>
+        </div>
+        <span class="faq-help-option-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="/support/#contact-form" class="faq-help-option">
+        <span class="faq-help-option-icon" aria-hidden="true">✉️</span>
+        <div class="faq-help-option-body">
+          <strong>Send a Message</strong>
+          <span>Within 2 business hours</span>
+        </div>
+        <span class="faq-help-option-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  FINAL CTA
+═══════════════════════════════════════ -->
+<section class="faq-cta" aria-labelledby="faq-cta-h">
+  <div class="faq-cta-inner pg-wrap" style="padding:0;">
+    <p class="pg-eyebrow pg-eyebrow--light">Ready to Start?</p>
+    <h2 id="faq-cta-h">Your best-looking lawn starts today.</h2>
+    <p>Get a real price in under 60 seconds. No phone tag, no site visit required.</p>
+    <div class="faq-cta-btns">
+      <a href="https://getbwd.com/pricing" class="btn-orange">Get My Instant Price →</a>
+      <a href="/services/" class="btn-outline-light">View Services</a>
+    </div>
+  </div>
+</section>
+
+
+<div id="footer"></div>
+<script src="/js/include.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Accordion ── */
+  var questions = document.querySelectorAll('.faq-q');
+  questions.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var expanded = this.getAttribute('aria-expanded') === 'true';
+      // close all others in same category (optional — remove for multi-open)
+      var siblings = this.closest('.faq-category').querySelectorAll('.faq-q');
+      siblings.forEach(function (s) {
+        s.setAttribute('aria-expanded', 'false');
+        s.nextElementSibling.classList.remove('open');
+      });
+      if (!expanded) {
+        this.setAttribute('aria-expanded', 'true');
+        this.nextElementSibling.classList.add('open');
+      }
+    });
+  });
+
+  /* ── Category pill filter ── */
+  var pills = document.querySelectorAll('.faq-cat-pill');
+  var categories = document.querySelectorAll('.faq-category');
+  var sidebarLinks = document.querySelectorAll('.faq-sidebar-link');
+
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      var cat = this.dataset.cat;
+      pills.forEach(function (p) { p.classList.remove('active'); });
+      this.classList.add('active');
+
+      categories.forEach(function (section) {
+        if (cat === 'all' || section.dataset.cat === cat) {
+          section.style.display = '';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+
+      // clear search when switching categories
+      clearSearch();
+    });
+  });
+
+  /* ── Sidebar links → scroll ── */
+  sidebarLinks.forEach(function (link) {
+    link.addEventListener('click', function () {
+      var target = document.getElementById(this.dataset.target);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      sidebarLinks.forEach(function (l) { l.classList.remove('active'); });
+      this.classList.add('active');
+    });
+  });
+
+  /* ── Search ── */
+  var searchInput = document.getElementById('faq-search');
+  var searchClear = document.getElementById('faq-search-clear');
+  var noResults   = document.getElementById('faq-no-results');
+  var noResultsMsg = document.getElementById('faq-no-results-msg');
+  var allItems = document.querySelectorAll('.faq-item');
+
+  function clearSearch() {
+    searchInput.value = '';
+    searchClear.classList.remove('visible');
+    // restore highlights
+    allItems.forEach(function (item) {
+      var qText = item.querySelector('.faq-q-text');
+      var aContent = item.querySelector('.faq-a-content');
+      qText.innerHTML = qText.textContent;
+      aContent.innerHTML = aContent.innerHTML.replace(/<mark[^>]*>(.*?)<\/mark>/g, '$1');
+      item.style.display = '';
+    });
+    noResults.classList.remove('visible');
+  }
+
+  function highlight(text, query) {
+    if (!query) return text;
+    var escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
+  }
+
+  searchInput.addEventListener('input', function () {
+    var q = this.value.trim().toLowerCase();
+
+    if (!q) {
+      clearSearch();
+      return;
+    }
+
+    searchClear.classList.add('visible');
+
+    // reset category pills to "all"
+    pills.forEach(function (p) { p.classList.remove('active'); });
+    document.querySelector('[data-cat="all"]').classList.add('active');
+    categories.forEach(function (s) { s.style.display = ''; });
+
+    var visibleCount = 0;
+    allItems.forEach(function (item) {
+      var qTextEl = item.querySelector('.faq-q-text');
+      var aContentEl = item.querySelector('.faq-a-content');
+
+      // work on plain text for matching
+      var qPlain = qTextEl.textContent.toLowerCase();
+      var aPlain = aContentEl.textContent.toLowerCase();
+
+      if (qPlain.includes(q) || aPlain.includes(q)) {
+        item.style.display = '';
+        visibleCount++;
+        // highlight
+        qTextEl.innerHTML = highlight(qTextEl.textContent, this.value.trim());
+        // open the answer so highlighted text is visible
+        item.querySelector('.faq-q').setAttribute('aria-expanded', 'true');
+        item.querySelector('.faq-a').classList.add('open');
+      } else {
+        item.style.display = 'none';
+        item.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+        item.querySelector('.faq-a').classList.remove('open');
+      }
+    }.bind(this));
+
+    // hide empty category headers
+    categories.forEach(function (section) {
+      var visItems = section.querySelectorAll('.faq-item:not([style*="none"])');
+      var allHidden = Array.from(section.querySelectorAll('.faq-item')).every(function(i) { return i.style.display === 'none'; });
+      section.style.display = allHidden ? 'none' : '';
+    });
+
+    if (visibleCount === 0) {
+      noResultsMsg.textContent = 'No results for "' + this.value.trim() + '". Try different keywords or browse by category.';
+      noResults.classList.add('visible');
+    } else {
+      noResults.classList.remove('visible');
+    }
+  });
+
+  searchClear.addEventListener('click', function () {
+    clearSearch();
+    searchInput.focus();
+  });
+
+  /* ── Highlight active sidebar link on scroll ── */
+  if (window.IntersectionObserver) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          sidebarLinks.forEach(function (link) {
+            link.classList.toggle('active', link.dataset.target === id);
+          });
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+
+    categories.forEach(function (section) {
+      observer.observe(section);
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>
