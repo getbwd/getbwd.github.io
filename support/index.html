@@ -114,7 +114,7 @@
   ═══════════════════════════════ */
   .support-hero {
     background: #111;
-    padding: clamp(80px, 12vw, 130px) clamp(20px, 5vw, 72px) clamp(60px, 8vw, 100px);
+    padding: clamp(80px, 12vw, 130px) 0 clamp(60px, 8vw, 100px);
     position: relative;
     overflow: hidden;
   }
@@ -128,6 +128,7 @@
   .support-hero-inner {
     max-width: 1360px;
     margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 72px);
     position: relative;
     z-index: 1;
     display: grid;
@@ -536,6 +537,26 @@
     flex-wrap: wrap;
   }
 
+  /* ── Form status messages ── */
+  .form-status {
+    display: none;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+  .form-status.visible { display: flex; }
+  .form-status--error {
+    background: #fff2f0;
+    border: 1.5px solid #ffccc7;
+    color: #a8071a;
+  }
+  .form-status--error strong { display: block; font-weight: 700; margin-bottom: 2px; color: #820014; }
+  .form-status-icon { font-size: 20px; flex-shrink: 0; line-height: 1.2; }
+
   /* ═══════════════════════════════
      ANIMATIONS
   ═══════════════════════════════ */
@@ -795,11 +816,52 @@
           <label for="sup-message">Message</label>
           <textarea id="sup-message" name="message" placeholder="Tell us what's going on and we'll take care of it…" required></textarea>
         </div>
+        <div id="form-error" class="form-status form-status--error" role="alert" aria-live="polite">
+          <span class="form-status-icon" aria-hidden="true">&#9888;&#65039;</span>
+          <div>
+            <strong>Something went wrong.</strong>
+            We weren't able to send your message. Please try again, or reach us directly by text or phone above.
+          </div>
+        </div>
         <div class="form-submit-row">
           <span class="form-submit-note">We'll reply to your email<br>within 2 business hours.</span>
-          <button type="submit" class="btn-orange-full">Send Message →</button>
+          <button type="submit" class="btn-orange-full" id="form-submit-btn">Send Message →</button>
         </div>
       </form>
+
+<script>
+  (function() {
+    var form = document.querySelector('.support-form');
+    var errorBox = document.getElementById('form-error');
+    var submitBtn = document.getElementById('form-submit-btn');
+    if (!form) return;
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      errorBox.classList.remove('visible');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      var data = new FormData(form);
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+      })
+      .then(function(res) {
+        if (res.ok) {
+          form.innerHTML = '<div style="text-align:center;padding:40px 20px"><div style="font-size:40px;margin-bottom:16px">&#10003;</div><h3 style="font-size:20px;font-weight:800;color:#111;margin-bottom:8px">Message sent!</h3><p style="font-size:15px;color:#666;line-height:1.65">We'll get back to you within 2 business hours.</p></div>';
+        } else {
+          throw new Error('Server error ' + res.status);
+        }
+      })
+      .catch(function() {
+        errorBox.classList.add('visible');
+        errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message →';
+      });
+    });
+  })();
+</script>
     </div>
   </div>
 </section>
