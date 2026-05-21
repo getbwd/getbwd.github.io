@@ -2,114 +2,728 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>About BWD Services</title>
+<title>About | BWD Services — Our Story</title>
+<meta name="description" content="BWD Services was built from the ground up by two brothers still in high school. No truck, no trailer, no investors — just a lawn mower in the back seat and a refusal to quit.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="images/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://getbwd.com/about/">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/about.css">
-</head>
 
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  color: #111;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ── Shared layout (mirrors FAQ/support) ── */
+.pg-wrap {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 72px);
+}
+.pg-section { padding: clamp(72px, 10vw, 120px) clamp(20px, 5vw, 72px); }
+.pg-section--white { background: #fff; }
+.pg-section--gray  { background: #f4f4f2; }
+.pg-section--dark  { background: #111; }
+
+.pg-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #ff6404;
+  margin-bottom: 14px;
+}
+.pg-eyebrow--light { color: rgba(255,255,255,0.4); }
+
+.pg-header { margin-bottom: 52px; }
+.pg-header h2 {
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #111;
+}
+.pg-header--light h2 { color: #fff; }
+.pg-sub {
+  font-size: 17px;
+  color: #666;
+  line-height: 1.7;
+  max-width: 560px;
+  margin-top: 14px;
+}
+.pg-sub--light { color: rgba(255,255,255,0.5); }
+
+/* ── Buttons ── */
+.btn-orange {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ff6404;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 15px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background .2s, transform .2s;
+  white-space: nowrap;
+}
+.btn-orange:hover { background: #d94f00; transform: translateY(-2px); }
+.btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  border: 2px solid rgba(255,255,255,0.2);
+  padding: 12px 22px;
+  border-radius: 8px;
+  transition: border-color .2s, color .2s, background .2s;
+  text-decoration: none;
+}
+.btn-outline-light:hover { border-color: #ff6404; color: #fff; background: rgba(255,100,4,0.1); }
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+.about-hero {
+  background: #111;
+  padding: clamp(80px, 12vw, 130px) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.about-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 60% at 100% 0%, rgba(255,100,4,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 40% at 0% 100%, rgba(255,100,4,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.about-hero-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 72px);
+  position: relative;
+  z-index: 1;
+}
+.about-hero .pg-eyebrow { color: rgba(255,255,255,0.4); opacity: 0; animation: fadeUp .5s ease 0s forwards; }
+.about-hero h1 {
+  font-size: clamp(40px, 6.5vw, 80px);
+  font-weight: 900;
+  line-height: 1.0;
+  color: #fff;
+  margin-bottom: 20px;
+  max-width: 780px;
+  opacity: 0;
+  animation: fadeUp .5s ease .14s forwards;
+}
+.about-hero h1 em { font-style: normal; color: #ff6404; }
+.about-hero-sub {
+  font-size: clamp(16px, 2vw, 19px);
+  color: rgba(255,255,255,0.5);
+  line-height: 1.65;
+  max-width: 540px;
+  margin-bottom: clamp(48px, 7vw, 80px);
+  opacity: 0;
+  animation: fadeUp .5s ease .26s forwards;
+}
+.about-hero-sub strong { color: rgba(255,255,255,0.8); font-weight: 700; }
+
+/* Stat strip — same pattern as support hero badge, stretched across */
+.about-hero-stats {
+  display: flex;
+  align-items: stretch;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  opacity: 0;
+  animation: fadeUp .5s ease .38s forwards;
+}
+.about-hero-stat {
+  flex: 1;
+  padding: clamp(28px, 4vw, 44px) clamp(20px, 3vw, 36px);
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+.about-hero-stat:last-child { border-right: none; }
+.about-hero-stat-num {
+  font-size: clamp(44px, 7vw, 80px);
+  font-weight: 900;
+  color: #ff6404;
+  line-height: 1;
+  display: block;
+  letter-spacing: -2px;
+}
+.about-hero-stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.4;
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* ═══════════════════════════════
+   STORY — two column
+═══════════════════════════════ */
+.story-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(48px, 8vw, 110px);
+  align-items: start;
+}
+
+/* Left sticky */
+.story-left {
+  position: sticky;
+  top: 80px;
+}
+.story-left h2 {
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #111;
+  margin-bottom: 24px;
+}
+.story-left h2 span { color: #ff6404; }
+.story-pull-quote {
+  font-size: clamp(16px, 1.8vw, 20px);
+  font-weight: 700;
+  color: #111;
+  line-height: 1.45;
+  padding-left: 20px;
+  border-left: 4px solid #ff6404;
+  margin-bottom: 28px;
+  font-style: italic;
+}
+.story-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #aaa;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.story-tag-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff6404;
+  flex-shrink: 0;
+}
+
+/* Right: body text */
+.story-body p {
+  font-size: clamp(15px, 1.5vw, 17px);
+  color: #555;
+  line-height: 1.85;
+  margin-bottom: 24px;
+}
+.story-body p:last-child { margin-bottom: 0; }
+.story-body strong { color: #111; font-weight: 700; }
+
+/* Pull-out callout card — same dark card style as support page promo */
+.story-callout {
+  background: #111;
+  border-radius: 18px;
+  padding: clamp(28px, 4vw, 44px);
+  margin: 32px 0;
+  position: relative;
+  overflow: hidden;
+}
+.story-callout::before {
+  content: '\201C';
+  font-size: 260px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.03);
+  position: absolute;
+  top: -40px;
+  right: 10px;
+  line-height: 1;
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+}
+.story-callout-text {
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 14px;
+}
+.story-callout-text em { font-style: normal; color: #ff6404; }
+.story-callout-attr {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════
+   VALUES — mirrors Why BWD rows on home
+═══════════════════════════════ */
+.values-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 52px;
+  flex-wrap: wrap;
+}
+.values-header-row h2 {
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #fff;
+}
+.values-header-row .pg-sub--light {
+  max-width: 380px;
+  flex-shrink: 0;
+}
+
+.values-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 2px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.value-row {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.02);
+  transition: background .2s;
+}
+.value-row:last-child { border-bottom: none; }
+.value-row:hover { background: rgba(255,255,255,0.05); }
+.value-row-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff6404;
+  letter-spacing: 1px;
+  padding: 28px 0 28px 28px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+.value-row-body { padding: 26px 28px; }
+.value-row-body h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 5px;
+}
+.value-row-body p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+  margin: 0;
+}
+.value-row-icon {
+  font-size: 22px;
+  padding: 28px 28px 28px 0;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+/* ═══════════════════════════════
+   PROOF — mirrors Why BWD on home (light)
+═══════════════════════════════ */
+.proof-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: clamp(48px, 8vw, 110px);
+  align-items: start;
+}
+.proof-left h2 {
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #111;
+  margin-bottom: 16px;
+}
+.proof-left p {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.75;
+}
+
+.proof-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 2px solid #e8e8e4;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.proof-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  border-bottom: 1px solid #e8e8e4;
+  background: #fff;
+  transition: background .2s;
+}
+.proof-row:last-child { border-bottom: none; }
+.proof-row:hover { background: #fff8f4; }
+.proof-row-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff6404;
+  letter-spacing: 1px;
+  padding: 26px 0 26px 24px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid #e8e8e4;
+  flex-shrink: 0;
+}
+.proof-row-body { padding: 24px 28px; }
+.proof-row-body strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 4px;
+}
+.proof-row-body p {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.6;
+  margin: 0;
+}
+.proof-row-stat {
+  padding: 26px 24px 26px 0;
+  font-size: 22px;
+  font-weight: 900;
+  color: #111;
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════
+   FINAL CTA
+═══════════════════════════════ */
+.about-cta {
+  background: #111;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: clamp(72px, 10vw, 120px) clamp(20px, 5vw, 72px);
+}
+.about-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,100,4,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.about-cta-inner { position: relative; z-index: 1; }
+.about-cta h2 {
+  font-size: clamp(32px, 5.5vw, 68px);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+.about-cta p {
+  font-size: 17px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+  max-width: 480px;
+  margin: 0 auto 36px;
+}
+.about-cta-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ═══════════════════════════════
+   ANIMATIONS
+═══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-hero .pg-eyebrow,
+  .about-hero h1,
+  .about-hero-sub,
+  .about-hero-stats { animation: none; opacity: 1; transform: none; }
+}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media (max-width: 1024px) {
+  .story-layout { grid-template-columns: 1fr; gap: 48px; }
+  .story-left { position: static; }
+  .proof-layout { grid-template-columns: 1fr; gap: 48px; }
+  .values-header-row { flex-direction: column; align-items: flex-start; }
+  .values-header-row .pg-sub--light { max-width: 100%; }
+}
+@media (max-width: 700px) {
+  .pg-section { padding: 60px clamp(16px, 5vw, 24px); }
+  .about-hero-stats { flex-direction: column; }
+  .about-hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .about-hero-stat:last-child { border-bottom: none; }
+  .value-row { grid-template-columns: 44px 1fr auto; }
+  .value-row-num { padding: 20px 0 20px 16px; font-size: 11px; }
+  .value-row-body { padding: 20px 14px; }
+  .value-row-body h3 { font-size: 14px; }
+  .value-row-body p { font-size: 13px; }
+  .value-row-icon { padding: 20px 14px 20px 0; font-size: 18px; }
+  .proof-row { grid-template-columns: 40px 1fr auto; }
+  .proof-row-num { padding: 18px 0 18px 14px; font-size: 11px; }
+  .proof-row-body { padding: 18px 14px; }
+  .proof-row-stat { font-size: 18px; padding-right: 14px; }
+  .about-cta-btns { flex-direction: column; align-items: center; }
+  .story-callout-text { font-size: clamp(22px, 7vw, 34px); }
+}
+</style>
+</head>
 <body>
 
-<script src="/js/announcement.js"></script>
+<div id="announcement"></div>
 <div id="navbar"></div>
 
-<!-- PAGE HERO -->
-<section class="about-hero">
-    <div class="about-hero-inner">
-        <div class="about-hero-content">
-            <p class="about-hero-label">Our Story</p>
-            <h1>Two Brothers.<br>One Mission.</h1>
-            <p class="about-hero-sub">We're not a corporation. We're two high school kids from Genesee County who bet on themselves — and we show up every single day to prove it.</p>
-        </div>
-        <div class="about-hero-spacer"></div>
+
+<!-- ═══════════════════════════════════════
+  HERO
+═══════════════════════════════════════ -->
+<section class="about-hero" aria-label="About BWD Services">
+  <div class="about-hero-inner">
+    <p class="pg-eyebrow">Our Story</p>
+    <h1>We Started With Nothing.<br><em>We're Still Going.</em></h1>
+    <p class="about-hero-sub">No truck. No trailer. No investors.<br><strong>Just two brothers and a refusal to quit.</strong></p>
+  </div>
+
+  <div class="about-hero-stats pg-wrap" style="padding-top:0;padding-bottom:0;" aria-label="Key facts">
+    <div class="about-hero-stat">
+      <span class="about-hero-stat-num">2</span>
+      <span class="about-hero-stat-label">Brothers</span>
     </div>
+    <div class="about-hero-stat">
+      <span class="about-hero-stat-num">1</span>
+      <span class="about-hero-stat-label">Car</span>
+    </div>
+    <div class="about-hero-stat">
+      <span class="about-hero-stat-num">365</span>
+      <span class="about-hero-stat-label">Days a Year</span>
+    </div>
+  </div>
 </section>
 
-<!-- ORIGIN STORY -->
-<section class="story-section">
-    <div class="story-container">
 
-        <div class="story-image">
-            <img src="/images/about-placeholder.jpg" alt="BWD Brothers" onerror="this.style.display='none'">
-            <div class="story-image-placeholder">
-                <span>📸</span>
-                <p>Photo coming soon</p>
-            </div>
+<!-- ═══════════════════════════════════════
+  STORY
+═══════════════════════════════════════ -->
+<section class="pg-section pg-section--white" aria-labelledby="story-h">
+  <div class="pg-wrap">
+    <div class="story-layout">
+
+      <div class="story-left">
+        <p class="pg-eyebrow">The Real Story</p>
+        <h2 id="story-h">Built from the<br><span>ground up.</span></h2>
+        <p class="story-pull-quote">"You don't need perfect circumstances to do good work. You just need to show up."</p>
+        <span class="story-tag">
+          <span class="story-tag-dot" aria-hidden="true"></span>
+          BWD Services — Genesee County, MI
+        </span>
+      </div>
+
+      <div class="story-right">
+        <div class="story-body">
+          <p>BWD Services was built from the ground up — <strong>literally.</strong> We didn't start with a truck or a trailer or a garage full of equipment. We started with a lawn mower crammed in the back seat of a car and nowhere to go but forward.</p>
+
+          <div class="story-callout">
+            <p class="story-callout-text">A lawn mower in the <em>back seat</em> of a car.</p>
+            <p class="story-callout-attr">How BWD started</p>
+          </div>
+
+          <p>We started this business because we wanted to build something real. Something ours. Not a side project. Not something to put on a college application. A real business, built with real work.</p>
+          <p>We're still in high school. We're still figuring it out. And we're still pulling equipment out of the back seat to get to every job on time. <strong>That part hasn't changed — and we don't want it to.</strong></p>
+          <p>Every lawn we cut, every driveway we clear — it's not just a service call. It's proof that you don't need perfect circumstances to do good work. You just need to show up.</p>
+          <p>That's what BWD is. And that's what it'll keep being.</p>
         </div>
-
-        <div class="story-content">
-            <h2>We Started With Nothing. We're Still Going.</h2>
-            <p>BWD Services was built from the ground up — literally. No truck, no trailer, no investors. Just two brothers, a lawn mower crammed in the back seat of a car, and a refusal to quit.</p>
-            <p>We started this business because we wanted to build something real. Something ours. We're still in high school, still figuring it out, and still pulling equipment out of the back seat to get to every job on time.</p>
-            <p>Every lawn we cut, every driveway we clear — it's not just a service call. It's proof that you don't need perfect circumstances to do good work. You just need to show up.</p>
-
-            <div class="story-stats">
-                <div class="stat">
-                    <strong>2</strong>
-                    <span>Brothers</span>
-                </div>
-                <div class="stat">
-                    <strong>1</strong>
-                    <span>Car</span>
-                </div>
-                <div class="stat">
-                    <strong>365</strong>
-                    <span>Days a Year</span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<!-- MISSION & VALUES -->
-<section class="values-section">
-    <div class="values-container">
-
-        <div class="values-header">
-            <h2>What We're Built On</h2>
-            <p>No fluff. Just how we actually operate.</p>
-        </div>
-
-        <div class="values-grid">
-
-            <div class="value-card">
-                <div class="value-icon">🔥</div>
-                <h3>By Any Means Necessary</h3>
-                <p>No trailer? No problem. We'll figure it out. Every time. That mentality is baked into how we run every job.</p>
-            </div>
-
-            <div class="value-card">
-                <div class="value-icon">🤝</div>
-                <h3>Built for This Community</h3>
-                <p>We live here. We go to school here. When we show up to your property, we're not a stranger — we're your neighbor.</p>
-            </div>
-
-            <div class="value-card">
-                <div class="value-icon">✅</div>
-                <h3>Do It Right or Don't Do It</h3>
-                <p>We don't cut corners. Our name is on every job. If something's not right, we come back and fix it. No excuses, no charge.</p>
-            </div>
-
-            <div class="value-card">
-                <div class="value-icon">📈</div>
-                <h3>Always Growing</h3>
-                <p>We started small and we're proud of it. Every season we learn more, do better, and serve more of Genesee County.</p>
-            </div>
-
-        </div>
+      </div>
 
     </div>
+  </div>
 </section>
 
-<!-- CTA STRIP -->
-<section class="about-cta">
-    <h2>Ready to work with people who actually care?</h2>
-    <p>Get your free estimate today. No pressure, no nonsense.</p>
-    <a href="#" class="btn">Get a Free Estimate</a>
+
+<!-- ═══════════════════════════════════════
+  VALUES
+═══════════════════════════════════════ -->
+<section class="pg-section pg-section--dark" aria-labelledby="values-h">
+  <div class="pg-wrap">
+    <div class="values-header-row">
+      <div>
+        <p class="pg-eyebrow pg-eyebrow--light">What We Stand For</p>
+        <h2 id="values-h" style="font-size:clamp(32px,4.5vw,54px);font-weight:800;line-height:1.1;color:#fff;">How we work.</h2>
+      </div>
+      <p class="pg-sub pg-sub--light">We built this company around a few things we're not willing to compromise on. This is how we operate — not how we want to be seen, but how we actually show up.</p>
+    </div>
+
+    <div class="values-list">
+      <div class="value-row">
+        <span class="value-row-num">01</span>
+        <div class="value-row-body">
+          <h3>Show Up. Every Time.</h3>
+          <p>Reliability isn't a feature — it's the whole point. If we say we're coming, we're coming. No excuses, no no-shows, no chasing us down.</p>
+        </div>
+        <span class="value-row-icon" aria-hidden="true">⏱️</span>
+      </div>
+      <div class="value-row">
+        <span class="value-row-num">02</span>
+        <div class="value-row-body">
+          <h3>Honest All the Way</h3>
+          <p>The price we quote is the price you pay. The job we promise is the job we do. No hidden fees, no cutting corners when nobody's watching.</p>
+        </div>
+        <span class="value-row-icon" aria-hidden="true">🤝</span>
+      </div>
+      <div class="value-row">
+        <span class="value-row-num">03</span>
+        <div class="value-row-body">
+          <h3>Take Pride in the Work</h3>
+          <p>We're not just trying to get a yard mowed and move on. We want your property to look great. That standard applies to every single visit.</p>
+        </div>
+        <span class="value-row-icon" aria-hidden="true">🌿</span>
+      </div>
+      <div class="value-row">
+        <span class="value-row-num">04</span>
+        <div class="value-row-body">
+          <h3>Rooted Here</h3>
+          <p>BWD is a Genesee County operation. We're not a franchise. We live here. We care about this community because we're part of it.</p>
+        </div>
+        <span class="value-row-icon" aria-hidden="true">📍</span>
+      </div>
+      <div class="value-row">
+        <span class="value-row-num">05</span>
+        <div class="value-row-body">
+          <h3>Figure It Out</h3>
+          <p>We didn't have perfect resources when we started, and we still don't always have the easy path. We adapt, we solve the problem, and we get it done.</p>
+        </div>
+        <span class="value-row-icon" aria-hidden="true">🔧</span>
+      </div>
+      <div class="value-row">
+        <span class="value-row-num">06</span>
+        <div class="value-row-body">
+          <h3>Back It Up</h3>
+          <p>If the work isn't right, we make it right — no charge, no argument. A guarantee is only worth something if you actually honor it.</p>
+        </div>
+        <span class="value-row-icon" aria-hidden="true">⭐</span>
+      </div>
+    </div>
+  </div>
 </section>
+
+
+<!-- ═══════════════════════════════════════
+  PROOF
+═══════════════════════════════════════ -->
+<section class="pg-section pg-section--gray" aria-labelledby="proof-h">
+  <div class="pg-wrap">
+    <div class="proof-layout">
+
+      <div class="proof-left">
+        <p class="pg-eyebrow">What That Looks Like</p>
+        <h2 id="proof-h">Talk is cheap.<br>Here's the proof.</h2>
+        <p>Every one of these is something we actually do — not something we put in a brochure and forget about.</p>
+      </div>
+
+      <div class="proof-list">
+        <div class="proof-row">
+          <span class="proof-row-num">01</span>
+          <div class="proof-row-body">
+            <strong>Instant online pricing</strong>
+            <p>Real, flat price in under 60 seconds — no waiting for a callback, no site visit required.</p>
+          </div>
+          <span class="proof-row-stat" aria-label="Under 60 seconds">&lt;60s</span>
+        </div>
+        <div class="proof-row">
+          <span class="proof-row-num">02</span>
+          <div class="proof-row-body">
+            <strong>No hidden fees. Ever.</strong>
+            <p>The price you see when you book is exactly what you pay. No add-ons at the door.</p>
+          </div>
+          <span class="proof-row-stat" aria-label="Zero hidden fees">$0</span>
+        </div>
+        <div class="proof-row">
+          <span class="proof-row-num">03</span>
+          <div class="proof-row-body">
+            <strong>Consistent weekly service</strong>
+            <p>Same schedule, same standard, every visit. We don't show up when it's convenient for us.</p>
+          </div>
+          <span class="proof-row-stat" aria-label="52 visits per year">52×</span>
+        </div>
+        <div class="proof-row">
+          <span class="proof-row-num">04</span>
+          <div class="proof-row-body">
+            <strong>Every season covered</strong>
+            <p>Mowing, fall cleanup, snow removal — one company for your property all year long.</p>
+          </div>
+          <span class="proof-row-stat" aria-label="All four seasons">4</span>
+        </div>
+        <div class="proof-row">
+          <span class="proof-row-num">05</span>
+          <div class="proof-row-body">
+            <strong>Satisfaction guaranteed</strong>
+            <p>If we miss the mark, we come back and fix it. No arguments, no extra charge.</p>
+          </div>
+          <span class="proof-row-stat" aria-label="100 percent guaranteed">100%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+  FINAL CTA
+═══════════════════════════════════════ -->
+<section class="about-cta" aria-labelledby="cta-h">
+  <div class="about-cta-inner pg-wrap" style="padding-top:0;padding-bottom:0;">
+    <p class="pg-eyebrow pg-eyebrow--light">Ready to Start?</p>
+    <h2 id="cta-h">Your yard. Our work.</h2>
+    <p>Get a real price in under 60 seconds. No phone tag, no site visit. Just a great-looking lawn, every week — handled by two brothers who mean it.</p>
+    <div class="about-cta-btns">
+      <a href="https://getbwd.com/pricing" class="btn-orange">Get My Instant Price →</a>
+      <a href="/services/" class="btn-outline-light">View Services</a>
+    </div>
+  </div>
+</section>
+
 
 <div id="footer"></div>
 <script src="/js/include.js"></script>
