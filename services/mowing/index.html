@@ -1,232 +1,371 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Mowing & Trimming — BWD Services | Genesee County Lawn Care</title>
-<meta name="description" content="Professional lawn mowing and trimming services in Genesee County, MI. BWD Services keeps your yard clean, healthy, and sharp every visit. Serving Flint, Burton, Grand Blanc, and more.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="/images/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/mowing-trimming.css">
+<title>Mowing &amp; Weed Whacking | BWD Services</title>
+<meta name="description" content="Mowing & Weed Whacking for Flint, Burton, Grand Blanc, and surrounding mid-Michigan communities. Routine mowing, edging, and trimming that keeps your lawn looking crisp every single week, not just once in a while.">
+<link rel="canonical" href="https://getbwd.com/services/mowing/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#F96302">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BWD Services">
+<meta property="og:title" content="Mowing &amp; Weed Whacking | BWD Services">
+<meta property="og:description" content="Routine mowing, edging, and trimming that keeps your lawn looking crisp every single week, not just once in a while.">
+<meta property="og:url" content="https://getbwd.com/services/mowing/">
+<meta property="og:image" content="https://getbwd.com/images/hero/home.jpeg">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mowing &amp; Weed Whacking | BWD Services">
+<meta name="twitter:description" content="Routine mowing, edging, and trimming that keeps your lawn looking crisp every single week, not just once in a while.">
+<meta name="twitter:image" content="https://getbwd.com/images/hero/home.jpeg">
+
+<link rel="icon" type="image/png" href="https://getbwd.com/images/branding/favicon.png">
+<link rel="apple-touch-icon" href="https://getbwd.com/images/branding/favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../shared.css">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Lawn Mowing & Trimming",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "BWD Services",
-    "areaServed": ["Flint", "Burton", "Grand Blanc", "Fenton", "Swartz Creek"],
-    "address": {
-      "@type": "PostalAddress",
-      "addressRegion": "MI",
-      "addressCountry": "US"
-    }
-  },
-  "description": "Professional lawn mowing and weed trimming services in Genesee County, Michigan.",
-  "serviceType": "Lawn Care"
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://getbwd.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://getbwd.com/services/" },
+    { "@type": "ListItem", "position": 3, "name": "Mowing & Weed Whacking", "item": "https://getbwd.com/services/mowing/" }
+  ]
 }
 </script>
-</head>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Mowing & Weed Whacking",
+  "provider": { "@type": "LocalBusiness", "name": "BWD Services" },
+  "areaServed": ["Flint, MI", "Burton, MI", "Grand Blanc, MI"],
+  "description": "Routine mowing, edging, and trimming that keeps your lawn looking crisp every single week, not just once in a while."
+}
+</script>
 
+<style>
+.incl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media(max-width:700px){.incl-grid{grid-template-columns:1fr}}
+.incl-item{display:flex;gap:14px;align-items:flex-start;padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+.incl-ic{width:34px;height:34px;border-radius:50%;background:var(--orange-tint);color:var(--orange-dk);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.incl-ic svg{width:17px;height:17px}
+.incl-item h4{font-size:15px;margin-bottom:4px}
+.incl-item p{font-size:13.5px;color:var(--gray)}
+
+.steps-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+@media(max-width:860px){.steps-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.steps-grid{grid-template-columns:1fr}}
+.step-card{position:relative;background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px}
+.step-num{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--orange);font-family:'Montserrat',sans-serif;font-weight:800;font-size:14px;margin-bottom:16px}
+.step-card h4{font-size:15.5px;margin-bottom:8px}
+.step-card p{font-size:13.5px;color:var(--gray)}
+
+.trust-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+@media(max-width:860px){.trust-strip{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.trust-strip{grid-template-columns:1fr}}
+.trust-card{text-align:center;padding:26px 18px}
+.trust-ic{width:52px;height:52px;border-radius:50%;background:var(--orange-tint);color:var(--orange-dk);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.trust-ic svg{width:24px;height:24px}
+.trust-card h4{font-size:14.5px}
+
+.svc-section-ic{width:38px;height:38px;border-radius:8px;background:var(--orange-tint);color:var(--orange-dk);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.svc-section-ic svg{width:20px;height:20px}
+.svc-acc{border:1px solid var(--line);border-radius:var(--radius);margin-bottom:14px;overflow:hidden}
+.svc-acc-head{width:100%;display:flex;align-items:center;gap:14px;padding:18px 20px;background:#fff;border:none;cursor:pointer;text-align:left;font-family:'Montserrat',sans-serif;font-weight:700;font-size:15px;color:var(--ink)}
+.svc-acc-head:hover{background:var(--bg-soft)}
+.svc-acc-chev{margin-left:auto;transform:rotate(90deg);transition:.25s;color:var(--gray-lt);flex-shrink:0}
+.svc-acc-head[aria-expanded="true"] .svc-acc-chev{transform:rotate(-90deg)}
+.svc-acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease;background:var(--bg-soft)}
+.svc-acc-body-inner{padding:4px 20px 20px 72px;font-size:14.5px;color:var(--gray)}
+</style>
+</head>
 <body>
 
-<script src="/js/announcement.js"></script>
-<div id="navbar"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.4 2.4L16 9.5"/></symbol>
+  <symbol id="i-check-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-mower" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18.5a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5"/><circle cx="6.5" cy="19.5" r="1.6"/><circle cx="14.5" cy="19.5" r="1.6"/><path d="M12 13.5L19.5 5.5"/><path d="M17.5 5.5H21"/></symbol>
+  <symbol id="i-broom" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 3L10 12"/><path d="M10 12L4 20"/><path d="M10 12L15 18"/><path d="M4 20L15 18"/><path d="M8 15.5L6.5 19"/><path d="M11 14.5V19"/></symbol>
+  <symbol id="i-flower" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><circle cx="12" cy="7" r="1.3" fill="currentColor" stroke="none"/><path d="M12 11v10"/><path d="M12 15q-3 0-4 2"/><path d="M12 18q3 0 4 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="6" cy="6" r="1.8"/><circle cx="12" cy="6" r="1.8"/><circle cx="18" cy="6" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="6" cy="18" r="1.8"/><circle cx="12" cy="18" r="1.8"/><circle cx="18" cy="18" r="1.8"/></symbol>
+  <symbol id="i-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3.5-2.5-5-6-5 0 3.5 2.5 5 6 5z"/></symbol>
+  <symbol id="i-droplet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 7 6 11.5a6 6 0 1 1-12 0C6 10 12 3 12 3z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9.5 12l2 2 3.5-3.5"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C9 4 4 9 4 18c9 0 14-5 14-14z"/><path d="M6 20L18 6"/></symbol>
+  <symbol id="i-gutter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6"/><path d="M5 9v11M19 9v6"/><path d="M3 9h18"/><path d="M19 15a3 3 0 0 1-3 3"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2.5" width="6" height="3" rx="1"/><path d="M8.5 11.5l2.2 2.2L15.5 9.5"/></symbol>
+  <symbol id="i-snowflake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5V21.5"/><path d="M4.5 7L19.5 17"/><path d="M19.5 7L4.5 17"/><path d="M12 5.5L9.5 7.5M12 5.5l2.5 2M12 18.5l-2.5-2M12 18.5l2.5-2"/><path d="M6.5 8.5L8 9.5M6.5 8.5L5.5 10M17.5 15.5l-1.5-1M17.5 15.5l1 1.5"/></symbol>
+  <symbol id="i-salt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 8.5h6l-1.2 11.8a1.3 1.3 0 0 1-1.3 1.2h-.9a1.3 1.3 0 0 1-1.3-1.2L9 8.5z"/><rect x="8.3" y="3.3" width="7.4" height="5.2" rx="2"/><circle cx="10.5" cy="5.9" r=".55" fill="currentColor" stroke="none"/><circle cx="12" cy="5.9" r=".55" fill="currentColor" stroke="none"/><circle cx="13.5" cy="5.9" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-shears" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/><path d="M8.8 16L19 5"/><path d="M15.2 16L5 5"/></symbol>
+  <symbol id="i-spray" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L13 11"/><path d="M13 11l2.5-2.5a1.5 1.5 0 0 0 0-2.1l-.9-.9a1.5 1.5 0 0 0-2.1 0L10 8"/><path d="M17 5l1.5 1.5M19.5 3l1.8 1.8M15.5 7.5L17 9"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/></symbol>
+  <symbol id="i-badge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="M8.2 13.5L7 21l5-2.5L17 21l-1.2-7.5"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="11" height="18" rx="1"/><path d="M15 8h5v13h-5"/><path d="M7.5 7h2M7.5 10.5h2M7.5 14h2M7.5 17.5h2"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+</defs>
+</svg>
 
-<!-- ===== HERO ===== -->
-<section class="mow-hero">
-    <div class="mow-inner">
-        <a href="/services/spring-summer/" class="mow-back">&lt; Spring &amp; Summer Services</a>
-        <h1>Mowing &amp; Trimming</h1>
-        <p class="mow-hero-desc">Keep your lawn pristine with regular mowing and precision trimming around every edge, curb, and corner.</p>
+
+<div id="site-header"></div>
+
+<div class="breadcrumb">
+  <div class="wrap">
+    <a href="/">Home</a>
+    <span class="sep">/</span>
+    <a href="/services/">Services</a>
+    <span class="sep">/</span>
+    <span class="current">Mowing &amp; Weed Whacking</span>
+  </div>
+</div>
+
+<div class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--orange)">Lawn Care</div>
+    <h1 style="margin-top:14px">Mowing &amp; Weed Whacking in Flint, MI</h1>
+    <p>Routine mowing, edging, and trimming that keeps your lawn looking crisp every single week, not just once in a while.</p>
+    <div class="pill-row" style="margin-top:26px">
+      <span class="pill"><svg><use href="#i-house"/></svg>Residential &amp; Commercial</span>
+      <span class="pill"><svg><use href="#i-clock"/></svg>Weekly & Bi-Weekly Visits</span>
+      <span class="pill"><svg><use href="#i-pin"/></svg>Flint &amp; Mid-Michigan</span>
     </div>
+    <div class="cta-actions" style="margin-top:30px">
+      <a href="/quote/" class="btn btn-primary">Get a Free Quote</a>
+      <a href="tel:+19203709852" class="btn btn-outline-light"><svg width="16" height="16"><use href="#i-phone"/></svg>Call (920) 370-9852</a>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head left">
+      <div class="eyebrow">What&rsquo;s Included</div>
+      <h2>Here&rsquo;s What You Get</h2>
+    </div>
+    <div class="incl-grid">
+      <div class="incl-item">
+        <div class="incl-ic"><svg><use href="#i-check-sm"/></svg></div>
+        <div><h4>Weekly or Bi-Weekly Mowing</h4><p>Consistent cuts at the right height for a healthier lawn.</p></div>
+      </div>
+      <div class="incl-item">
+        <div class="incl-ic"><svg><use href="#i-check-sm"/></svg></div>
+        <div><h4>Edging Along Walks &amp; Beds</h4><p>Clean lines along driveways, sidewalks, and planting beds.</p></div>
+      </div>
+      <div class="incl-item">
+        <div class="incl-ic"><svg><use href="#i-check-sm"/></svg></div>
+        <div><h4>Weed Whacking</h4><p>Trim work around fences, trees, and anywhere the mower can&rsquo;t reach.</p></div>
+      </div>
+      <div class="incl-item">
+        <div class="incl-ic"><svg><use href="#i-check-sm"/></svg></div>
+        <div><h4>Clipping Cleanup</h4><p>Grass clippings cleared off hard surfaces before we leave.</p></div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ===== WHAT'S INCLUDED ===== -->
-<section class="mow-included">
-    <div class="mow-inner">
-
-        <div class="mow-included-content">
-            <h2>What's Included</h2>
-            <p class="mow-sub">Every mow comes with the full treatment — no add-on fees.</p>
-
-            <ul class="mow-checklist">
-                <li><span class="mow-chk">&#10003;</span> Full lawn mow at the proper cut height for the season — want it different? Just say so and we'll adjust</li>
-                <li><span class="mow-chk">&#10003;</span> Weed whacking along all edges, fences, and obstacles</li>
-                <li><span class="mow-chk">&#10003;</span> Trimming around sidewalks, driveways, and curbs</li>
-                <li><span class="mow-chk">&#10003;</span> Blowing clippings off hard surfaces (driveways, walkways)</li>
-                <li><span class="mow-chk">&#10003;</span> Equipment checked and properly maintained every visit</li>
-                <li><span class="mow-chk">&#10003;</span> Visual check for anything out of the ordinary</li>
-            </ul>
-
-            <div class="mow-schedule-highlight">
-                <div class="mow-schedule-icon">&#128197;</div>
-                <div>
-                    <h3>We Work Around Your Schedule</h3>
-                    <p>Weekly, bi-weekly, or whatever cadence fits your lawn and your life. We'll set it up however works best for you — no rigid packages, no hassle.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="mow-included-image">
-            <img src="/images/weed-whacker.png" alt="BWD Services lawn weed whacking" onerror="this.style.display='none'">
-        </div>
-
+<section style="background:var(--bg-soft)">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How It Works</div>
+      <h2>Getting Started Is Simple</h2>
     </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>Get a Quote</h4>
+        <p>Tell us about your property and what you need done.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>We Confirm the Details</h4>
+        <p>We walk through scope, scheduling, and pricing together.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>Service Day</h4>
+        <p>Your crew handles the work, start to finish, on schedule.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h4>Done &amp; Documented</h4>
+        <p>We follow up to make sure everything&rsquo;s exactly as expected.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ===== PRICING ===== -->
-<section class="mow-pricing">
-    <div class="mow-inner mow-inner--narrow">
-
-        <div class="mow-pricing-header">
-            <h2>Simple, Flat Pricing</h2>
-            <p>No hidden fees. No surprise charges. Just clear pricing before we ever show up.</p>
-
-            <div class="mow-ad-guarantee">
-                <div>
-                    <strong>See an ad with a different price?</strong>
-                    <p>We honor it. Mention it when you get your estimate and we'll lock in whatever price we promised — guaranteed.</p>
-                </div>
-            </div>
-
-            <div class="mow-pricing-toggle">
-                <button class="mow-toggle-btn mow-toggle-btn--active" id="btn-residential" onclick="showPricing('residential')">Residential</button>
-                <button class="mow-toggle-btn" id="btn-commercial" onclick="showPricing('commercial')">Commercial</button>
-            </div>
-        </div>
-
-        <!-- Residential Pricing -->
-        <div class="mow-pricing-grid" id="pricing-residential">
-            <div class="mow-price-card">
-                <p class="mow-price-tier">Small Yard</p>
-                <p class="mow-price-amount">Starting at <strong>$20</strong></p>
-                <p class="mow-price-desc">Up to ~4,000 sq ft. Quick and clean every time.</p>
-            </div>
-            <div class="mow-price-card mow-price-card--featured">
-                <p class="mow-price-tier">Standard Yard</p>
-                <p class="mow-price-amount">Starting at <strong>$30</strong></p>
-                <p class="mow-price-desc">4,000–8,000 sq ft. Our most common service.</p>
-            </div>
-            <div class="mow-price-card">
-                <p class="mow-price-tier">Large Yard</p>
-                <p class="mow-price-amount">Starting at <strong>$40</strong></p>
-                <p class="mow-price-desc">8,000+ sq ft. Custom quote for oversized lots.</p>
-            </div>
-        </div>
-
-        <!-- Commercial Pricing -->
-        <div id="pricing-commercial" style="display:none;">
-            <div class="mow-pricing-grid">
-                <div class="mow-price-card">
-                    <p class="mow-price-tier">Small Commercial</p>
-                    <p class="mow-price-amount">Starting at <strong>$50</strong></p>
-                    <p class="mow-price-desc">Small storefronts, offices, or tight commercial lots. Clean edges, quick turnaround.</p>
-                </div>
-                <div class="mow-price-card mow-price-card--featured">
-                    <p class="mow-price-tier">Mid-Size Property</p>
-                    <p class="mow-price-amount">Starting at <strong>$100</strong></p>
-                    <p class="mow-price-desc">Strip malls, multi-unit buildings, medium commercial grounds. Quoted per visit or on contract.</p>
-                </div>
-                <div class="mow-price-card">
-                    <p class="mow-price-tier">Large / Multi-Site</p>
-                    <p class="mow-price-amount">Quote required</p>
-                    <p class="mow-price-desc">Large lots, HOAs, or multiple locations. We'll build a plan and a price that works for you.</p>
-                </div>
-            </div>
-        </div>
-
-        <p class="mow-pricing-note" id="note-residential">Final pricing based on property size, condition, and frequency. Get a free estimate — takes about 60 seconds.</p>
-        <p class="mow-pricing-note" id="note-commercial" style="display:none;">Every commercial job is quoted individually — lot layout, obstacles, and service frequency all affect the final price. These are starting points. Full details at <a href="https://getbwd.com/commercial" target="_blank" rel="noopener" style="color:var(--orange);font-weight:600;">getbwd.com/commercial</a></p>
-
+<section>
+  <div class="wrap">
+    <div class="trust-strip">
+      <div class="trust-card">
+        <div class="trust-ic"><svg><use href="#i-badge"/></svg></div>
+        <h4>Licensed &amp; Insured</h4>
+      </div>
+      <div class="trust-card">
+        <div class="trust-ic"><svg><use href="#i-pin"/></svg></div>
+        <h4>Locally Owned, Flint-Based</h4>
+      </div>
+      <div class="trust-card">
+        <div class="trust-ic"><svg><use href="#i-user"/></svg></div>
+        <h4>Same Crew Every Visit</h4>
+      </div>
+      <div class="trust-card">
+        <div class="trust-ic"><svg><use href="#i-shield"/></svg></div>
+        <h4>Satisfaction Guarantee</h4>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ===== GET A PRICE ===== -->
-<section class="mow-getprice">
-    <div class="mow-inner mow-inner--narrow">
-
-        <div class="mow-getprice-header">
-            <h2>Get Your Price — Right Now</h2>
-            <p>No waiting for someone to come measure your yard. No phone tag. Pick how you want to do it:</p>
-        </div>
-
-        <div class="mow-getprice-grid">
-
-            <a href="https://getbwd.com/pricing/instant-quote/" class="mow-getprice-card mow-getprice-card--primary">
-                <div class="mow-getprice-icon">&#9889;</div>
-                <h3>Instant Estimate</h3>
-                <p>Answer a few quick questions about your lawn and get a real price calculated instantly. No commitment, no pressure.</p>
-                <span class="mow-getprice-cta">Get Instant Price &rarr;</span>
-            </a>
-
-            <a href="https://getbwd.com/pricing/leave-info/" class="mow-getprice-card">
-                <div class="mow-getprice-icon">&#128172;</div>
-                <h3>We'll Reach Out to You</h3>
-                <p>Drop your name and the best way to reach you — call or text, your call. We'll get back to you fast.</p>
-                <span class="mow-getprice-cta">Have Us Reach Out &rarr;</span>
-            </a>
-
-            <a href="https://getbwd.com/pricing/contact/" class="mow-getprice-card">
-                <div class="mow-getprice-icon">&#128222;</div>
-                <h3>Reach Out to Us</h3>
-                <p>Prefer to start the conversation yourself? Call or text us directly — whatever's easier for you.</p>
-                <span class="mow-getprice-cta">Contact Us &rarr;</span>
-            </a>
-
-        </div>
-
-        <p class="mow-getprice-note">All three options live at <strong>getbwd.com/pricing</strong> — click any card above to go straight there.</p>
-
+<section style="background:var(--bg-soft)">
+  <div class="wrap area-grid">
+    <div class="area-copy">
+      <div class="eyebrow">Service Area</div>
+      <h2 style="margin-top:12px">Serving Flint &amp; The Surrounding Area</h2>
+      <p>Not sure if you&rsquo;re in range? Just ask &mdash; there&rsquo;s a good chance we cover it.</p>
+      <a href="/service-area/" class="btn btn-outline">View Full Service Area</a>
     </div>
+    <div class="area-list">
+      <div class="area-item main"><svg><use href="#i-pin"/></svg>Flint</div>
+      <div class="area-item"><svg><use href="#i-pin"/></svg>Burton</div>
+      <div class="area-item"><svg><use href="#i-pin"/></svg>Grand Blanc</div>
+      <div class="area-item"><svg><use href="#i-pin"/></svg>Mid-Michigan</div>
+    </div>
+  </div>
 </section>
 
-<!-- ===== LOCAL TRUST ===== -->
-<section class="mow-local">
-    <div class="mow-inner">
-
-        <div class="mow-local-text">
-            <h2>Genesee County's Go-To Lawn Crew</h2>
-            <p>We mow lawns across Flint, Burton, Grand Blanc, Fenton, and Swartz Creek. We're not some out-of-town company — we live here, we know these neighborhoods, and we treat your yard like it's our own.</p>
-            <p>Every yard is different. We adjust our approach based on the season, the grass type, and what your lawn actually needs — and if you ever want something done differently, just say the word.</p>
-
-            <div class="mow-addon-row">
-                <p class="mow-addon-label">Need more than a mow?</p>
-                <div class="mow-addon-pills">
-                    <a href="/services/treatments/" class="mow-addon-pill"><span class="mow-addon-pill-icon">&#129716;</span> Custom Treatments</a>
-                    <a href="/services/debris-removal/" class="mow-addon-pill"><span class="mow-addon-pill-icon">&#128465;</span> Debris &amp; Waste Removal</a>
-                    <a href="/services/garden/" class="mow-addon-pill"><span class="mow-addon-pill-icon">&#127804;</span> Garden Bed Care</a>
-                    <a href="/services/cleanup/" class="mow-addon-pill"><span class="mow-addon-pill-icon">&#127807;</span> Spring Cleanup</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="mow-local-badges">
-            <div class="mow-badge">&#128205; Serving Genesee County</div>
-            <div class="mow-badge">&#9989; Locally Owned &amp; Operated</div>
-            <div class="mow-badge">&#127793; Spring &amp; Summer Specialists</div>
-            <div class="mow-badge">&#11088; 5-Star Rated</div>
-        </div>
-
+<section>
+  <div class="wrap" style="max-width:820px">
+    <div class="section-head left">
+      <div class="eyebrow">FAQ</div>
+      <h2>Common Questions</h2>
     </div>
+    <div id="svcAccordions">
+      <div class="svc-acc">
+        <button class="svc-acc-head" type="button" aria-expanded="true">
+          <div class="svc-section-ic"><svg><use href="#i-mower"/></svg></div>
+          <span>How often do you mow?</span>
+          <svg class="svc-acc-chev" width="18" height="18"><use href="#i-arrow"/></svg>
+        </button>
+        <div class="svc-acc-body" style="max-height:140px">
+          <p class="svc-acc-body-inner">Weekly during peak growing season, with bi-weekly options available in slower months.</p>
+        </div>
+      </div>
+      <div class="svc-acc">
+        <button class="svc-acc-head" type="button" aria-expanded="false">
+          <div class="svc-section-ic"><svg><use href="#i-mower"/></svg></div>
+          <span>Do you offer one-time mows?</span>
+          <svg class="svc-acc-chev" width="18" height="18"><use href="#i-arrow"/></svg>
+        </button>
+        <div class="svc-acc-body">
+          <p class="svc-acc-body-inner">Yes, for move-in/move-out or catch-up mowing, though recurring service gets priority scheduling.</p>
+        </div>
+      </div>
+      <div class="svc-acc">
+        <button class="svc-acc-head" type="button" aria-expanded="false">
+          <div class="svc-section-ic"><svg><use href="#i-mower"/></svg></div>
+          <span>What if it rains on my scheduled day?</span>
+          <svg class="svc-acc-chev" width="18" height="18"><use href="#i-arrow"/></svg>
+        </button>
+        <div class="svc-acc-body">
+          <p class="svc-acc-body-inner">We reschedule to the next available day and keep you posted &mdash; no need to call in.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<div id="footer"></div>
-<script src="/js/include.js"></script>
+<section class="related-section" style="background:var(--bg-soft)">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Related Services</div>
+      <h2>You Might Also Need</h2>
+    </div>
+    <div class="service-grid">
+      <a class="service-card" href="/services/aeration/">
+        <div class="svc-ic"><svg><use href="#i-dots"/></svg></div>
+        <div>
+          <h3>Aeration</h3>
+          <p>Core aeration that relieves soil compaction so water, air, and nutrients can actually reach the roots where your lawn needs them.</p>
+          <span class="learn">View service <svg><use href="#i-arrow"/></svg></span>
+        </div>
+      </a>
+      <a class="service-card" href="/services/weed-control/">
+        <div class="svc-ic"><svg><use href="#i-shield"/></svg></div>
+        <div>
+          <h3>Weed Control</h3>
+          <p>Targeted treatments that knock back weeds without damaging the lawn around them, so you get results, not patchy bare spots.</p>
+          <span class="learn">View service <svg><use href="#i-arrow"/></svg></span>
+        </div>
+      </a>
+      <a class="service-card" href="/services/fertilization/">
+        <div class="svc-ic"><svg><use href="#i-droplet"/></svg></div>
+        <div>
+          <h3>Fertilization</h3>
+          <p>Balanced feeding programs timed to the season for a greener, thicker, more resilient lawn without the guesswork.</p>
+          <span class="learn">View service <svg><use href="#i-arrow"/></svg></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="cta">
+      <div>
+        <h2>Ready to Get Started?</h2>
+        <p>Get a free, no-obligation quote for mowing & weed whacking.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="/quote/" class="btn btn-primary">Get a Free Quote</a>
+        <a href="tel:+19203709852" class="btn btn-outline-light"><svg width="16" height="16"><use href="#i-phone"/></svg>Call (920) 370-9852</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="../shell.js" defer></script>
 <script>
-function showPricing(type) {
-    document.getElementById('pricing-residential').style.display = type === 'residential' ? 'grid' : 'none';
-    document.getElementById('pricing-commercial').style.display = type === 'commercial' ? 'block' : 'none';
-    document.getElementById('note-residential').style.display = type === 'residential' ? 'block' : 'none';
-    document.getElementById('note-commercial').style.display = type === 'commercial' ? 'block' : 'none';
-    document.getElementById('btn-residential').classList.toggle('mow-toggle-btn--active', type === 'residential');
-    document.getElementById('btn-commercial').classList.toggle('mow-toggle-btn--active', type === 'commercial');
-}
+  (function(){
+    var heads = document.querySelectorAll('.svc-acc-head');
+    heads.forEach(function(head){
+      head.addEventListener('click', function(){
+        var body = head.nextElementSibling;
+        var open = head.getAttribute('aria-expanded') === 'true';
+        heads.forEach(function(h){
+          h.setAttribute('aria-expanded','false');
+          h.nextElementSibling.style.maxHeight = '0';
+        });
+        if(!open){
+          head.setAttribute('aria-expanded','true');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      });
+    });
+  })();
 </script>
-
 </body>
 </html>
