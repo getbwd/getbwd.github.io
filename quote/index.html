@@ -43,20 +43,38 @@
 </script>
 
 <style>
-.quote-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-@media(max-width:980px){.quote-grid{grid-template-columns:1fr}}
-.quote-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow);transition:transform .2s ease, box-shadow .2s ease}
-.quote-card:hover{transform:translateY(-3px);box-shadow:0 16px 30px -16px rgba(0,0,0,.28)}
-.quote-card.featured{border-color:var(--orange);position:relative}
-.quote-tag{display:inline-flex;align-self:flex-start;background:var(--orange-tint);color:var(--orange-dk);font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:16px}
-.quote-ic{width:52px;height:52px;border-radius:12px;background:var(--orange-tint);color:var(--orange-dk);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
-.quote-ic svg{width:26px;height:26px}
-.quote-card h3{font-size:19px;margin-bottom:10px}
-.quote-card p{font-size:14.5px;color:var(--gray);flex-grow:0}
-.quote-list{margin:18px 0 24px;display:flex;flex-direction:column;gap:10px}
-.quote-list li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--gray);list-style:none}
-.quote-list svg{width:15px;height:15px;color:var(--orange-dk);flex-shrink:0;margin-top:2px}
-.quote-card .btn{margin-top:auto}
+/* ---- featured instant-quote banner ---- */
+.quote-hero-card{position:relative;overflow:hidden;background:var(--ink);border-radius:20px;padding:48px 50px;display:flex;align-items:center;gap:40px;justify-content:space-between;flex-wrap:wrap;margin-bottom:22px}
+.quote-hero-card::before{content:"";position:absolute;right:-6%;top:-45%;width:460px;height:460px;background:radial-gradient(circle,rgba(249,99,2,.22),transparent 70%)}
+.quote-hero-num{position:absolute;right:28px;top:-28px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:180px;line-height:1;color:rgba(255,255,255,.05);user-select:none;pointer-events:none}
+.quote-hero-left{position:relative;display:flex;gap:22px;align-items:flex-start;max-width:600px}
+.quote-hero-ic{width:60px;height:60px;border-radius:14px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 10px 24px -8px rgba(249,99,2,.55)}
+.quote-hero-ic svg{width:30px;height:30px}
+.quote-hero-tag{display:inline-flex;background:rgba(249,99,2,.18);color:var(--orange);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:12px}
+.quote-hero-left h2{color:#fff;font-size:26px;margin-bottom:10px}
+.quote-hero-left p{color:#cfcfd1;font-size:14.5px}
+.quote-hero-list{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px 22px}
+.quote-hero-list li{list-style:none;display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#e9e9ea}
+.quote-hero-list svg{width:14px;height:14px;color:var(--orange)}
+.quote-hero-right{position:relative;flex-shrink:0}
+@media(max-width:700px){.quote-hero-card{padding:36px 26px}.quote-hero-right{width:100%}.quote-hero-right .btn{width:100%}.quote-hero-num{display:none}}
+
+/* ---- the other two, side by side ---- */
+.quote-sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:780px){.quote-sub-grid{grid-template-columns:1fr}}
+.quote-sub-card{position:relative;overflow:hidden;border-radius:18px;padding:36px}
+.quote-sub-num{position:absolute;right:18px;top:-16px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:96px;line-height:1;user-select:none;pointer-events:none}
+.quote-sub-card.tint{background:var(--orange-tint)}
+.quote-sub-card.tint .quote-sub-num{color:rgba(204,82,0,.12)}
+.quote-sub-card.outline{background:#fff;border:2px solid var(--ink)}
+.quote-sub-card.outline .quote-sub-num{color:rgba(28,28,28,.06)}
+.quote-sub-ic{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;position:relative}
+.quote-sub-card.tint .quote-sub-ic{background:#fff;color:var(--orange-dk)}
+.quote-sub-card.outline .quote-sub-ic{background:var(--ink);color:var(--orange)}
+.quote-sub-ic svg{width:24px;height:24px}
+.quote-sub-card h3{font-size:20px;margin-bottom:10px;position:relative}
+.quote-sub-card p{font-size:14px;color:var(--gray);position:relative;margin-bottom:20px}
+.quote-sub-card .btn{position:relative}
 
 .trust-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
 @media(max-width:860px){.trust-strip{grid-template-columns:1fr 1fr}}
@@ -110,48 +128,47 @@
 
 <section>
   <div class="wrap">
-    <div class="quote-grid">
 
-      <div class="quote-card featured">
-        <span class="quote-tag">Fastest</span>
-        <div class="quote-ic"><svg><use href="#i-clipboard"/></svg></div>
-        <h3>Instant Quote</h3>
-        <p>Answer a few quick questions about your property and get a price right on the spot.</p>
-        <ul class="quote-list">
-          <li><svg><use href="#i-check-sm"/></svg>Takes about 2 minutes</li>
-          <li><svg><use href="#i-check-sm"/></svg>Price guaranteed as described &mdash; unless your property details turn out to be off</li>
-          <li><svg><use href="#i-check-sm"/></svg>No waiting on a callback</li>
-        </ul>
-        <a href="/quote/instant/" class="btn btn-primary btn-block">Get My Instant Quote</a>
+    <div class="quote-hero-card">
+      <div class="quote-hero-num">01</div>
+      <div class="quote-hero-left">
+        <div class="quote-hero-ic"><svg><use href="#i-clipboard"/></svg></div>
+        <div>
+          <span class="quote-hero-tag">Fastest</span>
+          <h2>Instant Quote</h2>
+          <p>Answer a few quick questions about your property and get a price right on the spot &mdash; no waiting on a callback.</p>
+          <ul class="quote-hero-list">
+            <li><svg><use href="#i-check-sm"/></svg>Takes about 2 minutes</li>
+            <li><svg><use href="#i-check-sm"/></svg>Price guaranteed as described</li>
+            <li><svg><use href="#i-check-sm"/></svg>No forms, no waiting</li>
+          </ul>
+        </div>
       </div>
+      <div class="quote-hero-right">
+        <a href="/quote/instant/" class="btn btn-primary">Get My Instant Quote</a>
+      </div>
+    </div>
 
-      <div class="quote-card">
-        <span class="quote-tag">We call you</span>
-        <div class="quote-ic"><svg><use href="#i-calendar"/></svg></div>
+    <div class="quote-sub-grid">
+
+      <div class="quote-sub-card tint">
+        <div class="quote-sub-num">02</div>
+        <div class="quote-sub-ic"><svg><use href="#i-calendar"/></svg></div>
         <h3>Leave Your Info</h3>
         <p>Give us your name and the best way and time to reach you, and we'll call to put together your quote.</p>
-        <ul class="quote-list">
-          <li><svg><use href="#i-check-sm"/></svg>No forms to fill out yourself</li>
-          <li><svg><use href="#i-check-sm"/></svg>Pick your preferred day &amp; time</li>
-          <li><svg><use href="#i-check-sm"/></svg>Good if you're not sure what you need yet</li>
-        </ul>
-        <a href="/quote/leave-info/" class="btn btn-outline btn-block">Leave Your Info</a>
+        <a href="/quote/leave-info/" class="btn btn-primary">Leave Your Info</a>
       </div>
 
-      <div class="quote-card">
-        <span class="quote-tag">Talk to a person</span>
-        <div class="quote-ic"><svg><use href="#i-phone"/></svg></div>
+      <div class="quote-sub-card outline">
+        <div class="quote-sub-num">03</div>
+        <div class="quote-sub-ic"><svg><use href="#i-phone"/></svg></div>
         <h3>Contact Us Directly</h3>
         <p>Prefer to just reach out? Use our contact form, or call or text us and we'll go over it together.</p>
-        <ul class="quote-list">
-          <li><svg><use href="#i-check-sm"/></svg>Call, text, or use the form</li>
-          <li><svg><use href="#i-check-sm"/></svg>Talk through the details live</li>
-          <li><svg><use href="#i-check-sm"/></svg>Good for bigger or more complex jobs</li>
-        </ul>
-        <a href="/quote/direct/" class="btn btn-outline btn-block">Contact Us</a>
+        <a href="/quote/direct/" class="btn btn-outline">Contact Us</a>
       </div>
 
     </div>
+
   </div>
 </section>
 
