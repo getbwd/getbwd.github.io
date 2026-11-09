@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instant Quote | BWD Services</title>
+<meta name="description" content="Get an instant, guaranteed price for lawn care, landscaping, or snow removal in Flint, MI. Pick your service, enter your property details, and see your price right now.">
+<link rel="canonical" href="https://getbwd.com/quote/instant/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#F96302">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BWD Services">
+<meta property="og:title" content="Instant Quote | BWD Services">
+<meta property="og:description" content="Get an instant, guaranteed price for lawn care, landscaping, or snow removal in Flint, MI.">
+<meta property="og:url" content="https://getbwd.com/quote/instant/">
+<meta property="og:image" content="https://getbwd.com/images/hero/home.jpeg">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Instant Quote | BWD Services">
+<meta name="twitter:description" content="Get an instant, guaranteed price for lawn care, landscaping, or snow removal in Flint, MI.">
+<meta name="twitter:image" content="https://getbwd.com/images/hero/home.jpeg">
+
+<link rel="icon" type="image/png" href="https://getbwd.com/images/branding/favicon.png">
+<link rel="apple-touch-icon" href="https://getbwd.com/images/branding/favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   BWD Services — shared.css
+   Cross-page design system: reset, variables, header/nav/mega-menu,
+   mobile nav, buttons, cards, footer, and other reusable components.
+   Home-page-specific styles (hero, strip, tabs, why, reviews, process)
+   live inline in index.html.
+   ========================================================================== */
+
+:root{
+  --orange:#F96302; --orange-dk:#CC5200; --orange-tint:#FFF0E4;
+  --ink:#1C1C1C; --gray:#595A5C; --gray-lt:#8A8B8D;
+  --line:#E6E4DF; --bg:#FFFFFF; --bg-soft:#FAF9F6;
+  --radius:12px; --shadow:0 10px 26px -14px rgba(0,0,0,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;width:100%;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px;width:100%}
+h1,h2,h3,.display{font-family:'Montserrat',sans-serif;font-weight:800;line-height:1.18;color:var(--ink)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--orange-dk);text-transform:uppercase}
+.eyebrow::before{content:"";width:22px;height:3px;background:var(--orange);border-radius:2px}
+
+/* ---- buttons ---- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:15px 28px;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;transition:background .2s ease, color .2s ease, border-color .2s ease;border:2px solid transparent;font-family:'Inter',sans-serif}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-primary:hover{background:var(--orange-dk)}
+.btn-outline{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-outline:hover{background:var(--ink);color:#fff}
+.btn-outline-light{border-color:rgba(255,255,255,.55);color:#fff}
+.btn-outline-light:hover{background:#fff;color:var(--ink)}
+.btn-block{width:100%}
+
+/* ---- top utility bar ---- */
+.topbar{background:var(--ink);color:#cfcfcf;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;padding:9px 28px;gap:16px;flex-wrap:wrap}
+.topbar a{font-weight:600;color:#fff}
+.topbar .sep{opacity:.4;margin:0 4px}
+@media(max-width:700px){.topbar .right{display:none}}
+
+/* ---- header ---- */
+header{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;position:relative}
+nav img{height:48px}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a, .nav-links button{font-size:14.5px;font-weight:600;color:var(--gray);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px}
+.nav-links a:hover, .nav-links button:hover, .nav-links button.open{color:var(--orange-dk)}
+.nav-links button svg{width:13px;height:13px;transition:transform .2s ease}
+.nav-links button.open svg{transform:rotate(180deg)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.portal-btn{padding:12px 18px !important;font-size:13.5px !important}
+@media(max-width:1180px){.portal-btn span{display:none}.portal-btn{padding:12px !important}}
+/* Tablets get the touch-friendly burger/accordion nav too, not just phones,
+   since the hover-driven mega menu isn't a great fit for touch screens. */
+@media(max-width:1024px){.nav-links{display:none}.nav-right .btn-outline{display:none}}
+.burger{display:none;width:44px;height:44px;border-radius:8px;border:1px solid var(--line);align-items:center;justify-content:center;cursor:pointer;background:#fff}
+@media(max-width:1024px){.burger{display:flex}}
+.mobile-nav{position:fixed;inset:0 0 0 auto;width:min(340px,88vw);background:#fff;z-index:120;padding:24px;box-shadow:-10px 0 30px rgba(0,0,0,.18);transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav > a{font-weight:700;font-size:16px;color:var(--ink);padding:14px 0}
+.mobile-nav .btn{margin-top:8px;min-height:48px}
+.mobile-close{align-self:flex-end;width:40px;height:40px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:6px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:110;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.overlay.open{opacity:1;pointer-events:auto}
+
+/* ---- mobile services accordion ---- */
+.m-acc-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;font-weight:700;font-size:16px;color:var(--ink);padding:14px 0;cursor:pointer;font-family:'Inter',sans-serif}
+.m-acc-btn svg{width:14px;height:14px;transition:transform .2s ease}
+.m-acc-btn.open svg{transform:rotate(180deg)}
+.m-acc-panel{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.m-acc-panel.open{max-height:900px}
+.m-acc-panel a{display:block;padding:12px 0 12px 14px;font-size:14.5px;font-weight:600;color:var(--gray);border-left:2px solid var(--line);min-height:44px}
+.m-acc-cat{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--orange-dk);margin:12px 0 2px 14px}
+
+/* ---- mega menu (desktop) ---- */
+.mega{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--line);border-top:none;box-shadow:0 24px 40px -20px rgba(0,0,0,.22);border-radius:0 0 14px 14px;padding:32px;display:none;z-index:70}
+.mega.open{display:block}
+.mega-grid{display:grid;grid-template-columns:repeat(4,1fr) .85fr;gap:24px}
+.mega-col h4{font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--orange-dk);margin-bottom:14px}
+.mega-col a{display:block;padding:9px 0;border-bottom:1px solid var(--line)}
+.mega-col a:last-child{border-bottom:none}
+.mega-col a .t{font-size:14.5px;font-weight:700;color:var(--ink)}
+.mega-col a .d{font-size:12.5px;color:var(--gray-lt);margin-top:2px;line-height:1.4}
+.mega .wrap{max-width:1320px}
+.mega-col a:hover .t{color:var(--orange-dk)}
+.mega-promo{background:var(--ink);border-radius:14px;padding:26px;color:#fff;display:flex;flex-direction:column;gap:14px}
+.mega-promo h4{color:#fff;font-size:17px;font-family:'Montserrat',sans-serif;font-weight:800}
+.mega-promo p{font-size:13px;color:#cfcfd1}
+.mega-promo .btn{width:100%}
+@media(max-width:1300px){.mega-grid{grid-template-columns:1fr 1fr}.mega-promo{grid-column:span 2}}
+
+/* ---- breadcrumb ---- */
+.breadcrumb{background:var(--bg-soft);border-bottom:1px solid var(--line);padding:16px 0}
+.breadcrumb .wrap{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--gray-lt);flex-wrap:wrap}
+.breadcrumb a{font-weight:600;color:var(--gray)}
+.breadcrumb a:hover{color:var(--orange-dk)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{color:var(--ink);font-weight:700}
+
+/* ---- badge pill ---- */
+.pill-row{display:flex;gap:10px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:700}
+.pill svg{width:15px;height:15px;color:var(--orange)}
+.pill.light{background:var(--orange-tint);border-color:transparent;color:var(--orange-dk)}
+
+/* ---- simple page header (no two-col hero) ---- */
+.page-hero{background:var(--ink);padding:64px 0;position:relative;overflow:hidden}
+.page-hero::before{content:"";position:absolute;right:-8%;top:-30%;width:520px;height:520px;background:radial-gradient(circle,rgba(249,99,2,.14),transparent 70%)}
+.page-hero .wrap{position:relative}
+.page-hero h1{color:#fff;font-size:clamp(28px,4vw,42px)}
+.page-hero p{color:#cfcfd1;margin-top:14px;font-size:16px;max-width:640px}
+
+/* ---- generic section rhythm ---- */
+section{padding:88px 0}
+.section-head{max-width:640px;margin:0 auto 46px;text-align:center}
+.section-head.left{margin:0 0 40px;text-align:left}
+.section-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
+.section-head p{color:var(--gray);margin-top:14px;font-size:16px}
+@media(max-width:600px){
+  section{padding:56px 0}
+  .section-head{margin-bottom:32px}
+}
+
+/* ---- scroll-reveal utility ----
+   Applied via JS (IntersectionObserver) when an element scrolls into
+   view. Kept subtle and short so it reads as polish, not motion. */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease, transform .65s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+}
+
+/* ---- service card component ---- */
+.service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.service-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;gap:16px;align-items:flex-start;box-shadow:var(--shadow);transition:transform .2s ease, box-shadow .2s ease}
+a.service-card:hover{transform:translateY(-3px);box-shadow:0 16px 30px -16px rgba(0,0,0,.28)}
+.svc-ic{width:48px;height:48px;border-radius:10px;background:var(--orange-tint);color:var(--orange-dk);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.svc-ic svg{width:24px;height:24px}
+.service-card h3{font-family:'Inter',sans-serif;font-weight:700;font-size:16px;letter-spacing:0;text-transform:none}
+.service-card p{font-size:13.5px;color:var(--gray-lt);margin-top:4px}
+.service-card .learn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:700;color:var(--orange-dk)}
+.service-card .learn svg{width:13px;height:13px}
+@media(max-width:1024px){.service-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:620px){.service-grid{grid-template-columns:1fr}}
+.services-note{margin-top:30px;text-align:center;color:var(--gray-lt);font-size:14.5px}
+.cat-block{margin-bottom:62px}
+.cat-block:last-child{margin-bottom:0}
+
+/* ---- service area list component ---- */
+.area-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.area-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.area-item{display:flex;align-items:center;gap:10px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;font-weight:600;font-size:14.5px;background:#fff}
+.area-item.main{background:var(--orange);color:#fff;border-color:var(--orange)}
+.area-item svg{width:16px;height:16px;color:var(--orange);flex-shrink:0}
+.area-item.main svg{color:#fff}
+.area-copy p{color:var(--gray);margin-top:16px;font-size:16px}
+.area-copy .btn{margin-top:28px}
+@media(max-width:1024px){.area-grid{grid-template-columns:1fr}.area-grid .area-copy{order:2}}
+@media(max-width:560px){.area-list{grid-template-columns:1fr}}
+
+/* ---- cta band ---- */
+.cta{background:var(--ink);border-radius:20px;padding:64px 56px;display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
+@media(max-width:560px){.cta{padding:40px 28px}}
+.cta h2{color:#fff;font-size:clamp(24px,3.2vw,32px)}
+.cta p{color:#cfcfd1;margin-top:10px}
+.cta-actions{display:flex;gap:14px;flex-wrap:wrap}
+
+/* ---- contact card component ---- */
+.contact-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.contact-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);transition:transform .25s ease, box-shadow .25s ease}
+.contact-card:hover{transform:translateY(-3px);box-shadow:0 16px 30px -16px rgba(0,0,0,.28)}
+.contact-card .svc-ic{margin-bottom:14px}
+.contact-card h3{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:var(--gray-lt);text-transform:uppercase;letter-spacing:.5px}
+.contact-card .v{font-size:18px;font-weight:700;margin-top:8px;color:var(--ink);overflow-wrap:anywhere}
+.contact-card .v a{color:var(--orange-dk)}
+@media(max-width:1024px){.contact-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:560px){.contact-grid{grid-template-columns:1fr}}
+
+/* ---- contact form ---- */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+@media(max-width:1024px){.contact-layout{grid-template-columns:1fr}}
+.form-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:34px;box-shadow:var(--shadow)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:560px){.form-row{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.field label{font-size:13px;font-weight:700;color:var(--ink)}
+.field input, .field select, .field textarea{border:1.5px solid var(--line);border-radius:9px;padding:13px 14px;font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);background:#fff}
+.field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--orange)}
+.field textarea{resize:vertical;min-height:110px}
+/* 16px prevents iOS Safari from auto-zooming the page on focus */
+@media(max-width:1024px){.field input, .field select, .field textarea{font-size:16px}}
+.contact-side .contact-card{margin-bottom:16px}
+
+/* ---- footer ---- */
+footer{background:var(--ink);color:#b8b8ba;padding:56px 0 26px}
+.footer-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-bottom:36px;border-bottom:1px solid #333}
+.footer-brand img{height:42px;margin-bottom:14px;filter:brightness(0) invert(1)}
+.footer-brand p{max-width:300px;font-size:14px}
+.footer-cols{display:flex;gap:60px;flex-wrap:wrap}
+.footer-col h4{color:#fff;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.footer-col a{display:block;font-size:14px;margin-bottom:10px}
+.footer-col a:hover{color:var(--orange)}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:24px;font-size:12.5px}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://getbwd.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Get a Quote", "item": "https://getbwd.com/quote/" },
+    { "@type": "ListItem", "position": 3, "name": "Instant Quote", "item": "https://getbwd.com/quote/instant/" }
+  ]
+}
+</script>
+
+<style>
+/* page hero gets no bottom crop here (shared.css .page-hero already includes full padding) */
+
+/* ---- step rail ---- */
+.step-wrap{max-width:900px;margin:0 auto;padding:46px 28px 70px}
+.step-rail{display:flex;align-items:center;gap:0;margin-bottom:34px}
+.step-rail .dot{width:28px;height:28px;border-radius:50%;background:#fff;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;color:var(--gray-lt);flex-shrink:0;transition:.2s}
+.step-rail .dot.done{background:var(--orange);border-color:var(--orange);color:#fff}
+.step-rail .dot.active{border-color:var(--orange);color:var(--orange-dk)}
+.step-rail .bar{flex:1;height:2px;background:var(--line);margin:0 4px}
+.step-rail .bar.done{background:var(--orange)}
+
+.step-panel{display:none}
+.step-panel.active{display:block;animation:panelIn .3s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.step-panel h2{font-size:21px;margin-bottom:4px}
+.step-panel .step-sub{color:var(--gray);font-size:14px;margin-bottom:22px}
+
+/* ---- service picker ---- */
+.sv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:700px){.sv-grid{grid-template-columns:repeat(2,1fr)}}
+.sv-card{position:relative;background:var(--bg-soft);border:2px solid var(--line);border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;transition:.15s}
+.sv-card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.sv-card.sel{border-color:var(--orange);background:var(--orange-tint)}
+.sv-card .ic{width:38px;height:38px;border-radius:50%;background:var(--ink);color:var(--orange);display:flex;align-items:center;justify-content:center;margin:0 auto 9px}
+.sv-card.sel .ic{background:var(--orange);color:#fff}
+.sv-card .nm{font-weight:700;font-size:13px;line-height:1.3}
+.sv-card .sel-badge{display:none;position:absolute;top:6px;left:6px;width:19px;height:19px;border-radius:50%;background:var(--orange);color:#fff;align-items:center;justify-content:center}
+.sv-card.sel .sel-badge{display:flex}
+.sv-card .sel-badge svg{width:11px;height:11px}
+
+.season-toggle-wrap{margin-top:26px;border-top:1px dashed var(--line);padding-top:18px}
+.season-toggle{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:700;font-size:13.5px;color:var(--gray);padding:6px 0;width:100%;text-align:left}
+.season-toggle .cnt{color:var(--gray-lt);font-weight:600}
+.season-toggle svg{width:15px;height:15px;color:var(--gray-lt);margin-left:auto;transition:transform .2s ease;flex-shrink:0;transform:rotate(90deg)}
+.season-toggle.open svg{transform:rotate(-90deg)}
+.season-note{font-size:12.5px;color:var(--gray-lt);margin-top:4px;margin-bottom:16px}
+.season-panel{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.season-panel.open{max-height:1400px}
+.season-panel .sv-grid{margin-top:4px;opacity:.92}
+.sv-card.offseason{position:relative}
+.sv-card.offseason::after{content:"Out of Season";position:absolute;top:6px;right:6px;background:var(--ink);color:var(--orange);font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:3px 6px;border-radius:5px}
+
+/* ---- size / property type ---- */
+.sz-box{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:26px}
+.sz-readout{display:flex;align-items:baseline;gap:6px;justify-content:center;margin-bottom:18px}
+.sz-readout .num{font-family:'Montserrat',sans-serif;font-weight:800;font-size:40px;color:var(--orange-dk)}
+.sz-readout .unit{color:var(--gray);font-size:14px;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--orange);height:6px}
+.sz-marks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--gray-lt);margin-top:6px}
+.pt-toggle{display:flex;gap:10px;margin-top:22px}
+.pt-opt{flex:1;text-align:center;padding:13px;border-radius:10px;border:2px solid var(--line);font-weight:700;font-size:13.5px;cursor:pointer;color:var(--gray);transition:.15s}
+.pt-opt.sel{border-color:var(--orange);background:var(--orange-tint);color:var(--orange-dk)}
+
+/* ---- frequency ---- */
+.fr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:560px){.fr-grid{grid-template-columns:1fr}}
+.fr-card{background:var(--bg-soft);border:2px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;transition:.15s}
+.fr-card:hover{border-color:var(--orange)}
+.fr-card.sel{border-color:var(--orange);background:var(--orange-tint)}
+.fr-card .nm{font-weight:700;font-size:14px}
+.fr-card .dsc{font-size:12px;color:var(--gray-lt);margin-top:2px}
+
+.custom-panel{margin-top:14px;background:var(--bg-soft);border:1.5px dashed var(--orange);border-radius:12px;padding:18px;animation:panelIn .25s ease}
+.custom-panel-note{font-size:12.5px;font-weight:700;color:var(--orange-dk);text-transform:uppercase;letter-spacing:.3px;margin-bottom:12px}
+.custom-chip-row{display:flex;flex-wrap:wrap;gap:10px}
+.custom-chip{background:#fff;border:2px solid var(--line);border-radius:10px;padding:11px 16px;cursor:pointer;transition:.15s;text-align:left}
+.custom-chip:hover{border-color:var(--orange)}
+.custom-chip.sel{border-color:var(--orange);background:var(--orange-tint)}
+.custom-chip .cnm{font-weight:700;font-size:13.5px;color:var(--ink)}
+.custom-chip .ctag{display:block;font-size:11px;color:var(--gray-lt);margin-top:2px}
+.custom-chip .csave{display:block;font-size:11px;color:var(--orange-dk);font-weight:700;margin-top:2px}
+
+/* ---- extras ---- */
+.ex-list{display:flex;flex-direction:column;gap:10px}
+.ex-opt{display:flex;align-items:center;gap:12px;background:var(--bg-soft);border:2px solid var(--line);border-radius:10px;padding:13px 16px;cursor:pointer;transition:.15s}
+.ex-opt.sel{border-color:var(--orange);background:var(--orange-tint)}
+.ex-opt .chk{width:19px;height:19px;border-radius:5px;border:2px solid var(--gray-lt);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s}
+.ex-opt.sel .chk{background:var(--orange);border-color:var(--orange)}
+.ex-opt .chk svg{display:none;color:#fff}
+.ex-opt.sel .chk svg{display:block}
+.ex-opt .lbl{flex:1;font-weight:600;font-size:13.5px}
+.ex-opt .pr{font-weight:700;color:var(--orange-dk);font-size:13px}
+.ex-empty{font-size:13.5px;color:var(--gray-lt);background:var(--bg-soft);border:1px dashed var(--line);border-radius:10px;padding:16px;text-align:center}
+
+.step-nav{display:flex;justify-content:space-between;margin-top:28px}
+.step-nav .ghost{background:none;border:none;color:var(--gray-lt);font-weight:700;font-size:14px;cursor:pointer}
+.step-nav .ghost:disabled{opacity:.3;cursor:default}
+
+/* result panel */
+.res-wrap{background:var(--ink);border-radius:16px;padding:28px;color:#fff;position:relative;overflow:hidden}
+.res-wrap::before{content:"";position:absolute;right:-15%;top:-40%;width:300px;height:300px;background:radial-gradient(circle,rgba(249,99,2,.22),transparent 70%)}
+.res-wrap h3{color:var(--orange);font-size:12px;text-transform:uppercase;letter-spacing:.4px;position:relative}
+.res-wrap .price{font-family:'Montserrat',sans-serif;font-weight:800;font-size:44px;margin:8px 0;position:relative}
+.res-wrap .price span{font-size:14px;color:#cfcfd1;font-weight:600}
+.res-wrap .lines{position:relative;margin:16px 0;border-top:1px solid rgba(255,255,255,.14);padding-top:14px}
+.res-wrap .lines div{display:flex;justify-content:space-between;font-size:13px;color:#d8d8da;padding:4px 0}
+.res-wrap .lines div.total{border-top:1px solid rgba(255,255,255,.18);margin-top:6px;padding-top:10px;font-weight:700;color:#fff;font-size:14px}
+.res-wrap .guarantee{font-size:11px;color:var(--orange);font-weight:700;margin-top:12px;position:relative}
+.res-actions{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-mower" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18.5a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5"/><circle cx="6.5" cy="19.5" r="1.6"/><circle cx="14.5" cy="19.5" r="1.6"/><path d="M12 13.5L19.5 5.5"/><path d="M17.5 5.5H21"/></symbol>
+  <symbol id="i-broom" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 3L10 12"/><path d="M10 12L4 20"/><path d="M10 12L15 18"/><path d="M4 20L15 18"/><path d="M8 15.5L6.5 19"/><path d="M11 14.5V19"/></symbol>
+  <symbol id="i-flower" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><circle cx="12" cy="7" r="1.3" fill="currentColor" stroke="none"/><path d="M12 11v10"/><path d="M12 15q-3 0-4 2"/><path d="M12 18q3 0 4 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="6" cy="6" r="1.8"/><circle cx="12" cy="6" r="1.8"/><circle cx="18" cy="6" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="6" cy="18" r="1.8"/><circle cx="12" cy="18" r="1.8"/><circle cx="18" cy="18" r="1.8"/></symbol>
+  <symbol id="i-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3.5-2.5-5-6-5 0 3.5 2.5 5 6 5z"/></symbol>
+  <symbol id="i-droplet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 7 6 11.5a6 6 0 1 1-12 0C6 10 12 3 12 3z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9.5 12l2 2 3.5-3.5"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C9 4 4 9 4 18c9 0 14-5 14-14z"/><path d="M6 20L18 6"/></symbol>
+  <symbol id="i-gutter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6"/><path d="M5 9v11M19 9v6"/><path d="M3 9h18"/><path d="M19 15a3 3 0 0 1-3 3"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2.5" width="6" height="3" rx="1"/><path d="M8.5 11.5l2.2 2.2L15.5 9.5"/></symbol>
+  <symbol id="i-snowflake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5V21.5"/><path d="M4.5 7L19.5 17"/><path d="M19.5 7L4.5 17"/><path d="M12 5.5L9.5 7.5M12 5.5l2.5 2M12 18.5l-2.5-2M12 18.5l2.5-2"/><path d="M6.5 8.5L8 9.5M6.5 8.5L5.5 10M17.5 15.5l-1.5-1M17.5 15.5l1 1.5"/></symbol>
+  <symbol id="i-salt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 8.5h6l-1.2 11.8a1.3 1.3 0 0 1-1.3 1.2h-.9a1.3 1.3 0 0 1-1.3-1.2L9 8.5z"/><rect x="8.3" y="3.3" width="7.4" height="5.2" rx="2"/><circle cx="10.5" cy="5.9" r=".55" fill="currentColor" stroke="none"/><circle cx="12" cy="5.9" r=".55" fill="currentColor" stroke="none"/><circle cx="13.5" cy="5.9" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-shears" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/><path d="M8.8 16L19 5"/><path d="M15.2 16L5 5"/></symbol>
+  <symbol id="i-spray" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L13 11"/><path d="M13 11l2.5-2.5a1.5 1.5 0 0 0 0-2.1l-.9-.9a1.5 1.5 0 0 0-2.1 0L10 8"/><path d="M17 5l1.5 1.5M19.5 3l1.8 1.8M15.5 7.5L17 9"/></symbol>
+</defs>
+</svg>
+
+<div id="site-header"></div>
+
+<div class="breadcrumb">
+  <div class="wrap">
+    <a href="/">Home</a>
+    <span class="sep">/</span>
+    <a href="/quote/">Get a Quote</a>
+    <span class="sep">/</span>
+    <span class="current">Instant Quote</span>
+  </div>
+</div>
+
+<div class="page-hero">
+  <div class="wrap" style="text-align:center">
+    <div class="eyebrow" style="color:var(--orange);justify-content:center">Instant Quote</div>
+    <h1 style="margin-top:14px">Build Your Price</h1>
+    <p style="margin-left:auto;margin-right:auto">Pick as many services as you need and your property details &mdash; your full estimate is guaranteed as quoted, unless the property details turn out to be off.</p>
+  </div>
+</div>
+
+<div class="step-wrap">
+  <div class="step-rail" id="stepRail">
+    <div class="dot active" data-step="1">1</div><div class="bar" data-bar="1"></div>
+    <div class="dot" data-step="2">2</div><div class="bar" data-bar="2"></div>
+    <div class="dot" data-step="3">3</div><div class="bar" data-bar="3"></div>
+    <div class="dot" data-step="4">4</div><div class="bar" data-bar="4"></div>
+    <div class="dot" data-step="5">5</div>
+  </div>
+
+  <div class="step-panel active" data-panel="1">
+    <h2>What services do you need?</h2>
+    <p class="step-sub" id="seasonHeading">Select as many as you need &mdash; showing what's in season right now.</p>
+    <div class="sv-grid" id="svGridInSeason"></div>
+
+    <div class="season-toggle-wrap" id="offSeasonWrap" style="display:none">
+      <button class="season-toggle" type="button" id="seasonToggleBtn" aria-expanded="false">
+        <span>Not in season right now <span class="cnt" id="offSeasonCount"></span></span>
+        <svg><use href="#i-arrow"/></svg>
+      </button>
+      <p class="season-note">Still available if you're ahead of the game &mdash; just picking one of these won't change your price, only the timing.</p>
+      <div class="season-panel" id="offSeasonPanel">
+        <div class="sv-grid" id="svGridOffSeason"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-panel" data-panel="2">
+    <h2>How big is the property?</h2>
+    <p class="step-sub">Drag to estimate your square footage.</p>
+    <div class="sz-box">
+      <div class="sz-readout"><span class="num" id="sqftNum">8,000</span><span class="unit">sqft</span></div>
+      <input type="range" id="sqftSlider" min="1000" max="30000" step="500" value="8000">
+      <div class="sz-marks"><span>1,000</span><span>15,000</span><span>30,000+</span></div>
+      <div class="pt-toggle">
+        <div class="pt-opt sel" id="ptRes" data-mult="1">Residential</div>
+        <div class="pt-opt" id="ptCom" data-mult="1.4">Commercial</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-panel" data-panel="3">
+    <h2>How often?</h2>
+    <p class="step-sub">Applies to any recurring services you selected. Defaults to one-time &mdash; set a schedule to save.</p>
+    <div class="fr-grid" id="frGrid">
+      <div class="fr-card sel" data-mode="onetime" data-weeks="" data-mult="1"><div class="nm">One-Time Visit</div><div class="dsc">Default &mdash; no commitment</div></div>
+      <div class="fr-card" data-mode="weekly" data-weeks="1" data-mult="0.85"><div class="nm">Weekly</div><div class="dsc">Save 15%</div></div>
+      <div class="fr-card" data-mode="biweekly" data-weeks="2" data-mult="0.92"><div class="nm">Bi-Weekly</div><div class="dsc">Save 8%</div></div>
+      <div class="fr-card" data-mode="custom" id="customCard"><div class="nm">Custom</div><div class="dsc" id="customDsc">Build your own schedule</div></div>
+    </div>
+    <div class="custom-panel" id="customPanel" style="display:none">
+      <p class="custom-panel-note">Picked for what you selected:</p>
+      <div class="custom-chip-row" id="customChipRow"></div>
+    </div>
+  </div>
+
+  <div class="step-panel" data-panel="4">
+    <h2>Add any extras?</h2>
+    <p class="step-sub" id="extrasSub">Optional &mdash; skip if you don't need them.</p>
+    <div class="ex-list" id="exList"></div>
+  </div>
+
+  <div class="step-panel" data-panel="5">
+    <h2>Your Instant Estimate</h2>
+    <p class="step-sub">Here's the full breakdown &mdash; guaranteed as quoted unless property details are inaccurate.</p>
+    <div class="res-wrap" id="resWrap"></div>
+    <div class="res-actions">
+      <a href="../direct/" class="btn btn-primary">Request This Quote</a>
+      <button class="btn btn-outline" id="startOverBtn" type="button">Start Over</button>
+    </div>
+  </div>
+
+  <div class="step-nav">
+    <button class="ghost" id="backBtn" disabled>&larr; Back</button>
+    <button class="btn btn-primary" id="nextBtn">Continue &rarr;</button>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../../shell.js" defer></script>
+<script>
+(function(){
+  // perK = price added per 1,000 sqft. recurring = eligible for a schedule/frequency discount.
+  // freqProfile picks which custom interval set (FREQ_PROFILES below) suits this service.
+  // season = array of in-season month numbers (1=Jan ... 12=Dec); null = available year-round.
+  var SERVICES = [
+    {key:'mowing', name:'Mowing &amp; Weed Whacking', icon:'i-mower', base:40, perK:3, recurring:true, freqProfile:'lawn', season:[4,5,6,7,8,9,10]},
+    {key:'spring-cleanup', name:'Spring Cleanup', icon:'i-broom', base:140, perK:8, recurring:false, season:[3,4,5]},
+    {key:'detaching', name:'Dethatching &amp; Power Raking', icon:'i-clipboard', base:130, perK:7, recurring:false, season:[3,4,5,9,10]},
+    {key:'mulch', name:'Mulch Installation', icon:'i-flower', base:220, perK:25, recurring:false, season:[4,5,6,7,8]},
+    {key:'waste-removal', name:'Debris &amp; Waste Removal', icon:'i-trash', base:100, perK:5, recurring:false, season:null},
+    {key:'garden', name:'Garden Bed Care', icon:'i-flower', base:75, perK:4, recurring:true, freqProfile:'lawn', season:[4,5,6,7,8,9,10]},
+    {key:'seasonal-cleanup', name:'Seasonal Cleanup', icon:'i-broom', base:130, perK:7, recurring:false, season:[3,4,5,9,10,11]},
+    {key:'gutters', name:'Gutter Cleanup', icon:'i-gutter', base:95, perK:1, recurring:true, freqProfile:'seasonal', season:[3,4,5,9,10,11]},
+    {key:'aeration', name:'Aeration', icon:'i-dots', base:85, perK:5, recurring:false, season:[3,4,5,9,10]},
+    {key:'overseeding', name:'Overseeding', icon:'i-sprout', base:95, perK:6, recurring:false, season:[3,4,5,9,10]},
+    {key:'fertilization', name:'Fertilization', icon:'i-droplet', base:60, perK:3, recurring:true, freqProfile:'treatment', season:[3,4,5,6,7,8,9,10]},
+    {key:'weed-control', name:'Weed Control', icon:'i-shield', base:55, perK:3, recurring:true, freqProfile:'treatment', season:[4,5,6,7,8,9]},
+    {key:'leaf-removal', name:'Leaf Removal', icon:'i-leaf', base:90, perK:6, recurring:false, season:[9,10,11]},
+    {key:'shrubs', name:'Shrub Trimming', icon:'i-shears', base:90, perK:4, recurring:false, season:[4,5,6,7,8,9,10]},
+    {key:'power-washing', name:'Power Washing', icon:'i-spray', base:160, perK:10, recurring:true, freqProfile:'seasonal', season:[4,5,6,7,8,9,10]},
+    {key:'snow-removal', name:'Snow Removal', icon:'i-snowflake', base:55, perK:2, recurring:true, freqProfile:'winter', season:[11,12,1,2,3]},
+    {key:'ice', name:'Salting &amp; Ice Management', icon:'i-salt', base:45, perK:1, recurring:true, freqProfile:'winter', season:[11,12,1,2,3]},
+    {key:'walkway-clearing', name:'Sidewalk &amp; Walkway Clearing', icon:'i-broom', base:40, perK:1, recurring:true, freqProfile:'winter', season:[11,12,1,2,3]}
+  ];
+  // Per-service-type custom interval menus shown under "Custom" on the frequency step.
+  var FREQ_PROFILES = {
+    lawn:      [{label:'Every 10 Days', weeks:1.4}, {label:'Every 3 Weeks', weeks:3}, {label:'Every 4 Weeks', weeks:4}],
+    treatment: [{label:'Every 3 Weeks', weeks:3}, {label:'Every 6 Weeks', weeks:6}, {label:'Every 8 Weeks', weeks:8}],
+    winter:    [{label:'Twice a Week', weeks:0.5}, {label:'Every 3 Weeks', weeks:3}, {label:'Standing Monthly Contract', weeks:4}],
+    seasonal:  [{label:'Every 2 Months', weeks:8.7}, {label:'Quarterly', weeks:13}, {label:'Twice a Year', weeks:26}]
+  };
+  // Discount curve: shorter interval = bigger savings; quarterly or longer carries no discount
+  // (there's no route efficiency gained), it's just scheduled instead of booked one-off.
+  function discountMultForWeeks(weeks){
+    if(weeks == null) return 1;
+    if(weeks <= 1) return 0.85;
+    if(weeks <= 2) return 0.92;
+    if(weeks <= 4) return 0.97;
+    if(weeks <= 6) return 0.98;
+    if(weeks <= 8) return 0.99;
+    return 1;
+  }
+  var EXTRAS = [
+    {key:'edging', label:'Edging &amp; Trimming', price:10},
+    {key:'bagging', label:'Clipping / Leaf Bagging', price:15},
+    {key:'fertilizer', label:'Fertilizer Treatment', price:35}
+  ];
+
+  var curMonth = new Date().getMonth() + 1;
+  function inSeason(svc){ return !svc.season || svc.season.indexOf(curMonth) !== -1; }
+
+  var state = {services:[], sqft:8000, propMult:1, freqMode:'onetime', freqWeeks:null, freqMult:1, freqLabel:'One-Time', extras:{}};
+  var curStep = 1;
+  var TOTAL_STEPS = 5;
+
+  function toggleService(svc, cardEl){
+    var idx = state.services.findIndex(function(s){ return s.key === svc.key; });
+    if(idx === -1){
+      state.services.push(svc);
+      cardEl.classList.add('sel');
+    } else {
+      state.services.splice(idx, 1);
+      cardEl.classList.remove('sel');
+    }
+  }
+
+  function buildServiceCard(s){
+    var card = document.createElement('div');
+    card.className = 'sv-card' + (inSeason(s) ? '' : ' offseason');
+    card.dataset.key = s.key;
+    card.innerHTML = '<div class="sel-badge"><svg><use href="#i-check"/></svg></div><div class="ic"><svg width="18" height="18"><use href="#' + s.icon + '"/></svg></div><div class="nm">' + s.name + '</div>';
+    card.addEventListener('click', function(){ toggleService(s, card); });
+    return card;
+  }
+
+  var inSeasonList = SERVICES.filter(inSeason);
+  var offSeasonList = SERVICES.filter(function(s){ return !inSeason(s); });
+
+  var svGridIn = document.getElementById('svGridInSeason');
+  inSeasonList.forEach(function(s){ svGridIn.appendChild(buildServiceCard(s)); });
+
+  if(offSeasonList.length){
+    var svGridOff = document.getElementById('svGridOffSeason');
+    offSeasonList.forEach(function(s){ svGridOff.appendChild(buildServiceCard(s)); });
+    document.getElementById('offSeasonWrap').style.display = 'block';
+    document.getElementById('offSeasonCount').textContent = '(' + offSeasonList.length + ')';
+  } else {
+    document.getElementById('seasonHeading').textContent = 'Pick one to get started &mdash; everything is in season right now.';
+  }
+
+  var toggleBtn = document.getElementById('seasonToggleBtn');
+  var offPanel = document.getElementById('offSeasonPanel');
+  toggleBtn.addEventListener('click', function(){
+    var open = toggleBtn.classList.toggle('open');
+    offPanel.classList.toggle('open', open);
+    toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  var sqftSlider = document.getElementById('sqftSlider');
+  var sqftNum = document.getElementById('sqftNum');
+  function fmtSqft(v){ return Number(v).toLocaleString('en-US'); }
+  sqftSlider.addEventListener('input', function(){
+    state.sqft = parseInt(sqftSlider.value, 10);
+    sqftNum.textContent = fmtSqft(state.sqft);
+  });
+
+  var ptRes = document.getElementById('ptRes'), ptCom = document.getElementById('ptCom');
+  [ptRes, ptCom].forEach(function(el){
+    el.addEventListener('click', function(){
+      ptRes.classList.remove('sel'); ptCom.classList.remove('sel');
+      el.classList.add('sel');
+      state.propMult = parseFloat(el.dataset.mult);
+    });
+  });
+
+  var frGrid = document.getElementById('frGrid');
+  var customPanel = document.getElementById('customPanel');
+  var customChipRow = document.getElementById('customChipRow');
+
+  function selectFreqCard(card){
+    Array.prototype.forEach.call(frGrid.children, function(c){ c.classList.remove('sel'); });
+    card.classList.add('sel');
+  }
+
+  function buildCustomChips(){
+    // Union the custom intervals that make sense for whichever recurring-eligible
+    // services are currently selected, so "Custom" is tailored to the actual cart.
+    var seen = {};
+    var options = [];
+    state.services.forEach(function(svc){
+      if(!svc.recurring || !svc.freqProfile) return;
+      (FREQ_PROFILES[svc.freqProfile] || []).forEach(function(opt){
+        if(seen[opt.label]){ seen[opt.label].services.push(svc.name); return; }
+        var entry = {label:opt.label, weeks:opt.weeks, services:[svc.name]};
+        seen[opt.label] = entry;
+        options.push(entry);
+      });
+    });
+    options.sort(function(a,b){ return a.weeks - b.weeks; });
+
+    customChipRow.innerHTML = '';
+    options.forEach(function(opt){
+      var mult = discountMultForWeeks(opt.weeks);
+      var savePct = Math.round((1 - mult) * 100);
+      var chip = document.createElement('div');
+      chip.className = 'custom-chip';
+      chip.dataset.weeks = opt.weeks;
+      chip.dataset.label = opt.label;
+      var tag = opt.services.length === 1 ? '<span class="ctag">Best for ' + opt.services[0] + '</span>' : '';
+      var save = savePct > 0 ? '<span class="csave">Save ' + savePct + '%</span>' : '<span class="ctag">No added discount</span>';
+      chip.innerHTML = '<span class="cnm">' + opt.label + '</span>' + tag + save;
+      chip.addEventListener('click', function(){
+        Array.prototype.forEach.call(customChipRow.children, function(c){ c.classList.remove('sel'); });
+        chip.classList.add('sel');
+        state.freqMode = 'custom';
+        state.freqWeeks = opt.weeks;
+        state.freqMult = mult;
+        state.freqLabel = opt.label;
+      });
+      customChipRow.appendChild(chip);
+    });
+  }
+
+  Array.prototype.forEach.call(frGrid.children, function(card){
+    card.addEventListener('click', function(){
+      var mode = card.dataset.mode;
+      selectFreqCard(card);
+      if(mode === 'custom'){
+        buildCustomChips();
+        customPanel.style.display = customChipRow.children.length ? 'block' : 'none';
+        // nothing concrete chosen yet until a chip below is clicked
+        state.freqMode = 'custom';
+        state.freqWeeks = null;
+        state.freqMult = null;
+        state.freqLabel = '';
+        return;
+      }
+      customPanel.style.display = 'none';
+      state.freqMode = mode;
+      state.freqWeeks = card.dataset.weeks ? parseFloat(card.dataset.weeks) : null;
+      state.freqMult = parseFloat(card.dataset.mult);
+      state.freqLabel = card.querySelector('.nm').textContent;
+    });
+  });
+
+  var exList = document.getElementById('exList');
+  EXTRAS.forEach(function(ex){
+    var opt = document.createElement('div');
+    opt.className = 'ex-opt';
+    opt.dataset.key = ex.key;
+    opt.dataset.price = ex.price;
+    opt.innerHTML = '<div class="chk"><svg width="12" height="12"><use href="#i-check"/></svg></div><div class="lbl">' + ex.label + '</div><div class="pr">+$' + ex.price + '</div>';
+    opt.addEventListener('click', function(){
+      opt.classList.toggle('sel');
+      if(opt.classList.contains('sel')){ state.extras[ex.key] = ex.price; }
+      else { delete state.extras[ex.key]; }
+    });
+    exList.appendChild(opt);
+  });
+
+  function anyRecurring(){ return state.services.some(function(s){ return s.recurring; }); }
+
+  function calc(){
+    if(!state.services.length) return null;
+    var scheduled = state.freqMode !== 'onetime'; // a schedule was actually set, vs. the one-time default
+    var lineItems = [];
+    var recurringTotal = 0, oneTimeTotal = 0;
+    state.services.forEach(function(svc){
+      var onSchedule = svc.recurring && scheduled;
+      var fm = onSchedule ? (state.freqMult != null ? state.freqMult : 1) : 1;
+      var sizeAdj = Math.round((state.sqft/1000) * svc.perK);
+      var subtotal = (svc.base + sizeAdj) * state.propMult;
+      var freqDiscount = Math.round(subtotal * (1 - fm));
+      var lineTotal = Math.round(subtotal - freqDiscount);
+      lineItems.push({svc:svc, onSchedule:onSchedule, sizeAdj:sizeAdj, subtotal:subtotal, freqDiscount:freqDiscount, total:lineTotal});
+      if(onSchedule) recurringTotal += lineTotal; else oneTimeTotal += lineTotal;
+    });
+    var extrasTotal = Object.keys(state.extras).reduce(function(sum,k){ return sum + state.extras[k]; }, 0);
+    var oneTimeGrand = oneTimeTotal + extrasTotal;
+    return {
+      lineItems: lineItems,
+      recurringTotal: recurringTotal,
+      oneTimeTotal: oneTimeTotal,
+      extrasTotal: extrasTotal,
+      oneTimeGrand: oneTimeGrand,
+      hasRecurring: recurringTotal > 0,
+      hasOneTime: oneTimeGrand > 0 || (oneTimeTotal === 0 && recurringTotal === 0)
+    };
+  }
+
+  function renderResult(){
+    var c = calc();
+    var resWrap = document.getElementById('resWrap');
+    if(!c){ resWrap.innerHTML = ''; return; }
+
+    var itemLines = '';
+    c.lineItems.forEach(function(li){
+      itemLines += '<div><span>' + li.svc.name + (li.onSchedule ? ' (' + state.freqLabel + ')' : '') + '</span><span>$' + li.total + (li.onSchedule ? '/visit' : '') + '</span></div>';
+    });
+    if(c.extrasTotal > 0){
+      itemLines += '<div><span>Extras</span><span>+$' + c.extrasTotal + '</span></div>';
+    }
+
+    var totalLines = '';
+    if(c.hasOneTime){
+      totalLines += '<div class="total"><span>' + (c.hasRecurring ? 'One-Time Total' : 'Total') + '</span><span>$' + c.oneTimeGrand + '</span></div>';
+    }
+    if(c.hasRecurring){
+      totalLines += '<div class="total"><span>' + (c.hasOneTime ? 'Recurring Total' : 'Total') + '</span><span>$' + c.recurringTotal + '/visit</span></div>';
+    }
+
+    var headline = c.hasOneTime && c.hasRecurring
+      ? '$' + c.oneTimeGrand + ' <span>one-time</span> &nbsp;+&nbsp; $' + c.recurringTotal + ' <span>/visit</span>'
+      : c.hasRecurring
+        ? '$' + c.recurringTotal + '<span>/visit</span>'
+        : '$' + c.oneTimeGrand + '<span>total</span>';
+
+    resWrap.innerHTML = '<h3>' + c.lineItems.length + ' Service' + (c.lineItems.length > 1 ? 's' : '') + ' Selected &mdash; ' + fmtSqft(state.sqft) + ' sqft &mdash; ' + (state.propMult > 1 ? 'Commercial' : 'Residential') + '</h3>' +
+      '<div class="price">' + headline + '</div>' +
+      '<div class="lines">' + itemLines + totalLines + '</div>' +
+      '<div class="guarantee">Price Guaranteed Unless Property Details Are Inaccurate</div>';
+  }
+
+  function goStep(n){
+    curStep = n;
+    document.querySelectorAll('.step-panel').forEach(function(p){
+      p.classList.toggle('active', parseInt(p.dataset.panel,10) === n);
+    });
+    document.querySelectorAll('#stepRail .dot').forEach(function(d){
+      var ds = parseInt(d.dataset.step,10);
+      d.classList.toggle('active', ds === n);
+      d.classList.toggle('done', ds < n);
+    });
+    document.querySelectorAll('#stepRail .bar').forEach(function(b){
+      b.classList.toggle('done', parseInt(b.dataset.bar,10) < n);
+    });
+    document.getElementById('backBtn').disabled = (n === 1);
+    var nextBtn = document.getElementById('nextBtn');
+    if(n === 3){
+      // keep the custom interval menu honest if the selected services changed since last visit
+      if(state.freqMode === 'custom'){
+        buildCustomChips();
+        var stillValid = state.freqWeeks != null && Array.prototype.some.call(customChipRow.children, function(c){ return parseFloat(c.dataset.weeks) === state.freqWeeks; });
+        if(stillValid){
+          Array.prototype.forEach.call(customChipRow.children, function(c){ c.classList.toggle('sel', parseFloat(c.dataset.weeks) === state.freqWeeks); });
+          customPanel.style.display = 'block';
+        } else {
+          state.freqWeeks = null; state.freqMult = null; state.freqLabel = '';
+          customPanel.style.display = customChipRow.children.length ? 'block' : 'none';
+        }
+      } else {
+        customPanel.style.display = 'none';
+      }
+    }
+    if(n === TOTAL_STEPS){ nextBtn.style.display = 'none'; renderResult(); window.scrollTo({top:0, behavior:'smooth'}); }
+    else { nextBtn.style.display = 'inline-flex'; nextBtn.textContent = (n === TOTAL_STEPS - 1) ? 'See My Estimate →' : 'Continue →'; }
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(curStep === 1 && !state.services.length) return;
+    if(curStep === 3 && state.freqMode === 'custom' && state.freqWeeks == null) return;
+    var n = curStep + 1;
+    if(n === 3 && !anyRecurring()) n = 4; // skip frequency step when nothing recurring is selected
+    if(n <= TOTAL_STEPS) goStep(n);
+  });
+  document.getElementById('backBtn').addEventListener('click', function(){
+    var n = curStep - 1;
+    if(n === 3 && !anyRecurring()) n = 2; // skip frequency step going back too
+    if(n >= 1) goStep(n);
+  });
+
+  document.getElementById('startOverBtn').addEventListener('click', function(){
+    state = {services:[], sqft:8000, propMult:1, freqMode:'onetime', freqWeeks:null, freqMult:1, freqLabel:'One-Time', extras:{}};
+    document.querySelectorAll('.sv-card').forEach(function(c){ c.classList.remove('sel'); });
+    sqftSlider.value = 8000; sqftNum.textContent = '8,000';
+    ptRes.classList.add('sel'); ptCom.classList.remove('sel');
+    Array.prototype.forEach.call(frGrid.children, function(c){ c.classList.toggle('sel', c.dataset.mode === 'onetime'); });
+    customPanel.style.display = 'none';
+    customChipRow.innerHTML = '';
+    Array.prototype.forEach.call(exList.children, function(c){ c.classList.remove('sel'); });
+    goStep(1);
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  goStep(1);
+})();
+</script>
+</body>
+</html>
