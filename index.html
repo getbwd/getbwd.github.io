@@ -89,8 +89,8 @@
 .hero-badges{display:flex;gap:26px;margin-top:40px;flex-wrap:wrap}
 .hero-badges .b{display:flex;align-items:center;gap:10px;color:#e8e8ea;font-size:14px;font-weight:600}
 .hero-badges svg{width:20px;height:20px;color:var(--orange);flex-shrink:0}
-@media(max-width:920px){.hero{height:auto;min-height:0;display:block}.hero-grid{grid-template-columns:1fr;padding:46px 0 50px}}
-@media(max-width:480px){.hero-actions{flex-direction:column}.hero-actions a{width:100%}.hero-badges{gap:14px 22px}}
+@media(max-width:1024px){.hero{height:auto;min-height:0;display:block}.hero-grid{grid-template-columns:1fr;padding:46px 0 50px}}
+@media(max-width:560px){.hero-actions{flex-direction:column}.hero-actions a{width:100%}.hero-badges{gap:14px 22px;flex-direction:column;align-items:flex-start}}
 
 /* ---- home page: gentle entrance animation for hero copy ---- */
 @keyframes heroZoom{from{transform:scale(1.08)}to{transform:scale(1)}}
@@ -133,11 +133,12 @@
 .why-card .svc-ic{margin:0 auto 16px}
 .why-card h3{font-family:'Inter',sans-serif;font-weight:700;font-size:16px}
 .why-card p{font-size:13.5px;color:var(--gray-lt);margin-top:8px}
-@media(max-width:920px){.why-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:1024px){.why-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:560px){.why-grid{grid-template-columns:1fr}}
 
 /* ---- home page: reviews ---- */
 .reviews-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-@media(max-width:920px){.reviews-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:1024px){.reviews-grid{grid-template-columns:minmax(0,1fr)}}
 .review-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;transition:transform .25s ease, box-shadow .25s ease}
 .review-card:hover{transform:translateY(-4px);box-shadow:0 16px 30px -16px rgba(0,0,0,.22)}
 .review-stars{color:var(--orange);font-size:17px;letter-spacing:3px;margin-bottom:14px}
@@ -152,7 +153,8 @@
 .step-num{width:52px;height:52px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;margin:0 auto 16px}
 .process-step h3{font-family:'Inter',sans-serif;font-weight:700;font-size:15.5px}
 .process-step p{font-size:13.5px;color:var(--gray-lt);margin-top:8px}
-@media(max-width:920px){.process-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);row-gap:36px}}
+@media(max-width:1024px){.process-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);row-gap:36px}}
+@media(max-width:560px){.process-grid{grid-template-columns:1fr;row-gap:30px}}
 
 /* ---- home page: contact section override ---- */
 #contact{padding-top:0}
@@ -205,10 +207,10 @@
       <p>BWD Services keeps Flint-area homes and businesses looking sharp all year, from spring cleanup and lawn care to landscaping, so your property is ready whenever you are.</p>
       <div class="pill-row" style="margin-top:22px">
         <div class="pill"><svg><use href="#i-house"/></svg>Residential</div>
-        <a href="commercial.html" class="pill"><svg><use href="#i-building"/></svg>Commercial</a>
+        <a href="/commercial/" class="pill"><svg><use href="#i-building"/></svg>Commercial</a>
       </div>
       <div class="hero-actions">
-        <a href="contact.html" class="btn btn-primary">Get a Free Quote</a>
+        <a href="/quote/" class="btn btn-primary">Get a Free Quote</a>
         <a href="#services" class="btn btn-outline-light">Explore our Services<svg width="16" height="16"><use href="#i-arrow"/></svg></a>
       </div>
       <div class="hero-badges">
@@ -243,41 +245,41 @@
 
     <div class="tab-panel active" id="panel-spring">
       <div class="service-grid">
-        <a class="service-card" href="services/spring-cleanup.html"><div class="svc-ic"><svg><use href="#i-broom"/></svg></div><div><h3>Spring Cleanup</h3><p>Beds, lawns, and borders refreshed after a long Michigan winter.</p></div></a>
-        <a class="service-card" href="services/dethatching-power-raking.html"><div class="svc-ic"><svg><use href="#i-clipboard"/></svg></div><div><h3>Dethatching &amp; Power Raking</h3><p>Clear out dead thatch so your lawn can breathe and green up faster.</p></div></a>
-        <a class="service-card" href="services/mulch-installation.html"><div class="svc-ic"><svg><use href="#i-flower"/></svg></div><div><h3>Mulch Installation</h3><p>Fresh mulch for beds and borders, with a cleaner look and better moisture control.</p></div></a>
-        <a class="service-card" href="services/debris-waste-removal.html"><div class="svc-ic"><svg><use href="#i-trash"/></svg></div><div><h3>Debris &amp; Waste Removal</h3><p>Branches, brush, and winter debris hauled off your property.</p></div></a>
+        <a class="service-card" href="/services/spring-cleanup/"><div class="svc-ic"><svg><use href="#i-broom"/></svg></div><div><h3>Spring Cleanup</h3><p>Beds, lawns, and borders refreshed after a long Michigan winter.</p></div></a>
+        <a class="service-card" href="/services/dethatching-power-raking/"><div class="svc-ic"><svg><use href="#i-clipboard"/></svg></div><div><h3>Dethatching &amp; Power Raking</h3><p>Clear out dead thatch so your lawn can breathe and green up faster.</p></div></a>
+        <a class="service-card" href="/services/mulch-installation/"><div class="svc-ic"><svg><use href="#i-flower"/></svg></div><div><h3>Mulch Installation</h3><p>Fresh mulch for beds and borders, with a cleaner look and better moisture control.</p></div></a>
+        <a class="service-card" href="/services/debris-waste-removal/"><div class="svc-ic"><svg><use href="#i-trash"/></svg></div><div><h3>Debris &amp; Waste Removal</h3><p>Branches, brush, and winter debris hauled off your property.</p></div></a>
       </div>
     </div>
 
     <div class="tab-panel" id="panel-lawn">
       <div class="service-grid">
-        <a class="service-card" href="services/mowing-weed-whacking.html"><div class="svc-ic"><svg><use href="#i-mower"/></svg></div><div><h3>Mowing &amp; Weed Whacking</h3><p>Routine mowing, edging, and trimming to keep your lawn crisp every week.</p></div></a>
-        <a class="service-card" href="services/aeration.html"><div class="svc-ic"><svg><use href="#i-dots"/></svg></div><div><h3>Aeration</h3><p>Core aeration that relieves soil compaction so roots grow deeper.</p></div></a>
-        <a class="service-card" href="services/overseeding.html"><div class="svc-ic"><svg><use href="#i-sprout"/></svg></div><div><h3>Overseeding</h3><p>Thicken thin or patchy turf with seed timed to the season.</p></div></a>
-        <a class="service-card" href="services/fertilization.html"><div class="svc-ic"><svg><use href="#i-droplet"/></svg></div><div><h3>Fertilization</h3><p>Balanced feeding programs for a greener, more resilient lawn.</p></div></a>
-        <a class="service-card" href="services/weed-control.html"><div class="svc-ic"><svg><use href="#i-shield"/></svg></div><div><h3>Weed Control</h3><p>Targeted treatments that knock back weeds without the damage.</p></div></a>
+        <a class="service-card" href="/services/mowing-weed-whacking/"><div class="svc-ic"><svg><use href="#i-mower"/></svg></div><div><h3>Mowing &amp; Weed Whacking</h3><p>Routine mowing, edging, and trimming to keep your lawn crisp every week.</p></div></a>
+        <a class="service-card" href="/services/aeration/"><div class="svc-ic"><svg><use href="#i-dots"/></svg></div><div><h3>Aeration</h3><p>Core aeration that relieves soil compaction so roots grow deeper.</p></div></a>
+        <a class="service-card" href="/services/overseeding/"><div class="svc-ic"><svg><use href="#i-sprout"/></svg></div><div><h3>Overseeding</h3><p>Thicken thin or patchy turf with seed timed to the season.</p></div></a>
+        <a class="service-card" href="/services/fertilization/"><div class="svc-ic"><svg><use href="#i-droplet"/></svg></div><div><h3>Fertilization</h3><p>Balanced feeding programs for a greener, more resilient lawn.</p></div></a>
+        <a class="service-card" href="/services/weed-control/"><div class="svc-ic"><svg><use href="#i-shield"/></svg></div><div><h3>Weed Control</h3><p>Targeted treatments that knock back weeds without the damage.</p></div></a>
       </div>
     </div>
 
     <div class="tab-panel" id="panel-landscape">
       <div class="service-grid">
-        <a class="service-card" href="services/garden-bed-care.html"><div class="svc-ic"><svg><use href="#i-flower"/></svg></div><div><h3>Garden Bed Care</h3><p>Weeding, edging, and mulching that keep beds looking intentional.</p></div></a>
-        <a class="service-card" href="services/leaf-removal.html"><div class="svc-ic"><svg><use href="#i-leaf"/></svg></div><div><h3>Leaf Removal</h3><p>Full-yard leaf pickup before they smother your lawn.</p></div></a>
-        <a class="service-card" href="services/seasonal-cleanup.html"><div class="svc-ic"><svg><use href="#i-broom"/></svg></div><div><h3>Seasonal Cleanup</h3><p>End-of-season tidy-ups that get your property ready for what's next.</p></div></a>
-        <a class="service-card" href="services/gutter-cleanup.html"><div class="svc-ic"><svg><use href="#i-gutter"/></svg></div><div><h3>Gutter Cleanup</h3><p>Clogged gutters cleared out to keep water moving away from your home.</p></div></a>
-        <a class="service-card" href="services/shrub-trimming.html"><div class="svc-ic"><svg><use href="#i-shears"/></svg></div><div><h3>Shrub Trimming</h3><p>Clean, healthy shrub lines shaped to keep your property looking sharp.</p></div></a>
-        <a class="service-card" href="services/power-washing.html"><div class="svc-ic"><svg><use href="#i-spray"/></svg></div><div><h3>Power Washing</h3><p>Driveways, walkways, and siding blasted clean of dirt and grime.</p></div></a>
+        <a class="service-card" href="/services/garden-bed-care/"><div class="svc-ic"><svg><use href="#i-flower"/></svg></div><div><h3>Garden Bed Care</h3><p>Weeding, edging, and mulching that keep beds looking intentional.</p></div></a>
+        <a class="service-card" href="/services/leaf-removal/"><div class="svc-ic"><svg><use href="#i-leaf"/></svg></div><div><h3>Leaf Removal</h3><p>Full-yard leaf pickup before they smother your lawn.</p></div></a>
+        <a class="service-card" href="/services/seasonal-cleanup/"><div class="svc-ic"><svg><use href="#i-broom"/></svg></div><div><h3>Seasonal Cleanup</h3><p>End-of-season tidy-ups that get your property ready for what's next.</p></div></a>
+        <a class="service-card" href="/services/gutter-cleanup/"><div class="svc-ic"><svg><use href="#i-gutter"/></svg></div><div><h3>Gutter Cleanup</h3><p>Clogged gutters cleared out to keep water moving away from your home.</p></div></a>
+        <a class="service-card" href="/services/shrub-trimming/"><div class="svc-ic"><svg><use href="#i-shears"/></svg></div><div><h3>Shrub Trimming</h3><p>Clean, healthy shrub lines shaped to keep your property looking sharp.</p></div></a>
+        <a class="service-card" href="/services/power-washing/"><div class="svc-ic"><svg><use href="#i-spray"/></svg></div><div><h3>Power Washing</h3><p>Driveways, walkways, and siding blasted clean of dirt and grime.</p></div></a>
       </div>
     </div>
     <div class="tab-panel" id="panel-winter">
       <div class="service-grid">
-        <a class="service-card" href="services/snow-removal.html"><div class="svc-ic"><svg><use href="#i-snowflake"/></svg></div><div><h3>Snow Removal</h3><p>Reliable plowing for driveways, lots, and private roads all winter.</p></div></a>
-        <a class="service-card" href="services/salting-ice-management.html"><div class="svc-ic"><svg><use href="#i-salt"/></svg></div><div><h3>Salting &amp; Ice Management</h3><p>De-icing treatments that keep walkways and lots safe after every storm.</p></div></a>
-        <a class="service-card" href="services/sidewalk-walkway-clearing.html"><div class="svc-ic"><svg><use href="#i-broom"/></svg></div><div><h3>Sidewalk &amp; Walkway Clearing</h3><p>Hand-cleared walkways and entries so they stay safe and accessible.</p></div></a>
+        <a class="service-card" href="/services/snow-removal/"><div class="svc-ic"><svg><use href="#i-snowflake"/></svg></div><div><h3>Snow Removal</h3><p>Reliable plowing for driveways, lots, and private roads all winter.</p></div></a>
+        <a class="service-card" href="/services/salting-ice-management/"><div class="svc-ic"><svg><use href="#i-salt"/></svg></div><div><h3>Salting &amp; Ice Management</h3><p>De-icing treatments that keep walkways and lots safe after every storm.</p></div></a>
+        <a class="service-card" href="/services/sidewalk-walkway-clearing/"><div class="svc-ic"><svg><use href="#i-broom"/></svg></div><div><h3>Sidewalk &amp; Walkway Clearing</h3><p>Hand-cleared walkways and entries so they stay safe and accessible.</p></div></a>
       </div>
     </div>
-    <p class="services-note">Don't see what you need? We take on most outdoor property work, just ask. &nbsp;&middot;&nbsp; <a href="services/index.html" style="color:var(--orange-dk);font-weight:700">View All Services &gt;</a></p>
+    <p class="services-note">Don't see what you need? We take on most outdoor property work, just ask. &nbsp;&middot;&nbsp; <a href="/services/" style="color:var(--orange-dk);font-weight:700">View All Services &gt;</a></p>
   </div>
 </section>
 
@@ -288,7 +290,7 @@
         <div class="eyebrow">Where We Work</div>
         <h2 style="margin-top:14px">Proudly Serving Flint &amp; The Surrounding Communities</h2>
         <p>Based in Flint, BWD Services covers the outlying cities and townships homeowners and businesses call home. Don't see your area listed? Reach out, there's a good chance we cover it.</p>
-        <a href="contact.html" class="btn btn-primary">Check Your Address</a>
+        <a href="/contact/" class="btn btn-primary">Check Your Address</a>
       </div>
       <div class="area-list">
         <div class="area-item main reveal"><svg><use href="#i-check-sm"/></svg>Flint</div>
@@ -333,7 +335,7 @@
         <h2 style="margin-top:10px;font-size:clamp(22px,2.8vw,30px)">We Fix It, Free.</h2>
         <p style="color:var(--gray);margin-top:12px;font-size:15.5px;max-width:640px">If something's not right, whether it's a missed spot or an uneven line, just tell us and we'll come back and make it right. No charge, no hassle, no questions asked.</p>
       </div>
-      <a href="contact.html" class="btn btn-primary" style="flex-shrink:0">Get a Free Quote</a>
+      <a href="/quote/" class="btn btn-primary" style="flex-shrink:0">Get a Free Quote</a>
     </div>
   </div>
 </section>
@@ -392,7 +394,7 @@
       </div>
       <div class="cta-actions">
         <a href="tel:+19203709852" class="btn btn-primary"><svg width="16" height="16"><use href="#i-phone"/></svg>Call (920) 370-9852</a>
-        <a href="contact.html" class="btn btn-outline-light">Request a Quote</a>
+        <a href="/quote/" class="btn btn-outline-light">Request a Quote</a>
       </div>
     </div>
   </div>

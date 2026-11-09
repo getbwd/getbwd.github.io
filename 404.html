@@ -4,59 +4,277 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Page Not Found | BWD Services</title>
-<meta name="description" content="The page you're looking for can't be found. Head back to the BWD Services homepage or get in touch for lawn care, landscaping, and snow removal in Flint, MI.">
-<link rel="canonical" href="https://getbwd.com/404.html">
-<meta name="robots" content="noindex, follow">
+<meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F96302">
-
-<link rel="icon" type="image/png" href="https://getbwd.com/images/branding/favicon.png">
-<link rel="apple-touch-icon" href="https://getbwd.com/images/branding/favicon.png">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="shared.css">
-
 <style>
-.notfound{min-height:calc(100vh - 191px - 300px);display:flex;align-items:center;padding:100px 0}
-@media(max-width:920px){.notfound{min-height:0;padding:70px 0}}
-.notfound-wrap{max-width:620px;margin:0 auto;text-align:center}
-.notfound-num{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(72px,12vw,120px);color:var(--orange);line-height:1}
-.notfound h1{margin-top:8px;font-size:clamp(24px,3.4vw,34px)}
-.notfound p{color:var(--gray);margin-top:16px;font-size:16px}
-.notfound-actions{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
-.notfound-links{display:flex;gap:10px 22px;justify-content:center;margin-top:34px;flex-wrap:wrap;font-size:14px}
-.notfound-links a{font-weight:600;color:var(--gray-lt)}
-.notfound-links a:hover{color:var(--orange-dk)}
-@media(max-width:480px){.notfound-actions{flex-direction:column}.notfound-actions a{width:100%}}
+/* ==========================================================================
+   BWD Services — shared.css
+   Cross-page design system: reset, variables, header/nav/mega-menu,
+   mobile nav, buttons, cards, footer, and other reusable components.
+   Home-page-specific styles (hero, strip, tabs, why, reviews, process)
+   live inline in index.html.
+   ========================================================================== */
+
+:root{
+  --orange:#F96302; --orange-dk:#CC5200; --orange-tint:#FFF0E4;
+  --ink:#1C1C1C; --gray:#595A5C; --gray-lt:#8A8B8D;
+  --line:#E6E4DF; --bg:#FFFFFF; --bg-soft:#FAF9F6;
+  --radius:12px; --shadow:0 10px 26px -14px rgba(0,0,0,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;width:100%;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px;width:100%}
+h1,h2,h3,.display{font-family:'Montserrat',sans-serif;font-weight:800;line-height:1.18;color:var(--ink)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--orange-dk);text-transform:uppercase}
+.eyebrow::before{content:"";width:22px;height:3px;background:var(--orange);border-radius:2px}
+
+/* ---- buttons ---- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:15px 28px;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;transition:background .2s ease, color .2s ease, border-color .2s ease;border:2px solid transparent;font-family:'Inter',sans-serif}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-primary:hover{background:var(--orange-dk)}
+.btn-outline{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-outline:hover{background:var(--ink);color:#fff}
+.btn-outline-light{border-color:rgba(255,255,255,.55);color:#fff}
+.btn-outline-light:hover{background:#fff;color:var(--ink)}
+.btn-block{width:100%}
+
+/* ---- top utility bar ---- */
+.topbar{background:var(--ink);color:#cfcfcf;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;padding:9px 28px;gap:16px;flex-wrap:wrap}
+.topbar a{font-weight:600;color:#fff}
+.topbar .sep{opacity:.4;margin:0 4px}
+@media(max-width:700px){.topbar .right{display:none}}
+
+/* ---- header ---- */
+header{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;position:relative}
+nav img{height:48px}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a, .nav-links button{font-size:14.5px;font-weight:600;color:var(--gray);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px}
+.nav-links a:hover, .nav-links button:hover, .nav-links button.open{color:var(--orange-dk)}
+.nav-links button svg{width:13px;height:13px;transition:transform .2s ease}
+.nav-links button.open svg{transform:rotate(180deg)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.portal-btn{padding:12px 18px !important;font-size:13.5px !important}
+@media(max-width:1180px){.portal-btn span{display:none}.portal-btn{padding:12px !important}}
+/* Tablets get the touch-friendly burger/accordion nav too, not just phones,
+   since the hover-driven mega menu isn't a great fit for touch screens. */
+@media(max-width:1024px){.nav-links{display:none}.nav-right .btn-outline{display:none}}
+.burger{display:none;width:44px;height:44px;border-radius:8px;border:1px solid var(--line);align-items:center;justify-content:center;cursor:pointer;background:#fff}
+@media(max-width:1024px){.burger{display:flex}}
+.mobile-nav{position:fixed;inset:0 0 0 auto;width:min(340px,88vw);background:#fff;z-index:120;padding:24px;box-shadow:-10px 0 30px rgba(0,0,0,.18);transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav > a{font-weight:700;font-size:16px;color:var(--ink);padding:14px 0}
+.mobile-nav .btn{margin-top:8px;min-height:48px}
+.mobile-close{align-self:flex-end;width:40px;height:40px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:6px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:110;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.overlay.open{opacity:1;pointer-events:auto}
+
+/* ---- mobile services accordion ---- */
+.m-acc-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;font-weight:700;font-size:16px;color:var(--ink);padding:14px 0;cursor:pointer;font-family:'Inter',sans-serif}
+.m-acc-btn svg{width:14px;height:14px;transition:transform .2s ease}
+.m-acc-btn.open svg{transform:rotate(180deg)}
+.m-acc-panel{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.m-acc-panel.open{max-height:900px}
+.m-acc-panel a{display:block;padding:12px 0 12px 14px;font-size:14.5px;font-weight:600;color:var(--gray);border-left:2px solid var(--line);min-height:44px}
+.m-acc-cat{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--orange-dk);margin:12px 0 2px 14px}
+
+/* ---- mega menu (desktop) ---- */
+.mega{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--line);border-top:none;box-shadow:0 24px 40px -20px rgba(0,0,0,.22);border-radius:0 0 14px 14px;padding:32px;display:none;z-index:70}
+.mega.open{display:block}
+.mega-grid{display:grid;grid-template-columns:repeat(4,1fr) .85fr;gap:24px}
+.mega-col h4{font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--orange-dk);margin-bottom:14px}
+.mega-col a{display:block;padding:9px 0;border-bottom:1px solid var(--line)}
+.mega-col a:last-child{border-bottom:none}
+.mega-col a .t{font-size:14.5px;font-weight:700;color:var(--ink)}
+.mega-col a .d{font-size:12.5px;color:var(--gray-lt);margin-top:2px;line-height:1.4}
+.mega .wrap{max-width:1320px}
+.mega-col a:hover .t{color:var(--orange-dk)}
+.mega-promo{background:var(--ink);border-radius:14px;padding:26px;color:#fff;display:flex;flex-direction:column;gap:14px}
+.mega-promo h4{color:#fff;font-size:17px;font-family:'Montserrat',sans-serif;font-weight:800}
+.mega-promo p{font-size:13px;color:#cfcfd1}
+.mega-promo .btn{width:100%}
+@media(max-width:1300px){.mega-grid{grid-template-columns:1fr 1fr}.mega-promo{grid-column:span 2}}
+
+/* ---- breadcrumb ---- */
+.breadcrumb{background:var(--bg-soft);border-bottom:1px solid var(--line);padding:16px 0}
+.breadcrumb .wrap{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--gray-lt);flex-wrap:wrap}
+.breadcrumb a{font-weight:600;color:var(--gray)}
+.breadcrumb a:hover{color:var(--orange-dk)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{color:var(--ink);font-weight:700}
+
+/* ---- badge pill ---- */
+.pill-row{display:flex;gap:10px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:700}
+.pill svg{width:15px;height:15px;color:var(--orange)}
+.pill.light{background:var(--orange-tint);border-color:transparent;color:var(--orange-dk)}
+
+/* ---- simple page header (no two-col hero) ---- */
+.page-hero{background:var(--ink);padding:64px 0;position:relative;overflow:hidden}
+.page-hero::before{content:"";position:absolute;right:-8%;top:-30%;width:520px;height:520px;background:radial-gradient(circle,rgba(249,99,2,.14),transparent 70%)}
+.page-hero .wrap{position:relative}
+.page-hero h1{color:#fff;font-size:clamp(28px,4vw,42px)}
+.page-hero p{color:#cfcfd1;margin-top:14px;font-size:16px;max-width:640px}
+
+/* ---- generic section rhythm ---- */
+section{padding:88px 0}
+.section-head{max-width:640px;margin:0 auto 46px;text-align:center}
+.section-head.left{margin:0 0 40px;text-align:left}
+.section-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
+.section-head p{color:var(--gray);margin-top:14px;font-size:16px}
+@media(max-width:600px){
+  section{padding:56px 0}
+  .section-head{margin-bottom:32px}
+}
+
+/* ---- scroll-reveal utility ----
+   Applied via JS (IntersectionObserver) when an element scrolls into
+   view. Kept subtle and short so it reads as polish, not motion. */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease, transform .65s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+}
+
+/* ---- service card component ---- */
+.service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.service-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;gap:16px;align-items:flex-start;box-shadow:var(--shadow);transition:transform .2s ease, box-shadow .2s ease}
+a.service-card:hover{transform:translateY(-3px);box-shadow:0 16px 30px -16px rgba(0,0,0,.28)}
+.svc-ic{width:48px;height:48px;border-radius:10px;background:var(--orange-tint);color:var(--orange-dk);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.svc-ic svg{width:24px;height:24px}
+.service-card h3{font-family:'Inter',sans-serif;font-weight:700;font-size:16px;letter-spacing:0;text-transform:none}
+.service-card p{font-size:13.5px;color:var(--gray-lt);margin-top:4px}
+.service-card .learn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:700;color:var(--orange-dk)}
+.service-card .learn svg{width:13px;height:13px}
+@media(max-width:1024px){.service-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:620px){.service-grid{grid-template-columns:1fr}}
+.services-note{margin-top:30px;text-align:center;color:var(--gray-lt);font-size:14.5px}
+.cat-block{margin-bottom:62px}
+.cat-block:last-child{margin-bottom:0}
+
+/* ---- service area list component ---- */
+.area-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.area-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.area-item{display:flex;align-items:center;gap:10px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;font-weight:600;font-size:14.5px;background:#fff}
+.area-item.main{background:var(--orange);color:#fff;border-color:var(--orange)}
+.area-item svg{width:16px;height:16px;color:var(--orange);flex-shrink:0}
+.area-item.main svg{color:#fff}
+.area-copy p{color:var(--gray);margin-top:16px;font-size:16px}
+.area-copy .btn{margin-top:28px}
+@media(max-width:1024px){.area-grid{grid-template-columns:1fr}.area-grid .area-copy{order:2}}
+@media(max-width:560px){.area-list{grid-template-columns:1fr}}
+
+/* ---- cta band ---- */
+.cta{background:var(--ink);border-radius:20px;padding:64px 56px;display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
+@media(max-width:560px){.cta{padding:40px 28px}}
+.cta h2{color:#fff;font-size:clamp(24px,3.2vw,32px)}
+.cta p{color:#cfcfd1;margin-top:10px}
+.cta-actions{display:flex;gap:14px;flex-wrap:wrap}
+
+/* ---- contact card component ---- */
+.contact-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.contact-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);transition:transform .25s ease, box-shadow .25s ease}
+.contact-card:hover{transform:translateY(-3px);box-shadow:0 16px 30px -16px rgba(0,0,0,.28)}
+.contact-card .svc-ic{margin-bottom:14px}
+.contact-card h3{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:var(--gray-lt);text-transform:uppercase;letter-spacing:.5px}
+.contact-card .v{font-size:18px;font-weight:700;margin-top:8px;color:var(--ink);overflow-wrap:anywhere}
+.contact-card .v a{color:var(--orange-dk)}
+@media(max-width:1024px){.contact-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:560px){.contact-grid{grid-template-columns:1fr}}
+
+/* ---- contact form ---- */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+@media(max-width:1024px){.contact-layout{grid-template-columns:1fr}}
+.form-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:34px;box-shadow:var(--shadow)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:560px){.form-row{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.field label{font-size:13px;font-weight:700;color:var(--ink)}
+.field input, .field select, .field textarea{border:1.5px solid var(--line);border-radius:9px;padding:13px 14px;font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);background:#fff}
+.field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--orange)}
+.field textarea{resize:vertical;min-height:110px}
+/* 16px prevents iOS Safari from auto-zooming the page on focus */
+@media(max-width:1024px){.field input, .field select, .field textarea{font-size:16px}}
+.contact-side .contact-card{margin-bottom:16px}
+
+/* ---- footer ---- */
+footer{background:var(--ink);color:#b8b8ba;padding:56px 0 26px}
+.footer-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-bottom:36px;border-bottom:1px solid #333}
+.footer-brand img{height:42px;margin-bottom:14px;filter:brightness(0) invert(1)}
+.footer-brand p{max-width:300px;font-size:14px}
+.footer-cols{display:flex;gap:60px;flex-wrap:wrap}
+.footer-col h4{color:#fff;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.footer-col a{display:block;font-size:14px;margin-bottom:10px}
+.footer-col a:hover{color:var(--orange)}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:24px;font-size:12.5px}
+
+.concept-flag{position:sticky;top:0;z-index:200;background:#1C1C1C;color:#FFD9B8;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;text-align:center;padding:9px 16px;letter-spacing:.3px;border-bottom:2px dashed #F96302}
+.concept-flag span{color:#F96302}
+
+.c1-hero{position:relative;overflow:hidden;min-height:calc(100vh - 191px - 300px);display:flex;align-items:center;padding:90px 0}
+.c1-hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg, var(--bg-soft) 0 64px, #fff 64px 128px);z-index:0}
+.c1-wrap{position:relative;z-index:1;max-width:640px;margin:0 auto;text-align:center}
+.c1-numwrap{position:relative;display:inline-block;margin-bottom:6px}
+.c1-num{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(90px,15vw,150px);color:var(--ink);line-height:1;letter-spacing:-2px}
+.c1-mower{position:absolute;left:-60px;top:50%;transform:translateY(-54%);width:56px;height:56px;color:var(--orange);animation:c1drive 2.4s cubic-bezier(.65,0,.35,1) .3s both}
+@keyframes c1drive{from{left:-60px}to{left:calc(100% - 10px)}}
+.c1-line{height:4px;border-radius:4px;background:var(--orange);width:140px;margin:10px auto 26px;transform-origin:left center;animation:c1mow 1.6s ease .3s both}
+@keyframes c1mow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.c1-hero h1{font-size:clamp(22px,3vw,32px)}
+.c1-hero p{color:var(--gray);margin-top:14px;font-size:16px}
+.c1-actions{display:flex;gap:14px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+.c1-quick{margin-top:30px;font-size:14px;display:flex;gap:10px 20px;justify-content:center;flex-wrap:wrap}
+.c1-quick a{font-weight:600;color:var(--gray-lt)}
+.c1-quick a:hover{color:var(--orange-dk)}
+@media(max-width:600px){.c1-hero{min-height:0;padding:64px 0}.c1-mower{display:none}.c1-actions{flex-direction:column}.c1-actions a{width:100%}}
+@media (prefers-reduced-motion: reduce){.c1-mower,.c1-line{animation:none}.c1-mower{left:calc(100% - 10px)}.c1-line{transform:scaleX(1)}}
+
 </style>
 </head>
 <body>
-
+<div class="concept-flag">PREVIEW &mdash; <span>Concept 1 of 5: Freshly Mowed</span> &mdash; diagonal mow-stripe background, a mower drives the underline in on load</div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 5a2 2 0 0 1 2-2z"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+  <symbol id="i-check-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
   <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="11" height="18" rx="1"/><path d="M15 8h5v13h-5"/><path d="M7.5 7h2M7.5 10.5h2M7.5 14h2M7.5 17.5h2"/></symbol>
+  <symbol id="i-mower" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18.5a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5"/><circle cx="6.5" cy="19.5" r="1.6"/><circle cx="14.5" cy="19.5" r="1.6"/><path d="M12 13.5L19.5 5.5"/><path d="M17.5 5.5H21"/></symbol>
+  <symbol id="i-snowflake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5V21.5"/><path d="M4.5 7L19.5 17"/><path d="M19.5 7L4.5 17"/><path d="M12 5.5L9.5 7.5M12 5.5l2.5 2M12 18.5l-2.5-2M12 18.5l2.5-2"/><path d="M6.5 8.5L8 9.5M6.5 8.5L5.5 10M17.5 15.5l-1.5-1M17.5 15.5l1 1.5"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2.5" width="6" height="3" rx="1"/><path d="M8.5 11.5l2.2 2.2L15.5 9.5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-2 4.4-4.4 2 2-4.4z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
 </defs>
 </svg>
-
 <div id="site-header"></div>
 
-<section class="notfound">
+<section class="c1-hero">
   <div class="wrap">
-    <div class="notfound-wrap">
-      <div class="notfound-num">404</div>
-      <h1>This page took the winter off.</h1>
-      <p>We couldn't find the page you were looking for. It may have been moved, or the link might just be off. Let's get you back on track.</p>
-      <div class="notfound-actions">
+    <div class="c1-wrap">
+      <div class="c1-numwrap">
+        <div class="c1-num">404</div>
+        <svg class="c1-mower" viewBox="0 0 24 24"><use href="#i-mower"/></svg>
+      </div>
+      <div class="c1-line"></div>
+      <h1>This Spot Hasn&rsquo;t Been Mowed Yet</h1>
+      <p>The page you&rsquo;re looking for doesn&rsquo;t exist, or the link got cut off somewhere. Let&rsquo;s get you back on solid ground.</p>
+      <div class="c1-actions">
         <a href="index.html" class="btn btn-primary">Back to Home</a>
         <a href="contact.html" class="btn btn-outline">Contact Us</a>
       </div>
-      <div class="notfound-links">
+      <div class="c1-quick">
         <a href="services/index.html">All Services</a>
         <a href="service-area.html">Service Area</a>
         <a href="commercial.html">Commercial</a>
@@ -67,7 +285,6 @@
 </section>
 
 <div id="site-footer"></div>
-
 <script src="shell.js" defer></script>
 </body>
 </html>
